@@ -1,4 +1,4 @@
-#ULRICA 
+# ULRICA 
 -> UniversaL Range and destInation CAlculator
 
 ## Start-Up: How to run the application
