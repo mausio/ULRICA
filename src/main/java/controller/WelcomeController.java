@@ -13,7 +13,6 @@ public class WelcomeController {
     SleepUtil.waitForFSeconds(1.0);
     
     LoadingScreenAnimation.runForNSeconds(5.0);
-    ConsoleInteractorUtil.clear();
   }
   
   public static void displayWelcomeMessage() {

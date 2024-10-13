@@ -1,14 +1,17 @@
 package service;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import utils.AnsiColorsUtil;
 import utils.ConsoleInteractorUtil;
-import utils.JsonDataLoaderUtil;
+import utils.JsonCarProfilesLoader;
 import utils.LoadingScreenAnimation;
 
 public class SetupService {
   private static final String carProfilePath = "./src/main/java/resources/carProfiles.json";
   static LoadingScreenAnimation loadingScreenAnimation = new LoadingScreenAnimation();
-  static JsonDataLoaderUtil carProfileJsonLoader = new JsonDataLoaderUtil(SetupService.getCarProfilePath());
+  static JsonCarProfilesLoader carProfileJsonLoader = new JsonCarProfilesLoader(carProfilePath);
+  static Gson gson = new GsonBuilder().setPrettyPrinting().create();
   
   public SetupService() {
     ConsoleInteractorUtil.clear();
@@ -16,7 +19,7 @@ public class SetupService {
     System.out.print(AnsiColorsUtil.WHITE.getCode());
   }
   
-  public static String getCarProfilePath() {
+  public String getCarProfilePath() {
     return carProfilePath;
   }
   
@@ -24,7 +27,11 @@ public class SetupService {
     return loadingScreenAnimation;
   }
   
-  public static JsonDataLoaderUtil getCarProfileJsonLoader() {
+  public static JsonCarProfilesLoader getCarProfileJsonLoader() {
     return carProfileJsonLoader;
+  }
+  
+  public static Gson getGson() {
+    return gson;
   }
 }

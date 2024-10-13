@@ -10,8 +10,8 @@ public class LoadingScreenAnimation implements Runnable {
       try {
         Thread.sleep(500);
       } catch (InterruptedException e) {
+        //TODO: Handle error here
         Thread.currentThread().interrupt();
-        return;
       }
     }
   }
@@ -21,8 +21,8 @@ public class LoadingScreenAnimation implements Runnable {
   }
   
   private static void cleanAfterLoading() {
-    System.out.print("\r                                \n");
-    System.out.println(AnsiColorsUtil.WHITE.getCode());
+    System.out.print("\r");
+    System.out.print(AnsiColorsUtil.WHITE.getCode());
   }
   
   public static void runForNSeconds(Double durationInSeconds) {
@@ -42,8 +42,7 @@ public class LoadingScreenAnimation implements Runnable {
     this.isTaskComplete = true;
   }
   
-  @Override
-  public void run() {
+  @Override public void run() {
     setColorBeforeLoading();
     
     while (!isTaskComplete) {
