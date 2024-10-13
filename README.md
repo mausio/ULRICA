@@ -1,5 +1,21 @@
 # ULRICA 
--> UniversaL Range and destInation CAlculator
+-> **U**niversa**L** **R**ange and dest**I**nation **CA**lculator
+
+## How to start-up ULRICA
+
+1. Clone this repository
+> git clone https://github.com/mausio/ULRICA
+2. Open your Terminal of choice (used here: `iterm2`)
+3. Navigate to the root directory of the project
+> cd /path/to/ULRICA
+4. Compile this project
+> mvn clean compile 
+5. Run ULRICA
+> mvn exec:java -Dexec.mainClass="org.ulrica.App"
+6. Optional: Create and an executable JAR
+   - > mvn clean package
+   - > java -jar target/ULRICA-1.0-SNAPSHOT.jar
+   - Run the JAR
 
 ## Application Flow
 
