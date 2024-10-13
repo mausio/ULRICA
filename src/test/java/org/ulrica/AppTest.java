@@ -1,4 +1,4 @@
-package org.example;
+package org.ulrica;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

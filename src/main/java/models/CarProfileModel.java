@@ -1,20 +1,20 @@
 package models;
 
-import utils.CleanInput;
+import utils.InputCleanerUtil;
 
 import java.util.Scanner;
 
-public class CarProfile {
+public class CarProfileModel {
   
   private String name;
   private String manufacturer;
   private String model;
   private Integer buildYear;
   private Double batterySize;
-  private ConsumptionProfile consumptionProfile;
+  private ConsumptionProfileModel consumptionProfile;
   private Boolean hasHeatPump;
   
-  public CarProfile() {
+  public CarProfileModel() {
     this.name = "Sir Charge-A-Lot";
     this.manufacturer = "Opel";
     this.model = "Corsa-e";
@@ -23,8 +23,8 @@ public class CarProfile {
     this.hasHeatPump = false;
   }
   
-  public CarProfile(String name, String manufacturer, String model,
-                    Integer buildYear, Double batterySize, Boolean hasHeatPump) {
+  public CarProfileModel(String name, String manufacturer, String model,
+                         Integer buildYear, Double batterySize, Boolean hasHeatPump) {
     this.name = name;
     this.manufacturer = manufacturer;
     this.model = model;
@@ -37,45 +37,45 @@ public class CarProfile {
     System.out.print("How should the car be named? (e.g.\"Sir Charge-A-Lot\")" + ": ");
     String input = scanner.nextLine();
     if (!input.isEmpty()) {
-      this.name = CleanInput.cleanWhitespacesAround(input);
+      this.name = InputCleanerUtil.cleanWhitespacesAround(input);
     }
     
     System.out.print("Which manufacturer is it from? (e.g.\"Opel\"): ");
     input = scanner.nextLine();
     if (!input.isEmpty()) {
-      this.manufacturer = CleanInput.cleanWhitespacesAround(input);
+      this.manufacturer = InputCleanerUtil.cleanWhitespacesAround(input);
     }
     
     System.out.print("Which model is it? (e.g.\"Corsa-e\"): ");
     input = scanner.nextLine();
     if (!input.isEmpty()) {
-      this.model = CleanInput.cleanWhitespacesAround(input);
+      this.model = InputCleanerUtil.cleanWhitespacesAround(input);
     }
     
     System.out.print("When was it build? (e.g.\"2020\"): ");
     input = scanner.nextLine();
     if (!input.isEmpty()) {
-      this.buildYear = CleanInput.cleanIntegerFromCharacters(input);
+      this.buildYear = InputCleanerUtil.cleanIntegerFromCharacters(input);
     }
     
     System.out.print("What is the usable size of the battery? (in kWh): ");
     input = scanner.nextLine();
     if (!input.isEmpty()) {
-      this.batterySize = CleanInput.cleanDoubleFromCharacters(input);
+      this.batterySize = InputCleanerUtil.cleanDoubleFromCharacters(input);
     }
     
     System.out.print("Does your car have a heatpump? (type: y/n): ");
     input = scanner.nextLine();
     if (!input.isEmpty()) {
-      this.hasHeatPump = CleanInput.formatYesOrNoToBoolean(input);
+      this.hasHeatPump = InputCleanerUtil.formatYesOrNoToBoolean(input);
     }
   }
   
-  public void setConsumptionProfile(ConsumptionProfile consumptionProfile) {
+  public void setConsumptionProfile(ConsumptionProfileModel consumptionProfile) {
     this.consumptionProfile = consumptionProfile;
   }
   
-  public void printOutCarProfile(CarProfile carProfile) {
+  public void printOutCarProfile(CarProfileModel carProfile) {
   
   }
   
@@ -87,7 +87,7 @@ public class CarProfile {
     return batterySize;
   }
   
-  public ConsumptionProfile getConsumptionProfile() {
+  public ConsumptionProfileModel getConsumptionProfile() {
     return consumptionProfile;
   }
   

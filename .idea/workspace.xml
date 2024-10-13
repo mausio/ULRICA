@@ -10,19 +10,24 @@
       <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/intellij-javadocs-4.0.1.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/utils/AnsiColors.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/utils/CleanInput.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/utils/SetUp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controller/CarProfileController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controller/InputController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controller/OutputController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controller/WelcomeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utils/JsonUtil.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/utils/StringUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/example/AppTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/CarProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/CarProfile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/ConsumptionProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/ConsumptionProfile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui/CarProfileSetUpDialog.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/CarProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/CarProfileModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/ConsumptionProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/ConsumptionProfileModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/ulrica/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/AnsiColors.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/AnsiColorsUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/CleanInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/InputCleanerUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/SetUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/SetupService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/AppTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/ulrica/AppTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,11 +89,11 @@
   </component>
   <component name="RunManager">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="org.example.App" />
+      <option name="MAIN_CLASS_NAME" value="org.ulrica.App" />
       <module name="ULRICA" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.example.*" />
+          <option name="PATTERN" value="org.ulrica.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -110,7 +115,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1728729163320</updated>
-      <workItem from="1728729164482" duration="20366000" />
+      <workItem from="1728729164482" duration="24308000" />
     </task>
     <servers />
   </component>

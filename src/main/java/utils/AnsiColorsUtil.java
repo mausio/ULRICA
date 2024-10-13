@@ -1,6 +1,6 @@
 package utils;
 
-public enum AnsiColors {
+public enum AnsiColorsUtil {
   RED("\u001B[31m"),
   GREEN("\u001B[32m"),
   YELLOW("\u001B[33m"),
@@ -16,7 +16,7 @@ public enum AnsiColors {
   
   private final String colorCode;
   
-  AnsiColors(String code) {
+  AnsiColorsUtil(String code) {
     this.colorCode = code;
   }
   

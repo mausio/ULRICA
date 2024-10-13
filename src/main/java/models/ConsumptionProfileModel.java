@@ -1,18 +1,18 @@
 package models;
 
-import utils.AnsiColors;
-import utils.CleanInput;
+import utils.AnsiColorsUtil;
+import utils.InputCleanerUtil;
 
 import java.util.*;
 
-public class ConsumptionProfile {
+public class ConsumptionProfileModel {
   private static final int MAX_PARAMETERS = 3;
   
   private List<Map<Double, Double>> parametersList;
   private double a = 0.0;
   private double b = 0.0;
   
-  public ConsumptionProfile() {
+  public ConsumptionProfileModel() {
     this.parametersList = new ArrayList<>();
   }
   
@@ -31,24 +31,24 @@ public class ConsumptionProfile {
     System.out.println("For that, please give at least one data point of the " + "average consumption at a given speed" + " (e.g" + ". " + "18kWh @ 110km/h) ");
     
     while (!done) {
-      System.out.println(AnsiColors.CYAN.getCode() + "\nNr. " + (i + 1) + ": " + AnsiColors.WHITE.getCode());
+      System.out.println(AnsiColorsUtil.CYAN.getCode() + "\nNr. " + (i + 1) + ": " + AnsiColorsUtil.WHITE.getCode());
       
       System.out.print("consumption: (in kWh) ");
       input = scanner.nextLine();
       if (!input.isEmpty()) {
-        consumption = CleanInput.cleanDoubleFromCharacters(input);
+        consumption = InputCleanerUtil.cleanDoubleFromCharacters(input);
       }
       
       System.out.print("speed: (in km/h) ");
       input = scanner.nextLine();
       if (!input.isEmpty()) {
-        speed = CleanInput.cleanDoubleFromCharacters(input);
+        speed = InputCleanerUtil.cleanDoubleFromCharacters(input);
       }
       
       if (speed != 0.0 && consumption != 0.0) {
         
         addParameterTuple(consumption, speed);
-        System.out.println(AnsiColors.YELLOW.getCode() + "added " + consumption + "kWh @ " + speed + "km/h" + AnsiColors.WHITE.getCode());
+        System.out.println(AnsiColorsUtil.YELLOW.getCode() + "added " + consumption + "kWh @ " + speed + "km/h" + AnsiColorsUtil.WHITE.getCode());
         
         if (i >= MAX_PARAMETERS) {
           done = true;
@@ -56,7 +56,7 @@ public class ConsumptionProfile {
           if (i > 0) {
             System.out.println("\nDo you want add another data point? (y/n) ");
             input = scanner.nextLine();
-            done = !CleanInput.formatYesOrNoToBoolean(input);
+            done = !InputCleanerUtil.formatYesOrNoToBoolean(input);
           } else {
             i++;
           }
@@ -71,7 +71,7 @@ public class ConsumptionProfile {
     
     double estimatedConsumption = a * Math.exp(b * testValue);
     if (Double.isNaN(estimatedConsumption) || Double.isInfinite(estimatedConsumption) || estimatedConsumption == 0) {
-      System.out.println(AnsiColors.RED.getCode() + "\n Something went wrong;" + " Please start again with adding data points." + AnsiColors.WHITE.getCode());
+      System.out.println(AnsiColorsUtil.RED.getCode() + "\n Something went wrong;" + " Please start again with adding data points." + AnsiColorsUtil.WHITE.getCode());
       createConsumptionProfile(scanner);
     }
     

@@ -1,6 +1,6 @@
 package utils;
 
-public class CleanInput {
+public class InputCleanerUtil {
   public static String cleanWhitespacesAround(String name) {
     return name != null ? name.trim() : null;
   }
