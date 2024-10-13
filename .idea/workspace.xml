@@ -15,18 +15,17 @@
       <change afterPath="$PROJECT_DIR$/src/main/java/controller/CarProfileController.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/controller/InputController.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/controller/OutputController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/controller/WelcomeController.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/utils/JsonUtil.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/utils/StringUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/WelcomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/WelcomeController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/models/CarProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/CarProfileModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/models/ConsumptionProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/ConsumptionProfileModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/ulrica/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/AnsiColors.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/AnsiColorsUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/ulrica/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/ulrica/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/AnsiColorsUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/AnsiColorsUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/utils/CleanInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/InputCleanerUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/SetUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/SetupService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/example/AppTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/ulrica/AppTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -115,7 +114,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1728729163320</updated>
-      <workItem from="1728729164482" duration="24308000" />
+      <workItem from="1728729164482" duration="26948000" />
     </task>
     <servers />
   </component>

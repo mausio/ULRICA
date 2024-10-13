@@ -7,6 +7,7 @@ public enum AnsiColorsUtil {
   BLUE("\u001B[34m"),
   MAGENTA("\u001B[35m"),
   CYAN("\u001B[36m"),
+  TURQUOISE("\u001B[38;5;48m"),
   BLACK("\u001B[30m"),
   DARK_GRAY("\u001B[38;5;242m"),
   MEDIUM_GRAY("\u001B[38;5;250m"),

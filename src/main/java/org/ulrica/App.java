@@ -1,23 +1,19 @@
 package org.ulrica;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import models.CarProfileModel;
-import models.ConsumptionProfileModel;
+import controller.WelcomeController;
 import service.SetupService;
-
-import java.util.Scanner;
 
 public class App {
   public static void main(String[] args) {
-  
-  
+    new SetupService();
+    
+    new WelcomeController();
+    
 //    Scanner scanner = new Scanner(System.in);
 //    CarProfileModel carProfile = new CarProfileModel();
 //    ConsumptionProfileModel consumptionProfile = new ConsumptionProfileModel();
 //    Gson gson = new GsonBuilder().setPrettyPrinting().create();
 //
-//    SetupService setupService = new SetupService();
 //
 //
 //    consumptionProfile.createConsumptionProfile(scanner);
