@@ -2,6 +2,7 @@ package utils;
 
 public enum AnsiColorsUtil {
   RED("\u001B[31m"),
+  RED_BOLD("\u001B[1;31m"),
   GREEN("\u001B[32m"),
   YELLOW("\u001B[33m"),
   BLUE("\u001B[34m"),
