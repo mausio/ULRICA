@@ -12,6 +12,7 @@
       <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/EXAMPLES_DELETE_LATER/BackgroundTaskExampleUtil.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/controller/InputController.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/controller/OutputController.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/exception/BusinessLogicException.java" afterDir="false" />
@@ -20,13 +21,13 @@
       <change afterPath="$PROJECT_DIR$/src/main/java/exception/DataException.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/exception/GeneralException.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/exception/InavlidInputException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/exception/LoadingException.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/exception/RangeCalculationException.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/exception/RoutePlannerException.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/exception/WeatherDataException.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/resources/carProfiles.json" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/utils/ConsoleInteractorUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/utils/InputOutputUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/utils/JsonUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utils/JsonDataLoaderUtil.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/utils/SleepUtil.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/utils/StringUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -40,6 +41,8 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/service/SetupService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/SetupService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/utils/AnsiColorsUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/AnsiColorsUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/utils/CleanInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/InputCleanerUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/InputOutputUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/JsonUtil.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/utils/LoadingScreenAnimation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/LoadingScreenAnimation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/example/AppTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/ulrica/AppTest.java" afterDir="false" />
     </list>
@@ -129,7 +132,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1728729163320</updated>
-      <workItem from="1728729164482" duration="34272000" />
+      <workItem from="1728729164482" duration="36912000" />
     </task>
     <servers />
   </component>

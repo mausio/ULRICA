@@ -1,11 +1,12 @@
 package org.ulrica;
 
 import controller.CarProfileController;
+import exception.LoadingException;
 import service.SetupService;
 import utils.AnsiColorsUtil;
 
 public class App {
-  public static void main(String[] args) {
+  public static void main(String[] args) throws LoadingException {
     new SetupService();
 //    new WelcomeController();
     

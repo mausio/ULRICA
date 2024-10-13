@@ -42,7 +42,8 @@ public class LoadingScreenAnimation implements Runnable {
     this.isTaskComplete = true;
   }
   
-  @Override public void run() {
+  @Override
+  public void run() {
     setColorBeforeLoading();
     
     while (!isTaskComplete) {
