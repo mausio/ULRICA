@@ -13,8 +13,6 @@ public class App {
     new WelcomeController();
     
     new CarProfileController();
-
-    
     
 //    Scanner scanner = new Scanner(System.in);
 //    CarProfileModel carProfile = new CarProfileModel();
