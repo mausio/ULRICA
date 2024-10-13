@@ -35,29 +35,29 @@
      - if "create new car profile": go through `createNewCarProfile()`
    - if there are no car profiles saved: go through `createNewCarProfile()`
 - New car profile
- - `NewCarProfileInputController` questions about name, manufacturer, model, 
-   buildyear and heatpump 
- - Calls `NewConsumptionProfileInputController` after and goes through 
-   process of regression and adds consumption profile to car profile 
-   afterwards
- - Displays the new profile as Json
+  - `NewCarProfileInputController` questions about name, manufacturer, model, 
+    buildyear and heatpump 
+  - Calls `NewConsumptionProfileInputController` and goes through 
+    process of regression and adds consumption profile to car profile 
+    afterwards
+  - Displays the new profile as Json
 - Display car profile list 
- - lists the cars with their given (nick-)name and allows a selection
- - after selecting the car, the car will be fully loaded into the 
-   `CarProfileModel`
+  - lists the cars with their given (nick-)name and allows a selection
+  - after selecting the car, the car will be fully loaded into the 
+    `CarProfileModel`
 4. **Range Calculator or Route Planner**
 - Ask...
- - if they would like to just calculate the real range of the car with
-   the given battery percentage or
- - Ask if they would like to plan a route with charging stops 
+  - if they would like to just calculate the real range of the car with
+    the given battery percentage or
+  - Ask if they would like to plan a route with charging stops 
 - Ask either way for the current (or expected) weather
- - Temperature 
- - ask about the weather (list with suitable order)
-   - cloudy
-   - clear / sunny
-   - cloudy 
-   - rainy
-   - snowy 
+  - Temperature 
+  - ask about the weather (list with suitable order)
+    - cloudy
+    - clear / sunny
+    - cloudy 
+    - rainy
+    - snowy 
 5. **Range Calculator**
 -
 6. **Route Planner** 
