@@ -7,6 +7,8 @@
     <list default="true" id="9e0d4ed6-d699-4b78-a08d-1408a84f55ba" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/resources/carProfiles.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/resources/carProfiles.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +97,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1728729163320</updated>
-      <workItem from="1728729164482" duration="41644000" />
+      <workItem from="1728729164482" duration="42370000" />
     </task>
     <servers />
   </component>
