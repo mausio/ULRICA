@@ -7,35 +7,35 @@
 1. Clone this repository
 
 - ```bash
-     git clone https://github.com/mausio/ULRICA
+  git clone https://github.com/mausio/ULRICA
      ```
 
 2. Open your terminal of choice (used here: `iterm2`)
 3. Navigate to the root directory of the project
 
 - ```bash
-     cd /path/to/ULRICA
+  cd /path/to/ULRICA
      ```
 
 4. Compile this project
 
 - ```bash
-     mvn clean compile 
+  mvn clean compile 
      ```
 
 5. Run ULRICA
 
 - ```bash
-     mvn exec:java -Dexec.mainClass="org.ulrica.App"
+  mvn exec:java -Dexec.mainClass="org.ulrica.App"
      ```
 
 6. Optional: Create an executable JAR
 
 - ```bash
-     mvn clean package
+  mvn clean package
      ```
 - ```bash
-     java -jar target/ULRICA-1.0-SNAPSHOT.jar
+  java -jar target/ULRICA-1.0-SNAPSHOT.jar
      ```
 - Run the JAR
 
@@ -159,5 +159,30 @@ functions across the application.
 The exception package handles custom exceptions that can be thrown throughout
 the application, allowing for better error management and debugging.
 
+## Notes and Stuff
 
+### Grading
 
+- 2000+ lines of code
+    - Test with:
+        -  ```bash
+            find . -name "*.java" | xargs wc -l
+
+- 20+ Java classes
+- Testing
+    - JUnit
+    - JAssert
+- Code principals
+    - Single Responsibility
+    - KISS
+    - ... (add more later)
+
+### Presentation
+
+- 1-2 Use Cases
+- 30 to 45 minutes of questions
+- UML diagram
+- code examples
+- code principals demonstration
+- questions will be released upfront
+- justification for tech-stack

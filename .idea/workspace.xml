@@ -8,6 +8,15 @@
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/exception/BusinessLogicException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/exception/ChargingException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/exception/ConfigurationException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/exception/DataException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/exception/GeneralException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/exception/InavlidInputException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/exception/RangeCalculationException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/exception/RoutePlannerException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/exception/WeatherDataException.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/resources/carProfiles.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/resources/carProfiles.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -97,7 +106,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1728729163320</updated>
-      <workItem from="1728729164482" duration="42370000" />
+      <workItem from="1728729164482" duration="43204000" />
     </task>
     <servers />
   </component>
