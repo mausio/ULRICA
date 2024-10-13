@@ -1,19 +1,17 @@
 package org.ulrica;
 
 import controller.CarProfileController;
-import controller.WelcomeController;
 import service.SetupService;
-import utils.ConsoleInteractorUtil;
-import utils.LoadingScreenAnimation;
-import utils.SleepUtil;
+import utils.AnsiColorsUtil;
 
 public class App {
   public static void main(String[] args) {
     new SetupService();
-    new WelcomeController();
+//    new WelcomeController();
     
+    System.out.println(AnsiColorsUtil.BLUE.getCode() + "Step 1: Load car profile or create a new one\n" + AnsiColorsUtil.WHITE.getCode());
     new CarProfileController();
-    
+
 //    Scanner scanner = new Scanner(System.in);
 //    CarProfileModel carProfile = new CarProfileModel();
 //    ConsumptionProfileModel consumptionProfile = new ConsumptionProfileModel();
