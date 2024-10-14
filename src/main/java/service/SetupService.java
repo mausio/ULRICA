@@ -2,16 +2,37 @@ package service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import models.CarProfileModel;
+import models.ConsumptionProfileModel;
 import utils.AnsiColorsUtil;
 import utils.ConsoleInteractorUtil;
 import utils.JsonCarProfilesLoader;
 import utils.LoadingScreenAnimation;
 
+import java.util.Scanner;
+
 public class SetupService {
   private static final String carProfilePath = "./src/main/java/resources/carProfiles.json";
-  static LoadingScreenAnimation loadingScreenAnimation = new LoadingScreenAnimation();
-  static JsonCarProfilesLoader carProfileJsonLoader = new JsonCarProfilesLoader(carProfilePath);
-  static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+  
+  private static Scanner scanner = new Scanner(System.in);
+  private static CarProfileModel carProfile = new CarProfileModel();
+  private static ConsumptionProfileModel consumptionProfile = new ConsumptionProfileModel();
+  
+  public static void setConsumptionProfile(
+      ConsumptionProfileModel consumptionProfile) {
+    SetupService.consumptionProfile = consumptionProfile;
+  }
+  
+  public static ConsumptionProfileModel getConsumptionProfile() {
+    return consumptionProfile;
+  }
+  
+  private static LoadingScreenAnimation loadingScreenAnimation = new LoadingScreenAnimation();
+  private static JsonCarProfilesLoader carProfileJsonLoader = new JsonCarProfilesLoader(
+      carProfilePath);
+  private static Gson gson = new GsonBuilder()
+      .setPrettyPrinting()
+      .create();
   
   public SetupService() {
     ConsoleInteractorUtil.clear();
@@ -19,8 +40,8 @@ public class SetupService {
     System.out.print(AnsiColorsUtil.WHITE.getCode());
   }
   
-  public String getCarProfilePath() {
-    return carProfilePath;
+  public static Scanner getScanner() {
+    return scanner;
   }
   
   public static LoadingScreenAnimation getLoadingScreenAnimation() {
@@ -33,5 +54,17 @@ public class SetupService {
   
   public static Gson getGson() {
     return gson;
+  }
+  
+  public static CarProfileModel getCarProfile() {
+    return carProfile;
+  }
+  
+  public static void setCarProfile(CarProfileModel carProfile) {
+    SetupService.carProfile = carProfile;
+  }
+  
+  public String getCarProfilePath() {
+    return carProfilePath;
   }
 }

@@ -1,7 +1,7 @@
 package utils;
 
 public class LoadingScreenAnimation implements Runnable {
-  private static String[] loadingStates = {"   ", ".  ", ".. ", "..."};
+  private static final String[] loadingStates = {"   ", ".  ", ".. ", "..."};
   private volatile boolean isTaskComplete = false;
   
   private static void loadingLoop() {

@@ -63,8 +63,7 @@
       build year, and heat pump.
     - Calls `NewConsumptionProfileInputController` and goes through
       the process of regression, adding the consumption profile to the car
-      profile
-      afterwards.
+      profile afterward.
     - Displays the new profile as JSON.
 - Display car profile list
     - Lists the cars with their given (nick-)name and allows selection.
