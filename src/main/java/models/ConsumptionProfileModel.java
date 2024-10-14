@@ -3,10 +3,7 @@ package models;
 import controller.carProfile.CarProfileController;
 import utils.AnsiColorsUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ConsumptionProfileModel {
   private static final int MAX_PARAMETERS = 3;
@@ -68,7 +65,7 @@ public class ConsumptionProfileModel {
     }
   }
   
-  public void createConsumptionProfile() {
+  public void createConsumptionProfile(Scanner scanner) {
     Integer i = 0;
     Boolean done = false;
     Double consumption = 0.0;
@@ -77,12 +74,11 @@ public class ConsumptionProfileModel {
     while (!done) {
       CarProfileController.printNrOfParamter(i);
       
-      consumption = CarProfileController.getConsumptionDialog();
-      speed = CarProfileController.getSpeedDialog();
+      consumption = CarProfileController.getConsumptionDialog(scanner);
+      speed = CarProfileController.getSpeedDialog(scanner);
       
       
       if (speed != 0.0 && consumption != 0.0) {
-        
         addParameterTuple(consumption, speed);
         CarProfileController.printParameters(consumption, speed);
         
@@ -90,7 +86,8 @@ public class ConsumptionProfileModel {
           done = true;
         } else {
           if (i > 0) {
-            done = CarProfileController.anotherParameterTupleDialog();
+            done = CarProfileController.additionalParamterDialog(
+                scanner);
           } else {
             i++;
           }

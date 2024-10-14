@@ -1,7 +1,8 @@
 package utils;
 
 public class LoadingScreenAnimation implements Runnable {
-  private static final String[] loadingStates = {"   ", ".  ", ".. ", "..."};
+  private static final String[] loadingStates = {"   ", ".  ", ".. ",
+                                                 "..."};
   private volatile boolean isTaskComplete = false;
   
   private static void loadingLoop() {
@@ -21,7 +22,7 @@ public class LoadingScreenAnimation implements Runnable {
   }
   
   private static void cleanAfterLoading() {
-    System.out.print("\r");
+    System.out.print("\r                    \n");
     System.out.print(AnsiColorsUtil.WHITE.getCode());
   }
   

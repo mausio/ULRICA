@@ -1,10 +1,9 @@
 package org.ulrica;
 
-import controller.WelcomeController;
-import controller.carProfile.CarProfileController;
 import exception.LoadingException;
 import service.SetupService;
 import service.WelcomeService;
+import service.CarProfileService;
 import utils.ConsoleInteractorUtil;
 
 //TODO: I should introduce interfaces to classes
@@ -18,7 +17,7 @@ public class App {
     
     ConsoleInteractorUtil.stepper(
         "Step 1: Choose or create a car profile");
-    new CarProfileController();
+    new CarProfileService();
 
 //    ConsoleInteractorUtil.stepper("Step 2: Stuff");
   }
