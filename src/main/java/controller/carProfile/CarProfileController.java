@@ -44,6 +44,7 @@ public class CarProfileController {
     CarProfileModel[] carProfiles = carProfileJsonLoader.getCarProfiles();
     
     if (carProfiles == null || carProfiles.length <= 1) {
+      //TODO: SystemMessages auslagern
       System.out.println(AnsiColorsUtil.YELLOW.getCode() + "→ No car profiles could be found;\n  Continuing with creating a new car profile." + AnsiColorsUtil.WHITE.getCode());
       SleepUtil.waitForFSeconds(2.0);
       createCarProfileDialog();

@@ -158,7 +158,7 @@ functions across the application.
 The exception package handles custom exceptions that can be thrown throughout
 the application, allowing for better error management and debugging.
 
-## Notes and Stuff
+## Presentation, Grading and Notes
 
 ### Grading
 
