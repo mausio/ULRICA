@@ -1,4 +1,4 @@
-package utils;
+package utils.generalUtils;
 
 public class InputCleanerUtil {
   public static String cleanWhitespacesAround(String name) {

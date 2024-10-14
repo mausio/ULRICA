@@ -1,4 +1,4 @@
-package utils;
+package utils.generalUtils;
 
 public class StringUtil {
   public static String repeat(String str, int times) {

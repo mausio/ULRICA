@@ -1,4 +1,4 @@
-package utils;
+package utils.generalUtils;
 
 public enum AnsiColorsUtil {
   RED("\u001B[31m"),

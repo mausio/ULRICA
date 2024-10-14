@@ -1,4 +1,6 @@
-package utils;
+package utils.generalUtils;
+
+import controller.SystemMessagesController;
 
 public class ConsoleInteractorUtil {
   public static void clear() {
@@ -9,7 +11,7 @@ public class ConsoleInteractorUtil {
   public static void stepper(String message){
     System.out.println();
     ConsoleInteractorUtil.clear();
-    System.out.println(AnsiColorsUtil.BLUE.getCode() + message + AnsiColorsUtil.WHITE.getCode());
+    SystemMessagesController.stepperMessage(message);
     SleepUtil.waitForFSeconds(1.0);
   }
 }

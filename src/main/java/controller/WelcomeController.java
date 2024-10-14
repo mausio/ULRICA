@@ -1,6 +1,6 @@
 package controller;
 
-import utils.AnsiColorsUtil;
+import utils.generalUtils.AnsiColorsUtil;
 
 public class WelcomeController {
   public static void displayWelcomeMessage() {
@@ -35,10 +35,7 @@ public class WelcomeController {
   public static void displayAttentionMessage() {
     //TODO: SystemMessages auslagern
     System.out.println();
-    System.out.println(AnsiColorsUtil.RED_BOLD.getCode() + "\n→ Attention: ");
-    System.out.println(AnsiColorsUtil.RED.getCode() + "  This program's text is completely WHITE,\n" + "  " + "so please consider using dark mode.");
-    System.out.println();
-    System.out.println("  " + "Thank you.");
+    System.out.println(AnsiColorsUtil.RED_BOLD.getCode() + "\n→ Attention:" + "\n  This program's text is completely WHITE,\n" + "  " + "so please consider using dark mode.");
     System.out.println(AnsiColorsUtil.WHITE.getCode());
     System.out.println();
   }

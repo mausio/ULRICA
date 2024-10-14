@@ -1,6 +1,6 @@
-package utils;
+package utils.generalUtils;
 
-public class LoadingScreenAnimation implements Runnable {
+public class LoadingScreenAnimationUtil implements Runnable {
   private static final String[] loadingStates = {"   ", ".  ", ".. ",
                                                  "..."};
   private volatile boolean isTaskComplete = false;

@@ -1,7 +1,7 @@
 package models;
 
-import controller.carProfile.CarProfileController;
-import utils.AnsiColorsUtil;
+import controller.carProfile.ConsumptionProfileController;
+import utils.generalUtils.AnsiColorsUtil;
 
 import java.util.*;
 
@@ -25,6 +25,7 @@ public class ConsumptionProfileModel {
     ConsumptionProfileModel.parametersList = parametersList;
   }
   
+  //TODO: Maybe offset/refactor this into some calculationUtils (file is already very long)
   public void performRegression() {
     Double testValue = 200.0;
     int n = parametersList.size();
@@ -53,6 +54,7 @@ public class ConsumptionProfileModel {
     double b = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
     
     System.out.printf("Model: y = %.4f * e^(%.4f * x)\n", a, b);
+    //TODO: Check if b is null or negative; Then throw an error.
     this.a = a;
     this.b = b;
     
@@ -72,21 +74,23 @@ public class ConsumptionProfileModel {
     Double speed = 0.0;
     
     while (!done) {
-      CarProfileController.printNrOfParamter(i);
+      ConsumptionProfileController.printNrOfParamter(i);
       
-      consumption = CarProfileController.getConsumptionDialog(scanner);
-      speed = CarProfileController.getSpeedDialog(scanner);
+      consumption = ConsumptionProfileController.getConsumptionDialog(
+          scanner);
+      speed = ConsumptionProfileController.getSpeedDialog(scanner);
       
       
       if (speed != 0.0 && consumption != 0.0) {
         addParameterTuple(consumption, speed);
-        CarProfileController.printParameters(consumption, speed);
+        ConsumptionProfileController.printParameters(consumption,
+                                                     speed);
         
         if (i >= MAX_PARAMETERS) {
           done = true;
         } else {
           if (i > 0) {
-            done = CarProfileController.additionalParamterDialog(
+            done = ConsumptionProfileController.additionalParamterDialog(
                 scanner);
           } else {
             i++;
@@ -112,6 +116,7 @@ public class ConsumptionProfileModel {
     }
   }
   
+  //TODO: Maybe offset/refactor this into some calculationUtils (file is already very long)
   public void estimateConsumption(double speed) {
     double estimatedConsumption = a * Math.exp(b * speed);
     System.out.println("\nEstimated consumption of " + estimatedConsumption + "kWh @ " + speed + "km/h");

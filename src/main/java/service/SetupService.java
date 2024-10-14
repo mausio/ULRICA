@@ -4,10 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import models.CarProfileModel;
 import models.ConsumptionProfileModel;
-import utils.AnsiColorsUtil;
-import utils.ConsoleInteractorUtil;
-import utils.JsonCarProfilesLoader;
-import utils.LoadingScreenAnimation;
+import utils.generalUtils.AnsiColorsUtil;
+import utils.generalUtils.ConsoleInteractorUtil;
+import utils.carProfileUtils.CarProfilesJsonLoaderUtil;
+import utils.generalUtils.LoadingScreenAnimationUtil;
 
 import java.util.Scanner;
 
@@ -27,8 +27,8 @@ public class SetupService {
     return consumptionProfile;
   }
   
-  private static LoadingScreenAnimation loadingScreenAnimation = new LoadingScreenAnimation();
-  private static JsonCarProfilesLoader carProfileJsonLoader = new JsonCarProfilesLoader(
+  private static LoadingScreenAnimationUtil loadingScreenAnimation = new LoadingScreenAnimationUtil();
+  private static CarProfilesJsonLoaderUtil carProfileJsonLoader = new CarProfilesJsonLoaderUtil(
       carProfilePath);
   private static Gson gson = new GsonBuilder()
       .setPrettyPrinting()
@@ -44,11 +44,11 @@ public class SetupService {
     return scanner;
   }
   
-  public static LoadingScreenAnimation getLoadingScreenAnimation() {
+  public static LoadingScreenAnimationUtil getLoadingScreenAnimation() {
     return loadingScreenAnimation;
   }
   
-  public static JsonCarProfilesLoader getCarProfileJsonLoader() {
+  public static CarProfilesJsonLoaderUtil getCarProfileJsonLoader() {
     return carProfileJsonLoader;
   }
   

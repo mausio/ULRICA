@@ -1,10 +1,10 @@
 package org.ulrica;
 
 import exception.LoadingException;
+import service.CarProfileService;
 import service.SetupService;
 import service.WelcomeService;
-import service.CarProfileService;
-import utils.ConsoleInteractorUtil;
+import utils.generalUtils.ConsoleInteractorUtil;
 
 //TODO: I should introduce interfaces to classes
 
@@ -12,7 +12,6 @@ public class App {
   public static void main(String[] args) throws LoadingException {
     new SetupService();
     
-    ConsoleInteractorUtil.clear();
     new WelcomeService();
     
     ConsoleInteractorUtil.stepper(

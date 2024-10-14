@@ -1,4 +1,4 @@
-package utils;
+package utils.generalUtils;
 
 public class SleepUtil {
   public static void waitForFSeconds(Double seconds) {

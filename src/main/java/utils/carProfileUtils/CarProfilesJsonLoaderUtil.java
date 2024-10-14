@@ -1,4 +1,4 @@
-package utils;
+package utils.carProfileUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
@@ -11,11 +11,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class JsonCarProfilesLoader implements Runnable{
+public class CarProfilesJsonLoaderUtil implements Runnable{
   private final String filePath;
   private CarProfileModel[] carProfiles;
   
-  public JsonCarProfilesLoader(String filePath) {
+  public CarProfilesJsonLoaderUtil(String filePath) {
     this.filePath = filePath;
   }
   
