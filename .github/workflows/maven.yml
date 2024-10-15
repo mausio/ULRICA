@@ -43,7 +43,7 @@ jobs:
         server_port: ${{ secrets.SMTP_PORT }}
         username: ${{ secrets.SMTP_USERNAME }}
         password: ${{ secrets.SMTP_PASSWORD }}
-        subject: "Java Lines of Code Count"
+        subject: "ULRICA: Lines of Code"
         body: |
           Here is the count of Java lines of code:
           
