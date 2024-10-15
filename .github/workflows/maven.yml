@@ -35,8 +35,6 @@ jobs:
       id: count-loc
       run: cloc --include-lang=Java . > cloc_output.txt
 
-
-
     - name: Save CLOC output to GITHUB_OUTPUT
       run: |
         echo "cloc_output<<EOF" >> $GITHUB_OUTPUT
@@ -68,8 +66,9 @@ jobs:
         password: ${{ secrets.SMTP_PASSWORD }}
         subject: "Java Lines of Code Count"
         body: |
+          Build job of ${{github.repository}} completed success:
           Look at attachement
         from: ${{ secrets.SMTP_USERNAME }}
         to: ${{ secrets.TO_EMAIL }}
         content_type: text/plain
-        attachements: email_body.txt
+        attachements: cloc_output.txt
