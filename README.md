@@ -2,6 +2,8 @@
 
 → ***U***niversa***L*** ***R***ange and dest***I***nation ***CA***lculator
 
+**ALWAYS** use https://gitmoji.dev/
+
 ## How to Start ULRICA
 
 1. Clone this repository
