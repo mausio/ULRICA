@@ -3,6 +3,7 @@
 → ***U***niversa***L*** ***R***ange and dest***I***nation ***CA***lculator
 
 **ALWAYS** use https://gitmoji.dev/
+**AND CONVENTION** https://www.conventionalcommits.org/en/v1.0.0/ 
 
 ## How to Start ULRICA
 
