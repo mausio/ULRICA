@@ -35,11 +35,22 @@ jobs:
       id: count-loc
       run: cloc --include-lang=Java . > cloc_output.txt
 
+
+
     - name: Save CLOC output to GITHUB_OUTPUT
       run: |
         echo "cloc_output<<EOF" >> $GITHUB_OUTPUT
         cat cloc_output.txt >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
+
+    - name: Print CLOC output
+      run: |
+        echo "Printing CLOC output for debugging:"
+        cat cloc_output.txt
+        echo "----"
+        echo "Printing CLOC output from GITHUB_OUTPUT:"
+        echo "${{ steps.count-loc.outputs.cloc_output }}"
+
 
     - name: Send Email with CLOC Output
       uses: dawidd6/action-send-mail@v3
