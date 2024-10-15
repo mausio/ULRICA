@@ -34,14 +34,13 @@ jobs:
     - name: Count Java lines of code
       run: cloc --include-lang=Java . > cloc_output.txt
 
-    - name: Send Email with CLOC Output
+    - name: Create Email Body from CLOC Output
       run: |
-        cloc_output=$(cat cloc_output.txt)
         echo "Here is the count of Java lines of code:" > email_body.txt
         echo "" >> email_body.txt
         cat cloc_output.txt >> email_body.txt
-        
-    - name: Send Email
+
+    - name: Send Email with CLOC Output
       uses: dawidd6/action-send-mail@v3
       with:
         server_address: ${{ secrets.SMTP_SERVER }}
@@ -49,7 +48,10 @@ jobs:
         username: ${{ secrets.SMTP_USERNAME }}
         password: ${{ secrets.SMTP_PASSWORD }}
         subject: "Java Lines of Code Count"
-        body: $(cat email_body.txt)
+        body: |
+          Here is the count of Java lines of code:
+          
+          ${{ steps.create-email.outputs.body }}
         from: ${{ secrets.SMTP_USERNAME }}
         to: ${{ secrets.TO_EMAIL }}
         content_type: text/plain
