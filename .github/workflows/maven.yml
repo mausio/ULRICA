@@ -49,9 +49,3 @@ jobs:
         from: ${{ secrets.SMTP_USERNAME }}
         to: ${{ secrets.TO_EMAIL }}
         content_type: text/plain
-
-          
-          ${{ env.cloc_output }}
-        from: ${{ secrets.SMTP_USERNAME }}
-        to: ${{ secrets.TO_EMAIL }}
-
