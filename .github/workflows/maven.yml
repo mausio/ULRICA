@@ -48,11 +48,11 @@ jobs:
         server_port: ${{ secrets.SMTP_PORT }}
         username: ${{ secrets.SMTP_USERNAME }}
         password: ${{ secrets.SMTP_PASSWORD }}
-        subject: "Java Lines of Code Count"
+        subject: "${{ github.repository }}: Java Lines of Code Count"
         html_body: |
-          <p>Build job of <strong>${{ github.repository }}</strong> completed successfully.</p>
+          <p>Build job nr ${{ github.run_number }} of <strong>${{ github.repository }}</strong> completed; Status: ${{ job.status }}</p>
+          <p>The job ${{ github.job }} has been triggered by ${{ github.actor }} from a ${{ github.event_name}}</p>
           <p>The CLOC report is attached.</p>
-          <p>Thank you!</p>
           <br/> 
         from: ${{ secrets.SMTP_USERNAME }}
         to: ${{ secrets.TO_EMAIL }}
