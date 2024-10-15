@@ -33,7 +33,10 @@ jobs:
 
     - name: Count Java lines of code
       id: count-loc
-      run: cloc --include-lang=Java . | tee cloc_output.txt
+      run: |
+        cloc --include-lang=Java . > tee cloc_output.txt
+        echo "::set-output name=cloc_output::$(cat cloc_output.txt)"
+        
 
     # Send email using new Gmail account
     - name: Send Email
