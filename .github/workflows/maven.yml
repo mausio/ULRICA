@@ -35,29 +35,18 @@ jobs:
       id: count-loc
       run: cloc --include-lang=Java . > cloc_output.txt
 
-    - name: Save CLOC output to GITHUB_OUTPUT
-      run: |
-        echo "cloc_output<<EOF" >> $GITHUB_OUTPUT
-        cat cloc_output.txt >> $GITHUB_OUTPUT
-        echo "EOF" >> $GITHUB_OUTPUT
-
     - name: Print CLOC output
       run: |
         echo "Printing CLOC output for debugging:"
         cat cloc_output.txt
-        echo "----"
-        echo "Printing CLOC output from GITHUB_OUTPUT:"
-        echo "${{ steps.count-loc.outputs.cloc_output }}"
 
-    - name: Create Email Body
-      run: |
-        echo "Here is the count of Java lines of code:" > email_body.txt
-        echo "" >> email_body.txt
-        cat cloc_output.txt >> email_body.tx
-        email_body=$(cat email_body.txt)
+    - name: Upload CLOC Output as Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: CLOC-output
+        path: cloc_output.txt
 
-
-    - name: Send Email with CLOC Output
+    - name: Send Email with CLOC Output as Attachment
       uses: dawidd6/action-send-mail@v3
       with:
         server_address: ${{ secrets.SMTP_SERVER }}
@@ -66,9 +55,9 @@ jobs:
         password: ${{ secrets.SMTP_PASSWORD }}
         subject: "Java Lines of Code Count"
         body: |
-          Build job of ${{github.repository}} completed success:
-          Look at attachement
+          Build job of ${{ github.repository }} completed successfully.
+          The CLOC report is attached.
         from: ${{ secrets.SMTP_USERNAME }}
         to: ${{ secrets.TO_EMAIL }}
         content_type: text/plain
-        attachements: cloc_output.txt
+        attachments: cloc_output.txt
