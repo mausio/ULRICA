@@ -73,3 +73,4 @@ jobs:
         from: ${{ secrets.SMTP_USERNAME }}
         to: ${{ secrets.TO_EMAIL }}
         content_type: text/plain
+        attachements: cloc_output.txt
