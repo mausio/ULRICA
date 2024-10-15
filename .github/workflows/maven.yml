@@ -32,14 +32,25 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y cloc
 
     - name: Count Java lines of code
+      id: count-loc
       run: cloc --include-lang=Java . > cloc_output.txt
-    
+
+    - name: Read CLOC output
+      id: read-cloc
+      run: echo "::set-output name=cloc_output::$(cat cloc_output.txt)"
+
     - name: Send Email with CLOC Output
-      run: |
-        email_body=$(cat cloc_output.txt)
-        echo "$email_body" | mail -s "Java Lines of Code Count" your-email@example.com
-      env:
-        SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
-        SMTP_PORT: ${{ secrets.SMTP_PORT }}
-        SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
-        SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: ${{ secrets.SMTP_SERVER }}
+        server_port: ${{ secrets.SMTP_PORT }}
+        username: ${{ secrets.SMTP_USERNAME }}
+        password: ${{ secrets.SMTP_PASSWORD }}
+        subject: "Java Lines of Code Count"
+        body: |
+          Here is the count of Java lines of code:
+          
+          ${{ steps.read-cloc.outputs.cloc_output }}
+        from: ${{ secrets.SMTP_USERNAME }}
+        to: ${{ secrets.TO_EMAIL }}
+        content_type: text/plain
