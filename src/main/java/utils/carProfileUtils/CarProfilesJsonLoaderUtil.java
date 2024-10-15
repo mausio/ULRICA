@@ -1,17 +1,17 @@
 package utils.carProfileUtils;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import exception.LoadingException;
 import models.CarProfileModel;
-import service.SetupService;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class CarProfilesJsonLoaderUtil implements Runnable{
+public class CarProfilesJsonLoaderUtil implements Runnable {
   private final String filePath;
   private CarProfileModel[] carProfiles;
   
@@ -23,15 +23,15 @@ public class CarProfilesJsonLoaderUtil implements Runnable{
     return carProfiles;
   }
   
-  private void loadJsonData() throws LoadingException{
+  private void loadJsonData() throws LoadingException {
     File file = new File(filePath);
     
-    if(!file.exists()){
+    if (!file.exists()) {
       throw new LoadingException("Error: JSON file not found at " + filePath);
     }
     
     try (FileReader reader = new FileReader(file)) {
-      Gson gson = SetupService.getGson();
+      Gson gson = new GsonBuilder().setPrettyPrinting().create();
       
       carProfiles = gson.fromJson(reader, CarProfileModel[].class);
     } catch (IOException e) {

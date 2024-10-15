@@ -14,7 +14,6 @@ public class App {
     
     new WelcomeService();
     
-    
     ConsoleInteractorUtil.stepper(
         "Step 1: Choose or create a car profile");
     new CarProfileService();

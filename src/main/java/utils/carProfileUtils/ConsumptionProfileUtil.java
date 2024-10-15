@@ -6,8 +6,7 @@ public class ConsumptionProfileUtil {
   }
   
   public static double estimateConsumptionAtSpeed(double speed,
-                                                  double a,
-                                                  double b) {
+                                                  double a, double b) {
     return a * Math.exp(b * speed);
     
   }

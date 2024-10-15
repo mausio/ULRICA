@@ -5,7 +5,7 @@ public class InputCleanerUtil {
     return name != null ? name.trim() : null;
   }
   
-  public static Float cleanFloatFromCharacters(String input) {
+  public  Float cleanFloatFromCharacters(String input) {
     if (input != null) {
       String cleaned = input.replaceAll("[^\\d.]", "");
       return cleaned.isEmpty() ? null : Float.parseFloat(cleaned);

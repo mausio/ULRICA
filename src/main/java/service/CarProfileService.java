@@ -1,8 +1,10 @@
 package service;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import controller.ConsumptionProfileController;
 import controller.GsonController;
+import controller.LoadingScreenAnimationController;
 import controller.SystemMessagesController;
 import controller.carProfile.CarProfileController;
 import controller.carProfile.CreateCarProfileController;
@@ -12,30 +14,29 @@ import models.ConsumptionProfileModel;
 import utils.carProfileUtils.CarProfileThreadsUtil;
 import utils.carProfileUtils.CarProfilesJsonLoaderUtil;
 import utils.generalUtils.GsonUtil;
-import utils.generalUtils.LoadingScreenAnimationUtil;
 
 import java.util.Scanner;
 
 public class CarProfileService {
-  private static Scanner scanner;
-  private static CarProfileModel carProfile;
-  private static ConsumptionProfileModel consumptionProfile;
-  private static Gson gson;
-  private LoadingScreenAnimationUtil loadingScreenAnimation;
-  private Thread loadingAnimationThread;
-  private Thread loadingJsonThread;
-  private CarProfilesJsonLoaderUtil carProfileJsonLoader;
-  private CreateCarProfileController createCarProfile;
+  private  Scanner scanner;
+  private  CarProfileModel carProfile;
+  private  ConsumptionProfileModel consumptionProfile;
+  private  Gson gson;
+  private  LoadingScreenAnimationController loadingScreenAnimation;
+  private  Thread loadingAnimationThread;
+  private  Thread loadingJsonThread;
+  private  CarProfilesJsonLoaderUtil carProfileJsonLoader;
   
   public CarProfileService() throws LoadingException {
-    carProfileJsonLoader = SetupService.getCarProfileJsonLoader();
-    carProfile = SetupService.getCarProfile();
-    consumptionProfile = SetupService.getConsumptionProfile();
-    loadingScreenAnimation = SetupService.getLoadingScreenAnimation();
+    carProfileJsonLoader = new CarProfilesJsonLoaderUtil(
+        "./src/main/java/resources/carProfiles.json");
+    carProfile = new CarProfileModel();
+    consumptionProfile = new ConsumptionProfileModel();
+    loadingScreenAnimation = new LoadingScreenAnimationController();
     loadingAnimationThread = new Thread(loadingScreenAnimation);
     loadingJsonThread = new Thread(carProfileJsonLoader);
-    scanner = SetupService.getScanner();
-    gson = SetupService.getGson();
+    scanner = new Scanner(System.in);
+    gson = new GsonBuilder().setPrettyPrinting().create();
     
     //TODO: Der Step1 sollte damit beginnen, dass erst gecheckt wird, ob sich überhaupt cars in der JSON file befinden; Wenn nicht, dann einfach mit Creation fortfahren; Wenn doch, dann fragen, ob man ein car profile auswählen will oder lieber ein neues erzeugt
     
@@ -72,23 +73,21 @@ public class CarProfileService {
     
   }
   
-  private static void showSingleCarProfile() {
+  private void showSingleCarProfile() {
     GsonController.printJsonString(GsonUtil.objectToGsonString(
         carProfile,
         gson));
   }
   
-  private static void createNewCarProfile() {
+  private void createNewCarProfile() {
     CreateCarProfileController.startDialogCreatingCarProfile();
-    CreateCarProfileController.createCarProfileDialog(scanner,
-                                                      carProfile,
-                                                      consumptionProfile);
+    CreateCarProfileController.createCarProfileDialog(carProfile);
     createConsumptionProfileDialog(consumptionProfile, scanner);
     showSingleCarProfile();
     saveCarProfile();
   }
   
-  private static void createConsumptionProfileDialog(
+  private void createConsumptionProfileDialog(
       ConsumptionProfileModel consumptionProfile, Scanner scanner) {
     ConsumptionProfileController.startCreatingConsumptionProfileDialog();
     consumptionProfile.clearParameterList();
@@ -97,7 +96,7 @@ public class CarProfileService {
     carProfile.setConsumptionProfile(consumptionProfile);
   }
   
-  private static void saveCarProfile() {
+  private void saveCarProfile() {
     CreateCarProfileController.saveDialog(scanner);
     
   }

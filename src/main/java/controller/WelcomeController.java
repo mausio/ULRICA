@@ -32,7 +32,7 @@ public class WelcomeController {
     System.out.println(AnsiColorsUtil.WHITE.getCode());
   }
   
-  public static void displayAttentionMessage() {
+  public  void displayAttentionMessage() {
     //TODO: SystemMessages auslagern
     System.out.println();
     System.out.println(AnsiColorsUtil.RED_BOLD.getCode() + "\n→ Attention:" + "\n  This program's text is completely WHITE,\n" + "  " + "so please consider using dark mode.");

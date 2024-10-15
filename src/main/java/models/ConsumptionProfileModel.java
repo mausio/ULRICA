@@ -1,16 +1,16 @@
 package models;
 
-import controller.SystemMessagesController;
 import controller.ConsumptionProfileController;
+import controller.SystemMessagesController;
 import utils.carProfileUtils.ConsumptionProfileUtil;
 import utils.generalUtils.AnsiColorsUtil;
 
 import java.util.*;
 
 public class ConsumptionProfileModel {
-  private static final int MAX_PARAMETERS = 3;
+  private final int MAX_PARAMETERS = 3;
   
-  private static List<Map<Double, Double>> parametersList = null;
+  private List<Map<Double, Double>> parametersList = null;
   private String model = "";
   private double a = 0.0;
   private double b = 0.0;
@@ -19,13 +19,13 @@ public class ConsumptionProfileModel {
     parametersList = new ArrayList<>();
   }
   
-  public static List<Map<Double, Double>> getParametersList() {
+  public List<Map<Double, Double>> getParametersList() {
     return parametersList;
   }
   
-  public static void setParametersList(
+  public void setParametersList(
       List<Map<Double, Double>> parametersList) {
-    ConsumptionProfileModel.parametersList = parametersList;
+    this.parametersList = parametersList;
   }
   
   //TODO: Maybe offset/refactor this into some calculationUtils (file is already very long)

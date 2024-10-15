@@ -1,16 +1,15 @@
 package controller.carProfile;
 
 import models.CarProfileModel;
-import models.ConsumptionProfileModel;
 import utils.generalUtils.AnsiColorsUtil;
 import utils.generalUtils.InputCleanerUtil;
 
 import java.util.Scanner;
 
 public class CreateCarProfileController {
-  public static void createCarProfileDialog(Scanner scanner,
-                                            CarProfileModel carProfile,
-                                            ConsumptionProfileModel consumptionProfile) {
+  public static void createCarProfileDialog(
+      CarProfileModel carProfile) {
+    Scanner scanner = new Scanner(System.in);
     // SleepUtil.waitForFSeconds(1.0);
     
     System.out.println(AnsiColorsUtil.RESET.getCode());

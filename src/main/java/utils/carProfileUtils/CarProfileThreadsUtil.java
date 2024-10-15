@@ -1,7 +1,7 @@
 package utils.carProfileUtils;
 
 import exception.LoadingException;
-import utils.generalUtils.LoadingScreenAnimationUtil;
+import controller.LoadingScreenAnimationController;
 
 public class CarProfileThreadsUtil {
   
@@ -13,7 +13,7 @@ public class CarProfileThreadsUtil {
   
   public static void stopLoadingThreads(Thread loadingAnimationThread,
                                         Thread loadingJsonThread,
-                                        LoadingScreenAnimationUtil loadingScreenAnimation)
+                                        LoadingScreenAnimationController loadingScreenAnimation)
       throws LoadingException {
     try {
       loadingJsonThread.join();

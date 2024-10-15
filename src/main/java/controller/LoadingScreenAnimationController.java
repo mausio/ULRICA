@@ -1,6 +1,8 @@
-package utils.generalUtils;
+package controller;
 
-public class LoadingScreenAnimationUtil implements Runnable {
+import utils.generalUtils.AnsiColorsUtil;
+
+public class LoadingScreenAnimationController implements Runnable {
   private static final String[] loadingStates = {"   ", ".  ", ".. ",
                                                  "..."};
   private volatile boolean isTaskComplete = false;

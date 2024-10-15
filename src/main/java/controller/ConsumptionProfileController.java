@@ -48,8 +48,7 @@ public class ConsumptionProfileController {
     System.out.println(AnsiColorsUtil.CYAN.getCode() + "\nNr. " + (i + 1) + ": " + AnsiColorsUtil.WHITE.getCode());
   }
   
-  public static void printParameters(double consumption,
-                                     double speed) {
+  public static void printParameters(double consumption, double speed) {
     System.out.println(AnsiColorsUtil.MAGENTA.getCode() + "added " + consumption + "kWh @ " + speed + "km/h" + AnsiColorsUtil.WHITE.getCode());
   }
   

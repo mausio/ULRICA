@@ -9,6 +9,7 @@ public class CarProfileModel {
   private Double batterySize;
   private ConsumptionProfileModel consumptionProfile;
   private Boolean hasHeatPump;
+  private Integer additionalWeight;
   
   
   public CarProfileModel() {

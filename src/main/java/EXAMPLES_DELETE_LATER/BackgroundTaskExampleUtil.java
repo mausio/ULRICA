@@ -1,12 +1,12 @@
 package EXAMPLES_DELETE_LATER;
 
-import utils.generalUtils.LoadingScreenAnimationUtil;
+import controller.LoadingScreenAnimationController;
 
 public class BackgroundTaskExampleUtil implements Runnable {
-  private final LoadingScreenAnimationUtil loadingScreenAnimation;
+  private final LoadingScreenAnimationController loadingScreenAnimation;
   
   public BackgroundTaskExampleUtil(
-      LoadingScreenAnimationUtil loadingScreenAnimation) {
+      LoadingScreenAnimationController loadingScreenAnimation) {
     this.loadingScreenAnimation = loadingScreenAnimation;
   }
   

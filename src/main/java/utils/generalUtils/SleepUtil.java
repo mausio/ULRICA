@@ -1,7 +1,7 @@
 package utils.generalUtils;
 
 public class SleepUtil {
-  public static void waitForFSeconds(Double seconds) {
+  public  void waitForFSeconds(Double seconds) {
     try {
       Thread.sleep((long) (seconds * 1000));
     } catch (InterruptedException e) {
