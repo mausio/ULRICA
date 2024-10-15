@@ -57,7 +57,6 @@ jobs:
         echo "" >> email_body.txt
         cat cloc_output.txt >> email_body.tx
         email_body=$(cat email_body.txt)
-        echo "email_body=$email_body" >> $GiTHUB_ENV
 
 
     - name: Send Email with CLOC Output
@@ -71,7 +70,6 @@ jobs:
         body: |
           $(cat email_body.txt)
           ${{ steps.count-loc.outputs.cloc_output }}
-          ${{ env.email_body}}
         from: ${{ secrets.SMTP_USERNAME }}
         to: ${{ secrets.TO_EMAIL }}
         content_type: text/plain
