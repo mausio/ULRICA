@@ -51,7 +51,7 @@ jobs:
         subject: "Java Lines of Code Count"
         body: |
           Build job of ${{ github.repository }} completed successfully.
-          The CLOC report is attached.
+          The CLOC report is attached. \n \n
         from: ${{ secrets.SMTP_USERNAME }}
         to: ${{ secrets.TO_EMAIL }}
         content_type: text/plain
