@@ -1,6 +1,8 @@
 package models;
 
-import controller.carProfile.ConsumptionProfileController;
+import controller.SystemMessagesController;
+import controller.ConsumptionProfileController;
+import utils.carProfileUtils.ConsumptionProfileUtil;
 import utils.generalUtils.AnsiColorsUtil;
 
 import java.util.*;
@@ -9,6 +11,7 @@ public class ConsumptionProfileModel {
   private static final int MAX_PARAMETERS = 3;
   
   private static List<Map<Double, Double>> parametersList = null;
+  private String model = "";
   private double a = 0.0;
   private double b = 0.0;
   
@@ -31,7 +34,8 @@ public class ConsumptionProfileModel {
     int n = parametersList.size();
     
     if (n == 0) {
-      System.out.println("No data points available for regression.");
+      SystemMessagesController.imperativeMessage(
+          "No data points available for regression.");
       //TODO: Throw/Handle error here
       return;
     }
@@ -53,7 +57,11 @@ public class ConsumptionProfileModel {
     double a = Math.exp((sumY * sumX2 - sumX * sumXY) / (n * sumX2 - sumX * sumX));
     double b = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
     
-    System.out.printf("Model: y = %.4f * e^(%.4f * x)\n", a, b);
+    ConsumptionProfileController.printModel(
+        "Model: y = %.4f * e^(%.4f * x)\n",
+        a,
+        b);
+    this.model = ConsumptionProfileUtil.formatModel(a, b);
     //TODO: Check if b is null or negative; Then throw an error.
     this.a = a;
     this.b = b;
@@ -114,12 +122,6 @@ public class ConsumptionProfileModel {
           "Maximum number of parameters reached. Cannot add more.");
       //TODO: Throw/Handle error here
     }
-  }
-  
-  //TODO: Maybe offset/refactor this into some calculationUtils (file is already very long)
-  public void estimateConsumption(double speed) {
-    double estimatedConsumption = a * Math.exp(b * speed);
-    System.out.println("\nEstimated consumption of " + estimatedConsumption + "kWh @ " + speed + "km/h");
   }
   
   public void clearParameterList() {

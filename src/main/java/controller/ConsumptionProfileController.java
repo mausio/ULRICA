@@ -1,4 +1,4 @@
-package controller.carProfile;
+package controller;
 
 import utils.generalUtils.AnsiColorsUtil;
 import utils.generalUtils.InputCleanerUtil;
@@ -6,6 +6,17 @@ import utils.generalUtils.InputCleanerUtil;
 import java.util.Scanner;
 
 public class ConsumptionProfileController {
+  
+  public static void printEstimatedConsumptionAtSpeed(
+      double estimatedConsumption, double speed) {
+    System.out.println("\nEstimated consumption of " + estimatedConsumption + "kWh @ " + speed + "km/h");
+  }
+  
+  public static void printModel(String s, double a, double b) {
+    System.out.println(AnsiColorsUtil.MAGENTA.getCode());
+    System.out.printf(s, a, b);
+    System.out.print(AnsiColorsUtil.WHITE.getCode());
+  }
   
   public static void startCreatingConsumptionProfileDialog() {
     System.out.println(AnsiColorsUtil.WHITE.getCode());

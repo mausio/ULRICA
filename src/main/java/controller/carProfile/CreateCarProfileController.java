@@ -4,7 +4,6 @@ import models.CarProfileModel;
 import models.ConsumptionProfileModel;
 import utils.generalUtils.AnsiColorsUtil;
 import utils.generalUtils.InputCleanerUtil;
-import utils.generalUtils.SleepUtil;
 
 import java.util.Scanner;
 
@@ -12,7 +11,7 @@ public class CreateCarProfileController {
   public static void createCarProfileDialog(Scanner scanner,
                                             CarProfileModel carProfile,
                                             ConsumptionProfileModel consumptionProfile) {
-    SleepUtil.waitForFSeconds(2.0);
+    // SleepUtil.waitForFSeconds(1.0);
     
     System.out.println(AnsiColorsUtil.RESET.getCode());
     
@@ -74,5 +73,16 @@ public class CreateCarProfileController {
     System.out.println("Let's create a new car profile.");
     System.out.println(
         "Please start by entering some details about your car and then progress with the consumption profile of it.");
+  }
+  
+  public static boolean saveDialog(Scanner scanner) {
+    System.out.println(
+        "Do you want to save this car profile or not? (y/n) ");
+    String input = scanner.nextLine();
+    if (!input.isEmpty()) {
+      return InputCleanerUtil.formatYesOrNoToBoolean(input);
+      //Todo: Error handling for invalid input (should say sth like "sth went wrong; Please try again!")
+    }
+    return true;
   }
 }

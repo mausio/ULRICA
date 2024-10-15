@@ -41,11 +41,9 @@ public class InputCleanerUtil {
         case "no":
         case "nein":
           return false;
-        default:
-          return null;
       }
     }
-    return null;
+    return false; //always return false in case there is no input at all
   }
   
 }

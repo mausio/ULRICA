@@ -10,6 +10,7 @@ public class CarProfileModel {
   private ConsumptionProfileModel consumptionProfile;
   private Boolean hasHeatPump;
   
+  
   public CarProfileModel() {
     this.name = "Sir Charge-A-Lot";
     this.manufacturer = "Opel";

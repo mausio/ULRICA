@@ -12,6 +12,6 @@ public class ConsoleInteractorUtil {
     System.out.println();
     ConsoleInteractorUtil.clear();
     SystemMessagesController.stepperMessage(message);
-    SleepUtil.waitForFSeconds(1.0);
+    // SleepUtil.waitForFSeconds(1.0);
   }
 }

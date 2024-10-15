@@ -4,9 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import models.CarProfileModel;
 import models.ConsumptionProfileModel;
+import utils.carProfileUtils.CarProfilesJsonLoaderUtil;
 import utils.generalUtils.AnsiColorsUtil;
 import utils.generalUtils.ConsoleInteractorUtil;
-import utils.carProfileUtils.CarProfilesJsonLoaderUtil;
 import utils.generalUtils.LoadingScreenAnimationUtil;
 
 import java.util.Scanner;
@@ -17,27 +17,26 @@ public class SetupService {
   private static Scanner scanner = new Scanner(System.in);
   private static CarProfileModel carProfile = new CarProfileModel();
   private static ConsumptionProfileModel consumptionProfile = new ConsumptionProfileModel();
-  
-  public static void setConsumptionProfile(
-      ConsumptionProfileModel consumptionProfile) {
-    SetupService.consumptionProfile = consumptionProfile;
-  }
-  
-  public static ConsumptionProfileModel getConsumptionProfile() {
-    return consumptionProfile;
-  }
-  
   private static LoadingScreenAnimationUtil loadingScreenAnimation = new LoadingScreenAnimationUtil();
   private static CarProfilesJsonLoaderUtil carProfileJsonLoader = new CarProfilesJsonLoaderUtil(
       carProfilePath);
   private static Gson gson = new GsonBuilder()
       .setPrettyPrinting()
+      .disableHtmlEscaping()
       .create();
-  
   public SetupService() {
     ConsoleInteractorUtil.clear();
     
     System.out.print(AnsiColorsUtil.WHITE.getCode());
+  }
+
+  public static ConsumptionProfileModel getConsumptionProfile() {
+    return consumptionProfile;
+  }
+  
+  public static void setConsumptionProfile(
+      ConsumptionProfileModel consumptionProfile) {
+    SetupService.consumptionProfile = consumptionProfile;
   }
   
   public static Scanner getScanner() {

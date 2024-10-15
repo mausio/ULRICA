@@ -8,26 +8,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9e0d4ed6-d699-4b78-a08d-1408a84f55ba" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/controller/SystemMessagesController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/controller/carProfile/ConsumptionProfileController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/utils/carProfileUtils/CarProfileThreadsUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controller/GsonController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/service/RangeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utils/carProfileUtils/CarProfileJsonSaverUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utils/carProfileUtils/ConsumptionProfileUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utils/generalUtils/GsonUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/EXAMPLES_DELETE_LATER/BackgroundTaskExampleUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/EXAMPLES_DELETE_LATER/BackgroundTaskExampleUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/WelcomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/WelcomeController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/carProfile/CarProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/carProfile/CarProfileController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/carProfile/ConsumptionProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/ConsumptionProfileController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/carProfile/CreateCarProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/carProfile/CreateCarProfileController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/CarProfileModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/CarProfileModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/models/ConsumptionProfileModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/ConsumptionProfileModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/ulrica/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/ulrica/App.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/CarProfileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/CarProfileService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/SetupService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/SetupService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/WelcomeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/WelcomeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/AnsiColorsUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/generalUtils/AnsiColorsUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/ConsoleInteractorUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/generalUtils/ConsoleInteractorUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/InputCleanerUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/generalUtils/InputCleanerUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/JsonCarProfilesLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/carProfileUtils/CarProfilesJsonLoaderUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/LoadingScreenAnimation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/generalUtils/LoadingScreenAnimationUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/SleepUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/generalUtils/SleepUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/StringUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/generalUtils/StringUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/generalUtils/ConsoleInteractorUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/generalUtils/ConsoleInteractorUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/generalUtils/InputCleanerUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/generalUtils/InputCleanerUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/generalUtils/StringUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/generalUtils/StringUtil.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +118,7 @@
       <option name="presentableId" value="Default" />
       <updated>1728729163320</updated>
       <workItem from="1728729164482" duration="48888000" />
-      <workItem from="1728892535502" duration="8426000" />
+      <workItem from="1728892535502" duration="16892000" />
     </task>
     <servers />
   </component>
