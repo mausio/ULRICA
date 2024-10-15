@@ -51,6 +51,12 @@ jobs:
         echo "Printing CLOC output from GITHUB_OUTPUT:"
         echo "${{ steps.count-loc.outputs.cloc_output }}"
 
+    - name: Create Email Body
+      run: |
+        echo "Here is the count of Java lines of code:" > email_body.txt
+        echo "" >> email_body.txt
+        cat cloc_output.txt >> email_body.tx
+
 
     - name: Send Email with CLOC Output
       uses: dawidd6/action-send-mail@v3
@@ -60,9 +66,7 @@ jobs:
         username: ${{ secrets.SMTP_USERNAME }}
         password: ${{ secrets.SMTP_PASSWORD }}
         subject: "Java Lines of Code Count"
-        body: |
-          Here is the count of Java lines of code:
-          
+        body: $(cat email_body.txt)
           ${{ steps.count-loc.outputs.cloc_output }}
         from: ${{ secrets.SMTP_USERNAME }}
         to: ${{ secrets.TO_EMAIL }}
