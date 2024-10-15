@@ -56,6 +56,8 @@ jobs:
         echo "Here is the count of Java lines of code:" > email_body.txt
         echo "" >> email_body.txt
         cat cloc_output.txt >> email_body.tx
+        email_body=$(cat email_body.txt)
+        echo "email_body=$email_body" >> $GiTHUB_ENV
 
 
     - name: Send Email with CLOC Output
@@ -66,8 +68,10 @@ jobs:
         username: ${{ secrets.SMTP_USERNAME }}
         password: ${{ secrets.SMTP_PASSWORD }}
         subject: "Java Lines of Code Count"
-        body: $(cat email_body.txt)
+        body: |
+          $(cat email_body.txt)
           ${{ steps.count-loc.outputs.cloc_output }}
+          ${{ env.email_body}}
         from: ${{ secrets.SMTP_USERNAME }}
         to: ${{ secrets.TO_EMAIL }}
         content_type: text/plain
