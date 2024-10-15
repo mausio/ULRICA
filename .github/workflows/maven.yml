@@ -34,11 +34,10 @@ jobs:
     - name: Count Java lines of code
       id: count-loc
       run: |
-        cloc --include-lang=Java . > tee cloc_output.txt
-        echo "::set-output name=cloc_output::$(cat cloc_output.txt)"
-        
-
-    # Send email using new Gmail account
+        cloc --include-lang=Java . > cloc_output.txt
+        cloc_output=$(cat cloc_output.txt)
+        echo "cloc_output=$cloc_output" >> $GITHUB_ENV
+    
     - name: Send Email
       uses: dawidd6/action-send-mail@v3
       with:
@@ -46,10 +45,11 @@ jobs:
         server_port: ${{ secrets.SMTP_PORT }}
         username: ${{ secrets.SMTP_USERNAME }}
         password: ${{ secrets.SMTP_PASSWORD }}
-        subject: "ULRICA: Lines of Code"
+        subject: Java Lines of Code Count
         body: |
           Here is the count of Java lines of code:
           
-          $(cat cloc_output.txt)
+          ${{ env.cloc_output }}
         from: ${{ secrets.SMTP_USERNAME }}
-        to: ${{ secrets.TO_MAIL }}
+        to: ${{ secrets.TO_EMAIL }}
+
