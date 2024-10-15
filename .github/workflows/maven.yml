@@ -68,9 +68,8 @@ jobs:
         password: ${{ secrets.SMTP_PASSWORD }}
         subject: "Java Lines of Code Count"
         body: |
-          ${{cat email_body.txt}}
-          ${{ steps.count-loc.outputs.cloc_output }}
+          Look at attachement
         from: ${{ secrets.SMTP_USERNAME }}
         to: ${{ secrets.TO_EMAIL }}
         content_type: text/plain
-        attachements: cloc_output.txt
+        attachements: email_body.txt
