@@ -35,11 +35,6 @@ jobs:
       id: count-loc
       run: cloc --include-lang=Java . > cloc_output.txt
 
-    - name: Print CLOC output
-      run: |
-        echo "Printing CLOC output for debugging:"
-        cat cloc_output.txt
-
     - name: Upload CLOC Output as Artifact
       uses: actions/upload-artifact@v3
       with:
