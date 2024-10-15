@@ -32,11 +32,7 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y cloc
 
     - name: Count Java lines of code
-      id: count-loc
-      run: |
-        cloc --include-lang=Java . > cloc_output.txt
-        cloc_output=$(cat cloc_output.txt)
-        echo "cloc_output=$cloc_output" >> $GITHUB_ENV
+      run: cloc --include-lang=Java . > cloc_output.txt
     
     - name: Send Email
       uses: dawidd6/action-send-mail@v3
@@ -48,6 +44,12 @@ jobs:
         subject: Java Lines of Code Count
         body: |
           Here is the count of Java lines of code:
+          
+          $(cat cloc_output.txt)
+        from: ${{ secrets.SMTP_USERNAME }}
+        to: ${{ secrets.TO_EMAIL }}
+        content_type: text/plain
+
           
           ${{ env.cloc_output }}
         from: ${{ secrets.SMTP_USERNAME }}
