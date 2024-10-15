@@ -42,9 +42,36 @@
      ```
 - Run the JAR
 
-## Application Flow
+## Application
 
-### Idea
+### Feature List (to implement)
+
+- Create a CarProfile 
+- Create a LoadProfile (or WeightProfile/ additional load)
+- Create a DegradationProfile
+- Create a ConsumptionProfile with regression for a model 
+- Create a ChargingProfile with a bezier function 
+- Store/Save a CarProfile
+- Delete a CarProfile
+- Input weather manually through a "dynamic" chat
+- Fetch weather from an API
+- Calculate the range that is left with a given CarProfile and battery 
+  percentage 
+- Calculate how much battery it requires to reach a destination (e.g. 130% 
+  (charging needed))
+- Calculate the required charging time spent at current weather to charge 
+  from x to x percent
+- Calculate charging stops between two points at a given percentage and 
+  calculate the charging time and find suitable charging stations
+- Calculate/Estimate degredation and further degredation, as well as impact of 
+  degredation on usage and reach
+- Export calculated route/range planner or info as a text file or send mail (or 
+  so) 
+- Charging cost calculator for given ChargingProfile (one provider expected)
+- Export any profile as txt or send as mail (or so)
+- **Own self-written export/import file-writter in JSON-style**
+
+### Flow
 
 1. **Start the Application**
 
