@@ -15,7 +15,7 @@ public class SetupService {
   private static final String carProfilePath = "./src/main/java/resources/carProfiles.json";
   
   private static Scanner scanner = new Scanner(System.in);
-  private static CarProfileModel carProfile = new CarProfileModel();
+  private static CarProfileModel carProfile = new CarProfileModel(); //Vllt als Singleton? 
   private static ConsumptionProfileModel consumptionProfile = new ConsumptionProfileModel();
   private static LoadingScreenAnimationUtil loadingScreenAnimation = new LoadingScreenAnimationUtil();
   private static CarProfilesJsonLoaderUtil carProfileJsonLoader = new CarProfilesJsonLoaderUtil(
