@@ -68,7 +68,7 @@ jobs:
         password: ${{ secrets.SMTP_PASSWORD }}
         subject: "Java Lines of Code Count"
         body: |
-          $(cat email_body.txt)
+          ${{cat email_body.txt}}
           ${{ steps.count-loc.outputs.cloc_output }}
         from: ${{ secrets.SMTP_USERNAME }}
         to: ${{ secrets.TO_EMAIL }}
