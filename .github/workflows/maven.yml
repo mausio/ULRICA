@@ -49,4 +49,4 @@ jobs:
           
           $(cat cloc_output.txt)
         from: ${{ secrets.SMTP_USERNAME }}
-        to: ${{ secrets.TO_EMAIL }}
+        to: ${{ secrets.TO_MAIL }}
