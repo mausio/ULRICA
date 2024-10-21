@@ -9,22 +9,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9e0d4ed6-d699-4b78-a08d-1408a84f55ba" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/EXAMPLES_DELETE_LATER/BackgroundTaskExampleUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/EXAMPLES_DELETE_LATER/BackgroundTaskExampleUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/ConsumptionProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/ConsumptionProfileController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/WelcomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/WelcomeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/carProfile/CreateCarProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/carProfile/CreateCarProfileController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interfaces/GeneralControllerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interfaces/GeneralControllerInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/ConsumptionProfileModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/ConsumptionProfileModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/ulrica/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/ulrica/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/CarProfileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/CarProfileService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/SetupService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/SetupService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/WelcomeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/WelcomeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/carProfileUtils/CarProfileThreadsUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/carProfileUtils/CarProfileThreadsUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/carProfileUtils/ConsumptionProfileUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/carProfileUtils/ConsumptionProfileUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/generalUtils/InputCleanerUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/generalUtils/InputCleanerUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/generalUtils/LoadingScreenAnimationUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/LoadingScreenAnimationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/generalUtils/SleepUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/generalUtils/SleepUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/generalUtils/StringUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/generalUtils/StringUtil.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,6 +93,13 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-20.0.2-corretto-20.0.2.1-4caba194b151-d89c1816" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -119,7 +110,9 @@
       <updated>1728729163320</updated>
       <workItem from="1728729164482" duration="48888000" />
       <workItem from="1728892535502" duration="23851000" />
-      <workItem from="1729005242954" duration="1235000" />
+      <workItem from="1729005242954" duration="2199000" />
+      <workItem from="1729239831991" duration="532000" />
+      <workItem from="1729494394111" duration="622000" />
     </task>
     <servers />
   </component>
