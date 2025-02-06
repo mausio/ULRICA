@@ -201,7 +201,7 @@ the application, allowing for better error management and debugging.
 - Testing
     - JUnit
     - JAssert
-- Code principals
+- Code principles
     - Single Responsibility
     - KISS
     - ... (add more later)
