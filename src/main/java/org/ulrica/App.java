@@ -1,16 +1,19 @@
 package org.ulrica;
 
 import exception.LoadingException;
+import repository.CarProfileRepository;
+import repository.JsonCarProfileRepository;
 import service.CarProfileService;
 import service.SetupService;
 import service.WelcomeService;
-import utils.generalUtils.ConsoleInteractorUtil;
 
 // TODO: DO MISTAKES THAT YOU CAN LATER IMPROVE!!!
+// TODO: EVERY PATTERN SHOULD BE APPLIED WITHIN THE APPLICATION MULTIPLE TIMES! (DON'T JUST DO IT ONCE AND THEN STOP; DO IT AGAIN AND AGAIN AND AGAIN)
+// TODO: When ticking off coding pricniple and pattern, add an "==>" arrow and name where the principle and pattern is applied (e.g. class, interface, method, etc.)
 
 
 // FEATURES:
-// TODO:  CarProfileRepository for replacing JSON files -> Repository Pattern
+// ✅ CarProfileRepository for replacing JSON files -> Repository Pattern ==> CarProfileRepository interface, JsonCarProfileRepository and InMemoryCarProfileRepository implementations
 // TODO: Alternative range calculation for efficiency modes -> Strategy Pattern
 // TODO: Battery types (LFP, NMC, etc.) -> Factory Pattern
 // TODO: Create fake repository for testing -> Mocking
@@ -21,11 +24,11 @@ import utils.generalUtils.ConsoleInteractorUtil;
 // CODING PRINCIPLES AND PATTERNS and EXAMPLES:
 // TODO: Domain Code
 // TODO: Dependency Rule
-// TODO: Single Responsibility Principle
+// ✅ Single Responsibility Principle ==> Each repository implementation (JsonCarProfileRepository, InMemoryCarProfileRepository) has single responsibility of data access
 // TODO: Open/Closed Principle
 // TODO: Liskov Substitution Principle
 // TODO: Interface Segregation Principle
-// TODO: Dependency Inversion Principle
+// ✅ Dependency Inversion Principle ==> CarProfileService depends on CarProfileRepository interface, not concrete implementations
 // TODO: GRASP: 
 //     Information Expert
 //     Creator
@@ -37,7 +40,7 @@ import utils.generalUtils.ConsoleInteractorUtil;
 //     Low Coupling
 // TODO: Don't Repeat Yourself
 // TODO: Ubiquitous Language
-// TODO: Repository Pattern
+// ✅ Repository Pattern ==> CarProfileRepository provides data access abstraction with JSON and InMemory implementations
 // TODO: Aggregates
 // TODO: Entities
 // TODO: Value Objects
@@ -63,10 +66,11 @@ public class App {
     
     new WelcomeService();
     
-    ConsoleInteractorUtil.stepper(
-        "Step 1: Choose or create a car profile");
-    new CarProfileService();
-
-//    ConsoleInteractorUtil.stepper("Step 2: Stuff");
+    // Initialize the repository and service
+    CarProfileRepository repository = new JsonCarProfileRepository();
+    CarProfileService carProfileService = new CarProfileService(repository);
+    
+    // Start the car profile management menu
+    carProfileService.showMenu();
   }
 }
