@@ -36,7 +36,7 @@ jobs:
       run: cloc --include-lang=Java . > cloc_output.txt
 
     - name: Upload CLOC Output as Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: CLOC-output
         path: cloc_output.txt
