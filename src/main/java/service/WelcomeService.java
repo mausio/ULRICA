@@ -1,13 +1,17 @@
 package service;
 
+import controller.LoadingScreenAnimationController;
 import controller.SystemMessagesController;
 import controller.WelcomeController;
 import interfaces.GeneralControllerInterface;
 import utils.generalUtils.ConsoleInteractorUtil;
-import controller.LoadingScreenAnimationController;
 
 public class WelcomeService implements GeneralControllerInterface {
   public WelcomeService() {
+    showWelcome();
+  }
+  
+  public void showWelcome() {
     ConsoleInteractorUtil.clear();
     
     WelcomeController.displayWelcomeMessage();
@@ -18,6 +22,6 @@ public class WelcomeService implements GeneralControllerInterface {
   }
   
   @Override public void startDialog() {
-  
+    // This method is part of the GeneralControllerInterface but not needed for welcome service
   }
 }

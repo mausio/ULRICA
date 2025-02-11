@@ -1,12 +1,18 @@
 package service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+import model.BatteryProfile;
 import model.CarProfile;
+import model.ChargingProfile;
+import model.ConsumptionProfile;
 import repository.CarProfileRepository;
 import utils.generalUtils.ConsoleInteractorUtil;
 import utils.generalUtils.InputCleanerUtil;
-
-import java.util.List;
-import java.util.Scanner;
+import utils.validation.CarProfileValidator;
+import utils.validation.CarProfileValidator.ValidationResult;
 
 public class CarProfileService {
     private final CarProfileRepository repository;
@@ -99,28 +105,215 @@ public class CarProfileService {
     private void createNewProfile() {
         System.out.println("\nCreate New Car Profile");
         
-        System.out.print("Enter profile name: ");
-        String name = InputCleanerUtil.cleanWhitespacesAround(scanner.nextLine());
+        // Basic information with validation
+        String name = getValidatedInput("Enter profile name: ", "Profile name", this::validateName);
+        String manufacturer = getValidatedInput("Enter manufacturer: ", "Manufacturer", this::validateName);
+        String model = getValidatedInput("Enter model: ", "Model", this::validateName);
+        int buildYear = getValidatedIntInput("Enter build year: ", this::validateBuildYear);
+        boolean hasHeatPump = InputCleanerUtil.formatYesOrNoToBoolean(
+            getValidatedInput("Has heat pump? (yes/no): ", "Heat pump", this::validateYesNo));
 
-        System.out.print("Enter manufacturer: ");
-        String manufacturer = InputCleanerUtil.cleanWhitespacesAround(scanner.nextLine());
+        // Technical specifications with validation
+        double batteryCapacity = getValidatedDoubleInput("Enter battery capacity (kWh): ", this::validateBatteryCapacity);
+        double wltpRange = getValidatedDoubleInput("Enter WLTP range (km): ", this::validateWltpRange);
+        double maxDcChargingPower = getValidatedDoubleInput("Enter maximum DC charging power (kW): ", this::validateChargingPower);
+        double maxAcChargingPower = getValidatedDoubleInput("Enter maximum AC charging power (kW): ", this::validateChargingPower);
 
-        System.out.print("Enter model: ");
-        String model = InputCleanerUtil.cleanWhitespacesAround(scanner.nextLine());
+        // Create the basic profile
+        CarProfile newProfile = new CarProfile(name, manufacturer, model, buildYear, hasHeatPump,
+                batteryCapacity, wltpRange, maxDcChargingPower, maxAcChargingPower);
 
-        System.out.print("Enter build year: ");
-        int buildYear = InputCleanerUtil.cleanIntegerFromCharacters(scanner.nextLine());
+        // Always create consumption profile in Normal mode
+        System.out.println("\nCreating consumption profile (Normal Mode baseline):");
+        newProfile.setConsumptionProfile(createConsumptionProfile());
+        
+        // Display efficiency mode information
+        System.out.println("\nEfficiency Modes (automatically configured):");
+        System.out.println("- ECO Mode: 15% less consumption than Normal");
+        System.out.println("- Normal Mode: Baseline consumption (used for profile creation)");
+        System.out.println("- Sport Mode: 20% more consumption than Normal");
 
-        System.out.print("Has heat pump? (yes/no): ");
-        boolean hasHeatPump = InputCleanerUtil.formatYesOrNoToBoolean(scanner.nextLine());
+        // Optional profiles
+        if (wantToAddProfile("Would you like to add a battery profile? (yes/no): ")) {
+            newProfile.setBatteryProfile(createBatteryProfile(batteryCapacity));
+        }
 
-        CarProfile newProfile = new CarProfile(name, manufacturer, model, buildYear, hasHeatPump);
+        if (wantToAddProfile("Would you like to add a charging profile? (yes/no): ")) {
+            newProfile.setChargingProfile(createChargingProfile(maxDcChargingPower, maxAcChargingPower));
+        }
+
+        // Display calculated ranges for different modes
+        System.out.println("\nCalculated Ranges:");
+        System.out.printf("ECO Mode: %.1f km\n", newProfile.calculateRange(CarProfile.EfficiencyMode.ECO));
+        System.out.printf("Normal Mode: %.1f km\n", newProfile.calculateRange(CarProfile.EfficiencyMode.NORMAL));
+        System.out.printf("Sport Mode: %.1f km\n", newProfile.calculateRange(CarProfile.EfficiencyMode.SPORT));
+
+        // Save and select the profile
         repository.save(newProfile);
-
-        // Automatically select the newly created profile
         selectedProfile = newProfile;
         System.out.println("\nCar profile created and selected successfully!");
         waitForEnter();
+    }
+
+    private ConsumptionProfile createConsumptionProfile() {
+        ConsumptionProfile profile = new ConsumptionProfile();
+        
+        System.out.println("Enter consumption values for Normal mode (baseline):");
+        // Standard speed points
+        int[] speeds = {50, 100, 130};
+        for (int speed : speeds) {
+            double consumption;
+            while (true) {
+                System.out.printf("Enter consumption at %d km/h (kWh/100km): ", speed);
+                try {
+                    consumption = Double.parseDouble(scanner.nextLine().trim());
+                    ValidationResult result = CarProfileValidator.validateConsumption(consumption);
+                    if (result.isValid()) {
+                        break;
+                    }
+                    System.out.println(result.getErrors().get(0));
+                } catch (NumberFormatException e) {
+                    System.out.println("Please enter a valid number.");
+                }
+            }
+            profile.addConsumptionValue(speed, consumption);
+        }
+        
+        return profile;
+    }
+
+    private BatteryProfile createBatteryProfile(double capacity) {
+        System.out.print("Enter battery type (e.g., LFP, NMC): ");
+        String batteryType = scanner.nextLine().trim().toUpperCase();
+        
+        BatteryProfile profile = new BatteryProfile(capacity, batteryType);
+        
+        System.out.print("Enter current degradation rate (%/year, press Enter for 0): ");
+        String input = scanner.nextLine().trim();
+        if (!input.isEmpty()) {
+            try {
+                double rate = Double.parseDouble(input);
+                if (rate >= 0 && rate <= 100) {
+                    profile.setDegradationRate(rate / 100.0); // Convert to decimal
+                }
+            } catch (NumberFormatException ignored) {}
+        }
+        
+        return profile;
+    }
+
+    private ChargingProfile createChargingProfile(double maxDc, double maxAc) {
+        ChargingProfile profile = new ChargingProfile(maxDc, maxAc);
+        
+        System.out.println("\nEnter charging curve points (empty line to finish):");
+        System.out.println("Format: <battery_percentage> <charging_power>");
+        System.out.println("Example: 20 150  (means 150kW at 20% battery)");
+        
+        while (true) {
+            System.out.print("\nEnter point (or empty line to finish): ");
+            String input = scanner.nextLine().trim();
+            if (input.isEmpty()) {
+                break;
+            }
+            
+            try {
+                String[] parts = input.split("\\s+");
+                if (parts.length == 2) {
+                    double percentage = Double.parseDouble(parts[0]);
+                    double power = Double.parseDouble(parts[1]);
+                    
+                    if (percentage >= 0 && percentage <= 100 && power >= 0 && power <= maxDc) {
+                        profile.addChargingPoint(percentage, power);
+                    } else {
+                        System.out.println("Invalid values. Percentage must be 0-100, power must be 0-" + maxDc);
+                    }
+                } else {
+                    System.out.println("Invalid format. Please use: percentage power");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid numbers. Please try again.");
+            }
+        }
+        
+        return profile;
+    }
+
+    private String getValidatedInput(String prompt, String fieldName, java.util.function.Function<String, ValidationResult> validator) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine().trim();
+            ValidationResult result = validator.apply(input);
+            if (result.isValid()) {
+                return input;
+            }
+            System.out.println(result.getErrors().get(0));
+        }
+    }
+
+    private double getValidatedDoubleInput(String prompt, java.util.function.Function<Double, ValidationResult> validator) {
+        while (true) {
+            System.out.print(prompt);
+            try {
+                double value = Double.parseDouble(scanner.nextLine().trim());
+                ValidationResult result = validator.apply(value);
+                if (result.isValid()) {
+                    return value;
+                }
+                System.out.println(result.getErrors().get(0));
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.");
+            }
+        }
+    }
+
+    private int getValidatedIntInput(String prompt, java.util.function.Function<Integer, ValidationResult> validator) {
+        while (true) {
+            System.out.print(prompt);
+            try {
+                int value = Integer.parseInt(scanner.nextLine().trim());
+                ValidationResult result = validator.apply(value);
+                if (result.isValid()) {
+                    return value;
+                }
+                System.out.println(result.getErrors().get(0));
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.");
+            }
+        }
+    }
+
+    private boolean wantToAddProfile(String prompt) {
+        System.out.print("\n" + prompt);
+        return InputCleanerUtil.formatYesOrNoToBoolean(scanner.nextLine().trim());
+    }
+
+    // Validation methods
+    private ValidationResult validateName(String value) {
+        return CarProfileValidator.validateRequiredString(value, "Name");
+    }
+
+    private ValidationResult validateYesNo(String value) {
+        List<String> errors = new ArrayList<>();
+        if (!value.toLowerCase().matches("^(yes|no|y|n)$")) {
+            errors.add("Please enter yes/no or y/n");
+        }
+        return new ValidationResult(errors.isEmpty(), errors);
+    }
+
+    private ValidationResult validateBuildYear(Integer year) {
+        return CarProfileValidator.validateBuildYear(year);
+    }
+
+    private ValidationResult validateBatteryCapacity(Double capacity) {
+        return CarProfileValidator.validateBatteryCapacity(capacity);
+    }
+
+    private ValidationResult validateWltpRange(Double range) {
+        return CarProfileValidator.validateWltpRange(range);
+    }
+
+    private ValidationResult validateChargingPower(Double power) {
+        return CarProfileValidator.validateChargingPower(power);
     }
 
     private void deleteProfile() {

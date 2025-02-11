@@ -7,14 +7,64 @@ public class CarProfile {
     private String model;
     private int buildYear;
     private boolean hasHeatPump;
+    
+    // New attributes
+    private double batteryCapacity; // in kWh
+    private EfficiencyMode efficiencyMode;
+    private double wltpRange; // in km
+    private double maxDcChargingPower; // in kW
+    private double maxAcChargingPower; // in kW
+    private ConsumptionProfile consumptionProfile;
+    private BatteryProfile batteryProfile;
+    private ChargingProfile chargingProfile;
 
-    public CarProfile(String name, String manufacturer, String model, int buildYear, boolean hasHeatPump) {
+    public enum EfficiencyMode {
+        ECO(0.85),      // 15% less consumption than normal
+        NORMAL(1.0),    // baseline consumption
+        SPORT(1.20);    // 20% more consumption than normal
+
+        private final double consumptionFactor;
+
+        EfficiencyMode(double consumptionFactor) {
+            this.consumptionFactor = consumptionFactor;
+        }
+
+        public double getConsumptionFactor() {
+            return consumptionFactor;
+        }
+    }
+
+    // Constructor for basic profile
+    public CarProfile(String name, String manufacturer, String model, int buildYear, boolean hasHeatPump,
+                     double batteryCapacity, double wltpRange,
+                     double maxDcChargingPower, double maxAcChargingPower) {
         this.id = java.util.UUID.randomUUID().toString();
         this.name = name;
         this.manufacturer = manufacturer;
         this.model = model;
         this.buildYear = buildYear;
         this.hasHeatPump = hasHeatPump;
+        this.batteryCapacity = batteryCapacity;
+        this.wltpRange = wltpRange;
+        this.maxDcChargingPower = maxDcChargingPower;
+        this.maxAcChargingPower = maxAcChargingPower;
+    }
+
+    // Calculate consumption for a given speed and efficiency mode
+    public double calculateConsumption(int speed, EfficiencyMode mode) {
+        if (consumptionProfile == null) {
+            throw new IllegalStateException("Consumption profile not set");
+        }
+        Double baseConsumption = consumptionProfile.getConsumptionAtSpeed(speed);
+        if (baseConsumption == null) {
+            throw new IllegalArgumentException("No consumption data for speed: " + speed);
+        }
+        return baseConsumption * mode.getConsumptionFactor();
+    }
+
+    // Calculate range for a given efficiency mode
+    public double calculateRange(EfficiencyMode mode) {
+        return wltpRange / mode.getConsumptionFactor();
     }
 
     // Getters and setters
@@ -35,4 +85,29 @@ public class CarProfile {
     
     public boolean isHasHeatPump() { return hasHeatPump; }
     public void setHasHeatPump(boolean hasHeatPump) { this.hasHeatPump = hasHeatPump; }
+
+    // Getters and setters for new fields
+    public double getBatteryCapacity() { return batteryCapacity; }
+    public void setBatteryCapacity(double batteryCapacity) { this.batteryCapacity = batteryCapacity; }
+
+    public EfficiencyMode getEfficiencyMode() { return efficiencyMode; }
+    public void setEfficiencyMode(EfficiencyMode efficiencyMode) { this.efficiencyMode = efficiencyMode; }
+
+    public double getWltpRange() { return wltpRange; }
+    public void setWltpRange(double wltpRange) { this.wltpRange = wltpRange; }
+
+    public double getMaxDcChargingPower() { return maxDcChargingPower; }
+    public void setMaxDcChargingPower(double maxDcChargingPower) { this.maxDcChargingPower = maxDcChargingPower; }
+
+    public double getMaxAcChargingPower() { return maxAcChargingPower; }
+    public void setMaxAcChargingPower(double maxAcChargingPower) { this.maxAcChargingPower = maxAcChargingPower; }
+
+    public ConsumptionProfile getConsumptionProfile() { return consumptionProfile; }
+    public void setConsumptionProfile(ConsumptionProfile consumptionProfile) { this.consumptionProfile = consumptionProfile; }
+
+    public BatteryProfile getBatteryProfile() { return batteryProfile; }
+    public void setBatteryProfile(BatteryProfile batteryProfile) { this.batteryProfile = batteryProfile; }
+
+    public ChargingProfile getChargingProfile() { return chargingProfile; }
+    public void setChargingProfile(ChargingProfile chargingProfile) { this.chargingProfile = chargingProfile; }
 } 
