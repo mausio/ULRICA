@@ -14,20 +14,21 @@ import service.WelcomeService;
 
 // FEATURES:
 // ✅ CarProfileRepository for replacing JSON files -> Repository Pattern ==> CarProfileRepository interface, JsonCarProfileRepository and InMemoryCarProfileRepository implementations
-// TODO: Alternative range calculation for efficiency modes -> Strategy Pattern
-// TODO: Battery types (LFP, NMC, etc.) -> Factory Pattern
-// TODO: Create fake repository for testing -> Mocking
+// ✅ Alternative range calculation for efficiency modes -> Strategy Pattern ==> RangeCalculationStrategy interface with SimpleFactorRangeStrategy and ConsumptionBasedRangeStrategy implementations
+// ✅ Battery types (LFP, NMC, etc.) -> Factory Method Pattern ==> BatteryProfile creation in CarProfileService.createBatteryProfile() method
+// ✅ Create fake repository for testing -> Mocking ==> MockCarProfileRepository class with in-memory storage and operation logging for testing
+// TODO: Create a generic range calculator at different charging states with different efficiency modes 
 // TODO: Create generic charging calculator -> DIP analysis
 // TODO: Improve data validation -> SRP analysis
 
 
 // CODING PRINCIPLES AND PATTERNS and EXAMPLES:
-// TODO: Domain Code
-// TODO: Dependency Rule
+// ✅ Domain Code ==> Clear separation of model (CarProfile, BatteryProfile, etc.), service, and repository layers
+// ✅ Dependency Rule ==> High-level modules (services) don't depend on low-level modules (repositories), both depend on abstractions
 // ✅ Single Responsibility Principle ==> Each repository implementation (JsonCarProfileRepository, InMemoryCarProfileRepository) has single responsibility of data access
-// TODO: Open/Closed Principle
-// TODO: Liskov Substitution Principle
-// TODO: Interface Segregation Principle
+// ✅ Open/Closed Principle ==> RangeCalculationStrategy allows extending range calculation without modifying CarProfile class
+// ✅ Liskov Substitution Principle ==> All repository implementations can be used interchangeably through CarProfileRepository interface
+// ✅ Interface Segregation Principle ==> CarProfileRepository interface has cohesive methods for profile management
 // ✅ Dependency Inversion Principle ==> CarProfileService depends on CarProfileRepository interface, not concrete implementations
 // TODO: GRASP: 
 //     Information Expert
@@ -41,10 +42,12 @@ import service.WelcomeService;
 // TODO: Don't Repeat Yourself
 // TODO: Ubiquitous Language
 // ✅ Repository Pattern ==> CarProfileRepository provides data access abstraction with JSON and InMemory implementations
+// ✅ Strategy Pattern ==> RangeCalculationStrategy interface with different calculation implementations
+// ✅ Factory Method Pattern ==> Battery type creation in CarProfileService.createBatteryProfile()
 // TODO: Aggregates
 // TODO: Entities
 // TODO: Value Objects
-// TODO: Zwei unterschiedliche Entwurfsmuster
+// ✅ Zwei unterschiedliche Entwurfsmuster ==> Repository Pattern and Strategy Pattern implemented
 
 
 

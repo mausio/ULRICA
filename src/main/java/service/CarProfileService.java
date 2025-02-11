@@ -8,6 +8,7 @@ import model.BatteryProfile;
 import model.CarProfile;
 import model.ChargingProfile;
 import model.ConsumptionProfile;
+import model.strategy.ConsumptionBasedRangeStrategy;
 import repository.CarProfileRepository;
 import utils.generalUtils.ConsoleInteractorUtil;
 import utils.generalUtils.InputCleanerUtil;
@@ -134,15 +135,31 @@ public class CarProfileService {
         // Display calculated ranges and consumptions for different modes
         System.out.println("\nCalculated ranges and consumptions for mixed driving style (city/rural/highway):");
         double normalConsumption = consumptionProfile.getAverageConsumption();
+        
+        // Using WLTP-based simple factor strategy (default)
+        System.out.println("\nWLTP-based range calculation:");
         System.out.printf("ECO Mode: %.1f km (%.1f kWh/100km)\n", 
-            newProfile.calculateRange(CarProfile.EfficiencyMode.NORMAL) * 1.05,
-            normalConsumption * 0.95);
+            newProfile.calculateRange(CarProfile.EfficiencyMode.ECO),
+            normalConsumption * CarProfile.EfficiencyMode.ECO.getConsumptionFactor());
         System.out.printf("Normal Mode: %.1f km (%.1f kWh/100km)\n", 
             newProfile.calculateRange(CarProfile.EfficiencyMode.NORMAL),
             normalConsumption);
         System.out.printf("Sport Mode: %.1f km (%.1f kWh/100km)\n", 
             newProfile.calculateRange(CarProfile.EfficiencyMode.SPORT),
-            normalConsumption * 1.20);
+            normalConsumption * CarProfile.EfficiencyMode.SPORT.getConsumptionFactor());
+            
+        // Switch to consumption-based strategy for more accurate calculation
+        newProfile.setRangeCalculationStrategy(new ConsumptionBasedRangeStrategy());
+        System.out.println("\nConsumption-based range calculation:");
+        System.out.printf("ECO Mode: %.1f km (%.1f kWh/100km)\n", 
+            newProfile.calculateRange(CarProfile.EfficiencyMode.ECO),
+            normalConsumption * CarProfile.EfficiencyMode.ECO.getConsumptionFactor());
+        System.out.printf("Normal Mode: %.1f km (%.1f kWh/100km)\n", 
+            newProfile.calculateRange(CarProfile.EfficiencyMode.NORMAL),
+            normalConsumption);
+        System.out.printf("Sport Mode: %.1f km (%.1f kWh/100km)\n", 
+            newProfile.calculateRange(CarProfile.EfficiencyMode.SPORT),
+            normalConsumption * CarProfile.EfficiencyMode.SPORT.getConsumptionFactor());
 
         if (wantToAddProfile("Would you like to add a charging profile? (yes/no): ")) {
             newProfile.setChargingProfile(createChargingProfile(maxDcChargingPower, maxAcChargingPower));

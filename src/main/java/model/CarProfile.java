@@ -1,5 +1,8 @@
 package model;
 
+import model.strategy.RangeCalculationStrategy;
+import model.strategy.SimpleFactorRangeStrategy;
+
 public class CarProfile {
     private String id;
     private String name;
@@ -17,6 +20,7 @@ public class CarProfile {
     private ConsumptionProfile consumptionProfile;
     private BatteryProfile batteryProfile;
     private ChargingProfile chargingProfile;
+    private RangeCalculationStrategy rangeCalculationStrategy;
 
     public enum EfficiencyMode {
         ECO(0.85),      // 15% less consumption than normal
@@ -48,6 +52,7 @@ public class CarProfile {
         this.wltpRange = wltpRange;
         this.maxDcChargingPower = maxDcChargingPower;
         this.maxAcChargingPower = maxAcChargingPower;
+        this.rangeCalculationStrategy = new SimpleFactorRangeStrategy(); // Default strategy
     }
 
     // Calculate consumption for a given speed and efficiency mode
@@ -62,9 +67,14 @@ public class CarProfile {
         return baseConsumption * mode.getConsumptionFactor();
     }
 
-    // Calculate range for a given efficiency mode
+    // Calculate range for a given efficiency mode using the strategy
     public double calculateRange(EfficiencyMode mode) {
-        return wltpRange / mode.getConsumptionFactor();
+        return rangeCalculationStrategy.calculateRange(this, mode);
+    }
+
+    // Set the range calculation strategy
+    public void setRangeCalculationStrategy(RangeCalculationStrategy strategy) {
+        this.rangeCalculationStrategy = strategy;
     }
 
     // Getters and setters
