@@ -70,6 +70,26 @@ public class ChargingProfile {
         return lower.getChargingPower() + percentage * (upper.getChargingPower() - lower.getChargingPower());
     }
 
+    public void displayChargingCurve() {
+        if (chargingCurve.isEmpty()) {
+            System.out.println("No charging curve data available.");
+            return;
+        }
+
+        // Sort points by battery percentage
+        List<ChargingCurvePoint> sortedPoints = new ArrayList<>(chargingCurve);
+        sortedPoints.sort((a, b) -> Double.compare(a.getBatteryPercentage(), b.getBatteryPercentage()));
+
+        System.out.println("Battery %  | Charging Power (kW)");
+        System.out.println("----------|-----------------");
+        
+        for (ChargingCurvePoint point : sortedPoints) {
+            System.out.printf("%8.1f%% | %8.1f kW\n", 
+                point.getBatteryPercentage(), 
+                point.getChargingPower());
+        }
+    }
+
     // Getters and setters
     public List<ChargingCurvePoint> getChargingCurve() {
         return new ArrayList<>(chargingCurve);

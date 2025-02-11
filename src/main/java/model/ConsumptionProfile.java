@@ -25,4 +25,14 @@ public class ConsumptionProfile {
     public void setSpeedConsumption(Map<Integer, Double> speedConsumption) {
         this.speedConsumption = new HashMap<>(speedConsumption);
     }
+
+    public double getAverageConsumption() {
+        if (speedConsumption.isEmpty()) {
+            return 0.0;
+        }
+        return speedConsumption.values().stream()
+                .mapToDouble(Double::doubleValue)
+                .average()
+                .orElse(0.0);
+    }
 } 

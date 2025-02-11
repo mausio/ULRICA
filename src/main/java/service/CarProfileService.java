@@ -114,39 +114,43 @@ public class CarProfileService {
             getValidatedInput("Has heat pump? (yes/no): ", "Heat pump", this::validateYesNo));
 
         // Technical specifications with validation
-        double batteryCapacity = getValidatedDoubleInput("Enter battery capacity (kWh): ", this::validateBatteryCapacity);
         double wltpRange = getValidatedDoubleInput("Enter WLTP range (km): ", this::validateWltpRange);
+        double realRange = wltpRange * 0.9; // Convert WLTP to real range (90%)
         double maxDcChargingPower = getValidatedDoubleInput("Enter maximum DC charging power (kW): ", this::validateChargingPower);
         double maxAcChargingPower = getValidatedDoubleInput("Enter maximum AC charging power (kW): ", this::validateChargingPower);
 
-        // Create the basic profile
+        // Create the basic profile (with temporary 0 battery capacity - will be set in battery profile)
         CarProfile newProfile = new CarProfile(name, manufacturer, model, buildYear, hasHeatPump,
-                batteryCapacity, wltpRange, maxDcChargingPower, maxAcChargingPower);
+                0.0, realRange, maxDcChargingPower, maxAcChargingPower);
 
-        // Always create consumption profile in Normal mode
-        System.out.println("\nCreating consumption profile (Normal Mode baseline):");
-        newProfile.setConsumptionProfile(createConsumptionProfile());
+        // Create mandatory battery profile
+        newProfile.setBatteryProfile(createBatteryProfile());
+
+        // Create consumption profile
+        System.out.println("\nCreating consumption profile:");
+        ConsumptionProfile consumptionProfile = createConsumptionProfile();
+        newProfile.setConsumptionProfile(consumptionProfile);
         
-        // Display efficiency mode information
-        System.out.println("\nEfficiency Modes (automatically configured):");
-        System.out.println("- ECO Mode: 15% less consumption than Normal");
-        System.out.println("- Normal Mode: Baseline consumption (used for profile creation)");
-        System.out.println("- Sport Mode: 20% more consumption than Normal");
-
-        // Optional profiles
-        if (wantToAddProfile("Would you like to add a battery profile? (yes/no): ")) {
-            newProfile.setBatteryProfile(createBatteryProfile(batteryCapacity));
-        }
+        // Display calculated ranges and consumptions for different modes
+        System.out.println("\nCalculated ranges and consumptions for mixed driving style (city/rural/highway):");
+        double normalConsumption = consumptionProfile.getAverageConsumption();
+        System.out.printf("ECO Mode: %.1f km (%.1f kWh/100km)\n", 
+            newProfile.calculateRange(CarProfile.EfficiencyMode.NORMAL) * 1.05,
+            normalConsumption * 0.95);
+        System.out.printf("Normal Mode: %.1f km (%.1f kWh/100km)\n", 
+            newProfile.calculateRange(CarProfile.EfficiencyMode.NORMAL),
+            normalConsumption);
+        System.out.printf("Sport Mode: %.1f km (%.1f kWh/100km)\n", 
+            newProfile.calculateRange(CarProfile.EfficiencyMode.SPORT),
+            normalConsumption * 1.20);
 
         if (wantToAddProfile("Would you like to add a charging profile? (yes/no): ")) {
             newProfile.setChargingProfile(createChargingProfile(maxDcChargingPower, maxAcChargingPower));
+            if (newProfile.getChargingProfile() != null) {
+                System.out.println("\nCharging Curve Overview:");
+                newProfile.getChargingProfile().displayChargingCurve();
+            }
         }
-
-        // Display calculated ranges for different modes
-        System.out.println("\nCalculated Ranges:");
-        System.out.printf("ECO Mode: %.1f km\n", newProfile.calculateRange(CarProfile.EfficiencyMode.ECO));
-        System.out.printf("Normal Mode: %.1f km\n", newProfile.calculateRange(CarProfile.EfficiencyMode.NORMAL));
-        System.out.printf("Sport Mode: %.1f km\n", newProfile.calculateRange(CarProfile.EfficiencyMode.SPORT));
 
         // Save and select the profile
         repository.save(newProfile);
@@ -182,19 +186,49 @@ public class CarProfileService {
         return profile;
     }
 
-    private BatteryProfile createBatteryProfile(double capacity) {
-        System.out.print("Enter battery type (e.g., LFP, NMC): ");
-        String batteryType = scanner.nextLine().trim().toUpperCase();
+    private BatteryProfile createBatteryProfile() {
+        System.out.println("\nBattery Profile Setup:");
+        System.out.println("Available battery types:");
+        System.out.println("1. LFP (Lithium Iron Phosphate)");
+        System.out.println("2. NMC (Nickel Manganese Cobalt)");
+        System.out.println("3. NCA (Nickel Cobalt Aluminum)");
+        
+        String batteryType;
+        while (true) {
+            System.out.print("Select battery type (1-3): ");
+            String choice = scanner.nextLine().trim();
+            switch (choice) {
+                case "1":
+                    batteryType = "LFP";
+                    break;
+                case "2":
+                    batteryType = "NMC";
+                    break;
+                case "3":
+                    batteryType = "NCA";
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please select 1, 2, or 3.");
+                    continue;
+            }
+            break;
+        }
+
+        double capacity = getValidatedDoubleInput("Enter battery capacity (kWh): ", this::validateBatteryCapacity);
         
         BatteryProfile profile = new BatteryProfile(capacity, batteryType);
         
-        System.out.print("Enter current degradation rate (%/year, press Enter for 0): ");
+        System.out.print("Enter current battery degradation (%, press Enter for 0): ");
         String input = scanner.nextLine().trim();
         if (!input.isEmpty()) {
             try {
-                double rate = Double.parseDouble(input);
-                if (rate >= 0 && rate <= 100) {
-                    profile.setDegradationRate(rate / 100.0); // Convert to decimal
+                double degradationPercent = Double.parseDouble(input);
+                if (degradationPercent >= 0 && degradationPercent <= 100) {
+                    double remainingCapacityPercent = 100.0 - degradationPercent;
+                    profile.setCurrentCapacity(capacity * (remainingCapacityPercent / 100.0));
+                    System.out.printf("Remaining battery capacity: %.1f kWh (%.1f%%)\n", 
+                        profile.getCurrentCapacity(), 
+                        remainingCapacityPercent);
                 }
             } catch (NumberFormatException ignored) {}
         }

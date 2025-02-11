@@ -62,19 +62,16 @@ import service.WelcomeService;
 
 public class App {
   public static void main(String[] args) throws LoadingException {
-    // Initialize setup service
     SetupService setupService = new SetupService();
+    WelcomeService welcomeService = new WelcomeService();
+
     setupService.initialize();
     
-    // Show welcome screen
-    WelcomeService welcomeService = new WelcomeService();
     welcomeService.showWelcome();
     
-    // Initialize the repository and car profile service
     CarProfileRepository repository = new JsonCarProfileRepository();
     CarProfileService carProfileService = new CarProfileService(repository);
     
-    // Start the car profile management menu
     carProfileService.showMenu();
   }
 }
