@@ -1,0 +1,58 @@
+[
+  {
+    "id": "9e9d8e08-87e5-44d2-8493-e5d4acfb0def",
+    "name": "Sir",
+    "manufacturer": "Opel",
+    "model": "Corsa",
+    "buildYear": 2020,
+    "hasHeatPump": false,
+    "batteryCapacity": 0.0,
+    "wltpRange": 297.0,
+    "maxDcChargingPower": 100.0,
+    "maxAcChargingPower": 11.0,
+    "consumptionProfile": {
+      "speedConsumption": {
+        "50": 14.0,
+        "130": 22.0,
+        "100": 17.0
+      }
+    },
+    "batteryProfile": {
+      "initialCapacity": 48.0,
+      "currentCapacity": 44.160000000000004,
+      "degradationRate": 0.0,
+      "cycleCount": 0,
+      "batteryType": "NMC"
+    },
+    "chargingProfile": {
+      "chargingCurve": [
+        {
+          "batteryPercentage": 20.0,
+          "chargingPower": 100.0
+        },
+        {
+          "batteryPercentage": 50.0,
+          "chargingPower": 70.0
+        },
+        {
+          "batteryPercentage": 75.0,
+          "chargingPower": 40.0
+        },
+        {
+          "batteryPercentage": 95.0,
+          "chargingPower": 10.0
+        },
+        {
+          "batteryPercentage": 100.0,
+          "chargingPower": 1.0
+        }
+      ],
+      "maxDcPower": 100.0,
+      "maxAcPower": 11.0
+    },
+    "rangeCalculationStrategy": {
+      "type": "ConsumptionBasedRangeStrategy",
+      "properties": {}
+    }
+  }
+]

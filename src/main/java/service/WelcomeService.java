@@ -18,7 +18,7 @@ public class WelcomeService implements GeneralControllerInterface {
     
     SystemMessagesController.imperativeMessage("\n  This program's text is completely WHITE,\n" + "  " + "so please consider using dark mode.");
     
-    LoadingScreenAnimationController.runForNSeconds(5.0);
+    LoadingScreenAnimationController.runForNSeconds(2.0);
   }
   
   @Override public void startDialog() {

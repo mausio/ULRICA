@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import exception.LoadingException;
 import model.BatteryProfile;
 import model.CarProfile;
 import model.ChargingProfile;
@@ -30,13 +31,13 @@ public class CarProfileService {
             ConsoleInteractorUtil.clear();
             System.out.println("\nCar Profile Management");
             if (selectedProfile != null) {
-                System.out.println("Currently selected profile: " + selectedProfile.getName());
+                System.out.println("\u001B[34mCurrently selected profile: " + selectedProfile.getName() + "\u001B[0m");
             }
             System.out.println("1. View all car profiles");
             System.out.println("2. Create new car profile");
             System.out.println("3. Delete car profile");
             System.out.println("4. Edit car profile");
-            System.out.println("5. Exit");
+            System.out.println("5. Back to main menu");
             System.out.print("\nEnter your choice (1-5): ");
 
             String choice = scanner.nextLine();
@@ -62,22 +63,27 @@ public class CarProfileService {
     }
 
     private void viewAllProfiles() {
-        List<CarProfile> profiles = repository.findAll();
-        if (profiles.isEmpty()) {
-            System.out.println("\nNo car profiles found.");
-            waitForEnter();
-            return;
-        }
+        try {
+            List<CarProfile> profiles = repository.findAll();
+            if (profiles.isEmpty()) {
+                System.out.println("\nNo car profiles found.");
+                waitForEnter();
+                return;
+            }
 
-        System.out.println("\nCar Profiles:");
-        for (CarProfile profile : profiles) {
-            displayProfile(profile);
-        }
-        
-        System.out.print("\nWould you like to select a profile? (yes/no): ");
-        if (InputCleanerUtil.formatYesOrNoToBoolean(scanner.nextLine())) {
-            selectProfile(profiles);
-        } else {
+            System.out.println("\nCar Profiles:");
+            for (CarProfile profile : profiles) {
+                displayProfile(profile);
+            }
+            
+            System.out.print("\nWould you like to select a profile? (yes/no): ");
+            if (InputCleanerUtil.formatYesOrNoToBoolean(scanner.nextLine())) {
+                selectProfile(profiles);
+            } else {
+                waitForEnter();
+            }
+        } catch (LoadingException e) {
+            System.out.println("Error loading profiles: " + e.getMessage());
             waitForEnter();
         }
     }
@@ -170,9 +176,13 @@ public class CarProfileService {
         }
 
         // Save and select the profile
-        repository.save(newProfile);
-        selectedProfile = newProfile;
-        System.out.println("\nCar profile created and selected successfully!");
+        try {
+            repository.save(newProfile);
+            selectedProfile = newProfile;
+            System.out.println("\nCar profile created and selected successfully!");
+        } catch (LoadingException e) {
+            System.out.println("Error saving profile: " + e.getMessage());
+        }
         waitForEnter();
     }
 
@@ -368,66 +378,74 @@ public class CarProfileService {
     }
 
     private void deleteProfile() {
-        List<CarProfile> profiles = repository.findAll();
-        if (profiles.isEmpty()) {
-            System.out.println("\nNo car profiles to delete.");
-            waitForEnter();
-            return;
-        }
-
-        System.out.println("\nSelect profile to delete:");
-        for (int i = 0; i < profiles.size(); i++) {
-            System.out.println((i + 1) + ". " + profiles.get(i).getName());
-        }
-
-        System.out.print("\nEnter number (1-" + profiles.size() + "): ");
         try {
-            int choice = Integer.parseInt(scanner.nextLine()) - 1;
-            if (choice >= 0 && choice < profiles.size()) {
-                String id = profiles.get(choice).getId();
-                // Clear selected profile if it's being deleted
-                if (selectedProfile != null && selectedProfile.getId().equals(id)) {
-                    selectedProfile = null;
-                }
-                repository.delete(id);
-                System.out.println("Profile deleted successfully!");
-            } else {
-                System.out.println("Invalid choice.");
+            List<CarProfile> profiles = repository.findAll();
+            if (profiles.isEmpty()) {
+                System.out.println("\nNo car profiles to delete.");
+                waitForEnter();
+                return;
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a number.");
+
+            System.out.println("\nSelect profile to delete:");
+            for (int i = 0; i < profiles.size(); i++) {
+                System.out.println((i + 1) + ". " + profiles.get(i).getName());
+            }
+
+            System.out.print("\nEnter number (1-" + profiles.size() + "): ");
+            try {
+                int choice = Integer.parseInt(scanner.nextLine()) - 1;
+                if (choice >= 0 && choice < profiles.size()) {
+                    String id = profiles.get(choice).getId();
+                    // Clear selected profile if it's being deleted
+                    if (selectedProfile != null && selectedProfile.getId().equals(id)) {
+                        selectedProfile = null;
+                    }
+                    repository.delete(id);
+                    System.out.println("Profile deleted successfully!");
+                } else {
+                    System.out.println("Invalid choice.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+            }
+        } catch (LoadingException e) {
+            System.out.println("Error managing profiles: " + e.getMessage());
         }
         waitForEnter();
     }
 
     private void editProfile() {
-        List<CarProfile> profiles = repository.findAll();
-        if (profiles.isEmpty()) {
-            System.out.println("\nNo car profiles to edit.");
-            waitForEnter();
-            return;
-        }
-
-        System.out.println("\nSelect profile to edit:");
-        for (int i = 0; i < profiles.size(); i++) {
-            System.out.println((i + 1) + ". " + profiles.get(i).getName());
-        }
-
-        System.out.print("\nEnter number (1-" + profiles.size() + "): ");
         try {
-            int choice = Integer.parseInt(scanner.nextLine()) - 1;
-            if (choice >= 0 && choice < profiles.size()) {
-                CarProfile profileToEdit = profiles.get(choice);
-                editProfileDetails(profileToEdit);
-                // Update selected profile if it was edited
-                if (selectedProfile != null && selectedProfile.getId().equals(profileToEdit.getId())) {
-                    selectedProfile = profileToEdit;
-                }
-            } else {
-                System.out.println("Invalid choice.");
+            List<CarProfile> profiles = repository.findAll();
+            if (profiles.isEmpty()) {
+                System.out.println("\nNo car profiles to edit.");
+                waitForEnter();
+                return;
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a number.");
+
+            System.out.println("\nSelect profile to edit:");
+            for (int i = 0; i < profiles.size(); i++) {
+                System.out.println((i + 1) + ". " + profiles.get(i).getName());
+            }
+
+            System.out.print("\nEnter number (1-" + profiles.size() + "): ");
+            try {
+                int choice = Integer.parseInt(scanner.nextLine()) - 1;
+                if (choice >= 0 && choice < profiles.size()) {
+                    CarProfile profileToEdit = profiles.get(choice);
+                    editProfileDetails(profileToEdit);
+                    // Update selected profile if it was edited
+                    if (selectedProfile != null && selectedProfile.getId().equals(profileToEdit.getId())) {
+                        selectedProfile = profileToEdit;
+                    }
+                } else {
+                    System.out.println("Invalid choice.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+            }
+        } catch (LoadingException e) {
+            System.out.println("Error managing profiles: " + e.getMessage());
         }
         waitForEnter();
     }
@@ -466,8 +484,12 @@ public class CarProfileService {
             profile.setHasHeatPump(InputCleanerUtil.formatYesOrNoToBoolean(hasHeatPump));
         }
 
-        repository.update(profile);
-        System.out.println("Profile updated successfully!");
+        try {
+            repository.update(profile);
+            System.out.println("Profile updated successfully!");
+        } catch (LoadingException e) {
+            System.out.println("Error updating profile: " + e.getMessage());
+        }
     }
 
     private void displayProfile(CarProfile profile) {

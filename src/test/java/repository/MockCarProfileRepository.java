@@ -7,10 +7,7 @@ import java.util.Map;
 
 import model.CarProfile;
 
-/**
- * Mock implementation of CarProfileRepository for testing purposes.
- * Uses in-memory storage to simulate database operations.
- */
+
 public class MockCarProfileRepository implements CarProfileRepository {
     private final Map<String, CarProfile> profiles;
     private List<String> operationLog;
@@ -50,7 +47,7 @@ public class MockCarProfileRepository implements CarProfileRepository {
         profiles.remove(id);
     }
 
-    // Helper methods for testing
+
     public void clearProfiles() {
         profiles.clear();
         operationLog.clear();

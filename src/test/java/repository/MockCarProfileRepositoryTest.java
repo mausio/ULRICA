@@ -21,32 +21,27 @@ public class MockCarProfileRepositoryTest {
 
     @Test
     public void testSaveAndFindById() {
-        // Create a test car profile
         CarProfile profile = new CarProfile(
             "Test Car",
             "Test Manufacturer",
             "Test Model",
             2024,
             true,
-            75.0,  // batteryCapacity
-            450.0, // wltpRange
-            150.0, // maxDcChargingPower
-            11.0   // maxAcChargingPower
+            75.0, 
+            450.0,
+            150.0, 
+            11.0  
         );
         profile.setId("test-id-1");
 
-        // Save the profile
         repository.save(profile);
 
-        // Verify the profile was saved
         assertEquals(1, repository.getProfileCount());
 
-        // Find the profile by ID
         CarProfile foundProfile = repository.findById("test-id-1");
         assertNotNull(foundProfile);
         assertEquals("Test Car", foundProfile.getName());
 
-        // Check operation log
         List<String> log = repository.getOperationLog();
         assertTrue(log.contains("save called with profile id: test-id-1"));
         assertTrue(log.contains("findById called with id: test-id-1"));
@@ -54,7 +49,6 @@ public class MockCarProfileRepositoryTest {
 
     @Test
     public void testFindAll() {
-        // Create and save multiple profiles
         CarProfile profile1 = new CarProfile(
             "Car 1",
             "Manufacturer 1",
@@ -84,14 +78,12 @@ public class MockCarProfileRepositoryTest {
         repository.save(profile1);
         repository.save(profile2);
 
-        // Get all profiles
         List<CarProfile> profiles = repository.findAll();
         assertEquals(2, profiles.size());
     }
 
     @Test
     public void testDelete() {
-        // Create and save a profile
         CarProfile profile = new CarProfile(
             "Test Car",
             "Test Manufacturer",
@@ -106,17 +98,13 @@ public class MockCarProfileRepositoryTest {
         profile.setId("test-id-1");
         repository.save(profile);
 
-        // Delete the profile
         repository.delete("test-id-1");
-
-        // Verify the profile was deleted
         assertNull(repository.findById("test-id-1"));
         assertEquals(0, repository.getProfileCount());
     }
 
     @Test
     public void testUpdate() {
-        // Create and save initial profile
         CarProfile profile = new CarProfile(
             "Original Name",
             "Test Manufacturer",
@@ -172,10 +160,8 @@ public class MockCarProfileRepositoryTest {
         repository.save(profile1);
         repository.save(profile2);
 
-        // Clear all profiles
         repository.clearProfiles();
 
-        // Verify everything is cleared
         assertEquals(0, repository.getProfileCount());
         assertTrue(repository.getOperationLog().isEmpty());
     }

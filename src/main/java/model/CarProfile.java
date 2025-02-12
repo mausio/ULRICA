@@ -23,9 +23,9 @@ public class CarProfile {
     private RangeCalculationStrategy rangeCalculationStrategy;
 
     public enum EfficiencyMode {
-        ECO(0.85),      // 15% less consumption than normal
-        NORMAL(1.0),    // baseline consumption
-        SPORT(1.20);    // 20% more consumption than normal
+        ECO(0.952),    // 1.05 times the range means 1/1.05 ≈ 0.952 consumption
+        NORMAL(1.0),   // baseline consumption
+        SPORT(1.20);   // 20% more consumption than normal
 
         private final double consumptionFactor;
 
