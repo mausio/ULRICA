@@ -18,7 +18,8 @@ import service.WelcomeService;
 // ✅ Battery types (LFP, NMC, etc.) -> Factory Method Pattern ==> BatteryProfile creation in CarProfileService.createBatteryProfile() method
 // ✅ Create fake repository for testing -> Mocking ==> MockCarProfileRepository class with in-memory storage and operation logging for testing
 // ✅ Create a generic range calculator at different charging states with different efficiency modes ==> RangeCalculationService with EnhancedRangeCalculationStrategy
-// TODO: Create generic charging calculator 
+// TODO: Create generic dc charging calculator for fast charging
+// TODO: Create generic ac charging calculator for slow charging
 // TODO: Create a route planner for a route on a ficticious map with ficticious charging stations and let it "charge and drive" between two points on the map (map should be one-dimensional for simplicity)
 // TODO: CarRace: Let two profiles race&charge against each other in a theoretical race; Use the route planner to create a route for the race between two points on the map (map should be one-dimensional for simplicity)
 
@@ -76,6 +77,10 @@ import service.WelcomeService;
 // CHANGES:
 //TODO: introduce interfaces to classes
 // TODO: Improve data validation 
+
+
+// MISCELLANEOUS
+// TODO: edit readme as it no longer conforms to the application workflow etc
 
 public class App {
   public static void main(String[] args) throws LoadingException {

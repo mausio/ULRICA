@@ -13,7 +13,7 @@ public class ChargingCalculatorAction implements ProfileAction {
 
     @Override
     public void execute(CarProfile profile) {
-        System.out.println("\n=== Charging Calculator ===");
+        System.out.println("\n=== DC (Fast) Charging Calculator ===");
         
         if (profile.getChargingProfile() == null) {
             System.out.println("\nError: This car profile does not have a charging profile defined!");
@@ -117,6 +117,6 @@ public class ChargingCalculatorAction implements ProfileAction {
 
     @Override
     public String getDisplayName() {
-        return "Fast Charging Calculator";
+        return "DC (Fast) Charging Calculator";
     }
 } 
