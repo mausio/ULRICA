@@ -51,6 +51,58 @@
       "maxAcPower": 11.0
     },
     "rangeCalculationStrategy": {
+      "type": "SimpleFactorRangeStrategy",
+      "properties": {}
+    }
+  },
+  {
+    "id": "b024b732-89e1-41cd-9048-8ddfa3f262c6",
+    "name": "Lami",
+    "manufacturer": "VW",
+    "model": "e-up",
+    "buildYear": 2018,
+    "hasHeatPump": false,
+    "batteryCapacity": 0.0,
+    "wltpRange": 135.0,
+    "maxDcChargingPower": 30.0,
+    "maxAcChargingPower": 7.0,
+    "consumptionProfile": {
+      "speedConsumption": {
+        "50": 16.0,
+        "130": 26.0,
+        "100": 20.0
+      }
+    },
+    "batteryProfile": {
+      "initialCapacity": 30.0,
+      "currentCapacity": 30.0,
+      "degradationRate": 0.0,
+      "cycleCount": 0,
+      "batteryType": "NMC"
+    },
+    "chargingProfile": {
+      "chargingCurve": [
+        {
+          "batteryPercentage": 10.0,
+          "chargingPower": 30.0
+        },
+        {
+          "batteryPercentage": 50.0,
+          "chargingPower": 20.0
+        },
+        {
+          "batteryPercentage": 75.0,
+          "chargingPower": 10.0
+        },
+        {
+          "batteryPercentage": 95.0,
+          "chargingPower": 2.0
+        }
+      ],
+      "maxDcPower": 30.0,
+      "maxAcPower": 7.0
+    },
+    "rangeCalculationStrategy": {
       "type": "ConsumptionBasedRangeStrategy",
       "properties": {}
     }

@@ -7,52 +7,43 @@ import interfaces.ProfileAction;
 import model.CarProfile;
 import utils.generalUtils.ConsoleInteractorUtil;
 
-
 public class ActionService {
-    private final Scanner scanner;
-    private final CarProfile carProfile;
+    private final CarProfile selectedProfile;
     private final ActionRegistry actionRegistry;
+    private final Scanner scanner;
 
-    public ActionService(CarProfile carProfile) {
+    public ActionService(CarProfile selectedProfile) {
+        this.selectedProfile = selectedProfile;
+        this.actionRegistry = new ActionRegistry();
         this.scanner = new Scanner(System.in);
-        this.carProfile = carProfile;
-        this.actionRegistry = ActionRegistry.getInstance();
     }
 
     public void showMenu() {
-        ConsoleInteractorUtil.clear();
-        displayMenu();
-        handleUserChoice();
-    }
-
-    private void displayMenu() {
-        System.out.println("\n=== Actions for " + carProfile.getName() + " ===");
-        List<ProfileAction> actions = actionRegistry.getAvailableActions();
-        
-        for (int i = 0; i < actions.size(); i++) {
-            System.out.println((i + 1) + ". " + actions.get(i).getDisplayName());
-        }
-        System.out.println("2. Back to Main Menu");
-    }
-
-    private void handleUserChoice() {
-        List<ProfileAction> actions = actionRegistry.getAvailableActions();
-        
         while (true) {
-            System.out.print("\nEnter your choice (1-" + (actions.size() + 1) + "): ");
+            ConsoleInteractorUtil.clear();
+            System.out.println("\n=== Action Menu ===");
+            System.out.println("Selected Profile: " + selectedProfile.getName());
+            System.out.println("\nAvailable Actions:");
+
+            List<ProfileAction> actions = actionRegistry.getActions();
+            for (int i = 0; i < actions.size(); i++) {
+                System.out.printf("%d. %s%n", i + 1, actions.get(i).getDisplayName());
+            }
+            System.out.printf("%d. Back to Main Menu%n", actions.size() + 1);
+
+            System.out.print("\nSelect an action: ");
             String input = scanner.nextLine().trim();
 
-            if (input.equals("2")) {
-                return;
+            if (input.equals("0")) {
+                break;
             }
 
             try {
                 int choice = Integer.parseInt(input);
-                if (choice > 0 && choice <= actions.size()) {
-                    ProfileAction selectedAction = actions.get(choice - 1);
-                    selectedAction.execute(carProfile);
-                    ConsoleInteractorUtil.clear();
-                    displayMenu();
+                if (choice > 0 && choice < actions.size() + 1) {
+                    actions.get(choice - 1).execute(selectedProfile);
+                } else if (choice == actions.size() + 1) {
+                    break;
                 } else {
                     System.out.println("Invalid choice. Please try again.");
                 }

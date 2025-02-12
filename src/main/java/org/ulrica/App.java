@@ -60,7 +60,7 @@ import service.WelcomeService;
 //     Professional
 // TODO: Fakes and Mocks
 
-// IDEAS FOR APPLICATION OF PATTERNS:
+// IDEAS FOR APPLICATION OF PATTERNS, Principles and Testing:
 // TODO: Observer Pattern: CarRace: Let the two cars observe the route and charging stations and react to it; Use the Observer Pattern
 // TODO: OCP: Add fourth efficiency mode "track mode" with a very "bad" efficiency factor
 // TODO: OCP: Add Validation of input data
@@ -70,6 +70,7 @@ import service.WelcomeService;
 // TODO: DIP: Move car profile loading to a separate repository
 // TODO: DIP: Move car profile saving to a separate repository
 // TODO: DIP: Move car profile updating to a separate repository
+// TODO: Charging Calculator is perfect for mocking and testing due to physical limitations of the car; E.g. when -10°C the car will charge faster than when 20°C; perfect for testing the charging profile
 
 
 // CHANGES:
