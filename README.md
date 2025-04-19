@@ -7,12 +7,6 @@ ULRICA is a range estimation and route planning tool designed to calculate the r
 
 ---
 
-## **Plugins/Libraries**
-- GSON
-- JUnit
-
----
-
 ## **Table of Contents**
 1. [Setup Instructions](#setup-instructions)
 2. [Architecture Overview](#architecture-overview)

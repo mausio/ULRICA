@@ -7,7 +7,7 @@ import model.CarProfile;
 import model.charging.ChargingProfile;
 import service.ChargingCalculatorService;
 
-public class ChargingCalculatorAction implements ProfileAction {
+public class DCFastChargingCalculatorAction implements ProfileAction {
     private final Scanner scanner = new Scanner(System.in);
     private final ChargingCalculatorService calculatorService = new ChargingCalculatorService();
 
@@ -45,7 +45,6 @@ public class ChargingCalculatorAction implements ProfileAction {
         System.out.println("Energy to be added: " + String.format("%.1f", energyToAdd) + " kWh");
         System.out.println("Battery Chemistry: " + chargingProfile.getBatteryChemistry());
         
-        // Calculate final battery temperature
         double finalTemp = Math.min(temperature + (chargingTime / 60.0) * 10.0, 35.0);
         System.out.println("Temperature: " + String.format("%.1f°C → %.1f°C", temperature, finalTemp));
         System.out.println("Power Reduction: " + "30% (for battery longevity)");

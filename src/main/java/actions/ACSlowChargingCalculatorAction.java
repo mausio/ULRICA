@@ -5,10 +5,10 @@ import model.CarProfile;
 import model.charging.ACConnectorType;
 import service.ACChargingCalculatorService;
 
-public class ACChargingCalculatorAction implements ProfileAction {
+public class ACSlowChargingCalculatorAction implements ProfileAction {
     private final ACChargingCalculatorService calculatorService;
 
-    public ACChargingCalculatorAction() {
+    public ACSlowChargingCalculatorAction() {
         this.calculatorService = new ACChargingCalculatorService();
     }
 

@@ -3,7 +3,7 @@ package service;
 import java.util.List;
 import java.util.Scanner;
 
-import interfaces.ProfileAction;
+import interfaces.Action;
 import model.CarProfile;
 import utils.generalUtils.ConsoleInteractorUtil;
 
@@ -14,7 +14,7 @@ public class ActionService {
 
     public ActionService(CarProfile selectedProfile) {
         this.selectedProfile = selectedProfile;
-        this.actionRegistry = new ActionRegistry();
+        this.actionRegistry = new ActionRegistry(selectedProfile);
         this.scanner = new Scanner(System.in);
     }
 
@@ -25,23 +25,25 @@ public class ActionService {
             System.out.println("Selected Profile: " + selectedProfile.getName());
             System.out.println("\nAvailable Actions:");
 
-            List<ProfileAction> actions = actionRegistry.getActions();
+            List<Action> actions = actionRegistry.getActions();
+            
             for (int i = 0; i < actions.size(); i++) {
-                System.out.printf("%d. %s%n", i + 1, actions.get(i).getDisplayName());
+                System.out.printf("%d. %s%n", i + 1, actions.get(i).getDescription());
             }
+            
             System.out.printf("%d. Back to Main Menu%n", actions.size() + 1);
-
+            
             System.out.print("\nSelect an action: ");
             String input = scanner.nextLine().trim();
 
-            if (input.equals("0")) {
+            if (input.equals("0")) { //back to main menu
                 break;
             }
 
             try {
                 int choice = Integer.parseInt(input);
                 if (choice > 0 && choice < actions.size() + 1) {
-                    actions.get(choice - 1).execute(selectedProfile);
+                    actions.get(choice - 1).execute();
                 } else if (choice == actions.size() + 1) {
                     break;
                 } else {

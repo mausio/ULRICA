@@ -2,27 +2,39 @@ package service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
-import actions.ACChargingCalculatorAction;
-import actions.ChargingCalculatorAction;
+import actions.ACSlowChargingCalculatorAction;
+import actions.DCFastChargingCalculatorAction;
+import actions.ProfileActionAdapter;
 import actions.RangeCalculationAction;
-import interfaces.ProfileAction;
+import actions.RoutePlannerAction;
+import interfaces.Action;
+import model.CarProfile;
 
 public class ActionRegistry {
-    private final List<ProfileAction> actions;
+    private final List<Action> actions;
+    private final Scanner scanner;
+    private final CarProfile profile;
 
-    public ActionRegistry() {
+    public ActionRegistry(CarProfile profile) {
+        this.scanner = new Scanner(System.in);
         this.actions = new ArrayList<>();
+        this.profile = profile;
         registerDefaultActions();
     }
 
     private void registerDefaultActions() {
-        actions.add(new RangeCalculationAction());
-        actions.add(new ChargingCalculatorAction());
-        actions.add(new ACChargingCalculatorAction());
+        // Add profile-based actions with adapter
+        actions.add(new ProfileActionAdapter(new DCFastChargingCalculatorAction(), profile));
+        actions.add(new ProfileActionAdapter(new ACSlowChargingCalculatorAction(), profile));
+        actions.add(new ProfileActionAdapter(new RangeCalculationAction(), profile));
+        
+        // Add standalone actions
+        actions.add(new RoutePlannerAction(scanner, profile));
     }
 
-    public List<ProfileAction> getActions() {
+    public List<Action> getActions() {
         return new ArrayList<>(actions);
     }
 } 

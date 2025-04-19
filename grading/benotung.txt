@@ -1,0 +1,152 @@
+Titel: Programmentwurf - Protokoll
+
+ULRICA
+Name: Robin Schwenzfeier
+Matrikelnummer: 4868455
+Abgabedatum: TBD
+
+================================================================================
+ALLGEMEINE ANMERKUNGEN
+================================================================================
+- Gesamtpunktzahl: 60P (zum Bestehen mit 4,0 werden 30P benötigt)
+- Aufgabenbeschreibung (blauer Text) + Punktanzahl muss im Dokument enthalten sein
+- Keine Verweise auf andere Kapitel als Leistungsnachweis (z. B. „siehe Kapitel 2“)
+- Alles muss UTF-8 codiert sein (Text und Code)
+- Abgabe als PDF
+- Keine mündlichen Absprachen – schriftliche Vorgaben sind bindend
+- Alles gehört ins Repository (Code, Ausarbeitung, etc.)
+- Beispiele möglichst vom aktuellen Stand nehmen
+    - Falls keine vorhanden: ältere Commits mit Verweis verwenden
+    - Ausnahme Kapitel „Refactoring“: beliebiger Stand erlaubt
+- Fehlen von Negativ-Beispielen → mehr Positiv-Beispiele nötig
+    - Falls Code Negativ-Beispiele enthält, aber nicht benannt: 0,5P Abzug
+    - Beispiel: „SRP-Klasse nicht vorhanden“ → 2 Positivbeispiele → Bewertung abhängig vom tatsächlichen Codezustand
+- Positiv-Beispiele müssen vorhanden sein – ggf. für Aufgabe implementieren
+- Code-Beispiele = Projektcode ins Dokument (mit Syntax-Highlighting)
+- Verweise auf Code → Code-Snippet ins Dokument (mit Syntax-Highlighting)
+- UML-Diagramme:
+    - Immer öffentliche Methoden und Felder
+    - Private nur, wenn erklärend notwendig
+    - Zusammenspielende Klassen ergänzen (wenn Teil der Aufgabe)
+- Originalbezeichnungen verwenden (z. B. keine Übersetzungen)
+- Aufgaben müssen vollständig und gemäß Beschreibung gelöst werden
+    - Keine Aussagen wie „nicht gebraucht“ oder „nicht implementiert“
+    - Beispiele:
+        - Fake/Mock-Objekte: „nicht gebraucht“ → 0P
+        - Repository: „nicht implementiert“ → 0P
+        - Entwurfsmuster: „nicht gebraucht“ → 0P
+- Mehr als geforderte Beispiele → nur erstes wird bewertet, Rest ignoriert
+
+
+================================================================================
+KAPITEL 1: EINLEITUNG (4P)
+================================================================================
+1. Übersicht über die Applikation (1P)
+   - [Was macht die Applikation? Wie funktioniert sie? Welches Problem löst sie/welchen Zweck hat sie?]
+
+2. Starten der Applikation (1P)
+   - [Wie startet man die Applikation? Was für Voraussetzungen werden benötigt? Schritt-für-Schritt-Anleitung]
+
+3. Technischer Überblick (2P)
+   - [Nennung und Erläuterung der Technologien (z.B. Java, MySQL, …), jeweils Begründung für den Einsatz der Technologien]
+
+
+================================================================================
+KAPITEL 2: SOFTWAREARCHITEKTUR (8P)
+================================================================================
+1. Gewählte Architektur (4P)
+   - [In der Vorlesung wurden Softwarearchitekturen vorgestellt. Welche Architektur wurde davon umgesetzt? Analyse und Begründung inkl. UML der wichtigsten Klassen, sowie Einordnung dieser Klassen in die gewählte Architektur]
+
+2. Domain Code (1P)
+   - [Kurze Erläuterung in eigenen Worten, was Domain Code ist – 1 Beispiel im Code zeigen, das bisher noch nicht gezeigt wurde]
+
+3. Analyse der Dependency Rule (3P)
+   - [In der Vorlesung wurde im Rahmen der ‘Clean Architecture’ die s.g. Dependency Rule vorgestellt. Je 1 Klasse zeigen, die die Dependency Rule einhält und 1 Klasse, die die Dependency Rule verletzt; jeweils UML (mind. die betreffende Klasse inkl. der Klassen, die von ihr abhängen bzw. von der sie abhängt) und Analyse der Abhängigkeiten in beide Richtungen (d.h., von wem hängt die Klasse ab und wer hängt von der Klasse ab) in Bezug auf die Dependency Rule]
+
+
+================================================================================
+KAPITEL 3: SOLID (8P)
+================================================================================
+1. SRP – Single Responsibility Principle (3P)
+   - [Jeweils eine Klasse als positives und negatives Beispiel für SRP; jeweils UML und Beschreibung der Aufgabe bzw. der Aufgaben und möglicher Lösungsweg des Negativ-Beispiels (inkl. UML)]
+   - Positiv-Beispiel
+   - Negativ-Beispiel
+
+2. OCP – Open-Closed Principle (3P)
+   - [Jeweils eine Klasse als positives und negatives Beispiel für OCP; jeweils UML und Analyse mit Begründung, warum das OCP erfüllt/nicht erfüllt wurde – falls erfüllt: warum hier sinnvoll/welches Problem gab es? Falls nicht erfüllt: wie könnte man es lösen (inkl. UML)?]
+   - Positiv-Beispiel
+   - Negativ-Beispiel
+
+3. LSP / ISP / DIP (2P)
+   - [Jeweils eine Klasse als positives und negatives Beispiel für entweder LSP oder ISP oder DIP; jeweils UML und Begründung, warum hier das Prinzip erfüllt/nicht erfüllt wird; beim Negativ-Beispiel UML einer möglichen Lösung hinzufügen]
+   - [Anmerkung: Es darf nur ein Prinzip ausgewählt werden; es darf NICHT z. B. ein positives Beispiel für LSP und ein negatives Beispiel für ISP genommen werden]
+   - Positiv-Beispiel
+   - Negativ-Beispiel
+
+
+================================================================================
+KAPITEL 4: WEITERE PRINZIPIEN (8P)
+================================================================================
+1. Analyse GRASP: Geringe Kopplung (3P)
+   - [Eine bis jetzt noch nicht behandelte Klasse als positives Beispiel geringer Kopplung; UML mit zusammenspielenden Klassen, Aufgabenbeschreibung der Klasse und Begründung, warum hier eine geringe Kopplung vorliegt; es müssen auch die Aufrufer/Nutzer der Klasse berücksichtigt werden]
+
+2. Analyse GRASP: Polymorphismus oder Pure Fabrication (3P)
+   - [Eine Klasse als positives Beispiel entweder von Polymorphismus oder von Pure Fabrication; UML Diagramm und Begründung, warum es hier zum Einsatz kommt]
+
+3. DRY – Don't Repeat Yourself (2P)
+   - [Ein Commit angeben, bei dem duplizierter Code/duplizierte Logik aufgelöst wurde; Code-Beispiele (vorher/nachher) einfügen; begründen und Auswirkung beschreiben – ggf. UML zum Verständnis ergänzen]
+
+
+================================================================================
+KAPITEL 5: UNIT TESTS (8P)
+================================================================================
+1. 10 Unit Tests (2P)
+   - [Zeigen und Beschreiben von 10 Unit-Tests und Beschreibung, was getestet wird]
+
+2. ATRIP – Automatic, Thorough, Professional (2P)
+   - [Je Begründung/Erläuterung, wie ‘Automatic’, ‘Thorough’ und ‘Professional’ realisiert wurde – bei ‘Thorough’ zusätzlich Analyse und Bewertung zur Testabdeckung]
+
+3. Fakes und Mocks (4P)
+   - [Analyse und Begründung des Einsatzes von 2 Fake/Mock-Objekten (die Fake/Mocks sind ohne Dritthersteller-Bibliothek/Framework zu implementieren); zusätzlich jeweils UML Diagramm mit Beziehungen zwischen Mock, zu mockender Klasse und Aufrufer des Mocks]
+
+
+================================================================================
+KAPITEL 6: DOMAIN DRIVEN DESIGN (8P)
+================================================================================
+1. Ubiquitous Language (2P)
+   - [4 Beispiele für die Ubiquitous Language; jeweils Bezeichnung, Bedeutung und kurze Begründung, warum es zur Ubiquitous Language gehört]
+
+2. Repositories (1.5P)
+   - [UML, Beschreibung und Begründung des Einsatzes eines Repositories; falls kein Repository vorhanden: ausführliche Begründung, warum es keines geben kann/hier nicht sinnvoll ist – NICHT, warum es nicht implementiert wurde]
+
+3. Aggregates (1.5P)
+   - [UML, Beschreibung und Begründung des Einsatzes eines Aggregates; falls kein Aggregate vorhanden: ausführliche Begründung, warum es keines geben kann/hier nicht sinnvoll ist – NICHT, warum es nicht implementiert wurde]
+
+4. Entities (1.5P)
+   - [UML, Beschreibung und Begründung des Einsatzes einer Entity; falls keine Entity vorhanden: ausführliche Begründung, warum es keine geben kann/hier nicht sinnvoll ist – NICHT, warum es nicht implementiert wurde]
+
+5. Value Objects (1.5P)
+   - [UML, Beschreibung und Begründung des Einsatzes eines Value Objects; falls kein Value Object vorhanden: ausführliche Begründung, warum es keines geben kann/hier nicht sinnvoll ist – NICHT, warum es nicht implementiert wurde]
+
+
+================================================================================
+KAPITEL 7: REFACTORING (8P)
+================================================================================
+1. Code Smells (2P)
+   - [Jeweils 1 Code-Beispiel zu 2 unterschiedlichen Code Smells (die benannt werden müssen) aus der Vorlesung; jeweils Code-Beispiel und einen möglichen Lösungsweg bzw. den genommen Lösungsweg beschreiben (inkl. (Pseudo-)Code)]
+   - [CODE SMELL 1]
+   - [CODE SMELL 2]
+
+2. Refactorings (6P)
+   - [2 unterschiedliche Refactorings aus der Vorlesung jeweils benennen, anwenden, begründen, sowie UML vorher/nachher liefern; jeweils auf die Commits verweisen – die Refactorings dürfen sich nicht mit den Beispielen der Code Smells überschneiden]
+
+
+================================================================================
+KAPITEL 8: ENTWURFSMUSTER (8P)
+================================================================================
+[2 unterschiedliche Entwurfsmuster aus der Vorlesung (oder nach Absprache auch andere) jeweils benennen, sinnvoll einsetzen, begründen und UML-Diagramm]
+1. Entwurfsmuster: [Name] (4P)
+   - [Benennen, sinnvoll einsetzen, begründen und UML-Diagramm]
+
+2. Entwurfsmuster: [Name] (4P)
+   - [Benennen, sinnvoll einsetzen, begründen und UML-Diagramm]
