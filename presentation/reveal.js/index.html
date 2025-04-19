@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>reveal.js</title>
+
+	<link rel="stylesheet" href="dist/reset.css">
+	<link rel="stylesheet" href="dist/reveal.css">
+	<link rel="stylesheet" href="dist/theme/white.css">
+
+	<!-- Theme used for syntax highlighted code -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/lightfair.min.css">
+
+</head>
+<style>
+	code {
+		font-size: 1rem;
+	}
+
+	p {
+		font-size: 1.5rem;
+	}
+
+  .horizontal-container {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+  }
+
+  .horizontal-spaced-container {
+	display: flex;
+    gap: 2rem;
+    justify-content: space-evenly;
+  }
+
+  .gray{
+	color: #808080;
+  }
+</style>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<h3>Programmentwurf - Protokoll</h3>
+				<p class="gray">zu</p>
+				<img style="margin: 50px 0;" src="./assets/ulrica-blue.png" alt="ULRICA Logo" class="logo">
+				<div class="horizontal-container gray">
+					<p>Robin Schwenzfeier</p>
+					<p>-</p>
+					<p>4868455</p>
+					<p>-</p>
+					<p>TBD</p>
+				</div>
+			</section>
+			<section data-include="slides/kapitel-1.html"></section>
+			<section data-include="slides/kapitel-2.html"></section>
+			<section data-include="slides/kapitel-3.html"></section>
+			<section data-include="slides/kapitel-4.html"></section>
+			<section data-include="slides/kapitel-5.html"></section>
+			<section data-include="slides/kapitel-6.html"></section>
+			<section data-include="slides/kapitel-7.html"></section>
+			<section data-include="slides/kapitel-8.html"></section>
+		</div>
+	</div>
+
+	<script src="dist/reveal.js"></script>
+	<script src="plugin/notes/notes.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+	<script src="plugin/highlight/highlight.js"></script>
+	<script>
+		// More info about initialization & config:
+		// - https://revealjs.com/initialization/
+		// - https://revealjs.com/config/
+		Reveal.initialize({
+			hash: true,
+
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+		});
+
+		document.querySelectorAll('[data-include]').forEach(async (section) => {
+			const url = section.getAttribute('data-include');
+			const response = await fetch(url);
+			const html = await response.text();
+			section.innerHTML = html;
+		});
+	</script>
+</body>
+
+</html>
