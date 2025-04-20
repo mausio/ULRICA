@@ -12,17 +12,88 @@
 	<link rel="stylesheet" href="dist/theme/white.css">
 
 	<!-- Theme used for syntax highlighted code -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/lightfair.min.css">
-
+	<link rel="stylesheet" href="plugin/highlight/monokai.css">
 </head>
 <style>
-	code {
+	code:not(.hljs) {
+		font-size: 1.25rem;
+	}
+	
+	/* Syntax highlighting styles similar to the screenshot */
+	.hljs-keyword {
+		color: red; /* softer green */
+		font-weight: 500;
+	}
+	
+	.hljs-built_in {
+		color: darkred;
+		font-weight: normal;
+	}
+	
+	.hljs-string {
+		color: #d19a66; /* softer yellow/orange */
+		font-weight: normal;
+	}
+	
+	.hljs {
+		font-size: 1.25rem;
+		background: transparent;
+		display: inline;
+	}
+
+	h1 {
+		font-size: 4rem;
+	}
+
+	h2 {
+		font-size: 3rem;
+	}
+
+	h3 {
+		font-size: 2.5rem;
+	}
+
+	h4 {
+		font-size: 2rem;
+		font-weight: semibold;
+	}
+
+	h5 {
+		font-size: 1.75rem;
+		font-weight: semibold;
+		text-align: start;
+		align-self: start;
+	}
+
+	h6 {
 		font-size: 1rem;
+		text-align: start;
+		align-self: start;
 	}
 
 	p {
-		font-size: 1.5rem;
+		font-size: 1.75rem;
+		text-align: start;
+		align-self: start;
 	}
+
+	li {
+		font-size: 1.75rem;
+		text-align: start;
+		align-self: start;
+		margin: 5px 0;
+	}
+
+	ul {
+		text-align: start;
+		align-self: start;
+	}
+
+	ol {
+		text-align: start;
+		align-self: start;
+	}
+
 
   .horizontal-container {
     display: flex;
@@ -72,21 +143,62 @@
 	<script src="plugin/markdown/markdown.js"></script>
 	<script src="plugin/highlight/highlight.js"></script>
 	<script>
+		// Debug logging
+		console.log('RevealHighlight plugin:', typeof RevealHighlight);
+		console.log('hljs global:', typeof window.hljs);
+		
 		// More info about initialization & config:
 		// - https://revealjs.com/initialization/
 		// - https://revealjs.com/config/
 		Reveal.initialize({
 			hash: true,
 
+			// Explicit highlight config
+			highlight: {
+				highlightOnLoad: true,
+				escapeHTML: false
+			},
+
 			// Learn about plugins: https://revealjs.com/plugins/
 			plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
 		});
 
-		document.querySelectorAll('[data-include]').forEach(async (section) => {
+		// Load all slide content, then initialize highlight.js
+		const loadSlidesPromises = [];
+		document.querySelectorAll('[data-include]').forEach((section) => {
 			const url = section.getAttribute('data-include');
-			const response = await fetch(url);
-			const html = await response.text();
-			section.innerHTML = html;
+			const promise = fetch(url)
+				.then(response => response.text())
+				.then(html => {
+					section.innerHTML = html;
+				});
+			loadSlidesPromises.push(promise);
+		});
+
+		// After all slides are loaded, re-initialize highlight.js
+		Promise.all(loadSlidesPromises).then(() => {
+			// Force Reveal to update
+			Reveal.sync();
+			
+			// Try multiple ways to initialize highlighting
+			
+			// 1. Through Reveal plugin
+			const highlight = Reveal.getPlugin('highlight');
+			if (highlight) {
+				document.querySelectorAll('code').forEach(block => {
+					highlight.highlightBlock(block);
+				});
+			}
+			
+			// 2. Direct hljs initialization if available
+			if (window.hljs) {
+				window.hljs.configure({
+					languages: ['bash', 'javascript', 'html', 'xml', 'css']
+				});
+				document.querySelectorAll('code.bash, code.hljs.bash').forEach(block => {
+					window.hljs.highlightElement(block);
+				});
+			}
 		});
 	</script>
 </body>

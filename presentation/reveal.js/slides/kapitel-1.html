@@ -2,20 +2,51 @@
 
 <section>
     <h3>Übersicht über die Applikation (1P)</h3>
-    <p>Was macht die Applikation?</p>
-    <p>Wie funktioniert sie? </p>
-    <p>Welches Problem löst sie/welchen Zweck hat sie?</p>
+    <ul>
+        <li>ULRICA = <strong>U</strong>niversa<strong>L</strong> <strong>R</strong>ange and dest<strong>I</strong>nation
+            <strong>CA</strong>lculator</li>
+        <li>Erstellt und verwaltet Fahrzeugprofile</li>
+        <li>Berechnet verbleibende Reichweite von Elektrofahrzeugen mit verschiedenen Effizienz-Modi (ECO, Normal,
+            Sport)</li>
+        <li>Schätzt Ladezeiten an DC- und AC-Ladestationen mit verschiedenen Konditionen</li>
+        <li>Berücksichtigt Batterieeigenschaften (LFP, NMC, NCA) und Ladekurven</li>
+    </ul>
 </section>
-
 
 <section>
     <h3>Starten der Applikation (1P)</h3>
-    <p>Wie starte ich die Applikation?</p>
-    <p>Was für Voraussetzungen werden benötigt? </p>
-    <p>Schritt-für-Schritt-Anleitung</p>
+    <h5>Voraussetzungen:</h5>
+    <ul>
+        <li>Java 17 oder höher</li>
+        <li>Maven</li>
+        <li>Git</li>
+    </ul>
+    <h5>Schritte zum Starten:</h5>
+    <ol>
+        <li>
+            Repository klonen: <span style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span class="hljs-keyword">git</span> <span class="hljs-built_in">clone</span> https://github.com/mausio/ULRICA</span>
+        </li>
+        <li style="text-align: start;">In Projektverzeichnis wechseln: <span style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span
+                    class="hljs-keyword">cd </span>/path/to/ULRICA</span></li>
+        <li>Projekt kompilieren: <span style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span class="hljs-keyword">mvn</span> <span class="hljs-built_in">clean</span> <span
+                class="hljs-built_in">compile</span></span>
+            </li>
+        <li>ULRICA starten: <span style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span class="hljs-keyword">mvn</span> <span class="hljs-built_in">exec:java</span>
+            -Dexec.mainClass="org.ulrica.App"</span>
+        </li>
+    </ol>
 </section>
 
 <section>
     <h3>Technischer Überblick (2P)</h3>
-    <p>Nennung und Erläuterung der Technologien (z.B. Java, MySQL,…), jeweils Begründung für den Einsatz der Technologien</p>
+    <ul>
+        <li><strong>Java:</strong> Objektorientierte Programmiersprache - ermöglicht klare Strukturierung mit Design
+            Patterns und Best Practices</li>
+        <li><strong>Maven:</strong> Build-Management-Tool - vereinfacht Abhängigkeiten und Build-Prozess</li>
+        <li><strong>JSON:</strong> Datenaustauschformat - verwendet für Speicherung von Fahrzeugprofilen (Repository
+            Pattern)</li>
+        <li><strong>GSON:</strong> Java-Bibliothek - ermöglicht Serialisierung/Deserialisierung zwischen Java-Objekten
+            und JSON</li>
+        </li>
+    </ul>
 </section>
