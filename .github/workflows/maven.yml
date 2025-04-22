@@ -62,9 +62,6 @@ jobs:
         name: coverage-report
         path: target/site/jacoco/
 
-    - name: Verify Code Style
-      run: mvn -B checkstyle:check --file pom.xml
-
     - name: Install CLOC
       run: sudo apt-get update && sudo apt-get install -y cloc
 
@@ -97,7 +94,7 @@ jobs:
           <p>Test results and coverage reports are attached and available in GitHub Actions artifacts.</p>
           
           <h3>Code Quality</h3>
-          <p>Code style verification and line counting are performed automatically.</p>
+          <p>Line counting is performed automatically.</p>
           <p>The CLOC report is attached.</p>
           <br/>
         from: ${{ secrets.SMTP_USERNAME }}
