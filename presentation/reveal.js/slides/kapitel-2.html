@@ -2,20 +2,101 @@
 
 <section>
     <h3>Gewählte Architektur (4P)</h3>
-    <p>In der Vorlesung wurden Softwarearchitekturen vorgestellt. Welche Architektur wurde davon umgesetzt?</p>
-    <p>Analyse und Begründung inkl. UML der wichtigsten Klassen</p>
-    <p>Einordnung dieser Klassen in die gewählte Architektur</p>
+    <p>ULRICA verwendet eine <b>Layered Architecture</b> mit <b>Clean Architecture Prinzipien</b></p>
+    <ul>
+        <li><b>Domain Layer:</b> CarProfile, BatteryProfile - Kernentitäten und Business-Logik</li>
+        <li><b>Repository Layer:</b> CarProfileRepository, JsonCarProfileRepository - Datenpersistenz</li>
+        <li><b>Service Layer:</b> CarProfileService, RangeCalculationService - Anwendungslogik</li>
+        <li><b>Controller Layer:</b> ApplicationController - Programmfluss</li>
+    </ul>
+    <p>Fokus auf Trennung von Zuständigkeiten und Dependency Rule</p>
+</section>
+
+<section>
+    <h3>UML der wichtigsten Klassen</h3>
+    <img src="assets/architecture.png" alt="UML Klassendiagramm der Architektur" style="max-height: 500px;">
 </section>
 
 <section>
     <h3>Domain Code (1P)</h3>
-    <p>Kurze Erläuterung in eigenen Worten, was Domain Code ist</p>
-    <p>1 Beispiel im Code zeigen, das bisher noch nicht gezeigt wurde</p>
+    <p>Domain Code ist der Teil einer Anwendung, der die zentrale Geschäftslogik enthält</p>
+    <ul>
+        <li>Unabhängig von technischen Details (UI, Datenbank)</li>
+        <li>Repräsentiert das Kernwissen über die Domäne</li>
+        <li>Enthält Geschäftsregeln und -logik</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Beispiel: ConsumptionProfile</h3>
+    <pre><code class="java">public class ConsumptionProfile {
+    private Map<Integer, Double> speedToConsumption = new HashMap<>();
+    
+    public void addConsumptionValue(int speed, double consumption) {
+        speedToConsumption.put(speed, consumption);
+    }
+    
+    public Double getConsumptionAtSpeed(int speed) {
+        if (speedToConsumption.containsKey(speed)) {
+            return speedToConsumption.get(speed);
+        }
+        return findNearestConsumption(speed);
+    }
+    
+    public double getAverageConsumption() {
+        if (speedToConsumption.isEmpty()) return 0;
+        return speedToConsumption.values().stream()
+                .mapToDouble(Double::doubleValue)
+                .average().orElse(0);
+    }
+}</code></pre>
 </section>
 
 <section>
     <h3>Analyse der Dependency Rule (3P)</h3>
-    <p>In der Vorlesung wurde im Rahmen der 'Clean Architecture' die s.g. Dependency Rule vorgestellt</p>
-    <p>Je 1 Klasse zeigen, die die Dependency Rule einhält und 1 Klasse, die die Dependency Rule verletzt</p>
-    <p>Jeweils UML und Analyse der Abhängigkeiten in beide Richtungen in Bezug auf die Dependency Rule</p>
+    <p>Die <b>Dependency Rule</b> besagt:</p>
+    <ul>
+        <li>Abhängigkeiten dürfen nur nach innen zeigen</li>
+        <li>Innere Schichten (Domain) dürfen nicht von äußeren (UI, DB) abhängen</li>
+        <li>Äußere Schichten dürfen von inneren abhängen</li>
+        <li>Abstraktion gehört zur inneren Schicht</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Positives Beispiel: CarProfileService</h3>
+    <pre><code class="java">public class CarProfileService {
+    private final CarProfileRepository repository; // Abstraktion!
+    
+    public CarProfileService(CarProfileRepository repository) {
+        this.repository = repository;
+    }
+    
+    public void createNewProfile() {
+        // ... Erstellung des Profils
+        repository.save(newProfile); // Verwendung über Interface
+    }
+}</code></pre>
+    <p>→ Abhängigkeit zur Abstraktion, nicht zur Implementierung</p>
+    <p>→ Service kennt keine konkreten Repository-Details</p>
+</section>
+
+<section>
+    <h3>Negatives Beispiel: JsonCarProfileRepository</h3>
+    <pre><code class="java">public class JsonCarProfileRepository implements CarProfileRepository {
+    private static final String FILE_PATH = "car_profiles.json";
+    private final Gson gson; // Direkte Abhängigkeit zu Gson
+    
+    @Override
+    public List<CarProfile> findAll() throws LoadingException {
+        File file = new File(FILE_PATH); // Direkte Abhängigkeit zum Dateisystem
+        try (Reader reader = new FileReader(file)) {
+            Type listType = new TypeToken<ArrayList<CarProfile>>(){}.getType();
+            return gson.fromJson(reader, listType);
+        } catch (IOException e) {
+            throw new LoadingException("Error: " + e.getMessage());
+        }
+    }
+}</code></pre>
+    <p>→ Direkte Abhängigkeiten zu externen Systemen (Dateisystem, Gson)</p>
 </section>

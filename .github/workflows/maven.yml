@@ -5,6 +5,8 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  schedule:
+    - cron: '0 0 * * *'  # Run daily at midnight for Automatic testing
 
 permissions:
   contents: write
@@ -28,6 +30,41 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
+    - name: Run Tests with JaCoCo Coverage
+      run: mvn -B test jacoco:report --file pom.xml
+
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      if: always()
+      with:
+        files: target/surefire-reports/**/*.xml
+
+    - name: JaCoCo Code Coverage Report
+      uses: madrapps/jacoco-report@v1.5
+      with:
+        paths: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
+        token: ${{ secrets.GITHUB_TOKEN }}
+        min-coverage-overall: 50
+        min-coverage-changed-files: 75
+        debug-mode: false
+
+    - name: Upload Test Results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: target/surefire-reports/
+
+    - name: Upload Coverage Report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: target/site/jacoco/
+
+    - name: Verify Code Style
+      run: mvn -B checkstyle:check --file pom.xml
+
     - name: Install CLOC
       run: sudo apt-get update && sudo apt-get install -y cloc
 
@@ -41,20 +78,31 @@ jobs:
         name: CLOC-output
         path: cloc_output.txt
 
-    - name: Send Email with CLOC Output as Attachment
+    - name: Send Email with Test and Coverage Results
       uses: dawidd6/action-send-mail@v3
+      if: always()
       with:
         server_address: ${{ secrets.SMTP_SERVER }}
         server_port: ${{ secrets.SMTP_PORT }}
         username: ${{ secrets.SMTP_USERNAME }}
         password: ${{ secrets.SMTP_PASSWORD }}
-        subject: "${{ github.repository }}: Java Lines of Code Count"
+        subject: "${{ github.repository }}: Test Results and Code Coverage"
         html_body: |
+          <h2>Build Results</h2>
           <p>Build job nr ${{ github.run_number }} of <strong>${{ github.repository }}</strong> completed; Status: ${{ job.status }}</p>
           <p>The job ${{ github.job }} has been triggered by ${{ github.actor }} from a ${{ github.event_name}}</p>
+          
+          <h3>Test Summary</h3>
+          <p>All tests are run automatically with each commit and daily schedule.</p>
+          <p>Test results and coverage reports are attached and available in GitHub Actions artifacts.</p>
+          
+          <h3>Code Quality</h3>
+          <p>Code style verification and line counting are performed automatically.</p>
           <p>The CLOC report is attached.</p>
-          <br/> 
+          <br/>
         from: ${{ secrets.SMTP_USERNAME }}
         to: ${{ secrets.TO_EMAIL }}
-        content_type: text/plain
-        attachments: cloc_output.txt
+        content_type: text/html
+        attachments: |
+          cloc_output.txt
+          target/site/jacoco/index.html
