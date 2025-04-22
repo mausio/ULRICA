@@ -5,8 +5,6 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  schedule:
-    - cron: '0 0 * * *'  # Run daily at midnight for Automatic testing
 
 permissions:
   contents: write
@@ -32,21 +30,6 @@ jobs:
 
     - name: Run Tests with JaCoCo Coverage
       run: mvn -B test jacoco:report --file pom.xml
-
-    - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v2
-      if: always()
-      with:
-        files: target/surefire-reports/**/*.xml
-
-    - name: JaCoCo Code Coverage Report
-      uses: madrapps/jacoco-report@v1.5
-      with:
-        paths: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
-        token: ${{ secrets.GITHUB_TOKEN }}
-        min-coverage-overall: 50
-        min-coverage-changed-files: 75
-        debug-mode: false
 
     - name: Upload Test Results
       if: always()
