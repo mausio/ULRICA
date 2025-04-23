@@ -52,34 +52,38 @@ java -jar target/ULRICA-1.0-SNAPSHOT.jar
 ---
 
 ## **Architecture Overview**
-ULRICA follows a **layered architecture pattern** with **clean architecture principles**, emphasizing **separation of concerns** and **maintainability**.
+ULRICA follows **Clean Architecture principles** with a clear separation of concerns across multiple layers, ensuring maintainability, testability, and flexibility.
 
 ### **Architectural Layers**
-1. **Presentation Layer (Actions & Controllers)**
-   - Actions: Encapsulated operations using the Command Pattern
-   - Controllers: Orchestrate user interactions and flow control
-   - Separation between actions and controllers ensures modularity
+1. **Domain Layer (Core)**
+   - Contains business entities, value objects, and aggregates
+   - Defines repository interfaces and domain services
+   - Implements strategy patterns for core calculations
+   - Completely independent of external frameworks and technologies
 
-2. **Service Layer**
-   - Contains business logic
-   - Implements service interfaces for dependency inversion
-   - Manages orchestration between components
+2. **Application Layer**
+   - Implements use cases through interactors
+   - Defines input and output ports for communication between layers
+   - Orchestrates domain objects to fulfill business requirements
+   - Depends only on the domain layer
 
-3. **Repository Layer**
-   - Abstracts data access
-   - Supports multiple implementations (In-Memory, JSON storage)
-   - Ensures thread-safe operations
+3. **Infrastructure Layer**
+   - Provides concrete implementations of repositories
+   - Contains adapters for external services
+   - Implements technical concerns (persistence, logging, etc.)
+   - Depends on domain and application layers
 
-4. **Domain Layer**
-   - Defines core business entities
-   - Implements value objects following **Domain-Driven Design (DDD)** principles
+4. **Presentation Layer**
+   - Handles user interaction through controllers and actions
+   - Transforms use case outputs into appropriate UI formats
+   - Contains no business logic
+   - Depends on application layer through input ports
 
 ### **Key Design Decisions**
-- Thread-safe collections for concurrency
-- JSON-based persistence using GSON
-- Interface-based programming
-- Command Pattern for user actions
-- Repository Pattern for data access abstraction
+- Dependency rule: inner layers don't know about outer layers
+- Use of ports and adapters for flexible integration
+- Clear boundaries between layers using interfaces
+- Domain-driven design principles throughout
 
 ---
 
@@ -93,10 +97,14 @@ ULRICA follows a **layered architecture pattern** with **clean architecture prin
   - Weather impact consideration
   - Battery degradation modeling
   - Consumption profiles integration
-- **Route Planning**
-  - Charging stop computation
-  - Time estimation
-  - Weather integration
+- **Charging Calculation**
+   - CarProfile based
+   - Temperature dependend 
+   - SoC and Goal-SoC dependend
+- --**Route Planning**--
+  - --Charging stop computation--
+  - --Time estimation--
+  - --Weather integration--
 
 ### **Technical Features**
 - Thread-safe operations
@@ -122,45 +130,58 @@ ULRICA follows a **layered architecture pattern** with **clean architecture prin
 - Range computation
 - Route planning
 - Weather data integration
-- Charging stop optimization
 
 ---
 
 ## **Design Patterns & Principles**
 ### **Implemented Patterns**
-1. **Command Pattern** (Encapsulated operations via Action interfaces)
-2. **Repository Pattern** (Abstracted data access with multiple implementations)
-3. **Strategy Pattern** (Modular range calculations, weather impact modeling)
-4. **Factory Pattern** (Encapsulated object creation)
+1. **Strategy Pattern** (Range calculation, charging behaviors)
+2. **Repository Pattern** (Data access abstraction)
+3. **Factory Method Pattern** (Object creation with specific types)
+4. **Command Pattern** (Encapsulated actions for user operations)
+5. **Observer Pattern** (Event notifications for route changes)
+6. **Aggregate Pattern** (Entity clustering with clear boundaries)
 
 ### **SOLID Principles Application**
 1. **Single Responsibility** (Each class has a distinct purpose)
 2. **Open/Closed** (System extensibility via interface-based design)
 3. **Liskov Substitution** (Consistent interface adherence)
-4. **Interface Segregation** (Focused, minimal dependencies)
+4. **Interface Segregation** (Focused, minimal interfaces)
 5. **Dependency Inversion** (Abstractions over concrete implementations)
 
 ---
 
 ## **Package Structure**
-### **Core Packages**
+### **Clean Architecture Structure**
 ```
-src/main/java/
-├── actions/          # Encapsulated user commands
-├── controller/       # Handles user interaction
-├── service/         # Business logic orchestration
-├── interfaces/      # Core abstractions
-├── model/           # Domain entities
-├── repository/      # Data persistence and storage
-├── utils/           # Helper utilities
-└── exception/       # Custom exception handling
+src/main/java/org/ulrica/
+├── App.java
+│
+├── domain/
+│   ├── entity/
+│   ├── valueobject/
+│   ├── aggregate/
+│   ├── repository/
+│   ├── strategy/
+│   │   └── factory/
+│   ├── service/
+│   └── exception/
+│
+├── application/
+│   ├── port/
+│   │   ├── in/
+│   │   └── out/
+│   └── usecase/
+│
+├── infrastructure/
+│   ├── persistence/
+│   ├── observer/
+│   └── util/
+│
+└── presentation/
+    ├── controller/
+    └── action/
 ```
-### **Key Components**
-- **Actions**: Individual operation implementations
-- **Controllers**: Handles user flow and requests
-- **Services**: Implements business logic
-- **Repositories**: Manages data persistence
-- **Models**: Defines domain structures
 
 ---
 
@@ -171,10 +192,17 @@ src/main/java/
 - Maintain consistent formatting
 - Write clear and concise documentation
 
+### **Clean Architecture Rules**
+1. **Dependency Rule**: Source code dependencies must only point inward
+2. **Layer Independence**: Inner layers must not know about outer layers
+3. **Interface Ownership**: Interfaces are owned by the layer that uses them, not implements them
+4. **Use Case Focus**: Application layer is organized around use cases, not technical concerns
+
 ### **Testing Strategy**
-- Unit tests for core components
-- Integration tests for complete workflows
-- Mocking of external dependencies
+- Domain layer should be 100% unit testable without mocks
+- Use ports and adapters for easy component substitution in tests
+- Create test doubles for infrastructure dependencies
+- Test use cases with mock repositories
 
 ---
 
