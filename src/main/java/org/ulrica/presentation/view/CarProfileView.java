@@ -14,17 +14,11 @@ public class CarProfileView implements CarProfileMenuOutputPort {
     @Override
     public void showCarProfileMenu() {
         System.out.println("\n=== Car Profile Management ===");
-        System.out.println("1. View all car profiles");
-        System.out.println("2. Create new car profile");
-        System.out.println("3. Delete car profile");
-        System.out.println("4. Edit car profile");
-        System.out.println("5. Back to main menu");
-        System.out.print("\nEnter your choice (1-5): ");
     }
     
     @Override
     public void showMenuOptions() {
-        System.out.println("1. View all car profiles");
+        System.out.println("\n1. View all car profiles");
         System.out.println("2. Create new car profile");
         System.out.println("3. Delete car profile");
         System.out.println("4. Edit car profile");
