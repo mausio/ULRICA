@@ -551,10 +551,130 @@ public interface CarProfileRepository {
 - Maintain consistent formatting
 
 ### **Testing Strategy**
-- Domain layer: 100% unit testable without mocks
-- Use ports and adapters for component substitution
-- Create test doubles for infrastructure
-- Test use cases with mock repositories
+- **Domain Layer Testing**
+  - 100% unit test coverage for core business logic
+  - Test-driven development (TDD) approach
+  - No external dependencies in domain tests
+  - Focus on business rules and validation
+  - Example: `CarProfileTest`, `BatteryProfileTest`
+
+- **Application Layer Testing**
+  - Use case testing with mock repositories
+  - Input validation testing
+  - Business rule enforcement testing
+  - Example: `CalculateRangeUseCaseTest`, `ChargingCalculatorUseCaseTest`
+
+- **Infrastructure Layer Testing**
+  - Integration tests for repositories
+  - Adapter testing with real implementations
+  - Technical concern testing
+  - Example: `JsonCarProfileRepositoryTest`, `ConsoleAdapterTest`
+
+- **Test Automation**
+  - Continuous Integration with GitHub Actions
+  - JaCoCo coverage reporting
+  - Minimum 50% line coverage requirement
+  - Automated test execution on every commit
+
+### **SOLID Principles Implementation**
+
+#### **Single Responsibility Principle (SRP)**
+- **Positive Example**: `CarProfile` class
+  - Only responsible for managing car profile data
+  - No UI, persistence, or calculation logic
+  - Clear, focused responsibility
+
+- **Negative Example**: `CarProfileManager` (refactored)
+  - Previously handled UI, persistence, and validation
+  - Refactored into separate classes:
+    - `CarProfileService` (business logic)
+    - `CarProfileRepository` (persistence)
+    - `CarProfileController` (UI)
+
+#### **Open/Closed Principle (OCP)**
+- **Positive Example**: `RangeCalculationStrategy`
+  - Interface for different calculation methods
+  - New strategies can be added without modifying existing code
+  - Extensible through inheritance
+
+- **Negative Example**: `ChargingCalculator` (refactored)
+  - Previously used switch statements for different battery types
+  - Refactored to use strategy pattern
+  - Each battery type implements its own charging strategy
+
+#### **Liskov Substitution Principle (LSP)**
+- **Positive Example**: `BatteryProfile` hierarchy
+  - Base class defines common battery behavior
+  - Subclasses (LFP, NMC, NCA) can be used interchangeably
+  - No violation of base class contracts
+
+#### **Interface Segregation Principle (ISP)**
+- **Positive Example**: `CarProfileRepository`
+  - Focused interface with specific methods
+  - No unused methods in implementations
+  - Clear separation of concerns
+
+#### **Dependency Inversion Principle (DIP)**
+- **Positive Example**: `CarProfileService`
+  - Depends on `CarProfileRepository` interface
+  - No direct dependency on concrete implementations
+  - Easy to swap implementations
+
+### **GRASP Principles Implementation**
+
+#### **Low Coupling**
+- **Example**: `RangeCalculationService`
+  - Minimal dependencies on other classes
+  - Uses interfaces for communication
+  - Easy to modify without affecting other components
+
+#### **High Cohesion**
+- **Example**: `BatteryProfile`
+  - All methods are related to battery management
+  - Clear, focused responsibility
+  - No unrelated functionality
+
+#### **Polymorphism**
+- **Example**: `ChargingStrategy`
+  - Different implementations for various charging scenarios
+  - Runtime selection of appropriate strategy
+  - Extensible through new implementations
+
+#### **Pure Fabrication**
+- **Example**: `JsonUtil`
+  - Technical class for JSON operations
+  - No direct domain responsibility
+  - Reusable across the application
+
+### **Refactoring Opportunities**
+
+#### **Code Smells and Solutions**
+1. **Long Method**
+   - Problem: Complex calculation methods
+   - Solution: Extract methods, use strategy pattern
+   - Example: `RangeCalculationService`
+
+2. **Large Class**
+   - Problem: Too many responsibilities
+   - Solution: Split into smaller, focused classes
+   - Example: `CarProfileManager` → Multiple services
+
+3. **Primitive Obsession**
+   - Problem: Using primitives for domain concepts
+   - Solution: Create value objects
+   - Example: `Range`, `Consumption`, `ChargingCurve`
+
+4. **Feature Envy**
+   - Problem: Methods accessing other classes' data
+   - Solution: Move method to appropriate class
+   - Example: `BatteryProfile` calculations
+
+#### **Refactoring Workflow**
+1. Identify code smells
+2. Write tests for existing behavior
+3. Apply refactoring techniques
+4. Verify tests still pass
+5. Commit changes with clear messages
 
 ### **Dependencies**
 - **GSON**: JSON serialization/deserialization
