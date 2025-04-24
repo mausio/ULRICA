@@ -1,26 +1,5 @@
 [
   {
-    "id": "3d76af98-da4a-4bf4-974d-4d3f8391b44a",
-    "name": "Sir Charge-A-Lot",
-    "manufacturer": "Opel",
-    "model": "Corsa",
-    "year": 2020,
-    "hasHeatPump": false,
-    "wltpRangeKm": 337.0,
-    "maxDcPowerKw": 100.0,
-    "maxAcPowerKw": 11.0,
-    "batteryProfile": {
-      "type": "NMC",
-      "capacityKwh": 44.0,
-      "degradationPercent": 8.0
-    },
-    "consumptionProfile": {
-      "consumptionAt50Kmh": 16.0,
-      "consumptionAt100Kmh": 19.0,
-      "consumptionAt130Kmh": 21.0
-    }
-  },
-  {
     "id": "69e3c6c1-b383-4689-be79-3e5d11b0bcaf",
     "name": "df",
     "manufacturer": "2020",
@@ -33,12 +12,37 @@
     "batteryProfile": {
       "type": "NMC",
       "capacityKwh": 4132.0,
-      "degradationPercent": 19.0
+      "degradationPercent": 19.0,
+      "maxDcPowerKw": 0.0,
+      "maxAcPowerKw": 0.0
     },
     "consumptionProfile": {
       "consumptionAt50Kmh": 103.0,
       "consumptionAt100Kmh": 31.0,
       "consumptionAt130Kmh": 5342.0
+    }
+  },
+  {
+    "id": "d819898e-1d68-49d0-8cc7-5ed6b13e5a88",
+    "name": "Sir Charge-A-Lot",
+    "manufacturer": "Opel",
+    "model": "Corsa",
+    "year": 2020,
+    "hasHeatPump": false,
+    "wltpRangeKm": 337.0,
+    "maxDcPowerKw": 100.0,
+    "maxAcPowerKw": 11.0,
+    "batteryProfile": {
+      "type": "NMC",
+      "capacityKwh": 44.0,
+      "degradationPercent": 8.0,
+      "maxDcPowerKw": 100.0,
+      "maxAcPowerKw": 11.0
+    },
+    "consumptionProfile": {
+      "consumptionAt50Kmh": 16.0,
+      "consumptionAt100Kmh": 19.0,
+      "consumptionAt130Kmh": 23.0
     }
   }
 ]

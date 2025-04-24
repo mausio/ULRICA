@@ -34,7 +34,7 @@ public final class ValidationUtils implements ValidationInterface {
         String trimmed = name.trim();
         return trimmed.length() >= MIN_NAME_LENGTH && 
                trimmed.length() <= MAX_NAME_LENGTH && 
-               trimmed.matches("^[a-zA-Z0-9 ]+$");
+               trimmed.matches("^[a-zA-Z0-9 -]+$");
     }
 
     @Override
@@ -83,7 +83,7 @@ public final class ValidationUtils implements ValidationInterface {
             case "name":
             case "manufacturer":
             case "model":
-                return String.format("Invalid %s. Must be between %d and %d characters long and contain only letters, numbers, and spaces.", 
+                return String.format("Invalid %s. Must be between %d and %d characters long and contain only letters, numbers, spaces, and hyphens.", 
                     field, MIN_NAME_LENGTH, MAX_NAME_LENGTH);
             case "year":
                 return String.format("Invalid year. Must be between %d and %d.", MIN_YEAR, MAX_YEAR);

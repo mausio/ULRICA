@@ -4,20 +4,28 @@ import org.ulrica.application.port.in.ExecuteActionUseCaseInterface;
 import org.ulrica.application.port.in.NavigationUseCaseInterface;
 import org.ulrica.application.port.out.ActionResultOutputPortInterface;
 import org.ulrica.domain.service.ProfileSelectionService;
+import org.ulrica.presentation.controller.AcChargingController;
+import org.ulrica.presentation.controller.DcChargingController;
 
 public class ExecuteActionInteractor implements ExecuteActionUseCaseInterface {
     
     private final NavigationUseCaseInterface navigationUseCase;
     private final ActionResultOutputPortInterface actionResultOutputPort;
     private final ProfileSelectionService profileSelectionService;
+    private final DcChargingController dcChargingController;
+    private final AcChargingController acChargingController;
     
     public ExecuteActionInteractor(
             NavigationUseCaseInterface navigationUseCase,
             ActionResultOutputPortInterface actionResultOutputPort,
-            ProfileSelectionService profileSelectionService) {
+            ProfileSelectionService profileSelectionService,
+            DcChargingController dcChargingController,
+            AcChargingController acChargingController) {
         this.navigationUseCase = navigationUseCase;
         this.actionResultOutputPort = actionResultOutputPort;
         this.profileSelectionService = profileSelectionService;
+        this.dcChargingController = dcChargingController;
+        this.acChargingController = acChargingController;
     }
     
     @Override
@@ -29,19 +37,14 @@ public class ExecuteActionInteractor implements ExecuteActionUseCaseInterface {
         
         switch (actionChoice) {
             case 1:
-                // DC Charging Calculator
-                actionResultOutputPort.showNotImplemented("DC Charging Calculator");
-                return true;
+                return dcChargingController.processDcChargingCalculation();
             case 2:
-                // AC Charging Calculator
-                actionResultOutputPort.showNotImplemented("AC Charging Calculator");
-                return true;
+                return acChargingController.processAcChargingCalculation();
             case 3:
-                // Range Calculation
+                // TODO: Range Calculation
                 actionResultOutputPort.showNotImplemented("Range Calculation");
                 return true;
             case 4:
-                // Back to main menu
                 navigationUseCase.navigateToMainMenu();
                 return true;
             default:
