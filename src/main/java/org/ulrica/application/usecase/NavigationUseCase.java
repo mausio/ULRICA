@@ -20,26 +20,37 @@ public class NavigationUseCase implements NavigationUseCaseInterface {
         this.currentState = ApplicationState.MAIN_MENU;
     }
     
+    @Override
     public void navigateToCreateCarProfile() {
         this.currentState = ApplicationState.CREATE_CAR_PROFILE;
     }
     
+    @Override
     public void navigateToEditCarProfile() {
         this.currentState = ApplicationState.EDIT_CAR_PROFILE;
     }
     
+    @Override
     public void navigateToDeleteCarProfile() {
         this.currentState = ApplicationState.DELETE_CAR_PROFILE;
     }
     
+    @Override
+    public void navigateToActionMenu() {
+        this.currentState = ApplicationState.ACTION_MENU;
+    }
+    
+    @Override
     public void exit() {
         this.currentState = ApplicationState.EXIT;
     }
     
+    @Override
     public ApplicationState getCurrentState() {
         return currentState;
     }
     
+    @Override
     public boolean shouldContinue() {
         return currentState != ApplicationState.EXIT;
     }

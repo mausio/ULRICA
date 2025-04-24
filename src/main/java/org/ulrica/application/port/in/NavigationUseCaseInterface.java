@@ -8,6 +8,7 @@ public interface NavigationUseCaseInterface {
     void navigateToCreateCarProfile();
     void navigateToEditCarProfile();
     void navigateToDeleteCarProfile();
+    void navigateToActionMenu();
     void exit();
     ApplicationState getCurrentState();
     boolean shouldContinue();

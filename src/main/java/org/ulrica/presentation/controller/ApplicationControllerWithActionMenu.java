@@ -3,8 +3,10 @@ package org.ulrica.presentation.controller;
 import java.util.List;
 
 import org.ulrica.application.port.in.CreateCarProfileUseCaseInterface;
+import org.ulrica.application.port.in.ExecuteActionUseCaseInterface;
 import org.ulrica.application.port.in.InputValidationServiceInterface;
 import org.ulrica.application.port.in.NavigationUseCaseInterface;
+import org.ulrica.application.port.in.ShowActionMenuUseCaseInterface;
 import org.ulrica.application.port.in.ShowCarProfileMenuUseCaseInterface;
 import org.ulrica.application.port.in.ShowMainMenuUseCaseInterface;
 import org.ulrica.application.port.in.ShowWelcomeUseCaseInterface;
@@ -14,59 +16,91 @@ import org.ulrica.application.port.out.UserOutputPortInterface;
 import org.ulrica.application.service.UserInputService;
 import org.ulrica.domain.ApplicationState;
 import org.ulrica.domain.entity.CarProfile;
+import org.ulrica.domain.service.ActionAvailabilityService;
 import org.ulrica.domain.service.ProfileSelectionService;
+import org.ulrica.presentation.view.ActionMenuView;
+import org.ulrica.presentation.view.ActionResultView;
 import org.ulrica.presentation.view.CarProfileView;
 import org.ulrica.presentation.view.MainMenuView;
 import org.ulrica.presentation.view.WelcomeView;
 
-public class ApplicationController {
+/**
+ * Enhanced ApplicationController with support for ActionMenu module.
+ * Follows Clean Architecture principles with Controller as part of presentation layer.
+ */
+public class ApplicationControllerWithActionMenu {
     private final CarProfilePersistencePortInterface repository;
     private final NavigationUseCaseInterface navigationUseCase;
     private final ProfileSelectionService profileSelectionService;
     private final UserInputService userInputService;
+    private final ActionAvailabilityService actionAvailabilityService;
 
     // Use Cases
     private final ShowWelcomeUseCaseInterface showWelcomeUseCase;
     private final ShowMainMenuUseCaseInterface showMainMenuUseCase;
     private final ShowCarProfileMenuUseCaseInterface showCarProfileMenuUseCase;
+    private final ShowActionMenuUseCaseInterface showActionMenuUseCase;
     private final CreateCarProfileUseCaseInterface createCarProfileUseCase;
+    private final ExecuteActionUseCaseInterface executeActionUseCase;
 
     // Views
     private final WelcomeView welcomeView;
     private final MainMenuView mainMenuView;
     private final CarProfileView carProfileView;
+    private final ActionMenuView actionMenuView;
+    private final ActionResultView actionResultView;
     
     // IO 
     private final UserInputPortInterface userInputPort;
     private final UserOutputPortInterface userOutputPort;
+    
+    // Controllers
+    private final ActionMenuController actionMenuController;
 
-    public ApplicationController(
+    public ApplicationControllerWithActionMenu(
             UserInputPortInterface userInputPort,
             UserOutputPortInterface userOutputPort,
             CarProfilePersistencePortInterface repository,
             NavigationUseCaseInterface navigationUseCase,
             ProfileSelectionService profileSelectionService,
+            ActionAvailabilityService actionAvailabilityService,
             ShowWelcomeUseCaseInterface showWelcomeUseCase,
             ShowMainMenuUseCaseInterface showMainMenuUseCase,
             ShowCarProfileMenuUseCaseInterface showCarProfileMenuUseCase,
+            ShowActionMenuUseCaseInterface showActionMenuUseCase,
             CreateCarProfileUseCaseInterface createCarProfileUseCase,
+            ExecuteActionUseCaseInterface executeActionUseCase,
             InputValidationServiceInterface validationService,
             WelcomeView welcomeView,
             MainMenuView mainMenuView,
-            CarProfileView carProfileView) {
+            CarProfileView carProfileView,
+            ActionMenuView actionMenuView,
+            ActionResultView actionResultView) {
         this.userInputPort = userInputPort;
         this.userOutputPort = userOutputPort;
         this.repository = repository;
         this.navigationUseCase = navigationUseCase;
         this.profileSelectionService = profileSelectionService;
+        this.actionAvailabilityService = actionAvailabilityService;
         this.showWelcomeUseCase = showWelcomeUseCase;
         this.showMainMenuUseCase = showMainMenuUseCase;
         this.showCarProfileMenuUseCase = showCarProfileMenuUseCase;
+        this.showActionMenuUseCase = showActionMenuUseCase;
         this.createCarProfileUseCase = createCarProfileUseCase;
+        this.executeActionUseCase = executeActionUseCase;
         this.welcomeView = welcomeView;
         this.mainMenuView = mainMenuView;
         this.carProfileView = carProfileView;
+        this.actionMenuView = actionMenuView;
+        this.actionResultView = actionResultView;
         this.userInputService = new UserInputService(userInputPort, userOutputPort, validationService);
+        
+        this.actionMenuController = new ActionMenuController(
+                userInputPort, 
+                userOutputPort,
+                showActionMenuUseCase, 
+                executeActionUseCase, 
+                actionAvailabilityService);
     }
 
     public void processCurrentState() {
@@ -90,6 +124,9 @@ public class ApplicationController {
                 break;
             case DELETE_CAR_PROFILE:
                 handleDeleteCarProfile();
+                break;
+            case ACTION_MENU:
+                handleActionMenu();
                 break;
             default:
                 break;
@@ -120,6 +157,14 @@ public class ApplicationController {
                 navigationUseCase.navigateToCarProfileMenu();
                 break;
             case 2:
+                if (actionAvailabilityService.areActionsAvailable()) {
+                    navigationUseCase.navigateToActionMenu();
+                } else {
+                    userOutputPort.displayLine("No car profile selected. Please select a profile first.");
+                    userInputPort.readLine(); // Wait for user to press Enter
+                }
+                break;
+            case 3:
                 navigationUseCase.exit();
                 break;
             default:
@@ -151,6 +196,12 @@ public class ApplicationController {
             default:
                 userOutputPort.displayLine("Invalid choice. Please try again.");
         }
+    }
+    
+    private void handleActionMenu() {
+        actionMenuController.processActionMenu();
+        userInputPort.readLine(); // Wait for user to press Enter
+        navigationUseCase.navigateToMainMenu();
     }
 
     private void viewAllCarProfiles() {

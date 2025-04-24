@@ -1,32 +1,39 @@
 package org.ulrica.presentation.view;
 
 import org.ulrica.application.port.out.MainMenuOutputPortInterface;
-import org.ulrica.presentation.util.AnsiColors;
+import org.ulrica.application.port.out.UserOutputPortInterface;
 
 public class MainMenuView implements MainMenuOutputPortInterface {
+    private final UserOutputPortInterface userOutputPort;
+    
+    public MainMenuView(UserOutputPortInterface userOutputPort) {
+        this.userOutputPort = userOutputPort;
+    }
+    
     @Override
     public void showMainMenu() {
-        System.out.println("\n=== ULRICA - Main Menu ===");
+        userOutputPort.displayLine("\n=== ULRICA - Main Menu ===");
     }
 
     @Override
     public void showNoProfileSelected() {
-        System.out.println(AnsiColors.BLUE + "No car profile selected!" + AnsiColors.RESET);
+        userOutputPort.displayLine("No car profile selected!");
     }
 
     @Override
     public void showProfileSelected(String profileName) {
-        System.out.println(AnsiColors.GREEN + "Currently selected profile: " + AnsiColors.RESET + profileName);
+        userOutputPort.displayLine("Currently selected profile: " + profileName);
     }
 
     @Override
     public void showMenuOptions() {
-        System.out.println("1. Car Profile Management");
-        System.out.println("2. Exit");
+        userOutputPort.displayLine("1. Car Profile Management");
+        userOutputPort.displayLine("2. Actions Menu");
+        userOutputPort.displayLine("3. Exit");
     }
 
     @Override
     public void showPrompt() {
-        System.out.print("\nEnter your choice: ");
+        userOutputPort.display("Enter your choice: ");
     }
 } 

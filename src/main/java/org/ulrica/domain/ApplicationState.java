@@ -7,5 +7,6 @@ public enum ApplicationState {
     CREATE_CAR_PROFILE,
     EDIT_CAR_PROFILE,
     DELETE_CAR_PROFILE,
+    ACTION_MENU,
     EXIT
 } 
