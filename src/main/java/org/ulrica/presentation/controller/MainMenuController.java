@@ -4,24 +4,44 @@ import java.util.Scanner;
 
 import org.ulrica.application.port.in.ShowMainMenuUseCaseInterface;
 import org.ulrica.application.port.out.MainMenuOutputPortInterface;
-import org.ulrica.presentation.view.MainMenuView;
+import org.ulrica.domain.entity.CarProfile;
 
 public class MainMenuController {
     private final ShowMainMenuUseCaseInterface showMainMenuUseCase;
     private final MainMenuOutputPortInterface mainMenuView;
     private final Scanner scanner;
-    private final CarProfileMenuController carProfileMenuController;
+    private CarProfileController carProfileController;
+    private CarProfile currentProfile;
 
-    public MainMenuController(ShowMainMenuUseCaseInterface showMainMenuUseCase, CarProfileMenuController carProfileMenuController) {
+    public MainMenuController(
+            ShowMainMenuUseCaseInterface showMainMenuUseCase,
+            MainMenuOutputPortInterface mainMenuView,
+            CarProfileController carProfileController) {
         this.showMainMenuUseCase = showMainMenuUseCase;
-        this.mainMenuView = new MainMenuView();
+        this.mainMenuView = mainMenuView;
         this.scanner = new Scanner(System.in);
-        this.carProfileMenuController = carProfileMenuController;
+        this.carProfileController = carProfileController;
+        this.currentProfile = null;
+    }
+
+    public void setCarProfileController(CarProfileController carProfileController) {
+        this.carProfileController = carProfileController;
     }
 
     public void showMainMenu() {
-        showMainMenuUseCase.showMainMenu(mainMenuView);
+        mainMenuView.showMainMenu();
+        if (currentProfile != null) {
+            mainMenuView.showProfileSelected(currentProfile.getName());
+        } else {
+            mainMenuView.showNoProfileSelected();
+        }
+        mainMenuView.showMenuOptions();
+        mainMenuView.showPrompt();
         handleUserInput();
+    }
+
+    public void setCurrentProfile(CarProfile profile) {
+        this.currentProfile = profile;
     }
 
     private void handleUserInput() {
@@ -30,7 +50,7 @@ public class MainMenuController {
 
         switch (choice) {
             case 1:
-                carProfileMenuController.showCarProfileMenu();
+                carProfileController.showCarProfileMenu();
                 showMainMenu();
                 break;
             case 2:

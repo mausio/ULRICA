@@ -6,7 +6,7 @@
 ULRICA is a range estimation and route planning tool designed to calculate the remaining range of electric vehicles, estimate charging times, and optimize route planning based on weather conditions and battery profiles. The application supports multiple car profiles, consumption models, and charging profiles to provide accurate estimations.
 
 ### **Technical Requirements**
-- Java 11 or higher
+- Java 17 or higher
 - Maven
 - Git
 - Minimum **2000+ lines** of code

@@ -11,14 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.ulrica.application.port.out.CarProfilePersistencePortInterface;
 import org.ulrica.domain.entity.CarProfile;
-import org.ulrica.domain.repository.CarProfileRepositoryInterface;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-public class JsonCarProfileRepository implements CarProfileRepositoryInterface {
+public class JsonCarProfileRepository implements CarProfilePersistencePortInterface {
     private static final String STORAGE_DIR = "data";
     private static final String FILE_NAME = "car_profiles.json";
     private final Gson gson;
@@ -27,6 +27,7 @@ public class JsonCarProfileRepository implements CarProfileRepositoryInterface {
     public JsonCarProfileRepository() {
         this.gson = new GsonBuilder()
                 .setPrettyPrinting()
+                .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
                 .create();
         this.filePath = Paths.get(STORAGE_DIR, FILE_NAME);
         ensureStorageDirectoryExists();

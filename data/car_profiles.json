@@ -1,0 +1,44 @@
+[
+  {
+    "id": "3d76af98-da4a-4bf4-974d-4d3f8391b44a",
+    "name": "Sir Charge-A-Lot",
+    "manufacturer": "Opel",
+    "model": "Corsa",
+    "year": 2020,
+    "hasHeatPump": false,
+    "wltpRangeKm": 337.0,
+    "maxDcPowerKw": 100.0,
+    "maxAcPowerKw": 11.0,
+    "batteryProfile": {
+      "type": "NMC",
+      "capacityKwh": 44.0,
+      "degradationPercent": 8.0
+    },
+    "consumptionProfile": {
+      "consumptionAt50Kmh": 16.0,
+      "consumptionAt100Kmh": 19.0,
+      "consumptionAt130Kmh": 21.0
+    }
+  },
+  {
+    "id": "69e3c6c1-b383-4689-be79-3e5d11b0bcaf",
+    "name": "df",
+    "manufacturer": "2020",
+    "model": "20",
+    "year": 2000,
+    "hasHeatPump": true,
+    "wltpRangeKm": 132.0,
+    "maxDcPowerKw": 1213.0,
+    "maxAcPowerKw": 21.0,
+    "batteryProfile": {
+      "type": "NMC",
+      "capacityKwh": 4132.0,
+      "degradationPercent": 19.0
+    },
+    "consumptionProfile": {
+      "consumptionAt50Kmh": 103.0,
+      "consumptionAt100Kmh": 31.0,
+      "consumptionAt130Kmh": 5342.0
+    }
+  }
+]

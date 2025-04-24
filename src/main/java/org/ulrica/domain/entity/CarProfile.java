@@ -108,6 +108,25 @@ public final class CarProfile {
         return Objects.hash(id, name, manufacturer, model, year, hasHeatPump, wltpRangeKm, maxDcPowerKw, maxAcPowerKw, batteryProfile, consumptionProfile, chargingCurve);
     }
 
+    @Override
+    public String toString() {
+        return String.format(
+            "Car Profile: %s%n" +
+            "Manufacturer: %s%n" +
+            "Model: %s%n" +
+            "Year: %d%n" +
+            "Heat Pump: %s%n" +
+            "WLTP Range: %.1f km%n" +
+            "Max DC Power: %.1f kW%n" +
+            "Max AC Power: %.1f kW%n" +
+            "Battery: %s%n" +
+            "Consumption Profile: %s",
+            name, manufacturer, model, year, hasHeatPump ? "Yes" : "No",
+            wltpRangeKm, maxDcPowerKw, maxAcPowerKw,
+            batteryProfile.toString(), consumptionProfile.toString()
+        );
+    }
+
     public static class Builder {
         private String id;
         private String name;

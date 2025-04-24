@@ -1,0 +1,95 @@
+package org.ulrica.presentation.util;
+
+import org.ulrica.domain.valueobject.BatteryType;
+
+public final class InputValidator {
+    private InputValidator() {} // Prevent instantiation
+
+    // Constants for validation
+    private static final int MIN_NAME_LENGTH = 1;
+    private static final int MAX_NAME_LENGTH = 20;
+    private static final double MIN_BATTERY_CAPACITY = 10.0;
+    private static final double MAX_BATTERY_CAPACITY = 300.0;
+    private static final double MIN_DC_CHARGING_POWER = 10.0;
+    private static final double MAX_DC_CHARGING_POWER = 1000.0;
+    private static final double MIN_AC_CHARGING_POWER = 1.0;
+    private static final double MAX_AC_CHARGING_POWER = 50.0;
+    private static final double MIN_CONSUMPTION = 1.0;
+    private static final double MAX_CONSUMPTION = 50.0;
+    private static final int MIN_YEAR = 1886; // First car was built in 1886
+    private static final int MAX_YEAR = java.time.Year.now().getValue();
+
+    public static boolean isValidName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return false;
+        }
+        String trimmed = name.trim();
+        return trimmed.length() >= MIN_NAME_LENGTH && 
+               trimmed.length() <= MAX_NAME_LENGTH && 
+               trimmed.matches("^[a-zA-Z0-9 ]+$");
+    }
+
+    public static boolean isValidYear(int year) {
+        return year >= MIN_YEAR && year <= MAX_YEAR;
+    }
+
+    public static boolean isValidBatteryCapacity(double capacity) {
+        return capacity >= MIN_BATTERY_CAPACITY && capacity <= MAX_BATTERY_CAPACITY;
+    }
+
+    public static boolean isValidBatteryDegradation(double degradation) {
+        return degradation >= 0.0 && degradation <= 100.0;
+    }
+
+    public static boolean isValidDcChargingPower(double power) {
+        return power >= MIN_DC_CHARGING_POWER && power <= MAX_DC_CHARGING_POWER;
+    }
+
+    public static boolean isValidAcChargingPower(double power) {
+        return power >= MIN_AC_CHARGING_POWER && power <= MAX_AC_CHARGING_POWER;
+    }
+
+    public static boolean isValidConsumption(double consumption) {
+        return consumption >= MIN_CONSUMPTION && consumption <= MAX_CONSUMPTION;
+    }
+
+    public static boolean isValidConsumptionProgression(double consumption50, double consumption100, double consumption130) {
+        return consumption50 <= consumption100 && consumption100 <= consumption130;
+    }
+
+    public static boolean isValidBatteryTypeChoice(int choice) {
+        return choice >= 1 && choice <= BatteryType.values().length;
+    }
+
+    public static String getValidationMessage(String field, String value) {
+        switch (field.toLowerCase()) {
+            case "name":
+            case "manufacturer":
+            case "model":
+                return String.format("Invalid %s. Must be between %d and %d characters long and contain only letters, numbers, and spaces.", 
+                    field, MIN_NAME_LENGTH, MAX_NAME_LENGTH);
+            case "year":
+                return String.format("Invalid year. Must be between %d and %d.", MIN_YEAR, MAX_YEAR);
+            case "battery type":
+                return String.format("Invalid battery type. Please select a number between 1 and %d.", BatteryType.values().length);
+            case "battery capacity":
+                return String.format("Invalid battery capacity. Must be between %.1f and %.1f kWh.", 
+                    MIN_BATTERY_CAPACITY, MAX_BATTERY_CAPACITY);
+            case "battery degradation":
+                return "Invalid battery degradation. Must be between 0 and 100 percent.";
+            case "dc charging power":
+                return String.format("Invalid DC charging power. Must be between %.1f and %.1f kW.", 
+                    MIN_DC_CHARGING_POWER, MAX_DC_CHARGING_POWER);
+            case "ac charging power":
+                return String.format("Invalid AC charging power. Must be between %.1f and %.1f kW.", 
+                    MIN_AC_CHARGING_POWER, MAX_AC_CHARGING_POWER);
+            case "consumption":
+                return String.format("Invalid consumption. Must be between %.1f and %.1f kWh/100km.", 
+                    MIN_CONSUMPTION, MAX_CONSUMPTION);
+            case "consumption progression":
+                return "Invalid consumption progression. Consumption must increase with speed.";
+            default:
+                return "Invalid input.";
+        }
+    }
+} 

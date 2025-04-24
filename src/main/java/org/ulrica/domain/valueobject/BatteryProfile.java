@@ -49,4 +49,17 @@ public final class BatteryProfile {
     public int hashCode() {
         return Objects.hash(type, capacityKwh, degradationPercent);
     }
+
+    @Override
+    public String toString() {
+        return String.format(
+            "Type: %s (%s)%n" +
+            "Capacity: %.1f kWh%n" +
+            "Degradation: %.1f%%%n" +
+            "Remaining Capacity: %.1f kWh",
+            type.name(), type.getDescription(),
+            capacityKwh, degradationPercent,
+            getRemainingCapacityKwh()
+        );
+    }
 } 

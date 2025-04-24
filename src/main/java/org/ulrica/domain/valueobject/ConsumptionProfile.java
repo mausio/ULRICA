@@ -33,10 +33,10 @@ public final class ConsumptionProfile {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ConsumptionProfile that = (ConsumptionProfile) o;
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        ConsumptionProfile that = (ConsumptionProfile) object;
         return Double.compare(that.consumptionAt50Kmh, consumptionAt50Kmh) == 0 &&
                 Double.compare(that.consumptionAt100Kmh, consumptionAt100Kmh) == 0 &&
                 Double.compare(that.consumptionAt130Kmh, consumptionAt130Kmh) == 0;
@@ -45,5 +45,17 @@ public final class ConsumptionProfile {
     @Override
     public int hashCode() {
         return Objects.hash(consumptionAt50Kmh, consumptionAt100Kmh, consumptionAt130Kmh);
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+            "Consumption at 50 km/h: %.1f kWh/100km%n" +
+            "Consumption at 100 km/h: %.1f kWh/100km%n" +
+            "Consumption at 130 km/h: %.1f kWh/100km%n" +
+            "Average Consumption: %.1f kWh/100km",
+            consumptionAt50Kmh, consumptionAt100Kmh, consumptionAt130Kmh,
+            getAverageConsumption()
+        );
     }
 } 
