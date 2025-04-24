@@ -26,11 +26,6 @@ public class MainMenuView implements MainMenuOutputPortInterface {
     }
 
     @Override
-    public void showExitOption() {
-        System.out.println("2. Exit");
-    }
-
-    @Override
     public void showPrompt() {
         System.out.print("\nEnter your choice: ");
     }

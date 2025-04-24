@@ -5,6 +5,5 @@ public interface MainMenuOutputPortInterface {
     void showNoProfileSelected();
     void showProfileSelected(String profileName);
     void showMenuOptions();
-    void showExitOption();
     void showPrompt();
 } 

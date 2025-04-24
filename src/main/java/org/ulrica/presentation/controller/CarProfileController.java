@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.ulrica.application.port.in.CreateCarProfileUseCaseInterface;
+import org.ulrica.application.port.in.ProfileSelectionListener;
 import org.ulrica.application.port.out.CarProfilePersistencePortInterface;
 import org.ulrica.domain.entity.CarProfile;
 import org.ulrica.domain.valueobject.BatteryType;
@@ -15,18 +16,18 @@ public class CarProfileController {
     private final CarProfilePersistencePortInterface persistencePort;
     private final CarProfileView view;
     private final Scanner scanner;
-    private final MainMenuController mainMenuController;
+    private final ProfileSelectionListener profileSelectionListener;
 
     public CarProfileController(
             CreateCarProfileUseCaseInterface createCarProfileUseCase,
             CarProfilePersistencePortInterface persistencePort,
             CarProfileView view,
-            MainMenuController mainMenuController) {
+            ProfileSelectionListener profileSelectionListener) {
         this.createCarProfileUseCase = createCarProfileUseCase;
         this.persistencePort = persistencePort;
         this.view = view;
         this.scanner = new Scanner(System.in);
-        this.mainMenuController = mainMenuController;
+        this.profileSelectionListener = profileSelectionListener;
     }
 
     public void showCarProfileMenu() {
@@ -86,7 +87,7 @@ public class CarProfileController {
         if (choice > 0 && choice <= profiles.size()) {
             CarProfile selectedProfile = profiles.get(choice - 1);
             view.showSelectedProfile(selectedProfile);
-            mainMenuController.setCurrentProfile(selectedProfile);
+            profileSelectionListener.onProfileSelected(selectedProfile);
         } else {
             view.showInvalidChoice();
         }

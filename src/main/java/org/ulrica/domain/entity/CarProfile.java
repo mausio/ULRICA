@@ -7,7 +7,7 @@ import org.ulrica.domain.valueobject.BatteryProfile;
 import org.ulrica.domain.valueobject.ChargingCurve;
 import org.ulrica.domain.valueobject.ConsumptionProfile;
 
-public final class CarProfile {
+public class CarProfile {
     private final String id;
     private final String name;
     private final String manufacturer;

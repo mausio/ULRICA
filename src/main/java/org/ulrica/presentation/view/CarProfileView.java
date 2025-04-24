@@ -2,16 +2,18 @@ package org.ulrica.presentation.view;
 
 import java.util.List;
 
+import org.ulrica.application.port.out.CarProfileMenuOutputPort;
 import org.ulrica.domain.entity.CarProfile;
 import org.ulrica.domain.valueobject.BatteryType;
 import org.ulrica.presentation.util.AnsiColors;
 
-public class CarProfileView {
+public class CarProfileView implements CarProfileMenuOutputPort {
     private static final String SEPARATOR = "─".repeat(80);
     private static final String SECTION_SEPARATOR = "═".repeat(80);
 
-    public void showMenu() {
-        System.out.println("\n=== Car Profile Management ===" + AnsiColors.RESET);
+    @Override
+    public void showCarProfileMenu() {
+        System.out.println("\n=== Car Profile Management ===");
         System.out.println("1. View all car profiles");
         System.out.println("2. Create new car profile");
         System.out.println("3. Delete car profile");
@@ -19,44 +21,68 @@ public class CarProfileView {
         System.out.println("5. Back to main menu");
         System.out.print("\nEnter your choice (1-5): ");
     }
+    
+    @Override
+    public void showMenuOptions() {
+        System.out.println("1. View all car profiles");
+        System.out.println("2. Create new car profile");
+        System.out.println("3. Delete car profile");
+        System.out.println("4. Edit car profile");
+        System.out.println("5. Back to main menu");
+    }
+    
+    @Override
+    public void showPrompt() {
+        System.out.print("\nEnter your choice (1-5): ");
+    }
 
+    @Override
+    public void showNoProfilesMessage() {
+        System.out.println(AnsiColors.YELLOW + "No car profiles found!" + AnsiColors.RESET);
+    }
+
+    @Override
     public void showAllCarProfiles(List<CarProfile> profiles) {
-        System.out.println("\n" + AnsiColors.YELLOW_BOLD + "Car Profiles:" + AnsiColors.RESET);
         for (CarProfile profile : profiles) {
-            System.out.println(SEPARATOR);
-            System.out.println(AnsiColors.GREEN + "Name: " + AnsiColors.RESET + profile.getName());
-            System.out.println(AnsiColors.GREEN + "Manufacturer: " + AnsiColors.RESET + profile.getManufacturer());
-            System.out.println(AnsiColors.GREEN + "Model: " + AnsiColors.RESET + profile.getModel());
-            System.out.println(AnsiColors.GREEN + "Build Year: " + AnsiColors.RESET + profile.getYear());
-            System.out.println(AnsiColors.GREEN + "Heat Pump: " + AnsiColors.RESET + (profile.hasHeatPump() ? "Yes" : "No"));
-            System.out.println(SEPARATOR);
+            System.out.println("\n────────────────────────────────────────────────────────────────────────────────");
+            System.out.println("Name: " + profile.getName());
+            System.out.println("Manufacturer: " + profile.getManufacturer());
+            System.out.println("Model: " + profile.getModel());
+            System.out.println("Build Year: " + profile.getYear());
+            System.out.println("Heat Pump: " + (profile.hasHeatPump() ? "Yes" : "No"));
+            System.out.println("────────────────────────────────────────────────────────────────────────────────");
         }
     }
 
+    @Override
     public void askToSelectProfile() {
         System.out.print("\nWould you like to select a profile? (yes/no): ");
     }
 
+    @Override
     public void showProfileSelection(List<CarProfile> profiles) {
-        System.out.println("\n" + AnsiColors.YELLOW_BOLD + "Select a profile:" + AnsiColors.RESET);
+        System.out.println("\nSelect a profile:");
         for (int i = 0; i < profiles.size(); i++) {
             System.out.println((i + 1) + ". " + profiles.get(i).getName());
         }
         System.out.print("\nEnter number (1-" + profiles.size() + "): ");
     }
 
+    @Override
     public void showSelectedProfile(CarProfile profile) {
-        System.out.println("\n" + AnsiColors.GREEN + "Selected profile: " + AnsiColors.RESET + profile.getName());
-        System.out.println(AnsiColors.GREEN + "Manufacturer: " + AnsiColors.RESET + profile.getManufacturer());
-        System.out.println(AnsiColors.GREEN + "Model: " + AnsiColors.RESET + profile.getModel());
-        System.out.println(AnsiColors.GREEN + "Build Year: " + AnsiColors.RESET + profile.getYear());
-        System.out.println(AnsiColors.GREEN + "Heat Pump: " + AnsiColors.RESET + (profile.hasHeatPump() ? "Yes" : "No"));
+        System.out.println("\nSelected profile: " + profile.getName());
+        System.out.println("Manufacturer: " + profile.getManufacturer());
+        System.out.println("Model: " + profile.getModel());
+        System.out.println("Build Year: " + profile.getYear());
+        System.out.println("Heat Pump: " + (profile.hasHeatPump() ? "Yes" : "No"));
     }
 
+    @Override
     public void showCreateProfileHeader() {
         System.out.println("\n=== Create New Car Profile ===" + AnsiColors.RESET);
     }
 
+    @Override
     public void showBatteryTypes() {
         System.out.println("\n" + AnsiColors.BLUE_BOLD + "Battery Profile Setup:" + AnsiColors.RESET);
         System.out.println("Available battery types:");
@@ -66,11 +92,13 @@ public class CarProfileView {
         }
     }
 
+    @Override
     public void showConsumptionProfileSetup() {
         System.out.println("\n" + AnsiColors.BLUE_BOLD + "Consumption Profile Setup:" + AnsiColors.RESET);
         System.out.println("Please enter the consumption values at different speeds:");
     }
 
+    @Override
     public void showProfileCreated(CarProfile profile) {
         System.out.println("\n" + SECTION_SEPARATOR);
         System.out.println(AnsiColors.BLUE_BOLD + "Car Profile Created Successfully!" + AnsiColors.RESET);
@@ -104,24 +132,27 @@ public class CarProfileView {
         System.out.println("\nPress Enter to continue...");
     }
 
+    @Override
     public void showProfileDeleted(CarProfile profile) {
         System.out.println("\n" + AnsiColors.RED + "Profile deleted: " + AnsiColors.RESET + profile.getName());
     }
 
-    public void showEditNotImplemented() {
-        System.out.println("\n" + AnsiColors.RED + "Edit functionality not yet implemented." + AnsiColors.RESET);
-    }
-
+    @Override
     public void showInvalidChoice() {
-        System.out.println("\n" + AnsiColors.RED + "Invalid choice. Please try again." + AnsiColors.RESET);
+        System.out.println(AnsiColors.RED + "Invalid choice. Please try again." + AnsiColors.RESET);
     }
 
+    @Override
     public void showPrompt(String prompt) {
         System.out.print(prompt);
     }
-
-    public void showNoProfilesMessage() {
-        System.out.println("\n" + AnsiColors.RED + "No car profiles found in the repository." + AnsiColors.RESET);
-        System.out.println("Please create a new car profile first.");
+    
+    @Override
+    public void showEditNotImplemented() {
+        System.out.println(AnsiColors.YELLOW + "Edit functionality is not yet implemented." + AnsiColors.RESET);
+    }
+    
+    public void showMenu() {
+        showCarProfileMenu();
     }
 } 

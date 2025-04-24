@@ -21,7 +21,9 @@ public class CreateCarProfileInteractor implements CreateCarProfileUseCaseInterf
         BatteryProfile batteryProfile = new BatteryProfile(
                 BatteryType.valueOf(command.getBatteryType()),
                 command.getBatteryCapacityKwh(),
-                command.getBatteryDegradationPercent()
+                command.getBatteryDegradationPercent(),
+                command.getMaxDcPowerKw(),
+                command.getMaxAcPowerKw()
         );
 
         ConsumptionProfile consumptionProfile = new ConsumptionProfile(

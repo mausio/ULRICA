@@ -21,7 +21,6 @@ public class ShowMainMenuInteractor implements ShowMainMenuUseCaseInterface {
         }
         
         outputPort.showMenuOptions();
-        outputPort.showExitOption();
         outputPort.showPrompt();
     }
 

@@ -2,30 +2,28 @@ package org.ulrica.presentation.controller;
 
 import java.util.Scanner;
 
+import org.ulrica.application.port.in.NavigationUseCaseInterface;
+import org.ulrica.application.port.in.ProfileSelectionListener;
 import org.ulrica.application.port.in.ShowMainMenuUseCaseInterface;
 import org.ulrica.application.port.out.MainMenuOutputPortInterface;
 import org.ulrica.domain.entity.CarProfile;
 
-public class MainMenuController {
+public class MainMenuController implements ProfileSelectionListener {
     private final ShowMainMenuUseCaseInterface showMainMenuUseCase;
     private final MainMenuOutputPortInterface mainMenuView;
     private final Scanner scanner;
-    private CarProfileController carProfileController;
+    private final NavigationUseCaseInterface navigationUseCase;
     private CarProfile currentProfile;
 
     public MainMenuController(
             ShowMainMenuUseCaseInterface showMainMenuUseCase,
             MainMenuOutputPortInterface mainMenuView,
-            CarProfileController carProfileController) {
+            NavigationUseCaseInterface navigationUseCase) {
         this.showMainMenuUseCase = showMainMenuUseCase;
         this.mainMenuView = mainMenuView;
+        this.navigationUseCase = navigationUseCase;
         this.scanner = new Scanner(System.in);
-        this.carProfileController = carProfileController;
         this.currentProfile = null;
-    }
-
-    public void setCarProfileController(CarProfileController carProfileController) {
-        this.carProfileController = carProfileController;
     }
 
     public void showMainMenu() {
@@ -40,7 +38,8 @@ public class MainMenuController {
         handleUserInput();
     }
 
-    public void setCurrentProfile(CarProfile profile) {
+    @Override
+    public void onProfileSelected(CarProfile profile) {
         this.currentProfile = profile;
     }
 
@@ -50,8 +49,7 @@ public class MainMenuController {
 
         switch (choice) {
             case 1:
-                carProfileController.showCarProfileMenu();
-                showMainMenu();
+                navigationUseCase.navigateToCarProfileMenu();
                 break;
             case 2:
                 System.exit(0);
