@@ -1,0 +1,61 @@
+@startuml ULRICA Low Coupling Example
+
+' Styling
+skinparam backgroundColor white
+skinparam class {
+    BackgroundColor LightBlue
+    ArrowColor Black
+    BorderColor Black
+}
+
+' Low Coupling Example
+interface "RangeCalculationOutputPortInterface" {
+    + showCalculationResult(RangeResult): void
+    + showError(String): void
+}
+
+class "RangeCalculationView" {
+    - userOutputPort: UserOutputPortInterface
+    + showCalculationResult(RangeResult): void
+    + showError(String): void
+}
+
+class "CalculateRangeInteractor" {
+    - outputPort: RangeCalculationOutputPortInterface
+    - rangeCalculatorService: RangeCalculatorService
+    + calculateRange(RangeParameters): void
+}
+
+class "RangeCalculatorService" {
+    + calculateRange(CarProfile, RangeParameters): RangeResult
+}
+
+class "RangeResult" {
+    - estimatedRangeKm: double
+    - averageConsumptionKwhPer100Km: double
+    + getEstimatedRangeKm(): double
+    + getAverageConsumptionKwhPer100Km(): double
+}
+
+' Relationships
+RangeCalculationView ..|> RangeCalculationOutputPortInterface
+CalculateRangeInteractor --> RangeCalculationOutputPortInterface
+CalculateRangeInteractor --> RangeCalculatorService
+RangeCalculatorService --> RangeResult
+
+note right of RangeCalculationView
+  Low Coupling: Depends only on
+  interface, not concrete implementation
+end note
+
+note right of CalculateRangeInteractor
+  Low Coupling: Depends on abstractions
+  and has minimal dependencies
+end note
+
+note right of RangeCalculatorService
+  Low Coupling: Focused on single
+  responsibility
+end note
+
+@enduml 

@@ -1,0 +1,56 @@
+@startuml ULRICA Range Calculation Sequence
+
+' Styling
+skinparam backgroundColor white
+skinparam sequence {
+    ArrowColor Black
+    ParticipantBorderColor Black
+    ParticipantBackgroundColor LightBlue
+}
+
+' Participants
+actor User
+participant "RangeCalculationController" as Controller
+participant "CalculateRangeInteractor" as Interactor
+participant "RangeCalculatorService" as Service
+participant "ProfileSelectionService" as ProfileService
+participant "RangeCalculationView" as View
+participant "CarProfile" as Profile
+
+' Sequence
+User -> Controller: calculateRange()
+activate Controller
+
+Controller -> Interactor: calculateRange(terrain, weather, temperature, environment, efficiencyMode, soc)
+activate Interactor
+
+Interactor -> ProfileService: getSelectedProfile()
+activate ProfileService
+ProfileService --> Interactor: CarProfile
+deactivate ProfileService
+
+alt No profile selected
+    Interactor -> View: showError("No car profile selected")
+    Interactor --> Controller: false
+    deactivate Interactor
+    Controller --> User: false
+    deactivate Controller
+else Profile selected
+    Interactor -> Service: calculateRange(profile, parameters)
+    activate Service
+    Service -> Profile: getBatteryProfile()
+    Profile --> Service: BatteryProfile
+    Service -> Profile: getConsumptionProfile()
+    Profile --> Service: ConsumptionProfile
+    Service --> Interactor: RangeResult
+    deactivate Service
+
+    Interactor -> View: showCalculationResult()
+    Interactor -> View: showImpactAnalysis()
+    Interactor --> Controller: true
+    deactivate Interactor
+    Controller --> User: true
+    deactivate Controller
+end
+
+@enduml 

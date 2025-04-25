@@ -1,0 +1,141 @@
+@startuml ULRICA Domain Model
+
+' Styling
+skinparam backgroundColor white
+skinparam class {
+    BackgroundColor LightBlue
+    ArrowColor Black
+    BorderColor Black
+}
+
+' Domain Entities
+class CarProfile {
+    - id: String
+    - name: String
+    - manufacturer: String
+    - model: String
+    - year: int
+    - hasHeatPump: boolean
+    - wltpRangeKm: double
+    - maxDcPowerKw: double
+    - maxAcPowerKw: double
+    - batteryProfile: BatteryProfile
+    - consumptionProfile: ConsumptionProfile
+    - chargingCurve: Optional<ChargingCurve>
+    + getId(): String
+    + getName(): String
+    + getManufacturer(): String
+    + getModel(): String
+    + getYear(): int
+    + hasHeatPump(): boolean
+    + getWltpRangeKm(): double
+    + getMaxDcPowerKw(): double
+    + getMaxAcPowerKw(): double
+    + getBatteryProfile(): BatteryProfile
+    + getConsumptionProfile(): ConsumptionProfile
+    + getChargingCurve(): Optional<ChargingCurve>
+}
+
+' Value Objects
+class BatteryProfile {
+    - capacityKwh: double
+    - degradationPercent: double
+    - type: BatteryType
+    + getCapacityKwh(): double
+    + getDegradationPercent(): double
+    + getType(): BatteryType
+}
+
+class ConsumptionProfile {
+    - baseConsumptionKwhPer100Km: double
+    - consumptionAt50Kmh: double
+    - consumptionAt100Kmh: double
+    - consumptionAt130Kmh: double
+    + getBaseConsumptionKwhPer100Km(): double
+    + getConsumptionAt50Kmh(): double
+    + getConsumptionAt100Kmh(): double
+    + getConsumptionAt130Kmh(): double
+}
+
+class ChargingCurve {
+    - socPoints: List<Double>
+    - powerPoints: List<Double>
+    + getSocPoints(): List<Double>
+    + getPowerPoints(): List<Double>
+}
+
+class RangeParameters {
+    - terrain: TerrainType
+    - weather: WeatherType
+    - temperatureCelsius: double
+    - environment: DrivingEnvironment
+    - efficiencyMode: EfficiencyMode
+    - stateOfChargePercent: double
+    + getTerrain(): TerrainType
+    + getWeather(): WeatherType
+    + getTemperatureCelsius(): double
+    + getEnvironment(): DrivingEnvironment
+    + getEfficiencyMode(): EfficiencyMode
+    + getStateOfChargePercent(): double
+}
+
+class RangeResult {
+    - estimatedRangeKm: double
+    - averageConsumptionKwhPer100Km: double
+    - weatherImpactDescription: String
+    - terrainImpactDescription: String
+    - environmentImpactDescription: String
+    - batteryConditionDescription: String
+    + getEstimatedRangeKm(): double
+    + getAverageConsumptionKwhPer100Km(): double
+    + getWeatherImpactDescription(): String
+    + getTerrainImpactDescription(): String
+    + getEnvironmentImpactDescription(): String
+    + getBatteryConditionDescription(): String
+}
+
+' Enums
+enum BatteryType {
+    LFP
+    NMC
+    NCA
+}
+
+enum TerrainType {
+    FLAT
+    HILLY
+    MOUNTAINOUS
+}
+
+enum WeatherType {
+    SUNNY
+    CLOUDY
+    RAINY
+    SNOWY
+}
+
+enum DrivingEnvironment {
+    URBAN
+    RURAL
+    HIGHWAY
+}
+
+enum EfficiencyMode {
+    ECO
+    NORMAL
+    SPORT
+}
+
+' Relationships
+CarProfile --> BatteryProfile
+CarProfile --> ConsumptionProfile
+CarProfile --> ChargingCurve
+RangeParameters --> CarProfile
+RangeResult --> RangeParameters
+BatteryProfile --> BatteryType
+RangeParameters --> TerrainType
+RangeParameters --> WeatherType
+RangeParameters --> DrivingEnvironment
+RangeParameters --> EfficiencyMode
+
+@enduml 

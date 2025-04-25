@@ -1,0 +1,68 @@
+@startuml ULRICA Dependency Rule Examples
+
+' Styling
+skinparam backgroundColor white
+skinparam class {
+    BackgroundColor LightBlue
+    ArrowColor Black
+    BorderColor Black
+}
+
+' Correct Implementation
+package "Domain Layer" {
+    class CarProfile {
+        + getId(): String
+        + getName(): String
+    }
+}
+
+package "Application Layer" {
+    interface "CarProfilePersistencePortInterface" {
+        + save(CarProfile): CarProfile
+    }
+}
+
+package "Infrastructure Layer" {
+    class "JsonCarProfileRepository" {
+        + save(CarProfile): CarProfile
+    }
+}
+
+' Incorrect Implementation
+package "Presentation Layer" {
+    class "CarProfileView" {
+        + showCarProfile(CarProfile): void
+    }
+    class "JsonCarProfileRepository" as BadRepository {
+        + save(CarProfile): CarProfile
+    }
+}
+
+' Correct Dependencies
+JsonCarProfileRepository ..|> CarProfilePersistencePortInterface
+CarProfilePersistencePortInterface --> CarProfile
+
+' Incorrect Dependencies
+BadRepository --> CarProfile
+
+note right of CarProfile
+  Domain Entity - No dependencies
+  to outer layers
+end note
+
+note right of CarProfilePersistencePortInterface
+  Application Port - Depends on
+  Domain Layer
+end note
+
+note right of JsonCarProfileRepository
+  Infrastructure Adapter - Correctly
+  implements port interface
+end note
+
+note right of BadRepository
+  Incorrect: Infrastructure
+  directly depends on Domain
+end note
+
+@enduml 

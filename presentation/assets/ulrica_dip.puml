@@ -1,0 +1,63 @@
+@startuml ULRICA Dependency Inversion Principle
+
+' Styling
+skinparam backgroundColor white
+skinparam class {
+    BackgroundColor LightBlue
+    ArrowColor Black
+    BorderColor Black
+}
+
+' Bad DIP Example
+class "CarProfileService" {
+    - repository: JsonCarProfileRepository
+    + saveProfile(CarProfile): void
+}
+
+class "JsonCarProfileRepository" {
+    + save(CarProfile): void
+}
+
+' Good DIP Example
+interface "CarProfileRepositoryInterface" {
+    + save(CarProfile): void
+    + findById(String): CarProfile
+}
+
+class "CarProfileService" as GoodCarProfileService {
+    - repository: CarProfileRepositoryInterface
+    + saveProfile(CarProfile): void
+}
+
+class "JsonCarProfileRepository" as GoodJsonRepository {
+    + save(CarProfile): void
+    + findById(String): CarProfile
+}
+
+class "InMemoryCarProfileRepository" {
+    + save(CarProfile): void
+    + findById(String): CarProfile
+}
+
+' Relationships
+CarProfileService --> JsonCarProfileRepository
+GoodCarProfileService --> CarProfileRepositoryInterface
+GoodJsonRepository ..|> CarProfileRepositoryInterface
+InMemoryCarProfileRepository ..|> CarProfileRepositoryInterface
+
+note right of CarProfileService
+  Bad DIP: Depends on concrete
+  implementation
+end note
+
+note right of GoodCarProfileService
+  Good DIP: Depends on abstraction
+  (interface)
+end note
+
+note right of CarProfileRepositoryInterface
+  Good DIP: Interface defines
+  contract for repositories
+end note
+
+@enduml 

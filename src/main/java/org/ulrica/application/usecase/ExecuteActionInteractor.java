@@ -6,6 +6,7 @@ import org.ulrica.application.port.out.ActionResultOutputPortInterface;
 import org.ulrica.domain.service.ProfileSelectionService;
 import org.ulrica.presentation.controller.AcChargingController;
 import org.ulrica.presentation.controller.DcChargingController;
+import org.ulrica.presentation.controller.RangeCalculationController;
 
 public class ExecuteActionInteractor implements ExecuteActionUseCaseInterface {
     
@@ -14,18 +15,21 @@ public class ExecuteActionInteractor implements ExecuteActionUseCaseInterface {
     private final ProfileSelectionService profileSelectionService;
     private final DcChargingController dcChargingController;
     private final AcChargingController acChargingController;
+    private final RangeCalculationController rangeCalculationController;
     
     public ExecuteActionInteractor(
             NavigationUseCaseInterface navigationUseCase,
             ActionResultOutputPortInterface actionResultOutputPort,
             ProfileSelectionService profileSelectionService,
             DcChargingController dcChargingController,
-            AcChargingController acChargingController) {
+            AcChargingController acChargingController,
+            RangeCalculationController rangeCalculationController) {
         this.navigationUseCase = navigationUseCase;
         this.actionResultOutputPort = actionResultOutputPort;
         this.profileSelectionService = profileSelectionService;
         this.dcChargingController = dcChargingController;
         this.acChargingController = acChargingController;
+        this.rangeCalculationController = rangeCalculationController;
     }
     
     @Override
@@ -41,9 +45,7 @@ public class ExecuteActionInteractor implements ExecuteActionUseCaseInterface {
             case 2:
                 return acChargingController.processAcChargingCalculation();
             case 3:
-                // TODO: Range Calculation
-                actionResultOutputPort.showNotImplemented("Range Calculation");
-                return true;
+                return rangeCalculationController.processRangeCalculation();
             case 4:
                 navigationUseCase.navigateToMainMenu();
                 return true;

@@ -1,0 +1,88 @@
+@startuml ULRICA Use Cases
+
+' Styling
+skinparam backgroundColor white
+skinparam usecase {
+    BackgroundColor LightBlue
+    BorderColor Black
+}
+
+' Actors
+actor User
+
+' Use Cases
+usecase "Create Car Profile" as UC1
+usecase "Select Car Profile" as UC2
+usecase "Calculate DC Charging Time" as UC3
+usecase "Calculate AC Charging Time" as UC4
+usecase "Calculate Range" as UC5
+usecase "View Car Profile Details" as UC6
+usecase "Delete Car Profile" as UC7
+usecase "Navigate Menu" as UC8
+
+' Relationships
+User --> UC1
+User --> UC2
+User --> UC3
+User --> UC4
+User --> UC5
+User --> UC6
+User --> UC7
+User --> UC8
+
+' Use Case Dependencies
+UC2 ..> UC3 : <<include>>
+UC2 ..> UC4 : <<include>>
+UC2 ..> UC5 : <<include>>
+UC2 ..> UC6 : <<include>>
+UC2 ..> UC7 : <<include>>
+UC8 ..> UC1 : <<include>>
+UC8 ..> UC2 : <<include>>
+UC8 ..> UC3 : <<include>>
+UC8 ..> UC4 : <<include>>
+UC8 ..> UC5 : <<include>>
+UC8 ..> UC6 : <<include>>
+UC8 ..> UC7 : <<include>>
+
+' Use Case Descriptions
+note right of UC1
+  User can create a new car profile
+  with battery and consumption details
+end note
+
+note right of UC2
+  User must select a car profile
+  before performing calculations
+end note
+
+note right of UC3
+  Calculate DC fast charging time
+  based on battery state and conditions
+end note
+
+note right of UC4
+  Calculate AC charging time
+  based on connector type and conditions
+end note
+
+note right of UC5
+  Calculate range based on
+  terrain, weather, and driving conditions
+end note
+
+note right of UC6
+  View detailed information
+  about selected car profile
+end note
+
+note right of UC7
+  Delete an existing car profile
+  from the system
+end note
+
+note right of UC8
+  Navigate through the
+  application menu system
+end note
+
+@enduml 

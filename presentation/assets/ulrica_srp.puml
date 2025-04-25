@@ -1,0 +1,72 @@
+@startuml ULRICA Single Responsibility Principle
+
+' Styling
+skinparam backgroundColor white
+skinparam class {
+    BackgroundColor LightBlue
+    ArrowColor Black
+    BorderColor Black
+}
+
+' Good SRP Example
+class "CarProfile" {
+    + getId(): String
+    + getName(): String
+    + getBatteryProfile(): BatteryProfile
+    + getConsumptionProfile(): ConsumptionProfile
+    + validate(): boolean
+}
+
+' Bad SRP Example
+class "CarProfileManager" {
+    + createProfile(): CarProfile
+    + saveProfile(CarProfile): void
+    + calculateRange(CarProfile): double
+    + displayProfile(CarProfile): void
+    + validateProfile(CarProfile): boolean
+}
+
+' Good SRP Refactored
+class "CarProfileRepository" {
+    + save(CarProfile): void
+    + findById(String): CarProfile
+}
+
+class "RangeCalculator" {
+    + calculateRange(CarProfile): double
+}
+
+class "CarProfileValidator" {
+    + validate(CarProfile): boolean
+}
+
+class "CarProfileView" {
+    + display(CarProfile): void
+}
+
+' Relationships
+CarProfileManager --> CarProfile
+CarProfileRepository --> CarProfile
+RangeCalculator --> CarProfile
+CarProfileValidator --> CarProfile
+CarProfileView --> CarProfile
+
+note right of CarProfile
+  Good SRP: Single responsibility
+  for representing car profile data
+end note
+
+note right of CarProfileManager
+  Bad SRP: Multiple responsibilities:
+  - Persistence
+  - Calculation
+  - Validation
+  - Display
+end note
+
+note right of CarProfileRepository
+  Good SRP: Single responsibility
+  for persistence operations
+end note
+
+@enduml 
