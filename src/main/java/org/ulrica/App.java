@@ -61,16 +61,29 @@ public class App {
         UserOutputPortInterface userOutputPort = new ConsoleUserOutputAdapter();
         CarProfilePersistencePortInterface repository = new JsonCarProfileRepository();
         
-        // Domain Layer - Service für die Profileauswahl
+        // Domain Layer: Services
         ProfileSelectionService profileSelectionService = new ProfileSelectionServiceImpl();
         ActionAvailabilityService actionAvailabilityService = new ActionAvailabilityServiceImpl(profileSelectionService);
-        
-        // Domain Layer - Calculator Services
         DcChargingCalculator dcChargingCalculator = new DcChargingCalculator();
         AcChargingCalculator acChargingCalculator = new AcChargingCalculator();
         RangeCalculatorService rangeCalculatorService = new RangeCalculatorService();
         
+        
+        // Presentation Layey: Alle Views
+        WelcomeView welcomeView = new WelcomeView();
+        MainMenuView mainMenuView = new MainMenuView(userOutputPort);
+        CarProfileView carProfileView = new CarProfileView();
+        ActionMenuView actionMenuView = new ActionMenuView(userOutputPort);
+        ActionResultView actionResultView = new ActionResultView(userOutputPort);
+        DcChargingOutputPortInterface dcChargingView = new DcChargingView(userOutputPort);
+        AcChargingOutputPortInterface acChargingView = new AcChargingView(userOutputPort, acChargingCalculator);
+        RangeCalculationOutputPortInterface rangeCalculationView = new RangeCalculationView(userOutputPort);
+        
         // Application Layer - Use Cases
+        CalculateDcChargingUseCaseInterface calculateDcChargingUseCase = new CalculateDcChargingInteractor(
+                profileSelectionService, dcChargingCalculator, dcChargingView);
+        CalculateAcChargingUseCaseInterface calculateAcChargingUseCase = new CalculateAcChargingInteractor(
+                profileSelectionService, acChargingCalculator, acChargingView);
         NavigationUseCaseInterface navigationUseCase = new NavigationUseCase();
         ShowWelcomeUseCaseInterface showWelcomeUseCase = new ShowWelcomeInteractor();
         ShowMainMenuUseCaseInterface showMainMenuUseCase = new ShowMainMenuInteractor();
@@ -79,33 +92,11 @@ public class App {
         CreateCarProfileUseCaseInterface createCarProfileUseCase = new CreateCarProfileInteractor(repository);
         InputValidationServiceInterface validationService = new InputValidationService();
         
-        // Presentation Layer - Alle Views
-        WelcomeView welcomeView = new WelcomeView();
-        MainMenuView mainMenuView = new MainMenuView(userOutputPort);
-        CarProfileView carProfileView = new CarProfileView();
-        ActionMenuView actionMenuView = new ActionMenuView(userOutputPort);
-        ActionResultView actionResultView = new ActionResultView(userOutputPort);
-        
-        // Charging Calculator Views
-        DcChargingOutputPortInterface dcChargingView = new DcChargingView(userOutputPort);
-        AcChargingOutputPortInterface acChargingView = new AcChargingView(userOutputPort, acChargingCalculator);
-        
-        // Range Calculator View
-        RangeCalculationOutputPortInterface rangeCalculationView = new RangeCalculationView(userOutputPort);
-        
-        // Charging Calculator Use Cases
-        CalculateDcChargingUseCaseInterface calculateDcChargingUseCase = new CalculateDcChargingInteractor(
-                profileSelectionService, dcChargingCalculator, dcChargingView);
-        CalculateAcChargingUseCaseInterface calculateAcChargingUseCase = new CalculateAcChargingInteractor(
-                profileSelectionService, acChargingCalculator, acChargingView);
-        
-        // Charging Calculator Controllers
+        // Presentation Layer: Controllers
         DcChargingController dcChargingController = new DcChargingController(
                 userInputPort, userOutputPort, calculateDcChargingUseCase, dcChargingView);
         AcChargingController acChargingController = new AcChargingController(
                 userInputPort, userOutputPort, calculateAcChargingUseCase, acChargingView);
-        
-        // Range Calculator Use Case and Controller
         CalculateRangeUseCaseInterface calculateRangeUseCase = new CalculateRangeInteractor(
                 rangeCalculatorService, rangeCalculationView, profileSelectionService);
         RangeCalculationController rangeCalculationController = new RangeCalculationController(
@@ -120,7 +111,7 @@ public class App {
                 acChargingController,
                 rangeCalculationController);
         
-        // Presentation Layer - ApplicationControllerWithActionMenu mit Action-Menu-Unterstützung
+        // Presentation Layer: ApplicationControllerWithActionMenu (eine Erweiterung von ApplicationController, der gelöscht wurde) mit Action-Menu-Unterstützung
         ApplicationControllerWithActionMenu applicationController = new ApplicationControllerWithActionMenu(
             userInputPort,
             userOutputPort,

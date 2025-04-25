@@ -223,7 +223,6 @@ Controllers    Use Cases      Entities     |
 ## Dependencies
 - **JUnit**: Testing framework
 - **GSON**: JSON serialization/deserialization
-- **Jackson**: JSON data binding
 
 ## Testing
 The project includes JUnit tests with JaCoCo for code coverage analysis. A minimum coverage of 50% is enforced for line coverage.
