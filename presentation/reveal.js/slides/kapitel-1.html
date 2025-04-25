@@ -5,12 +5,63 @@
     <ul>
         <li>ULRICA = <strong>U</strong>niversa<strong>L</strong> <strong>R</strong>ange and dest<strong>I</strong>nation
             <strong>CA</strong>lculator</li>
-        <li>Erstellt und verwaltet Fahrzeugprofile</li>
+        <li>Erstellt und verwaltet Fahrzeugprofile für Elektrofahrzeuge</li>
         <li>Berechnet verbleibende Reichweite von Elektrofahrzeugen mit verschiedenen Effizienz-Modi (ECO, Normal,
             Sport)</li>
-        <li>Schätzt Ladezeiten an DC- und AC-Ladestationen mit verschiedenen Konditionen</li>
+        <li>Berücksichtigt verschiedene Umgebungsbedingungen (Gelände, Wetter, Temperatur)</li>
+        <li>Berechnet Ladezeiten an DC- und AC-Ladestationen mit verschiedenen Konditionen</li>
+        <li>Erstellt detaillierte Analysen zu Umwelteinflüssen auf Reichweite und Ladezeiten</li>
         <li>Berücksichtigt Batterieeigenschaften (LFP, NMC, NCA) und Ladekurven</li>
     </ul>
+</section>
+
+<section>
+    <h3>Funktionen der Applikation</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>Fahrzeugprofil-Management</h5>
+            <ul>
+                <li>Erstellung, Anzeige, Bearbeitung und Löschung von Fahrzeugprofilen</li>
+                <li>Konfiguration von Batteriedaten (Typ, Kapazität, Alterung)</li>
+                <li>Definition von Verbrauchsprofilen und Ladekurven</li>
+                <li>JSON-basierte Persistierung</li>
+            </ul>
+        </div>
+        <div>
+            <h5>Reichweitenberechnung</h5>
+            <ul>
+                <li>Berücksichtigung von Geländebedingungen</li>
+                <li>Anpassung an Wetterbedingungen</li>
+                <li>Temperatureinflüsse</li>
+                <li>Fahrumgebung (Stadt, Land, Autobahn)</li>
+                <li>Effizienz-Modi (ECO, NORMAL, SPORT)</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Ladeberechnung</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>DC (Schnell) Laden</h5>
+            <ul>
+                <li>SoC-basierte Berechnungen</li>
+                <li>Temperatureinflüsse beim Laden</li>
+                <li>Leistungsreduktion basierend auf Batteriezustand</li>
+                <li>Detaillierte Ladezeitschätzungen</li>
+            </ul>
+        </div>
+        <div>
+            <h5>AC (Langsam) Laden</h5>
+            <ul>
+                <li>Verschiedene Anschlusstypen (Haushalt, Camping, Wallbox)</li>
+                <li>Berechnung von Effizienzverlusten</li>
+                <li>Temperatur-Effizenzfaktoren</li>
+                <li>Ladezeitprognosen</li>
+            </ul>
+        </div>
+    </div>
 </section>
 
 <section>
@@ -34,11 +85,15 @@
         <li>ULRICA starten: <span style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span class="hljs-keyword">mvn</span> <span class="hljs-built_in">exec:java</span>
             -Dexec.mainClass="org.ulrica.App"</span>
         </li>
+        <li>Alternativ: Ausführbare JAR erstellen: <span style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span class="hljs-keyword">mvn</span> <span class="hljs-built_in">clean</span> <span
+                class="hljs-built_in">package</span></span> und dann <span style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span class="hljs-keyword">java</span> <span class="hljs-built_in">-jar</span> target/ULRICA-1.0-SNAPSHOT.jar</span>
+        </li>
     </ol>
 </section>
 
 <section>
     <h3>Technischer Überblick (2P)</h3>
+    <p>ULRICA wurde mit folgenden Technologien implementiert:</p>
     <ul>
         <li><strong>Java:</strong> Objektorientierte Programmiersprache - ermöglicht klare Strukturierung mit Design
             Patterns und Best Practices</li>
@@ -47,6 +102,174 @@
             Pattern)</li>
         <li><strong>GSON:</strong> Java-Bibliothek - ermöglicht Serialisierung/Deserialisierung zwischen Java-Objekten
             und JSON</li>
-        </li>
+        <li><strong>JUnit:</strong> Test-Framework - ermöglicht automatisierte Tests für robustere Software</li>
+        <li><strong>JaCoCo:</strong> Code-Coverage-Tool - misst Testabdeckung zur Qualitätssicherung</li>
+        <li><strong>GitHub Actions:</strong> CI/CD-Plattform - automatisiert Build, Test und Deployment</li>
     </ul>
+</section>
+
+<section>
+    <h3>Java (JDK 17)</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>Vorteile für ULRICA</h5>
+            <ul>
+                <li>Plattformunabhängigkeit durch JVM</li>
+                <li>Starke objektorientierte Programmierung</li>
+                <li>Typ-Sicherheit reduziert Laufzeitfehler</li>
+                <li>Modernes JDK 17 mit LTS-Support</li>
+                <li>Umfangreiche Bibliotheken verfügbar</li>
+                <li>Ideale Grundlage für Clean Architecture</li>
+            </ul>
+        </div>
+        <div>
+            <h5>Alternativen-Vergleich</h5>
+            <ul>
+                <li>Kotlin: Eleganter, aber weniger etabliert</li>
+                <li>C#: Ähnlich stark, aber plattformabhängiger</li>
+                <li>Python: Einfacher, aber weniger performant</li>
+                <li>JavaScript: Weniger typsicher und strukturiert</li>
+                <li>C++: Höhere Performance, aber komplexere Entwicklung</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Maven</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>Vorteile für ULRICA</h5>
+            <ul>
+                <li>Deklaratives Projektmanagement</li>
+                <li>Automatisiertes Abhängigkeitsmanagement</li>
+                <li>Standardisierte Build-Lebenszyklen</li>
+                <li>Integration mit CI/CD-Prozessen</li>
+                <li>Plugin-Ökosystem für erweiterte Funktionen</li>
+                <li>Konsistente Projektstruktur</li>
+            </ul>
+        </div>
+        <div>
+            <h5>Alternativen-Vergleich</h5>
+            <ul>
+                <li>Gradle: Flexibler, aber komplexere Lernkurve</li>
+                <li>Ant: Weniger strukturiert und veraltet</li>
+                <li>Bazel: Leistungsstärker, jedoch aufwändiger einzurichten</li>
+                <li>SBT: Spezialisiert auf Scala-Projekte</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>JSON & GSON</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>Vorteile für ULRICA</h5>
+            <ul>
+                <li>Leichtgewichtiges Datenformat</li>
+                <li>Menschenlesbar und einfach zu bearbeiten</li>
+                <li>Ideal für Konfigurationsdaten wie Fahrzeugprofile</li>
+                <li>Weit verbreitet und unterstützt</li>
+                <li>GSON bietet einfache Java-Integration</li>
+                <li>TypeAdapter für komplexe Datentypen</li>
+            </ul>
+        </div>
+        <div>
+            <h5>Alternativen-Vergleich</h5>
+            <ul>
+                <li>XML: Strukturierter, aber verboserer</li>
+                <li>YAML: Menschenfreundlicher, jedoch fehleranfälliger</li>
+                <li>Binärformate: Effizienter, aber nicht menschenlesbar</li>
+                <li>Datenbanken: Mächtiger, aber überdimensioniert für diese Anwendung</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Test-Framework: JUnit</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>Vorteile für ULRICA</h5>
+            <ul>
+                <li>De-facto Standard für Java-Tests</li>
+                <li>Umfangreiche Assertions-Bibliothek</li>
+                <li>Unterstützt Test-getriebene Entwicklung</li>
+                <li>Integration mit Build-Tools und CI/CD</li>
+                <li>Parametrisierte Tests möglich</li>
+                <li>Mocking und Stubbing unterstützt</li>
+            </ul>
+        </div>
+        <div>
+            <h5>Implementierung in ULRICA</h5>
+            <ul>
+                <li>Unit-Tests für Domain-Logik</li>
+                <li>Tests für Anwendungsschicht</li>
+                <li>Validierung von Business-Regeln</li>
+                <li>Integration mit JaCoCo für Abdeckungsanalyse</li>
+                <li>50% minimale Testabdeckung gefordert</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Code-Coverage: JaCoCo</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>Vorteile für ULRICA</h5>
+            <ul>
+                <li>Detaillierte Abdeckungsmetriken</li>
+                <li>Identifiziert ungetesteten Code</li>
+                <li>Integration mit Maven und GitHub Actions</li>
+                <li>Unterstützt Qualitätsziele durch Mindestabdeckung</li>
+                <li>Visuelle Reports für einfache Analyse</li>
+            </ul>
+        </div>
+        <div>
+            <h5>Konfiguration in ULRICA</h5>
+            <ul>
+                <li>Mindestwert von 50% Zeilenabdeckung</li>
+                <li>Automatisierte Prüfung während Build</li>
+                <li>Report-Generierung für CI/CD</li>
+                <li>Build-Fehler bei Unterschreitung</li>
+                <li>Artefakte werden in GitHub gespeichert</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>CI/CD: GitHub Actions</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>Vorteile für ULRICA</h5>
+            <ul>
+                <li>Direkte Integration mit GitHub-Repository</li>
+                <li>Automatisierte Builds bei jedem Push</li>
+                <li>Kontinuierliche Test-Ausführung</li>
+                <li>Qualitätssicherung durch Abdeckungsanalyse</li>
+                <li>Automatisches Feedback zu Code-Änderungen</li>
+                <li>E-Mail-Benachrichtigungen bei Build-Ergebnissen</li>
+            </ul>
+        </div>
+        <div>
+            <h5>Workflow in ULRICA</h5>
+            <ul>
+                <li>Build mit Maven</li>
+                <li>Ausführung aller Tests</li>
+                <li>Generierung von JaCoCo-Reports</li>
+                <li>Code-Analyse mit CLOC</li>
+                <li>Artefakt-Speicherung für Reports</li>
+                <li>E-Mail-Benachrichtigung mit Ergebnissen</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Architekturübersicht</h3>
+    <img src="./assets/architecture.png" alt="ULRICA Architecture" style="max-height: 500px;">
+    <p>Clean Architecture mit klarer Trennung der Schichten</p>
 </section>
