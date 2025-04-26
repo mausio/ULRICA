@@ -10,7 +10,7 @@ ALLGEMEINE ANMERKUNGEN
 ================================================================================
 - Gesamtpunktzahl: 60P (zum Bestehen mit 4,0 werden 30P benötigt)
 - Aufgabenbeschreibung (blauer Text) + Punktanzahl muss im Dokument enthalten sein
-- Keine Verweise auf andere Kapitel als Leistungsnachweis (z. B. „siehe Kapitel 2“)
+- Keine Verweise auf andere Kapitel als Leistungsnachweis (z.B. „siehe Kapitel 2“)
 - Alles muss UTF-8 codiert sein (Text und Code)
 - Abgabe als PDF
 - Keine mündlichen Absprachen – schriftliche Vorgaben sind bindend
@@ -28,7 +28,7 @@ ALLGEMEINE ANMERKUNGEN
     - Immer öffentliche Methoden und Felder
     - Private nur, wenn erklärend notwendig
     - Zusammenspielende Klassen ergänzen (wenn Teil der Aufgabe)
-- Originalbezeichnungen verwenden (z. B. keine Übersetzungen)
+- Originalbezeichnungen verwenden (z.B. keine Übersetzungen)
 - Aufgaben müssen vollständig und gemäß Beschreibung gelöst werden
     - Keine Aussagen wie „nicht gebraucht“ oder „nicht implementiert“
     - Beispiele:

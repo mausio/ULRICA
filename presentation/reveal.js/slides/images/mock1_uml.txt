@@ -1,0 +1,42 @@
+@startuml
+
+interface ProfileSelectionService {
+  +getSelectedProfile(): CarProfile
+  +selectProfile(profile: CarProfile): void
+  +clearSelection(): void
+}
+
+class MockProfileSelectionService {
+  -selectedProfile: CarProfile
+  -selectionCount: int
+  -clearCount: int
+  +MockProfileSelectionService()
+  +MockProfileSelectionService(initialProfile: CarProfile)
+  +getSelectedProfile(): CarProfile
+  +selectProfile(profile: CarProfile): void
+  +clearSelection(): void
+  +getSelectionCount(): int
+  +getClearCount(): int
+  +hasSelectedProfile(): boolean
+}
+
+class ExecuteActionInteractor {
+  -navigationUseCase: NavigationUseCaseInterface
+  -actionResultOutputPort: ActionResultOutputPortInterface
+  -profileSelectionService: ProfileSelectionService
+  -dcChargingController: DcChargingController
+  -acChargingController: AcChargingController
+  -rangeCalculationController: RangeCalculationController
+  +executeAction(actionChoice: int): boolean
+}
+
+MockProfileSelectionService ..|> ProfileSelectionService
+ExecuteActionInteractor --> ProfileSelectionService: uses >
+
+note "Mock Implementation for Testing" as N1
+MockProfileSelectionService .. N1
+
+note "Test class ExecuteActionInteractorTest uses\nMockProfileSelectionService to simulate different\nprofile selection states and validate behavior" as N2
+N2 .. ExecuteActionInteractor
+
+@enduml 
