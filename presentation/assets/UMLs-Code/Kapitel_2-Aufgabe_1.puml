@@ -1,0 +1,77 @@
+@startuml Clean Architecture
+skinparam packageStyle rectangle
+
+package "Presentation Layer" {
+  class ApplicationControllerWithActionMenu
+  class AcChargingController
+  class DcChargingController
+  class RangeCalculationController
+  
+  package "View" {
+    class WelcomeView
+    class CarProfileView
+    class MainMenuView
+    class ActionMenuView
+  }
+}
+
+package "Application Layer" {
+  interface CalculateRangeUseCaseInterface
+  interface CreateCarProfileUseCaseInterface
+  interface CarProfilePersistencePortInterface
+  interface UserInputPortInterface
+  interface UserOutputPortInterface
+  
+  class CalculateRangeInteractor
+  class CreateCarProfileInteractor
+  class NavigationUseCase
+}
+
+package "Domain Layer" {
+  class CarProfile
+  class BatteryProfile
+  class ConsumptionProfile
+  class RangeCalculatorService
+  interface RangeCalculationStrategyInterface
+  class WltpBasedRangeCalculationStrategy
+  class ConsumptionBasedRangeCalculationStrategy
+}
+
+package "Infrastructure Layer" {
+  class JsonCarProfileRepository
+  class ConsoleUserInputAdapter
+  class ConsoleUserOutputAdapter
+}
+
+' Dependency flow from Presentation to Application
+ApplicationControllerWithActionMenu --> CalculateRangeUseCaseInterface
+ApplicationControllerWithActionMenu --> CreateCarProfileUseCaseInterface
+ApplicationControllerWithActionMenu --> NavigationUseCase
+AcChargingController --> UserInputPortInterface
+AcChargingController --> UserOutputPortInterface
+DcChargingController --> UserInputPortInterface
+
+' Dependency flow from Application to Domain
+CalculateRangeInteractor ..|> CalculateRangeUseCaseInterface
+CalculateRangeInteractor --> RangeCalculatorService
+CreateCarProfileInteractor ..|> CreateCarProfileUseCaseInterface
+CreateCarProfileInteractor --> CarProfile
+
+' Domain Relationships
+RangeCalculatorService --> RangeCalculationStrategyInterface
+WltpBasedRangeCalculationStrategy ..|> RangeCalculationStrategyInterface
+ConsumptionBasedRangeCalculationStrategy ..|> RangeCalculationStrategyInterface
+CarProfile --> BatteryProfile
+CarProfile --> ConsumptionProfile
+
+' Infrastructure implementations adapting to the Application ports
+JsonCarProfileRepository ..|> CarProfilePersistencePortInterface
+ConsoleUserInputAdapter ..|> UserInputPortInterface
+ConsoleUserOutputAdapter ..|> UserOutputPortInterface
+
+' Dependency Inversion - Infrastructure depends on Application interfaces
+CarProfilePersistencePortInterface <.. JsonCarProfileRepository
+UserInputPortInterface <.. ConsoleUserInputAdapter
+UserOutputPortInterface <.. ConsoleUserOutputAdapter
+
+@enduml 

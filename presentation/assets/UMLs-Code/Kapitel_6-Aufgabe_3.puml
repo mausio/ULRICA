@@ -1,0 +1,117 @@
+@startuml DDD_Aggregate
+
+package "Domain Layer" {
+  class CarProfile {
+    -id: String
+    -name: String
+    -manufacturer: String
+    -model: String
+    -year: int
+    -hasHeatPump: boolean
+    -wltpRangeKm: double
+    -maxDcPowerKw: double
+    -maxAcPowerKw: double
+    -batteryProfile: BatteryProfile
+    -consumptionProfile: ConsumptionProfile
+    -chargingCurve: Optional<ChargingCurve>
+    +getId(): String
+    +getName(): String
+    +getManufacturer(): String
+    +getModel(): String
+    +getBatteryProfile(): BatteryProfile
+    +getConsumptionProfile(): ConsumptionProfile
+    +getChargingCurve(): Optional<ChargingCurve>
+  }
+  
+  class BatteryProfile {
+    -type: BatteryType
+    -capacityKwh: double
+    -degradationPercent: double
+    -maxDcPowerKw: double
+    -maxAcPowerKw: double
+    +getType(): BatteryType
+    +getCapacityKwh(): double
+    +getDegradationPercent(): double
+    +getRemainingCapacityKwh(): double
+  }
+  
+  class ConsumptionProfile {
+    -consumptionAt50Kmh: double
+    -consumptionAt100Kmh: double
+    -consumptionAt130Kmh: double
+    +getConsumptionAt50Kmh(): double
+    +getConsumptionAt100Kmh(): double
+    +getConsumptionAt130Kmh(): double
+    +getAverageConsumption(): double
+  }
+  
+  class ChargingCurve {
+    -curvePoints: Map<Double, Double>
+    +getChargingPowerAt(socPercent: double): double
+  }
+  
+  enum BatteryType {
+    LFP
+    NMC
+    NCA
+  }
+  
+  class "CarProfile.Builder" as CarProfileBuilder {
+    -id: String
+    -name: String
+    -manufacturer: String
+    -model: String
+    -year: int
+    -hasHeatPump: boolean
+    -wltpRangeKm: double
+    -maxDcPowerKw: double
+    -maxAcPowerKw: double
+    -batteryProfile: BatteryProfile
+    -consumptionProfile: ConsumptionProfile
+    -chargingCurve: Optional<ChargingCurve>
+    +id(id: String): Builder
+    +name(name: String): Builder
+    +manufacturer(manufacturer: String): Builder
+    +model(model: String): Builder
+    +build(): CarProfile
+  }
+}
+
+package "Application Layer" {
+  interface CarProfilePersistencePortInterface {
+    +findById(id: String): Optional<CarProfile>
+    +findAll(): List<CarProfile>
+    +save(carProfile: CarProfile): CarProfile
+    +delete(id: String): void
+  }
+}
+
+' Relationships
+CarProfile *--> BatteryProfile : contains
+CarProfile *--> ConsumptionProfile : contains
+CarProfile o--> ChargingCurve : may contain
+BatteryProfile --> BatteryType : uses
+CarProfile <.. CarProfileBuilder : builds
+CarProfilePersistencePortInterface --> CarProfile : persists
+
+' Aggregate Boundary
+together {
+  CarProfile
+  BatteryProfile
+  ConsumptionProfile
+  ChargingCurve
+}
+
+' Notes
+note "Aggregate Root:\nCarProfile acts as the aggregate root\nand is the only access point for the\ncontained Value Objects" as N1
+CarProfile .. N1
+
+note "Value Objects:\nBatteryProfile, ConsumptionProfile,\nand ChargingCurve are Value Objects\nmanaged through the Aggregate Root" as N2
+BatteryProfile .. N2
+ConsumptionProfile .. N2
+ChargingCurve .. N2
+
+note "Aggregate Invariant:\nBatteryProfile, ConsumptionProfile,\nand optional ChargingCurve must\nbe consistent within a CarProfile" as N3
+together .. N3
+
+@enduml 

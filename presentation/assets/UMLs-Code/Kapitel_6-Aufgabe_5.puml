@@ -1,0 +1,125 @@
+@startuml DDD_ValueObjects
+
+package "Domain Layer" {
+  class CarProfile {
+    -id: String
+    -name: String
+    -manufacturer: String
+    -batteryProfile: BatteryProfile
+    -consumptionProfile: ConsumptionProfile
+    -chargingCurve: Optional<ChargingCurve>
+  }
+  
+  class BatteryProfile {
+    -type: BatteryType
+    -capacityKwh: double
+    -degradationPercent: double
+    -maxDcPowerKw: double
+    -maxAcPowerKw: double
+    +BatteryProfile(type: BatteryType, capacityKwh: double, degradationPercent: double, maxDcPowerKw: double, maxAcPowerKw: double)
+    +getType(): BatteryType
+    +getCapacityKwh(): double
+    +getDegradationPercent(): double
+    +getRemainingCapacityKwh(): double
+    +getMaxDcPowerKw(): double
+    +getMaxAcPowerKw(): double
+    +equals(o: Object): boolean
+    +hashCode(): int
+  }
+  
+  class ConsumptionProfile {
+    -consumptionAt50Kmh: double
+    -consumptionAt100Kmh: double
+    -consumptionAt130Kmh: double
+    +ConsumptionProfile(consumptionAt50Kmh: double, consumptionAt100Kmh: double, consumptionAt130Kmh: double)
+    +getConsumptionAt50Kmh(): double
+    +getConsumptionAt100Kmh(): double
+    +getConsumptionAt130Kmh(): double
+    +getAverageConsumption(): double
+    +equals(o: Object): boolean
+    +hashCode(): int
+  }
+  
+  class ChargingCurve {
+    -curvePoints: Map<Double, Double>
+    +ChargingCurve(curvePoints: Map<Double, Double>)
+    +getChargingPowerAt(socPercent: double): double
+    +equals(o: Object): boolean
+    +hashCode(): int
+  }
+  
+  enum BatteryType {
+    LFP
+    NMC
+    NCA
+  }
+  
+  class RangeParameters {
+    -stateOfChargePercent: double
+    -temperatureCelsius: double
+    -weather: WeatherType
+    -terrain: TerrainType
+    -environment: DrivingEnvironment
+    -efficiencyMode: EfficiencyMode
+    +RangeParameters(stateOfChargePercent: double, temperatureCelsius: double, weather: WeatherType, terrain: TerrainType, environment: DrivingEnvironment, efficiencyMode: EfficiencyMode)
+    // getters
+  }
+  
+  class RangeResult {
+    -estimatedRangeKm: double
+    -averageConsumptionKwhPer100Km: double
+    -weatherImpact: String
+    -terrainImpact: String
+    -environmentImpact: String
+    -batteryCondition: String
+    +RangeResult(estimatedRangeKm: double, averageConsumptionKwhPer100Km: double, weatherImpact: String, terrainImpact: String, environmentImpact: String, batteryCondition: String)
+    // getters
+  }
+  
+  enum WeatherType
+  enum TerrainType
+  enum DrivingEnvironment
+  enum EfficiencyMode
+}
+
+' Relationships
+CarProfile *--> BatteryProfile
+CarProfile *--> ConsumptionProfile
+CarProfile o--> ChargingCurve
+BatteryProfile --> BatteryType
+RangeParameters --> WeatherType
+RangeParameters --> TerrainType
+RangeParameters --> DrivingEnvironment
+RangeParameters --> EfficiencyMode
+
+' Notes
+note right of BatteryProfile
+  Value Object Characteristics:
+  - Immutable after creation
+  - Equality based on all attributes
+  - No identity concept
+  - Self-validating at construction
+  - Measures, quantifies, or describes
+end note
+
+note bottom of ChargingCurve::equals
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) 
+      return false;
+    ChargingCurve that = (ChargingCurve) o;
+    return Objects.equals(curvePoints, that.curvePoints);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(curvePoints);
+  }
+end note
+
+note "Value Objects also include:\n- RangeParameters\n- RangeResult\n- All enum types (BatteryType, etc.)" as N1
+RangeParameters .. N1
+RangeResult .. N1
+
+@enduml 

@@ -1,0 +1,114 @@
+@startuml DIP_Examples
+
+' Positive Example - DIP with Repository Pattern
+package "DIP_Positive_Example" {
+  package "Application Layer" {
+    interface CarProfilePersistencePortInterface {
+      +findById(id: String): Optional<CarProfile>
+      +findAll(): List<CarProfile>
+      +save(carProfile: CarProfile): CarProfile
+      +delete(id: String): void
+    }
+    
+    class CreateCarProfileInteractor {
+      -persistencePort: CarProfilePersistencePortInterface
+      +createCarProfile(command: CreateCarProfileCommand): CarProfile
+    }
+  }
+  
+  package "Domain Layer" {
+    class CarProfile {
+      -id: String
+      -name: String
+      -manufacturer: String
+      -model: String
+      -year: int
+      -batteryProfile: BatteryProfile
+      -consumptionProfile: ConsumptionProfile
+    }
+  }
+  
+  package "Infrastructure Layer" {
+    class JsonCarProfileRepository {
+      -STORAGE_DIR: String
+      -FILE_NAME: String
+      -gson: Gson
+      -filePath: Path
+      +findById(id: String): Optional<CarProfile>
+      +findAll(): List<CarProfile>
+      +save(carProfile: CarProfile): CarProfile
+      +delete(id: String): void
+    }
+  }
+  
+  ' Dependencies
+  CreateCarProfileInteractor --> CarProfilePersistencePortInterface : depends on abstraction
+  JsonCarProfileRepository ..|> CarProfilePersistencePortInterface : implements
+  CarProfilePersistencePortInterface --> CarProfile : uses
+  
+  note "DIP is satisfied:\nHigh-level module (CreateCarProfileInteractor)\ndepends on abstraction (CarProfilePersistencePortInterface)\nnot on concrete implementation" as N1
+  CreateCarProfileInteractor .. N1
+}
+
+' Negative Example - Direct dependency violating DIP
+package "DIP_Negative_Example" {
+  class CarProfileManager {
+    -repository: JsonCarProfileRepository
+    +createProfile(name: String, manufacturer: String, year: int): CarProfile
+    +getAllProfiles(): List<CarProfile>
+  }
+  
+  class JsonCarProfileRepository {
+    -gson: Gson
+    -filePath: String
+    +save(profile: CarProfile): CarProfile
+    +findAll(): List<CarProfile>
+  }
+  
+  class CarProfile {
+    -id: String
+    -name: String
+    -manufacturer: String
+  }
+  
+  ' Direct dependency violating DIP
+  CarProfileManager --> JsonCarProfileRepository : hard dependency
+  JsonCarProfileRepository --> CarProfile
+  
+  note "DIP is violated:\nHigh-level module (CarProfileManager) depends\ndirectly on low-level module (JsonCarProfileRepository)" as N2
+  CarProfileManager .. N2
+}
+
+' Improved solution applying DIP
+package "DIP_Improved_Solution" {
+  interface CarProfileRepository {
+    +save(profile: CarProfile): CarProfile
+    +findAll(): List<CarProfile>
+  }
+  
+  class CarProfileManager {
+    -repository: CarProfileRepository
+    +createProfile(name: String, manufacturer: String, year: int): CarProfile
+    +getAllProfiles(): List<CarProfile>
+  }
+  
+  class JsonCarProfileRepository {
+    -gson: Gson
+    -filePath: String
+    +save(profile: CarProfile): CarProfile
+    +findAll(): List<CarProfile>
+  }
+  
+  class InMemoryCarProfileRepository {
+    -profiles: Map<String, CarProfile>
+    +save(profile: CarProfile): CarProfile
+    +findAll(): List<CarProfile>
+  }
+  
+  ' Dependencies using DIP
+  CarProfileManager --> CarProfileRepository : depends on abstraction
+  JsonCarProfileRepository ..|> CarProfileRepository : implements
+  InMemoryCarProfileRepository ..|> CarProfileRepository : implements
+}
+
+@enduml 

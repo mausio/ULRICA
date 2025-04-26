@@ -95,16 +95,14 @@
     <h3>Technischer Überblick (2P)</h3>
     <p>ULRICA wurde mit folgenden Technologien implementiert:</p>
     <ul>
-        <li><strong>Java:</strong> Objektorientierte Programmiersprache - ermöglicht klare Strukturierung mit Design
-            Patterns und Best Practices</li>
-        <li><strong>Maven:</strong> Build-Management-Tool - vereinfacht Abhängigkeiten und Build-Prozess</li>
-        <li><strong>JSON:</strong> Datenaustauschformat - verwendet für Speicherung von Fahrzeugprofilen (Repository
-            Pattern)</li>
-        <li><strong>GSON:</strong> Java-Bibliothek - ermöglicht Serialisierung/Deserialisierung zwischen Java-Objekten
-            und JSON</li>
-        <li><strong>JUnit:</strong> Test-Framework - ermöglicht automatisierte Tests für robustere Software</li>
-        <li><strong>JaCoCo:</strong> Code-Coverage-Tool - misst Testabdeckung zur Qualitätssicherung</li>
-        <li><strong>GitHub Actions:</strong> CI/CD-Plattform - automatisiert Build, Test und Deployment</li>
+        <li><strong>Java (JDK 17):</strong> Objektorientierte Programmiersprache - ermöglicht klare Strukturierung mit Design
+            Patterns und Clean Architecture</li>
+        <li><strong>Maven:</strong> Build-Management-Tool - vereinfacht Abhängigkeiten, Build und Tests</li>
+        <li><strong>JSON/GSON:</strong> Datenaustauschformat und Java-Bibliothek für Persistenz von Fahrzeugprofilen</li>
+        <li><strong>JUnit 4:</strong> Test-Framework mit 106 automatisierten Tests für Qualitätssicherung</li>
+        <li><strong>JaCoCo:</strong> Code-Coverage-Tool mit einer Gesamtabdeckung von 47% (Linienabdeckung)</li>
+        <li><strong>Clean Architecture:</strong> Strukturierungsprinzip für bessere Wartbarkeit und Testbarkeit</li>
+        <li><strong>Design Patterns:</strong> Strategy, Adapter, Repository, Builder für besseres Design</li>
     </ul>
 </section>
 
@@ -144,19 +142,26 @@
                 <li>Deklaratives Projektmanagement</li>
                 <li>Automatisiertes Abhängigkeitsmanagement</li>
                 <li>Standardisierte Build-Lebenszyklen</li>
-                <li>Integration mit CI/CD-Prozessen</li>
+                <li>Integration mit JUnit und JaCoCo</li>
                 <li>Plugin-Ökosystem für erweiterte Funktionen</li>
                 <li>Konsistente Projektstruktur</li>
             </ul>
         </div>
         <div>
-            <h5>Alternativen-Vergleich</h5>
-            <ul>
-                <li>Gradle: Flexibler, aber komplexere Lernkurve</li>
-                <li>Ant: Weniger strukturiert und veraltet</li>
-                <li>Bazel: Leistungsstärker, jedoch aufwändiger einzurichten</li>
-                <li>SBT: Spezialisiert auf Scala-Projekte</li>
-            </ul>
+            <h5>Konfiguration in ULRICA</h5>
+            <pre><code class="xml">&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;junit&lt;/groupId&gt;
+        &lt;artifactId&gt;junit&lt;/artifactId&gt;
+        &lt;version&gt;4.13.2&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.google.code.gson&lt;/groupId&gt;
+        &lt;artifactId&gt;gson&lt;/artifactId&gt;
+        &lt;version&gt;2.10.1&lt;/version&gt;  
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
         </div>
     </div>
 </section>
@@ -176,13 +181,24 @@
             </ul>
         </div>
         <div>
-            <h5>Alternativen-Vergleich</h5>
-            <ul>
-                <li>XML: Strukturierter, aber verboserer</li>
-                <li>YAML: Menschenfreundlicher, jedoch fehleranfälliger</li>
-                <li>Binärformate: Effizienter, aber nicht menschenlesbar</li>
-                <li>Datenbanken: Mächtiger, aber überdimensioniert für diese Anwendung</li>
-            </ul>
+            <h5>Implementierung in ULRICA</h5>
+            <pre><code class="java">public class JsonCarProfileRepository 
+        implements CarProfilePersistencePortInterface {
+    
+    private final Gson gson;
+    private final Path filePath;
+
+    public JsonCarProfileRepository() {
+        this.gson = new GsonBuilder()
+            .setPrettyPrinting()
+            .registerTypeAdapterFactory(
+                new OptionalTypeAdapterFactory())
+            .create();
+        this.filePath = Paths.get(
+            STORAGE_DIR, FILE_NAME);
+    }
+    // ...
+}</code></pre>
         </div>
     </div>
 </section>
@@ -195,21 +211,32 @@
             <ul>
                 <li>De-facto Standard für Java-Tests</li>
                 <li>Umfangreiche Assertions-Bibliothek</li>
-                <li>Unterstützt Test-getriebene Entwicklung</li>
-                <li>Integration mit Build-Tools und CI/CD</li>
-                <li>Parametrisierte Tests möglich</li>
-                <li>Mocking und Stubbing unterstützt</li>
+                <li>106 automatisierte Tests in ULRICA</li>
+                <li>Integration mit Build-Tools und JaCoCo</li>
+                <li>Mock-Objekte und Stubs für isolierte Tests</li>
+                <li>Test-getriebene Entwicklung unterstützt</li>
             </ul>
         </div>
         <div>
             <h5>Implementierung in ULRICA</h5>
-            <ul>
-                <li>Unit-Tests für Domain-Logik</li>
-                <li>Tests für Anwendungsschicht</li>
-                <li>Validierung von Business-Regeln</li>
-                <li>Integration mit JaCoCo für Abdeckungsanalyse</li>
-                <li>50% minimale Testabdeckung gefordert</li>
-            </ul>
+            <pre><code class="java">@Test
+public void testCompareStrategies() {
+    // Given: Identifiziere beide Strategien
+    RangeCalculationStrategyInterface wltpStrategy = null;
+    RangeCalculationStrategyInterface consumptionStrategy = null;
+    
+    for (RangeCalculationStrategyInterface strategy : 
+             rangeCalculatorService.getAvailableStrategies()) {
+        if (strategy instanceof WltpBasedRangeCalculationStrategy) {
+            wltpStrategy = strategy;
+        }
+        if (strategy instanceof ConsumptionBasedRangeCalculationStrategy) {
+            consumptionStrategy = strategy;
+        }
+    }
+    
+    // When & Then...
+}</code></pre>
         </div>
     </div>
 </section>
@@ -222,48 +249,57 @@
             <ul>
                 <li>Detaillierte Abdeckungsmetriken</li>
                 <li>Identifiziert ungetesteten Code</li>
-                <li>Integration mit Maven und GitHub Actions</li>
-                <li>Unterstützt Qualitätsziele durch Mindestabdeckung</li>
-                <li>Visuelle Reports für einfache Analyse</li>
+                <li>Integration mit Maven</li>
+                <li>Unterstützt Qualitätsziele</li>
+                <li>Visuelle Reports für Analyse</li>
             </ul>
         </div>
         <div>
-            <h5>Konfiguration in ULRICA</h5>
+            <h5>Aktuelle Metriken</h5>
             <ul>
-                <li>Mindestwert von 50% Zeilenabdeckung</li>
-                <li>Automatisierte Prüfung während Build</li>
-                <li>Report-Generierung für CI/CD</li>
-                <li>Build-Fehler bei Unterschreitung</li>
-                <li>Artefakte werden in GitHub gespeichert</li>
+                <li><strong>Gesamtabdeckung:</strong> 47% der Anweisungen</li>
+                <li><strong>Domain Layer:</strong> 
+                    <ul>
+                        <li>Entity: 98% Abdeckung</li>
+                        <li>Value Objects: 76% Abdeckung</li>
+                        <li>Domain Services: 73% Abdeckung</li>
+                    </ul>
+                </li>
+                <li><strong>Application Layer:</strong> 
+                    <ul>
+                        <li>Use Cases: 60% Abdeckung</li>
+                        <li>Application Services: 19% Abdeckung</li>
+                    </ul>
+                </li>
+                <li><strong>Infrastructure Layer:</strong> 81% Abdeckung</li>
             </ul>
         </div>
     </div>
 </section>
 
 <section>
-    <h3>CI/CD: GitHub Actions</h3>
+    <h3>Clean Architecture</h3>
     <div class="horizontal-spaced-container">
         <div>
             <h5>Vorteile für ULRICA</h5>
             <ul>
-                <li>Direkte Integration mit GitHub-Repository</li>
-                <li>Automatisierte Builds bei jedem Push</li>
-                <li>Kontinuierliche Test-Ausführung</li>
-                <li>Qualitätssicherung durch Abdeckungsanalyse</li>
-                <li>Automatisches Feedback zu Code-Änderungen</li>
-                <li>E-Mail-Benachrichtigungen bei Build-Ergebnissen</li>
+                <li>Separation of Concerns</li>
+                <li>Unabhängige Domänenlogik</li>
+                <li>Dependency Inversion Principle</li>
+                <li>Testbarkeit durch lose Kopplung</li>
+                <li>Austauschbarkeit von Infrastruktur</li>
+                <li>Strukturierte Codebasis</li>
             </ul>
         </div>
         <div>
-            <h5>Workflow in ULRICA</h5>
+            <h5>Schichten in ULRICA</h5>
             <ul>
-                <li>Build mit Maven</li>
-                <li>Ausführung aller Tests</li>
-                <li>Generierung von JaCoCo-Reports</li>
-                <li>Code-Analyse mit CLOC</li>
-                <li>Artefakt-Speicherung für Reports</li>
-                <li>E-Mail-Benachrichtigung mit Ergebnissen</li>
+                <li><strong>Domain:</strong> 3 Packages, 23 Klassen</li>
+                <li><strong>Application:</strong> 3 Packages, 26 Klassen</li>
+                <li><strong>Infrastructure:</strong> 3 Packages, 7 Klassen</li>
+                <li><strong>Presentation:</strong> 3 Packages, 16 Klassen</li>
             </ul>
+            <p>Details in Kapitel 2: Softwarearchitektur</p>
         </div>
     </div>
 </section>

@@ -1,0 +1,100 @@
+@startuml Strategy_Pattern
+
+package "Domain Layer" {
+  interface RangeCalculationStrategyInterface {
+    +calculateRange(carProfile: CarProfile, parameters: RangeParameters): RangeResult
+    +getName(): String
+    +getDescription(): String
+  }
+  
+  class WltpBasedRangeCalculationStrategy {
+    +calculateRange(carProfile: CarProfile, parameters: RangeParameters): RangeResult
+    +getName(): String
+    +getDescription(): String
+    -calculateTerrainFactor(terrain: TerrainType): double
+    -calculateWeatherFactor(weather: WeatherType, temperature: double): double
+    -calculateEnvironmentFactor(environment: DrivingEnvironment): double
+    -generateWeatherImpactDescription(weather: WeatherType, temperature: double): String
+    -generateTerrainImpactDescription(terrain: TerrainType): String
+  }
+  
+  class ConsumptionBasedRangeCalculationStrategy {
+    +calculateRange(carProfile: CarProfile, parameters: RangeParameters): RangeResult
+    +getName(): String
+    +getDescription(): String
+    -getBaseConsumption(profile: ConsumptionProfile, environment: DrivingEnvironment): double
+    -calculateTerrainFactor(terrain: TerrainType): double
+    -calculateWeatherFactor(weather: WeatherType, temperature: double): double
+    -generateWeatherImpactDescription(weather: WeatherType, temperature: double): String
+    -generateTerrainImpactDescription(terrain: TerrainType): String
+  }
+  
+  class RangeCalculatorService {
+    -strategies: List<RangeCalculationStrategyInterface>
+    -defaultStrategy: RangeCalculationStrategyInterface
+    +RangeCalculatorService()
+    +addStrategy(strategy: RangeCalculationStrategyInterface): void
+    +setDefaultStrategy(strategy: RangeCalculationStrategyInterface): void
+    +getAvailableStrategies(): List<RangeCalculationStrategyInterface>
+    +getDefaultStrategy(): RangeCalculationStrategyInterface
+    +calculateRange(carProfile: CarProfile, parameters: RangeParameters): RangeResult
+    +calculateRangeWithStrategy(carProfile: CarProfile, parameters: RangeParameters, strategy: RangeCalculationStrategyInterface): RangeResult
+  }
+  
+  class CarProfile
+  class RangeParameters
+  class RangeResult
+}
+
+package "Application Layer" {
+  class CalculateRangeInteractor {
+    -rangeCalculatorService: RangeCalculatorService
+    -outputPort: RangeCalculationOutputPortInterface
+    -profileSelectionService: ProfileSelectionService
+    +calculateRange(command: CalculateRangeCommand): void
+  }
+}
+
+' Relationships
+RangeCalculationStrategyInterface <|.. WltpBasedRangeCalculationStrategy : implements
+RangeCalculationStrategyInterface <|.. ConsumptionBasedRangeCalculationStrategy : implements
+RangeCalculatorService o--> "0..*" RangeCalculationStrategyInterface : contains strategies
+RangeCalculatorService o--> "1" RangeCalculationStrategyInterface : defaultStrategy
+CalculateRangeInteractor --> RangeCalculatorService : uses
+
+' Dependencies
+RangeCalculationStrategyInterface ..> CarProfile : uses
+RangeCalculationStrategyInterface ..> RangeParameters : uses
+RangeCalculationStrategyInterface ..> RangeResult : creates
+
+' Notes
+note right of RangeCalculationStrategyInterface
+  Strategy Interface:
+  - Defines common operations for all algorithms
+  - Allows algorithms to be interchangeable
+  - Decouples algorithm definition from implementation
+end note
+
+note right of RangeCalculatorService
+  Context:
+  - Maintains reference to a strategy
+  - Delegates calculation to the selected strategy
+  - Allows strategies to be changed at runtime
+  - Clients interact with this class
+end note
+
+note bottom of WltpBasedRangeCalculationStrategy
+  Concrete Strategy:
+  - Implements the algorithm based on WLTP
+    (Worldwide Harmonized Light Vehicles Test Procedure)
+  - Focuses on official consumption values
+end note
+
+note bottom of ConsumptionBasedRangeCalculationStrategy
+  Concrete Strategy:
+  - Implements the algorithm based on
+    actual consumption profiles
+  - Focuses on real-world usage patterns
+end note
+
+@enduml 

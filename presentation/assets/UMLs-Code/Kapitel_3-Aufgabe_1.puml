@@ -1,0 +1,85 @@
+@startuml SRP_Examples
+
+' Positive Example - RangeCalculatorService follows SRP
+package "SRP_Positive_Example" {
+  class RangeCalculatorService {
+    -strategies: List<RangeCalculationStrategyInterface>
+    -defaultStrategy: RangeCalculationStrategyInterface
+    +addStrategy(strategy: RangeCalculationStrategyInterface): void
+    +setDefaultStrategy(strategy: RangeCalculationStrategyInterface): void
+    +calculateRange(profile: CarProfile, params: RangeParameters): RangeResult
+    +getAvailableStrategies(): List<RangeCalculationStrategyInterface>
+  }
+  
+  interface RangeCalculationStrategyInterface {
+    +calculateRange(profile: CarProfile, params: RangeParameters): RangeResult
+    +getName(): String
+    +getDescription(): String
+  }
+  
+  RangeCalculatorService o--> "0..*" RangeCalculationStrategyInterface
+}
+
+' Negative Example - CarProfileManager violates SRP
+package "SRP_Negative_Example" {
+  class CarProfileManager {
+    -scanner: Scanner
+    -storagePath: String
+    -gson: Gson
+    +createProfile(): CarProfile
+    +saveProfile(profile: CarProfile): void
+    +loadAllProfiles(): List<CarProfile>
+    +calculateRange(profile: CarProfile): double
+    +displayProfile(profile: CarProfile): void
+  }
+  
+  class Scanner
+  class Gson
+  class CarProfile {
+    -name: String
+    -manufacturer: String
+    -hasHeatPump: boolean
+  }
+  
+  CarProfileManager --> Scanner : UI dependency
+  CarProfileManager --> Gson : Persistence dependency
+  CarProfileManager --> CarProfile
+}
+
+' Refactored Solution for SRP Violation
+package "SRP_Refactored_Solution" {
+  ' UI Layer
+  class CarProfileView {
+    +promptForNewProfile(): CarProfileInput
+    +displayProfile(profile: CarProfile): void
+  }
+  
+  ' Application Layer
+  class CreateCarProfileUseCase {
+    -repository: CarProfileRepository
+    +createProfile(input: CarProfileInput): CarProfile
+  }
+  
+  ' Infrastructure Layer
+  class JsonCarProfileRepository {
+    -storagePath: String
+    -gson: Gson
+    +save(profile: CarProfile): CarProfile
+    +findAll(): List<CarProfile>
+  }
+  
+  ' Domain Layer
+  class RangeCalculator {
+    +calculateRange(profile: CarProfile, params: RangeParameters): double
+  }
+  
+  interface CarProfileRepository {
+    +save(profile: CarProfile): CarProfile
+    +findAll(): List<CarProfile>
+  }
+  
+  CreateCarProfileUseCase --> CarProfileRepository
+  JsonCarProfileRepository ..|> CarProfileRepository
+}
+
+@enduml 

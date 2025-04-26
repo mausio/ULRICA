@@ -1,0 +1,111 @@
+@startuml UnitTest_Mocks
+
+package "Domain Layer" {
+  interface ProfileSelectionService {
+    +getSelectedProfile(): CarProfile
+    +selectProfile(profile: CarProfile): void
+    +clearSelection(): void
+  }
+  
+  class CarProfile {
+    -id: String
+    -name: String
+    -manufacturer: String
+    -model: String
+    -year: int
+  }
+}
+
+package "Test Code" {
+  class MockProfileSelectionService {
+    -selectedProfile: CarProfile
+    -selectionCount: int
+    -clearCount: int
+    +MockProfileSelectionService()
+    +MockProfileSelectionService(initialProfile: CarProfile)
+    +getSelectedProfile(): CarProfile
+    +selectProfile(profile: CarProfile): void
+    +clearSelection(): void
+    +getSelectionCount(): int
+    +getClearCount(): int
+    +hasSelectedProfile(): boolean
+  }
+  
+  class ExecuteActionInteractorTest {
+    -profileSelectionService: MockProfileSelectionService
+    -navigationUseCase: NavigationUseCase
+    -actionResultView: MockActionResultView
+    -dcChargingController: MockDcChargingController
+    -acChargingController: MockAcChargingController
+    -rangeCalculationController: MockRangeCalculationController
+    -executeActionInteractor: ExecuteActionInteractor
+    +setUp(): void
+    +testExecuteAction_NoProfileSelected(): void
+    +testExecuteAction_DcCharging(): void
+    +testExecuteAction_AcCharging(): void
+    +testExecuteAction_RangeCalculation(): void
+    +testExecuteAction_InvalidChoice(): void
+  }
+  
+  class MockRangeCalculationStrategyInterface {
+    +calculateRange(carProfile: CarProfile, params: RangeParameters): RangeResult
+    +getName(): String
+    +getDescription(): String
+  }
+  
+  class RangeCalculatorServiceTest {
+    -rangeCalculatorService: RangeCalculatorService
+    -mockCarProfile: CarProfile
+    -parameters: RangeParameters
+    +testAddStrategy(): void
+    +testSetDefaultStrategy(): void
+    +testCompareStrategies(): void
+  }
+}
+
+package "Application Layer" {
+  class ExecuteActionInteractor {
+    -navigationUseCase: NavigationUseCaseInterface
+    -actionResultView: ActionResultOutputPortInterface
+    -profileSelectionService: ProfileSelectionService
+    -dcChargingController: DcChargingController
+    -acChargingController: AcChargingController
+    -rangeCalculationController: RangeCalculationController
+    +executeAction(choice: int): boolean
+  }
+  
+  interface RangeCalculationStrategyInterface {
+    +calculateRange(carProfile: CarProfile, params: RangeParameters): RangeResult
+    +getName(): String
+    +getDescription(): String
+  }
+  
+  class RangeCalculatorService {
+    -strategies: List<RangeCalculationStrategyInterface>
+    -defaultStrategy: RangeCalculationStrategyInterface
+    +addStrategy(strategy: RangeCalculationStrategyInterface): void
+    +setDefaultStrategy(strategy: RangeCalculationStrategyInterface): void
+    +calculateRange(carProfile: CarProfile, parameters: RangeParameters): RangeResult
+  }
+}
+
+' Relationships for Mock #1
+ProfileSelectionService <|.. MockProfileSelectionService : implements
+ExecuteActionInteractorTest --> MockProfileSelectionService : uses
+ExecuteActionInteractor --> ProfileSelectionService : depends on
+ExecuteActionInteractorTest --> ExecuteActionInteractor : tests
+
+' Relationships for Mock #2
+RangeCalculationStrategyInterface <|.. MockRangeCalculationStrategyInterface : implements
+RangeCalculatorServiceTest --> MockRangeCalculationStrategyInterface : uses
+RangeCalculatorService --> RangeCalculationStrategyInterface : depends on
+RangeCalculatorServiceTest --> RangeCalculatorService : tests
+
+' Notes explaining mock usage
+note "Mock #1: ProfileSelectionService\n- Replaces real implementation in test\n- Tracks method calls with counters\n- Provides test-specific validation methods\n- Isolates ExecuteActionInteractor for unit testing" as N1
+MockProfileSelectionService .. N1
+
+note "Mock #2: RangeCalculationStrategyInterface\n- Anonymous implementation in test\n- Returns predictable, fixed values\n- Demonstrates Strategy pattern extensibility\n- Isolates RangeCalculatorService for testing" as N2
+MockRangeCalculationStrategyInterface .. N2
+
+@enduml 
