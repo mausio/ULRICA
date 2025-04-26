@@ -28,7 +28,7 @@ public class ExecuteActionInteractorTest {
 
     @Before
     public void setUp() {
-        // Create test dependencies
+        
         navigationUseCase = new NavigationUseCase();
         actionResultView = new MockActionResultView();
         profileSelectionService = new MockProfileSelectionService();
@@ -36,7 +36,7 @@ public class ExecuteActionInteractorTest {
         acChargingController = new MockAcChargingController();
         rangeCalculationController = new MockRangeCalculationController();
         
-        // Create the interactor with the mock dependencies
+        
         executeActionInteractor = new ExecuteActionInteractor(
             navigationUseCase,
             actionResultView,
@@ -46,7 +46,7 @@ public class ExecuteActionInteractorTest {
             rangeCalculationController
         );
         
-        // Create a test car profile
+        
         BatteryProfile batteryProfile = new BatteryProfile(
             BatteryType.NMC,
             80.0,
@@ -74,13 +74,13 @@ public class ExecuteActionInteractorTest {
 
     @Test
     public void testExecuteAction_NoProfileSelected() {
-        // Arrange - ensure no profile is selected
+        
         profileSelectionService.clearSelection();
         
-        // Act
+        
         boolean result = executeActionInteractor.executeAction(1);
         
-        // Assert
+        
         assertFalse(result);
         assertEquals(1, actionResultView.getErrorCount());
         assertEquals(0, actionResultView.getSuccessCount());
@@ -92,14 +92,14 @@ public class ExecuteActionInteractorTest {
 
     @Test
     public void testExecuteAction_DcCharging() {
-        // Arrange
+        
         profileSelectionService.selectProfile(testProfile);
         dcChargingController.setProcessDcChargingResult(true);
         
-        // Act
+        
         boolean result = executeActionInteractor.executeAction(1);
         
-        // Assert
+        
         assertTrue(result);
         assertEquals(0, actionResultView.getErrorCount());
         assertEquals(1, dcChargingController.getProcessCallCount());
@@ -109,28 +109,28 @@ public class ExecuteActionInteractorTest {
     
     @Test
     public void testExecuteAction_DcChargingFailed() {
-        // Arrange
+        
         profileSelectionService.selectProfile(testProfile);
         dcChargingController.setProcessDcChargingResult(false);
         
-        // Act
+        
         boolean result = executeActionInteractor.executeAction(1);
         
-        // Assert
+        
         assertFalse(result);
         assertEquals(1, dcChargingController.getProcessCallCount());
     }
 
     @Test
     public void testExecuteAction_AcCharging() {
-        // Arrange
+        
         profileSelectionService.selectProfile(testProfile);
         acChargingController.setProcessAcChargingResult(true);
         
-        // Act
+        
         boolean result = executeActionInteractor.executeAction(2);
         
-        // Assert
+        
         assertTrue(result);
         assertEquals(0, dcChargingController.getProcessCallCount());
         assertEquals(1, acChargingController.getProcessCallCount());
@@ -139,28 +139,28 @@ public class ExecuteActionInteractorTest {
     
     @Test
     public void testExecuteAction_AcChargingFailed() {
-        // Arrange
+        
         profileSelectionService.selectProfile(testProfile);
         acChargingController.setProcessAcChargingResult(false);
         
-        // Act
+        
         boolean result = executeActionInteractor.executeAction(2);
         
-        // Assert
+        
         assertFalse(result);
         assertEquals(1, acChargingController.getProcessCallCount());
     }
 
     @Test
     public void testExecuteAction_RangeCalculation() {
-        // Arrange
+        
         profileSelectionService.selectProfile(testProfile);
         rangeCalculationController.setProcessRangeCalculationResult(true);
         
-        // Act
+        
         boolean result = executeActionInteractor.executeAction(3);
         
-        // Assert
+        
         assertTrue(result);
         assertEquals(0, dcChargingController.getProcessCallCount());
         assertEquals(0, acChargingController.getProcessCallCount());
@@ -169,27 +169,27 @@ public class ExecuteActionInteractorTest {
     
     @Test
     public void testExecuteAction_RangeCalculationFailed() {
-        // Arrange
+        
         profileSelectionService.selectProfile(testProfile);
         rangeCalculationController.setProcessRangeCalculationResult(false);
         
-        // Act
+        
         boolean result = executeActionInteractor.executeAction(3);
         
-        // Assert
+        
         assertFalse(result);
         assertEquals(1, rangeCalculationController.getProcessCallCount());
     }
 
     @Test
     public void testExecuteAction_BackToMainMenu() {
-        // Arrange
+        
         profileSelectionService.selectProfile(testProfile);
         
-        // Act
+        
         boolean result = executeActionInteractor.executeAction(4);
         
-        // Assert
+        
         assertTrue(result);
         assertEquals(0, dcChargingController.getProcessCallCount());
         assertEquals(0, acChargingController.getProcessCallCount());
@@ -198,13 +198,13 @@ public class ExecuteActionInteractorTest {
 
     @Test
     public void testExecuteAction_InvalidChoice() {
-        // Arrange
+        
         profileSelectionService.selectProfile(testProfile);
         
-        // Act
-        boolean result = executeActionInteractor.executeAction(99); // Invalid choice
         
-        // Assert
+        boolean result = executeActionInteractor.executeAction(99); 
+        
+        
         assertFalse(result);
         assertEquals(0, dcChargingController.getProcessCallCount());
         assertEquals(0, acChargingController.getProcessCallCount());

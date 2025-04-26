@@ -23,21 +23,21 @@ public class ApplicationControllerWithActionMenu {
   private final UserInputService userInputService;
   private final ActionAvailabilityService actionAvailabilityService;
   
-  // Use Cases
+  
   private final ShowWelcomeUseCaseInterface showWelcomeUseCase;
   private final ShowCarProfileMenuUseCaseInterface showCarProfileMenuUseCase;
   private final CreateCarProfileUseCaseInterface createCarProfileUseCase;
   
-  // Views
+  
   private final WelcomeView welcomeView;
   private final MainMenuView mainMenuView;
   private final CarProfileView carProfileView;
   
-  // IO
+  
   private final UserInputPortInterface userInputPort;
   private final UserOutputPortInterface userOutputPort;
   
-  // Controllers
+  
   private final ActionMenuController actionMenuController;
   
   public ApplicationControllerWithActionMenu(
@@ -137,7 +137,7 @@ public class ApplicationControllerWithActionMenu {
         } else {
           userOutputPort.displayLine(
               "No car profile selected. Please select a profile first.");
-          userInputPort.readLine(); // Wait for user to press Enter
+          userInputPort.readLine(); 
         }
         break;
       case 3:
@@ -176,7 +176,7 @@ public class ApplicationControllerWithActionMenu {
   
   private void handleActionMenu() {
     actionMenuController.processActionMenu();
-    userInputPort.readLine(); // Wait for user to press Enter
+    userInputPort.readLine(); 
     navigationUseCase.navigateToMainMenu();
   }
   
@@ -274,7 +274,7 @@ public class ApplicationControllerWithActionMenu {
     CarProfile carProfile = createCarProfileUseCase.createCarProfile(
         command);
     carProfileView.showProfileCreated(carProfile);
-    userInputPort.readLine(); // Wait for user to press Enter
+    userInputPort.readLine(); 
     
     navigationUseCase.navigateToCarProfileMenu();
   }
@@ -293,7 +293,7 @@ public class ApplicationControllerWithActionMenu {
         "profile selection");
     
     if (choice > 0 && choice <= profiles.size()) {
-      carProfileView.showEditNotImplemented();         //TODO: Not implemented yet!!!
+      carProfileView.showEditNotImplemented();         
     } else {
       carProfileView.showInvalidChoice();
     }

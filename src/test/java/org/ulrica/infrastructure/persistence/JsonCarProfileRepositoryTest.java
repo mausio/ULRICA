@@ -23,7 +23,7 @@ import org.ulrica.domain.valueobject.BatteryProfile;
 import org.ulrica.domain.valueobject.BatteryType;
 import org.ulrica.domain.valueobject.ConsumptionProfile;
 
-// This test is simpler and uses a mock implementation instead
+
 public class JsonCarProfileRepositoryTest {
     
     @Rule
@@ -42,16 +42,16 @@ public class JsonCarProfileRepositoryTest {
         
         BatteryProfile batteryProfile = new BatteryProfile(
             BatteryType.NMC,
-            75.0,  // Capacity in kWh
-            5.0,   // Degradation in %
-            150.0, // Max DC charging power in kW
-            11.0   // Max AC charging power in kW
+            75.0,  
+            5.0,   
+            150.0, 
+            11.0   
         );
         
         ConsumptionProfile consumptionProfile = new ConsumptionProfile(
-            15.0,  // Consumption at 50 km/h in kWh/100km
-            18.0,  // Consumption at 100 km/h in kWh/100km
-            22.0   // Consumption at 130 km/h in kWh/100km
+            15.0,  
+            18.0,  
+            22.0   
         );
         
         return new CarProfile.Builder()
@@ -69,14 +69,14 @@ public class JsonCarProfileRepositoryTest {
     
     @Test
     public void testSaveAndFindById() {
-        // Arrange
+        
         CarProfile profile = createTestCarProfile();
         
-        // Act
+        
         repository.save(profile);
         Optional<CarProfile> retrieved = repository.findById(profile.getId());
         
-        // Assert
+        
         assertTrue(retrieved.isPresent());
         assertEquals(profile.getId(), retrieved.get().getId());
         assertEquals(profile.getName(), retrieved.get().getName());
@@ -84,26 +84,26 @@ public class JsonCarProfileRepositoryTest {
     
     @Test
     public void testFindAll() {
-        // Arrange
+        
         CarProfile profile1 = createTestCarProfile();
         CarProfile profile2 = createTestCarProfile();
         
-        // Act
+        
         repository.save(profile1);
         repository.save(profile2);
         List<CarProfile> profiles = repository.findAll();
         
-        // Assert
+        
         assertEquals(2, profiles.size());
     }
     
     @Test
     public void testUpdate() {
-        // Arrange
+        
         CarProfile profile = createTestCarProfile();
         repository.save(profile);
         
-        // Act
+        
         CarProfile updatedProfile = new CarProfile.Builder()
                 .id(profile.getId())
                 .name("Updated Car")
@@ -119,42 +119,39 @@ public class JsonCarProfileRepositoryTest {
         repository.save(updatedProfile);
         Optional<CarProfile> retrieved = repository.findById(profile.getId());
         
-        // Assert
+        
         assertTrue(retrieved.isPresent());
         assertEquals("Updated Car", retrieved.get().getName());
     }
     
     @Test
     public void testDelete() {
-        // Arrange
+        
         CarProfile profile = createTestCarProfile();
         repository.save(profile);
         
-        // Act
+        
         repository.delete(profile.getId());
         Optional<CarProfile> retrieved = repository.findById(profile.getId());
         
-        // Assert
+        
         assertFalse(retrieved.isPresent());
     }
     
     @Test
     public void testFindByIdNonExistent() {
-        // Act
+        
         Optional<CarProfile> retrieved = repository.findById("non-existent-id");
         
-        // Assert
+        
         assertFalse(retrieved.isPresent());
     }
     
-    /**
-     * Mock implementation of JsonCarProfileRepository that uses a custom storage location
-     */
     private static class MockJsonCarProfileRepository extends JsonCarProfileRepository {
         
         public MockJsonCarProfileRepository(String storagePath) {
-            // Use the constructor that exists but pass it custom values
-            // This is a better approach than using reflection to modify final fields
+            
+            
             super(storagePath, "test_car_profiles.json");
         }
     }

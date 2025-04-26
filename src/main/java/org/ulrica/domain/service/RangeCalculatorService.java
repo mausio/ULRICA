@@ -15,14 +15,12 @@ public class RangeCalculatorService {
     public RangeCalculatorService() {
         this.strategies = new ArrayList<>();
         
-        // Initialize with standard strategies
         WltpBasedRangeCalculationStrategy wltpStrategy = new WltpBasedRangeCalculationStrategy();
         ConsumptionBasedRangeCalculationStrategy consumptionStrategy = new ConsumptionBasedRangeCalculationStrategy();
         
         this.strategies.add(wltpStrategy);
         this.strategies.add(consumptionStrategy);
         
-        // Set default strategy
         this.defaultStrategy = consumptionStrategy;
     }
     

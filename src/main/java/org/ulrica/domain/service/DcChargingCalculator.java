@@ -77,7 +77,7 @@ public class DcChargingCalculator {
             double batteryTemperature) {
         
         double totalTime = 0;
-        double stepSize = 1.0; // 1% SoC steps
+        double stepSize = 1.0; 
         
         for (double soc = startingSocPercent; soc < targetSocPercent; soc += stepSize) {
             double powerAtSoc = chargingCurve.getChargingPowerAt(soc);

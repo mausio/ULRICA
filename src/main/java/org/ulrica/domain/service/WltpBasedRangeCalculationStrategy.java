@@ -13,37 +13,29 @@ public class WltpBasedRangeCalculationStrategy implements RangeCalculationStrate
 
     @Override
     public RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters) {
-        Objects.requireNonNull(carProfile, "Car profile cannot be null");
+        Objects.requireNonNull(carProfile, "Car profile cannot be null!!!");
         Objects.requireNonNull(parameters, "Range parameters cannot be null");
         
-        // Get base values from car profile
         double baseWltpRange = carProfile.getWltpRangeKm();
         double batteryCapacity = carProfile.getBatteryProfile().getRemainingCapacityKwh();
         double currentSoC = parameters.getStateOfChargePercent();
         
-        // Calculate base consumption from WLTP range
         double baseConsumption = (batteryCapacity * 100.0) / baseWltpRange;
         
-        // Apply efficiency mode factor
         double modeConsumption = baseConsumption * parameters.getEfficiencyMode().getConsumptionFactor();
         
-        // Apply terrain factor
         double terrainFactor = calculateTerrainFactor(parameters.getTerrain());
         double terrainConsumption = modeConsumption * terrainFactor;
         
-        // Apply weather factor
         double weatherFactor = calculateWeatherFactor(parameters.getWeather(), parameters.getTemperatureCelsius());
         double weatherConsumption = terrainConsumption * weatherFactor;
         
-        // Apply environment factor
         double environmentFactor = calculateEnvironmentFactor(parameters.getEnvironment());
         double finalConsumption = weatherConsumption * environmentFactor;
         
-        // Calculate range based on consumption and available energy
         double availableEnergy = batteryCapacity * (currentSoC / 100.0);
         double estimatedRange = (availableEnergy * 100.0) / finalConsumption;
         
-        // Generate impact descriptions
         String weatherImpact = generateWeatherImpactDescription(parameters.getWeather(), parameters.getTemperatureCelsius());
         String terrainImpact = generateTerrainImpactDescription(parameters.getTerrain());
         String environmentImpact = generateEnvironmentImpactDescription(parameters.getEnvironment());
@@ -76,7 +68,6 @@ public class WltpBasedRangeCalculationStrategy implements RangeCalculationStrate
             case STRONG_WIND -> 1.2;
         };
         
-        // Temperature impact - higher consumption in cold or very hot weather
         double tempFactor;
         if (temperature < -10) {
             tempFactor = 1.4;
@@ -85,7 +76,7 @@ public class WltpBasedRangeCalculationStrategy implements RangeCalculationStrate
         } else if (temperature < 10) {
             tempFactor = 1.0;
         } else if (temperature <= 25) {
-            tempFactor = 0.9; // Optimal temperature range
+            tempFactor = 0.9;
         } else if (temperature <= 35) {
             tempFactor = 0.95;
         } else {
@@ -97,9 +88,9 @@ public class WltpBasedRangeCalculationStrategy implements RangeCalculationStrate
     
     private double calculateEnvironmentFactor(DrivingEnvironment environment) {
         return switch(environment) {
-            case CITY -> 0.8;     // Better efficiency in city (recuperation)
-            case RURAL -> 1.0;    // Base efficiency
-            case HIGHWAY -> 1.1; // Higher consumption at constant high speed
+            case CITY -> 0.8;     
+            case RURAL -> 1.0;    
+            case HIGHWAY -> 1.1; 
         };
     }
     
@@ -152,7 +143,6 @@ public class WltpBasedRangeCalculationStrategy implements RangeCalculationStrate
     private String generateBatteryConditionDescription(double soc, double temperature) {
         StringBuilder condition = new StringBuilder();
         
-        // SoC assessment
         if (soc > 80) {
             condition.append("High SoC (").append(soc).append("%) - Optimal operating range");
         } else if (soc > 40) {
@@ -165,7 +155,6 @@ public class WltpBasedRangeCalculationStrategy implements RangeCalculationStrate
         
         condition.append(", ");
         
-        // Temperature assessment
         if (temperature < -10) {
             condition.append("Battery temperature very cold (").append(temperature).append("°C) - Severely reduced efficiency");
         } else if (temperature < 0) {

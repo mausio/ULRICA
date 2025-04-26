@@ -28,13 +28,6 @@ public class JsonCarProfileRepository implements CarProfilePersistencePortInterf
         this(STORAGE_DIR, FILE_NAME);
     }
     
-    /**
-     * Constructor with custom storage directory and filename
-     * This is mainly used for testing purposes
-     * 
-     * @param storageDir The directory to store profiles in
-     * @param fileName The filename to use
-     */
     protected JsonCarProfileRepository(String storageDir, String fileName) {
         this.gson = new GsonBuilder()
                 .setPrettyPrinting()
@@ -78,7 +71,7 @@ public class JsonCarProfileRepository implements CarProfilePersistencePortInterf
     public CarProfile save(CarProfile carProfile) {
         List<CarProfile> profiles = findAll();
         
-        // Update existing profile or add new one
+        
         boolean found = false;
         for (int i = 0; i < profiles.size(); i++) {
             if (profiles.get(i).getId().equals(carProfile.getId())) {

@@ -10,19 +10,19 @@ public class BatteryProfileTest {
 
     @Test
     public void testConstructorAndGetters() {
-        // Arrange
+        
         BatteryType type = BatteryType.NMC;
         double capacityKwh = 80.0;
         double degradationPercent = 5.0;
         double maxDcPowerKw = 250.0;
         double maxAcPowerKw = 11.0;
         
-        // Act
+        
         BatteryProfile batteryProfile = new BatteryProfile(
             type, capacityKwh, degradationPercent, maxDcPowerKw, maxAcPowerKw
         );
         
-        // Assert
+        
         assertEquals(type, batteryProfile.getType());
         assertEquals(capacityKwh, batteryProfile.getCapacityKwh(), 0.001);
         assertEquals(degradationPercent, batteryProfile.getDegradationPercent(), 0.001);
@@ -32,24 +32,24 @@ public class BatteryProfileTest {
     
     @Test
     public void testRemainingCapacity() {
-        // Arrange
+        
         double capacityKwh = 80.0;
         double degradationPercent = 5.0;
         BatteryProfile batteryProfile = new BatteryProfile(
             BatteryType.NMC, capacityKwh, degradationPercent, 250.0, 11.0
         );
         
-        // Act
+        
         double remainingCapacity = batteryProfile.getRemainingCapacityKwh();
         
-        // Assert
+        
         double expected = capacityKwh * (1 - degradationPercent / 100);
         assertEquals(expected, remainingCapacity, 0.001);
     }
     
     @Test
     public void testEqualsAndHashCode() {
-        // Arrange
+        
         BatteryProfile profile1 = new BatteryProfile(
             BatteryType.NMC, 80.0, 5.0, 250.0, 11.0
         );
@@ -60,7 +60,7 @@ public class BatteryProfileTest {
             BatteryType.LFP, 80.0, 5.0, 250.0, 11.0
         );
         
-        // Assert
+        
         assertEquals(profile1, profile2);
         assertEquals(profile1.hashCode(), profile2.hashCode());
         assertNotEquals(profile1, profile3);
@@ -69,15 +69,15 @@ public class BatteryProfileTest {
     
     @Test
     public void testToString() {
-        // Arrange
+        
         BatteryProfile profile = new BatteryProfile(
             BatteryType.NMC, 80.0, 5.0, 250.0, 11.0
         );
         
-        // Act
+        
         String result = profile.toString();
         
-        // Assert
+        
         assertTrue(result.contains("NMC"));
         assertTrue(result.contains("Capacity"));
         assertTrue(result.contains("Degradation"));
@@ -88,7 +88,7 @@ public class BatteryProfileTest {
     
     @Test
     public void testInvalidCapacity() {
-        // Assert
+        
         assertThrows(IllegalArgumentException.class, () -> {
             new BatteryProfile(BatteryType.NMC, 0.0, 5.0, 250.0, 11.0);
         });
@@ -100,7 +100,7 @@ public class BatteryProfileTest {
     
     @Test
     public void testInvalidDegradation() {
-        // Assert
+        
         assertThrows(IllegalArgumentException.class, () -> {
             new BatteryProfile(BatteryType.NMC, 80.0, -5.0, 250.0, 11.0);
         });
@@ -112,7 +112,7 @@ public class BatteryProfileTest {
     
     @Test
     public void testInvalidPower() {
-        // Assert
+        
         assertThrows(IllegalArgumentException.class, () -> {
             new BatteryProfile(BatteryType.NMC, 80.0, 5.0, 0.0, 11.0);
         });
@@ -124,7 +124,7 @@ public class BatteryProfileTest {
     
     @Test
     public void testNullType() {
-        // Assert
+        
         assertThrows(NullPointerException.class, () -> {
             new BatteryProfile(null, 80.0, 5.0, 250.0, 11.0);
         });

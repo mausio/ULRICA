@@ -35,11 +35,6 @@ public class ActionMenuController {
         this.actionResultView = new ActionResultView(userOutputPort);
     }
     
-    /**
-     * Handles the action menu display and interaction.
-     * 
-     * @return true if an action was executed successfully, false otherwise
-     */
     public boolean processActionMenu() {
         if (!actionAvailabilityService.areActionsAvailable()) {
             actionResultView.showError("No car profile selected. Please select a profile first.");

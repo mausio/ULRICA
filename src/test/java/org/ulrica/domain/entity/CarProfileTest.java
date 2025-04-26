@@ -24,7 +24,7 @@ public class CarProfileTest {
 
     @Before
     public void setUp() {
-        // Create common test objects
+        
         batteryProfile = new BatteryProfile(
             BatteryType.NMC,
             80.0,
@@ -44,7 +44,7 @@ public class CarProfileTest {
 
     @Test
     public void testBuilderAndGetters() {
-        // Arrange
+        
         String id = "test-id";
         String name = "Test EV";
         String manufacturer = "Test Manufacturer";
@@ -55,7 +55,7 @@ public class CarProfileTest {
         double maxDcPowerKw = 250.0;
         double maxAcPowerKw = 11.0;
         
-        // Act
+        
         CarProfile carProfile = new CarProfile.Builder()
             .id(id)
             .name(name)
@@ -71,7 +71,7 @@ public class CarProfileTest {
             .chargingCurve(chargingCurve)
             .build();
         
-        // Assert
+        
         assertEquals(id, carProfile.getId());
         assertEquals(name, carProfile.getName());
         assertEquals(manufacturer, carProfile.getManufacturer());
@@ -89,7 +89,7 @@ public class CarProfileTest {
     
     @Test
     public void testBuilderWithoutOptionals() {
-        // Act
+        
         CarProfile carProfile = new CarProfile.Builder()
             .name("Test EV")
             .manufacturer("Test Manufacturer")
@@ -103,14 +103,14 @@ public class CarProfileTest {
             .consumptionProfile(consumptionProfile)
             .build();
         
-        // Assert
-        assertNotNull(carProfile.getId()); // Should generate an ID
-        assertFalse(carProfile.getChargingCurve().isPresent()); // No charging curve
+        
+        assertNotNull(carProfile.getId()); 
+        assertFalse(carProfile.getChargingCurve().isPresent()); 
     }
     
     @Test
     public void testEqualsAndHashCode() {
-        // Arrange
+        
         CarProfile profile1 = new CarProfile.Builder()
             .id("test-id")
             .name("Test EV")
@@ -126,7 +126,7 @@ public class CarProfileTest {
             .build();
         
         CarProfile profile2 = new CarProfile.Builder()
-            .id("test-id") // Same ID
+            .id("test-id") 
             .name("Test EV")
             .manufacturer("Test Manufacturer")
             .model("Test Model")
@@ -140,7 +140,7 @@ public class CarProfileTest {
             .build();
         
         CarProfile profile3 = new CarProfile.Builder()
-            .id("different-id") // Different ID
+            .id("different-id") 
             .name("Test EV")
             .manufacturer("Test Manufacturer")
             .model("Test Model")
@@ -153,7 +153,7 @@ public class CarProfileTest {
             .consumptionProfile(consumptionProfile)
             .build();
         
-        // Assert
+        
         assertEquals(profile1, profile2);
         assertEquals(profile1.hashCode(), profile2.hashCode());
         assertNotEquals(profile1, profile3);
@@ -162,7 +162,7 @@ public class CarProfileTest {
     
     @Test
     public void testToString() {
-        // Arrange
+        
         CarProfile carProfile = new CarProfile.Builder()
             .id("test-id")
             .name("Test EV")
@@ -177,10 +177,10 @@ public class CarProfileTest {
             .consumptionProfile(consumptionProfile)
             .build();
         
-        // Act
+        
         String result = carProfile.toString();
         
-        // Assert
+        
         assertTrue(result.contains("Test EV"));
         assertTrue(result.contains("Test Manufacturer"));
         assertTrue(result.contains("Test Model"));
@@ -193,7 +193,7 @@ public class CarProfileTest {
     
     @Test
     public void testRequiredParameters() {
-        // Missing name
+        
         assertThrows(NullPointerException.class, () -> {
             new CarProfile.Builder()
                 .manufacturer("Test Manufacturer")
@@ -208,7 +208,7 @@ public class CarProfileTest {
                 .build();
         });
         
-        // Missing manufacturer
+        
         assertThrows(NullPointerException.class, () -> {
             new CarProfile.Builder()
                 .name("Test EV")
@@ -223,7 +223,7 @@ public class CarProfileTest {
                 .build();
         });
         
-        // Missing model
+        
         assertThrows(NullPointerException.class, () -> {
             new CarProfile.Builder()
                 .name("Test EV")
@@ -238,7 +238,7 @@ public class CarProfileTest {
                 .build();
         });
         
-        // Missing batteryProfile
+        
         assertThrows(NullPointerException.class, () -> {
             new CarProfile.Builder()
                 .name("Test EV")
@@ -253,7 +253,7 @@ public class CarProfileTest {
                 .build();
         });
         
-        // Missing consumptionProfile
+        
         assertThrows(NullPointerException.class, () -> {
             new CarProfile.Builder()
                 .name("Test EV")

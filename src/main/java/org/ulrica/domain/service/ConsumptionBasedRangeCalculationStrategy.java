@@ -17,27 +17,21 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
         Objects.requireNonNull(carProfile, "Car profile cannot be null");
         Objects.requireNonNull(parameters, "Range parameters cannot be null");
         
-        // Get base consumption from consumption profile
         ConsumptionProfile consumptionProfile = carProfile.getConsumptionProfile();
         double baseConsumption = getBaseConsumption(consumptionProfile, parameters.getEnvironment());
         
-        // Apply efficiency mode factor
         double modeConsumption = baseConsumption * parameters.getEfficiencyMode().getConsumptionFactor();
         
-        // Apply terrain factor
         double terrainFactor = calculateTerrainFactor(parameters.getTerrain());
         double terrainConsumption = modeConsumption * terrainFactor;
         
-        // Apply weather factor
         double weatherFactor = calculateWeatherFactor(parameters.getWeather(), parameters.getTemperatureCelsius());
         double finalConsumption = terrainConsumption * weatherFactor;
         
-        // Calculate range based on consumption and available energy
-        double batteryCapacity = carProfile.getBatteryProfile().getRemainingCapacityKwh();
-        double availableEnergy = batteryCapacity * (parameters.getStateOfChargePercent() / 100.0);
+        double availableEnergy = carProfile.getBatteryProfile().getRemainingCapacityKwh() *
+                (parameters.getStateOfChargePercent() / 100.0);
         double estimatedRange = (availableEnergy * 100.0) / finalConsumption;
         
-        // Generate impact descriptions
         String weatherImpact = generateWeatherImpactDescription(parameters.getWeather(), parameters.getTemperatureCelsius());
         String terrainImpact = generateTerrainImpactDescription(parameters.getTerrain());
         String environmentImpact = generateEnvironmentImpactDescription(parameters.getEnvironment());
@@ -54,7 +48,6 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
     }
     
     private double getBaseConsumption(ConsumptionProfile profile, DrivingEnvironment environment) {
-        // Use different consumption values based on environment/speed
         return switch(environment) {
             case CITY -> profile.getConsumptionAt50Kmh();
             case RURAL -> profile.getConsumptionAt100Kmh();
@@ -79,7 +72,6 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
             case STRONG_WIND -> 1.1;
         };
         
-        // Temperature impact - higher consumption in cold or very hot weather
         double tempFactor;
         if (temperature < -10) {
             tempFactor = 1.4;
@@ -88,7 +80,7 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
         } else if (temperature < 10) {
             tempFactor = 1.0;
         } else if (temperature <= 25) {
-            tempFactor = 0.9; // Optimal temperature range
+            tempFactor = 0.9;
         } else if (temperature <= 35) {
             tempFactor = 1.1;
         } else {
@@ -103,13 +95,13 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
         
         switch(weather) {
             case SUNNY:
-                impact.append("Minimal impact - Ideal weather conditions");
+                impact.append("Minimal impact -> Ideal weather conditions");
                 break;
             case CLOUDY:
-                impact.append("Slight impact - Cloud cover has minimal effect on efficiency");
+                impact.append("Slight impact -> Cloud cover has minimal effect on efficiency");
                 break;
             case RAIN:
-                impact.append("Moderate impact - Rain increases rolling resistance");
+                impact.append("Moderate impact -> Rain increases rolling resistance");
                 break;
             case SNOW:
                 impact.append("Severe impact - Snow conditions significantly reduce range");
@@ -120,9 +112,9 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
         }
         
         if (temperature < 0) {
-            impact.append(", Cold temperature reduces battery efficiency");
+            impact.append(", Cold temperature reduces battery efficiency!");
         } else if (temperature > 30) {
-            impact.append(", High temperature requires additional cooling");
+            impact.append(", High temperature requires additional cooling!");
         }
         
         return impact.toString();
@@ -138,41 +130,39 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
     
     private String generateEnvironmentImpactDescription(DrivingEnvironment environment) {
         return switch(environment) {
-            case CITY -> "Stop-and-go traffic at " + environment.getAvgSpeedKmh() + " km/h - Benefits from regenerative braking";
-            case RURAL -> "Medium speed driving at " + environment.getAvgSpeedKmh() + " km/h - Moderate air resistance";
-            case HIGHWAY -> "Constant high speed at " + environment.getAvgSpeedKmh() + " km/h - Increased air resistance";
+            case CITY -> "Stop-and-go traffic at " + environment.getAvgSpeedKmh() + " kmh - Benefits from regenerative braking";
+            case RURAL -> "Medium speed driving at " + environment.getAvgSpeedKmh() + " km/h - Moderate air resistance!";
+            case HIGHWAY -> "Constant high speed at " + environment.getAvgSpeedKmh() + " km/h - Increased air resistance!";
         };
     }
     
     private String generateBatteryConditionDescription(double soc, double temperature) {
         StringBuilder condition = new StringBuilder();
         
-        // SoC assessment
         if (soc > 80) {
-            condition.append("High SoC (").append(soc).append("%) - Optimal operating range");
+            condition.append("High SoC (").append(soc).append("%) -> Optimal operating range.");
         } else if (soc > 40) {
-            condition.append("Medium SoC (").append(soc).append("%) - Good operating range");
+            condition.append("Medium SoC (").append(soc).append("%) -> Good operating range.");
         } else if (soc > 20) {
-            condition.append("Low SoC (").append(soc).append("%) - Consider charging soon");
+            condition.append("Low SoC (").append(soc).append("%) - Consider charging soon.");
         } else {
-            condition.append("Very low SoC (").append(soc).append("%) - Critical level, charge immediately");
+            condition.append("Very low SoC (").append(soc).append("%) - Critical level!!! charge immediately.");
         }
         
         condition.append(", ");
         
-        // Temperature assessment
         if (temperature < -10) {
-            condition.append("Battery temperature very cold (").append(temperature).append("°C) - Severely reduced efficiency");
+            condition.append("Battery temperature tooo cold!!! (").append(temperature).append("°C) -> Severely reduced efficiency");
         } else if (temperature < 0) {
-            condition.append("Battery temperature cold (").append(temperature).append("°C) - Reduced efficiency");
+            condition.append("Battery temperature cold (").append(temperature).append("°C) -> Reduced efficiency");
         } else if (temperature < 10) {
-            condition.append("Battery temperature cool (").append(temperature).append("°C) - Slightly reduced efficiency");
+            condition.append("Battery temperature cool (").append(temperature).append("°C) -> Slightly reduced efficiency");
         } else if (temperature <= 30) {
-            condition.append("Battery temperature optimal (").append(temperature).append("°C) - Maximum efficiency");
+            condition.append("Battery temperature optimal (").append(temperature).append("°C) -> Maximum efficiency");
         } else if (temperature <= 40) {
-            condition.append("Battery temperature warm (").append(temperature).append("°C) - Slightly reduced efficiency");
+            condition.append("Battery temperature warm (perfectly fine) (").append(temperature).append("°C) -> Slightly reduced efficiency");
         } else {
-            condition.append("Battery temperature hot (").append(temperature).append("°C) - Reduced efficiency, potential for degradation");
+            condition.append("Battery temperature too hot!!! (").append(temperature).append("°C) - Reduced efficiency! potential for degradation!!!");
         }
         
         return condition.toString();

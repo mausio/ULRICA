@@ -6,7 +6,7 @@ import org.ulrica.domain.valueobject.BatteryType;
 public final class ValidationUtils implements ValidationInterface {
     private static final ValidationUtils INSTANCE = new ValidationUtils();
     
-    // Constants for validation
+    
     private static final int MIN_NAME_LENGTH = 1;
     private static final int MAX_NAME_LENGTH = 20;
     private static final double MIN_BATTERY_CAPACITY = 10.0;
@@ -17,10 +17,10 @@ public final class ValidationUtils implements ValidationInterface {
     private static final double MAX_AC_CHARGING_POWER = 50.0;
     private static final double MIN_CONSUMPTION = 1.0;
     private static final double MAX_CONSUMPTION = 50.0;
-    private static final int MIN_YEAR = 1886; // First car was built in 1886
+    private static final int MIN_YEAR = 1886; 
     private static final int MAX_YEAR = java.time.Year.now().getValue();
     
-    private ValidationUtils() {} // Prevent instantiation
+    private ValidationUtils() {} 
     
     public static ValidationInterface getInstance() {
         return INSTANCE;

@@ -29,25 +29,25 @@ public class RangeCalculationController {
         try {
             outputPort.showRangeCalculationHeader();
             
-            // Get terrain type
+            
             TerrainType terrain = getTerrainType();
             
-            // Get weather type
+            
             WeatherType weather = getWeatherType();
             
-            // Get temperature
+            
             double temperature = getTemperature();
             
-            // Get driving environment
+            
             DrivingEnvironment environment = getDrivingEnvironment();
             
-            // Get state of charge
+            
             double stateOfCharge = getStateOfCharge();
             
-            // Get efficiency mode
+            
             EfficiencyMode efficiencyMode = getEfficiencyMode();
             
-            // Execute range calculation
+            
             return calculateRangeUseCase.calculateRange(
                     terrain,
                     weather,

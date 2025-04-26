@@ -20,12 +20,12 @@ public class ConsoleUserInputAdapter implements UserInputPortInterface {
     public int readInt() {
         try {
             int result = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine(); 
             return result;
         } catch (Exception e) {
-            // In case of invalid input, consume the line and return a default value
+            
             scanner.nextLine();
-            return 0; // Default value
+            return 0; 
         }
     }
     
@@ -33,12 +33,12 @@ public class ConsoleUserInputAdapter implements UserInputPortInterface {
     public double readDouble() {
         try {
             double result = scanner.nextDouble();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine(); 
             return result;
         } catch (Exception e) {
-            // In case of invalid input, consume the line and return a default value
+            
             scanner.nextLine();
-            return 0.0; // Default value
+            return 0.0; 
         }
     }
     
@@ -50,7 +50,7 @@ public class ConsoleUserInputAdapter implements UserInputPortInterface {
         } else if (input.equals(noOption.toLowerCase()) || input.equals("n")) {
             return false;
         }
-        // Default to false if input is invalid
+        
         return false;
     }
 } 

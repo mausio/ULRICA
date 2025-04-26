@@ -39,20 +39,17 @@ public class CalculateRangeInteractor implements CalculateRangeUseCaseInterface 
             double stateOfChargePercent) {
         
         try {
-            // Check if car profile is selected
             CarProfile carProfile = profileSelectionService.getSelectedProfile();
             if (carProfile == null) {
                 outputPort.showError("No car profile selected");
                 return false;
             }
             
-            // Validate state of charge
             if (stateOfChargePercent < 0 || stateOfChargePercent > 100) {
                 outputPort.showError("State of charge must be between 0 and 100 percent");
                 return false;
             }
             
-            // Create range parameters value object
             RangeParameters parameters = new RangeParameters(
                     terrain,
                     weather,
@@ -62,10 +59,8 @@ public class CalculateRangeInteractor implements CalculateRangeUseCaseInterface 
                     stateOfChargePercent
             );
             
-            // Calculate range
             RangeResult result = rangeCalculatorService.calculateRange(carProfile, parameters);
             
-            // Display results
             outputPort.showCalculationResult(
                     result.getEstimatedRangeKm(),
                     result.getAverageConsumptionKwhPer100Km(),
@@ -74,11 +69,10 @@ public class CalculateRangeInteractor implements CalculateRangeUseCaseInterface 
                     temperatureCelsius,
                     environment,
                     stateOfChargePercent,
-                    temperatureCelsius, // Assuming battery temp equals ambient for simplicity
+                    temperatureCelsius,
                     efficiencyMode
             );
             
-            // Display impact analysis
             outputPort.showImpactAnalysis(
                     result.getWeatherImpactDescription(),
                     result.getTerrainImpactDescription(),

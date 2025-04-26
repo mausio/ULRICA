@@ -13,9 +13,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * Unit test for simple App.
- */
 public class AppTest 
 {
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -35,7 +32,7 @@ public class AppTest
         System.setSecurityManager(originalSecurityManager);
     }
     
-    // Custom SecurityManager to prevent System.exit() from terminating the JVM during tests
+    
     private static class ExitTrappedException extends SecurityException {
         private static final long serialVersionUID = 1L;
         public final int status;
@@ -48,12 +45,12 @@ public class AppTest
     private static class NoExitSecurityManager extends SecurityManager {
         @Override
         public void checkPermission(Permission perm) {
-            // Allow anything
+            
         }
         
         @Override
         public void checkPermission(Permission perm, Object context) {
-            // Allow anything
+            
         }
         
         @Override
@@ -64,34 +61,13 @@ public class AppTest
     
     @Test
     public void testMainMethod_BasicExecution() {
-        // Skip this test as SecurityManager is deprecated in Java 17+
-        /*
-        // Arrange - Set up exit trap
-        originalSecurityManager = System.getSecurityManager();
-        System.setSecurityManager(new NoExitSecurityManager());
         
-        // Set up input for menu navigation
-        String input = "3\n"; // Exit option
-        System.setIn(new ByteArrayInputStream(input.getBytes()));
-        
-        try {
-            // Act
-            App.main(new String[]{});
-        } catch (ExitTrappedException e) {
-            // Assert
-            assertEquals(0, e.status); // Verify the app attempted to exit with status 0
-            
-            // Verify some expected output was generated
-            String output = outContent.toString();
-            assertTrue(output.contains("ULRICA"));
-        }
-        */
     }
     
     @Test
     public void testApp_IntegrationTest() {
-        // This is a placeholder for a more comprehensive integration test
-        // In a real scenario, it would test the full application flow
+        
+        
         assertTrue(true);
     }
 }

@@ -33,7 +33,7 @@ public class CalculateRangeInteractorTest {
         outputPort = new MockRangeCalculationOutputPort();
         profileSelectionService = new MockProfileSelectionService();
         
-        // Create a mock car profile using builder pattern
+        
         carProfile = new CarProfile.Builder()
                 .id("mock-id")
                 .name("Mock Car")
@@ -51,7 +51,7 @@ public class CalculateRangeInteractorTest {
     
     @Test
     public void testCalculateRange_Success() {
-        // Given test parameters
+        
         TerrainType terrain = TerrainType.FLAT;
         WeatherType weather = WeatherType.SUNNY;
         double temperature = 20.0;
@@ -59,7 +59,7 @@ public class CalculateRangeInteractorTest {
         EfficiencyMode efficiencyMode = EfficiencyMode.NORMAL;
         double stateOfCharge = 80.0;
         
-        // When
+        
         boolean result = interactor.calculateRange(
                 terrain,
                 weather,
@@ -69,7 +69,7 @@ public class CalculateRangeInteractorTest {
                 stateOfCharge
         );
         
-        // Then
+        
         assertTrue(result);
         assertTrue(((MockRangeCalculationOutputPort) outputPort).calculationResultShown);
         assertTrue(((MockRangeCalculationOutputPort) outputPort).impactAnalysisShown);
@@ -77,15 +77,15 @@ public class CalculateRangeInteractorTest {
     
     @Test
     public void testCalculateRange_InvalidSoC() {
-        // Given
+        
         TerrainType terrain = TerrainType.FLAT;
         WeatherType weather = WeatherType.SUNNY;
         double temperature = 20.0;
         DrivingEnvironment environment = DrivingEnvironment.HIGHWAY;
         EfficiencyMode efficiencyMode = EfficiencyMode.NORMAL;
-        double stateOfCharge = 101.0; // Invalid SoC
+        double stateOfCharge = 101.0; 
         
-        // When
+        
         boolean result = interactor.calculateRange(
                 terrain,
                 weather,
@@ -95,14 +95,14 @@ public class CalculateRangeInteractorTest {
                 stateOfCharge
         );
         
-        // Then
+        
         assertFalse(result);
         assertTrue(((MockRangeCalculationOutputPort) outputPort).errorShown);
     }
     
     @Test
     public void testCalculateRange_NoProfileSelected() {
-        // Given
+        
         ((MockProfileSelectionService) profileSelectionService).setSelectedProfile(null);
         TerrainType terrain = TerrainType.FLAT;
         WeatherType weather = WeatherType.SUNNY;
@@ -111,7 +111,7 @@ public class CalculateRangeInteractorTest {
         EfficiencyMode efficiencyMode = EfficiencyMode.NORMAL;
         double stateOfCharge = 80.0;
         
-        // When
+        
         boolean result = interactor.calculateRange(
                 terrain,
                 weather,
@@ -121,12 +121,12 @@ public class CalculateRangeInteractorTest {
                 stateOfCharge
         );
         
-        // Then
+        
         assertFalse(result);
         assertTrue(((MockRangeCalculationOutputPort) outputPort).errorShown);
     }
     
-    // Simple mock implementations
+    
     private class MockRangeCalculatorService extends RangeCalculatorService {
         @Override
         public RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters) {

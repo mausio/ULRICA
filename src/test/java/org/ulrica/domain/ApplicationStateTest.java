@@ -8,7 +8,7 @@ public class ApplicationStateTest {
 
     @Test
     public void testApplicationStateValues() {
-        // Check that all expected states exist
+        
         assertEquals(8, ApplicationState.values().length);
         assertNotNull(ApplicationState.WELCOME);
         assertNotNull(ApplicationState.MAIN_MENU);

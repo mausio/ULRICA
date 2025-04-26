@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.TreeMap;
 
 public final class ChargingCurve {
-    private final Map<Double, Double> curvePoints; // battery percentage -> charging power
+    private final Map<Double, Double> curvePoints; 
 
     public ChargingCurve(Map<Double, Double> curvePoints) {
         if (curvePoints == null || curvePoints.isEmpty()) {
@@ -40,7 +40,7 @@ public final class ChargingCurve {
             return floor.getValue();
         }
 
-        // Linear interpolation
+        
         double x1 = floor.getKey();
         double y1 = floor.getValue();
         double x2 = ceiling.getKey();

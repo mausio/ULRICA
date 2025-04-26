@@ -1,10 +1,40 @@
 package org.ulrica;
 
-import org.ulrica.application.port.in.*;
-import org.ulrica.application.port.out.*;
+import java.util.Scanner;
+
+import org.ulrica.application.port.in.CalculateAcChargingUseCaseInterface;
+import org.ulrica.application.port.in.CalculateDcChargingUseCaseInterface;
+import org.ulrica.application.port.in.CalculateRangeUseCaseInterface;
+import org.ulrica.application.port.in.CreateCarProfileUseCaseInterface;
+import org.ulrica.application.port.in.ExecuteActionUseCaseInterface;
+import org.ulrica.application.port.in.InputValidationServiceInterface;
+import org.ulrica.application.port.in.NavigationUseCaseInterface;
+import org.ulrica.application.port.in.ShowActionMenuUseCaseInterface;
+import org.ulrica.application.port.in.ShowCarProfileMenuUseCaseInterface;
+import org.ulrica.application.port.in.ShowWelcomeUseCaseInterface;
+import org.ulrica.application.port.out.AcChargingOutputPortInterface;
+import org.ulrica.application.port.out.CarProfilePersistencePortInterface;
+import org.ulrica.application.port.out.DcChargingOutputPortInterface;
+import org.ulrica.application.port.out.RangeCalculationOutputPortInterface;
+import org.ulrica.application.port.out.UserInputPortInterface;
+import org.ulrica.application.port.out.UserOutputPortInterface;
 import org.ulrica.application.service.InputValidationService;
-import org.ulrica.application.usecase.*;
-import org.ulrica.domain.service.*;
+import org.ulrica.application.usecase.CalculateAcChargingInteractor;
+import org.ulrica.application.usecase.CalculateDcChargingInteractor;
+import org.ulrica.application.usecase.CalculateRangeInteractor;
+import org.ulrica.application.usecase.CreateCarProfileInteractor;
+import org.ulrica.application.usecase.ExecuteActionInteractor;
+import org.ulrica.application.usecase.NavigationUseCase;
+import org.ulrica.application.usecase.ShowActionMenuInteractor;
+import org.ulrica.application.usecase.ShowCarProfileMenuInteractor;
+import org.ulrica.application.usecase.ShowWelcomeInteractor;
+import org.ulrica.domain.service.AcChargingCalculator;
+import org.ulrica.domain.service.ActionAvailabilityService;
+import org.ulrica.domain.service.ActionAvailabilityServiceImpl;
+import org.ulrica.domain.service.DcChargingCalculator;
+import org.ulrica.domain.service.ProfileSelectionService;
+import org.ulrica.domain.service.ProfileSelectionServiceImpl;
+import org.ulrica.domain.service.RangeCalculatorService;
 import org.ulrica.infrastructure.adapter.ConsoleUserInputAdapter;
 import org.ulrica.infrastructure.adapter.ConsoleUserOutputAdapter;
 import org.ulrica.infrastructure.persistence.JsonCarProfileRepository;
@@ -12,9 +42,13 @@ import org.ulrica.presentation.controller.AcChargingController;
 import org.ulrica.presentation.controller.ApplicationControllerWithActionMenu;
 import org.ulrica.presentation.controller.DcChargingController;
 import org.ulrica.presentation.controller.RangeCalculationController;
-import org.ulrica.presentation.view.*;
-
-import java.util.Scanner;
+import org.ulrica.presentation.view.AcChargingView;
+import org.ulrica.presentation.view.ActionResultView;
+import org.ulrica.presentation.view.CarProfileView;
+import org.ulrica.presentation.view.DcChargingView;
+import org.ulrica.presentation.view.MainMenuView;
+import org.ulrica.presentation.view.RangeCalculationView;
+import org.ulrica.presentation.view.WelcomeView;
 
 public class App {
   public static void main(String[] args) {

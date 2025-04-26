@@ -26,19 +26,19 @@ public class RangeCalculatorServiceTest {
     public void setUp() {
         rangeCalculatorService = new RangeCalculatorService();
         
-        // Create battery profile
+        
         BatteryProfile batteryProfile = new BatteryProfile(
             BatteryType.NMC,
-            80.0,  // 80 kWh capacity
-            5.0,   // 5% degradation
-            250.0, // 250 kW max DC power
-            11.0   // 11 kW max AC power
+            80.0,  
+            5.0,   
+            250.0, 
+            11.0   
         );
         
-        // Create consumption profile
+        
         ConsumptionProfile consumptionProfile = new ConsumptionProfile(15.0, 20.0, 25.0);
         
-        // Create car profile
+        
         mockCarProfile = new CarProfile.Builder()
             .id("test-id")
             .name("Test EV")
@@ -53,23 +53,23 @@ public class RangeCalculatorServiceTest {
             .consumptionProfile(consumptionProfile)
             .build();
         
-        // Create range parameters
+        
         parameters = new RangeParameters(
             TerrainType.FLAT,
             WeatherType.SUNNY,
-            20.0, // temperature Celsius
+            20.0, 
             DrivingEnvironment.HIGHWAY,
             EfficiencyMode.NORMAL,
-            80.0  // SOC percent
+            80.0  
         );
     }
 
     @Test
     public void testCalculateRange_Default() {
-        // Act
+        
         RangeResult result = rangeCalculatorService.calculateRange(mockCarProfile, parameters);
         
-        // Assert
+        
         assertNotNull(result);
         assertTrue(result.getEstimatedRangeKm() > 0);
         assertTrue(result.getAverageConsumptionKwhPer100Km() > 0);
@@ -77,14 +77,14 @@ public class RangeCalculatorServiceTest {
     
     @Test
     public void testCalculateRange_WithStrategy() {
-        // Arrange
+        
         RangeCalculationStrategyInterface strategy = rangeCalculatorService.getDefaultStrategy();
         
-        // Act
+        
         RangeResult result = rangeCalculatorService.calculateRangeWithStrategy(
             mockCarProfile, parameters, strategy);
         
-        // Assert
+        
         assertNotNull(result);
         assertTrue(result.getEstimatedRangeKm() > 0);
         assertTrue(result.getAverageConsumptionKwhPer100Km() > 0);
@@ -92,22 +92,22 @@ public class RangeCalculatorServiceTest {
     
     @Test
     public void testAvailableStrategies() {
-        // Assert that there are at least the default strategies (WLTP and Consumption-based)
+        
         assertTrue(rangeCalculatorService.getAvailableStrategies().size() >= 2);
     }
     
     @Test
     public void testAddStrategy() {
-        // Arrange
+        
         int initialCount = rangeCalculatorService.getAvailableStrategies().size();
         
-        // Create a mock strategy
+        
         RangeCalculationStrategyInterface mockStrategy = new RangeCalculationStrategyInterface() {
             @Override
             public RangeResult calculateRange(CarProfile carProfile, RangeParameters params) {
                 return new RangeResult(
-                    300.0, // Estimated range in km
-                    20.0,  // Average consumption in kWh/100km
+                    300.0, 
+                    20.0,  
                     "No weather impact",
                     "No terrain impact",
                     "No environment impact",
@@ -126,25 +126,25 @@ public class RangeCalculatorServiceTest {
             }
         };
         
-        // Act
+        
         rangeCalculatorService.addStrategy(mockStrategy);
         
-        // Assert
+        
         assertEquals(initialCount + 1, rangeCalculatorService.getAvailableStrategies().size());
     }
     
     @Test
     public void testSetDefaultStrategy() {
-        // Arrange
+        
         RangeCalculationStrategyInterface initialDefault = rangeCalculatorService.getDefaultStrategy();
         
-        // Create a mock strategy
+        
         RangeCalculationStrategyInterface mockStrategy = new RangeCalculationStrategyInterface() {
             @Override
             public RangeResult calculateRange(CarProfile carProfile, RangeParameters params) {
                 return new RangeResult(
-                    300.0, // Estimated range in km
-                    20.0,  // Average consumption in kWh/100km
+                    300.0, 
+                    20.0,  
                     "No weather impact",
                     "No terrain impact",
                     "No environment impact",
@@ -163,17 +163,17 @@ public class RangeCalculatorServiceTest {
             }
         };
         
-        // Act
+        
         rangeCalculatorService.setDefaultStrategy(mockStrategy);
         
-        // Assert
+        
         assertEquals("NewDefaultStrategy", rangeCalculatorService.getDefaultStrategy().getName());
         assertTrue(rangeCalculatorService.getDefaultStrategy() != initialDefault);
     }
     
     @Test
     public void testCompareStrategies() {
-        // Get available strategies
+        
         RangeCalculationStrategyInterface wltpStrategy = null;
         RangeCalculationStrategyInterface consumptionStrategy = null;
         
@@ -186,21 +186,21 @@ public class RangeCalculatorServiceTest {
             }
         }
         
-        // Make sure both strategies were found
+        
         assertNotNull("WLTP strategy should be available", wltpStrategy);
         assertNotNull("Consumption strategy should be available", consumptionStrategy);
         
-        // Act
+        
         RangeResult wltpResult = rangeCalculatorService.calculateRangeWithStrategy(
             mockCarProfile, parameters, wltpStrategy);
         RangeResult consumptionResult = rangeCalculatorService.calculateRangeWithStrategy(
             mockCarProfile, parameters, consumptionStrategy);
         
-        // Assert
+        
         assertNotNull(wltpResult);
         assertNotNull(consumptionResult);
         
-        // Verify that results have reasonable values
+        
         assertTrue(wltpResult.getEstimatedRangeKm() > 0);
         assertTrue(consumptionResult.getEstimatedRangeKm() > 0);
     }
