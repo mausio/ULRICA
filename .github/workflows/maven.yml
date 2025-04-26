@@ -32,7 +32,7 @@ jobs:
 
     - name: Count Java lines of code
       id: count-loc
-      run: cloc --include-lang=Java . > cloc_output.txt
+      run: cloc --include-lang=Java ./src/main/java/org/ulrica > cloc_output.txt
 
     - name: Send Email with Test and Coverage Results
       uses: dawidd6/action-send-mail@v3
