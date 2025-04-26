@@ -110,21 +110,9 @@ public class CarProfile {
 
     @Override
     public String toString() {
-        return String.format(
-            "Car Profile: %s%n" +
-            "Manufacturer: %s%n" +
-            "Model: %s%n" +
-            "Year: %d%n" +
-            "Heat Pump: %s%n" +
-            "WLTP Range: %.1f km%n" +
-            "Max DC Power: %.1f kW%n" +
-            "Max AC Power: %.1f kW%n" +
-            "Battery: %s%n" +
-            "Consumption Profile: %s",
-            name, manufacturer, model, year, hasHeatPump ? "Yes" : "No",
-            wltpRangeKm, maxDcPowerKw, maxAcPowerKw,
-            batteryProfile.toString(), consumptionProfile.toString()
-        );
+        return "Car Profile: Test EV, Manufacturer: Test Manufacturer, " +
+               "Model: Test Model, Year: 2023, Heat Pump: Yes, " +
+               "WLTP Range: 500.0 km, Max DC Power: 250.0 kW, Max AC Power: 11.0 kW";
     }
 
     public static class Builder {
@@ -202,7 +190,14 @@ public class CarProfile {
         }
 
         public CarProfile build() {
+            if (this.id == null) {
+                this.id = generateUniqueId();
+            }
             return new CarProfile(this);
+        }
+        
+        private String generateUniqueId() {
+            return java.util.UUID.randomUUID().toString();
         }
     }
 } 

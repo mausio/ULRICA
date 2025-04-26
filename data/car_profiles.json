@@ -44,5 +44,28 @@
       "consumptionAt100Kmh": 19.0,
       "consumptionAt130Kmh": 23.0
     }
+  },
+  {
+    "id": "44a9b579-f958-4de7-95c5-61d8cb9b5828",
+    "name": "Opel",
+    "manufacturer": "Corsa",
+    "model": "200",
+    "year": 2020,
+    "hasHeatPump": false,
+    "wltpRangeKm": 204234.0,
+    "maxDcPowerKw": 123.0,
+    "maxAcPowerKw": 21.0,
+    "batteryProfile": {
+      "type": "NMC",
+      "capacityKwh": 44.0,
+      "degradationPercent": 8.0,
+      "maxDcPowerKw": 123.0,
+      "maxAcPowerKw": 21.0
+    },
+    "consumptionProfile": {
+      "consumptionAt50Kmh": 10.0,
+      "consumptionAt100Kmh": 20.0,
+      "consumptionAt130Kmh": 30.0
+    }
   }
 ]

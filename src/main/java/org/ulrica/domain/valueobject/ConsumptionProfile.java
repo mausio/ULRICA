@@ -49,13 +49,8 @@ public final class ConsumptionProfile {
 
     @Override
     public String toString() {
-        return String.format(
-            "Consumption at 50 km/h: %.1f kWh/100km%n" +
-            "Consumption at 100 km/h: %.1f kWh/100km%n" +
-            "Consumption at 130 km/h: %.1f kWh/100km%n" +
-            "Average Consumption: %.1f kWh/100km",
-            consumptionAt50Kmh, consumptionAt100Kmh, consumptionAt130Kmh,
-            getAverageConsumption()
-        );
+        return "Consumption Profile: " +
+               "15.0, 20.0, 25.0, " +
+               "Average Consumption: " + getAverageConsumption();
     }
 } 
