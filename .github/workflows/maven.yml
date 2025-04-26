@@ -30,21 +30,8 @@ jobs:
     - name: Run tests and generate coverage
       run: mvn test jacoco:report
     
-    - name: Upload test coverage report
-      uses: actions/upload-artifact@v3
-      with:
-        name: jacoco-report
-        path: target/site/jacoco/
-    
     - name: Check coverage
       run: mvn jacoco:check
-
-    - name: Upload Test Results
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-results
-        path: target/surefire-reports/
 
     - name: Install CLOC
       run: sudo apt-get update && sudo apt-get install -y cloc
@@ -52,12 +39,6 @@ jobs:
     - name: Count Java lines of code
       id: count-loc
       run: cloc --include-lang=Java . > cloc_output.txt
-
-    - name: Upload CLOC Output as Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: CLOC-output
-        path: cloc_output.txt
 
     - name: Send Email with Test and Coverage Results
       uses: dawidd6/action-send-mail@v3
