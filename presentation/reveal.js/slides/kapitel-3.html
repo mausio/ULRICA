@@ -2,22 +2,632 @@
 
 <section>
     <h3>SRP – Single Responsibility Principle (3P)</h3>
-    <p>Jeweils eine Klasse als positives und negatives Beispiel für SRP</p>
-    <p>Jeweils UML und Beschreibung der Aufgabe bzw. der Aufgaben</p>
-    <p>Möglicher Lösungsweg des Negativ-Beispiels (inkl. UML)</p>
+    <p>Jede Klasse sollte genau eine Verantwortlichkeit haben, d.h. einen einzigen Grund für Änderungen</p>
+</section>
+
+<section>
+    <h3>SRP – Positives Beispiel: RangeCalculatorService</h3>
+    <pre><code class="java">public class RangeCalculatorService {
+    private final List<RangeCalculationStrategyInterface> strategies;
+    private RangeCalculationStrategyInterface defaultStrategy;
+
+    public RangeCalculatorService() {
+        this.strategies = new ArrayList<>();
+        
+        // Initialize with standard strategies
+        WltpBasedRangeCalculationStrategy wltpStrategy = 
+            new WltpBasedRangeCalculationStrategy();
+        ConsumptionBasedRangeCalculationStrategy consumptionStrategy = 
+            new ConsumptionBasedRangeCalculationStrategy();
+        
+        this.strategies.add(wltpStrategy);
+        this.strategies.add(consumptionStrategy);
+        
+        // Set default strategy
+        this.defaultStrategy = consumptionStrategy;
+    }
+    
+    public RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters) {
+        Objects.requireNonNull(carProfile, "Car profile cannot be null");
+        Objects.requireNonNull(parameters, "Range parameters cannot be null");
+        
+        return defaultStrategy.calculateRange(carProfile, parameters);
+    }
+}</code></pre>
+</section>
+
+<section>
+    <h3>SRP – Positives Beispiel: Beschreibung</h3>
+    <p>Der RangeCalculatorService hat eine klar definierte Verantwortung:</p>
+    <ul>
+        <li>Verwaltung der Berechnungsstrategien für Reichweiten</li>
+        <li>Bereitstellung einer einheitlichen Schnittstelle zur Reichweitenberechnung</li>
+        <li>Delegation der tatsächlichen Berechnung an die entsprechende Strategie</li>
+    </ul>
+    <p>Die Klasse befasst sich <b>nicht</b> mit:</p>
+    <ul>
+        <li>Benutzereingaben verarbeiten</li>
+        <li>Ergebnisse anzeigen</li>
+        <li>Fahrzeugprofile laden oder speichern</li>
+    </ul>
+</section>
+
+<section>
+    <h3>SRP – Negatives Beispiel: CarProfileManager</h3>
+    <pre><code class="java">public class CarProfileManager {
+    private final Scanner scanner;
+    private final String storagePath = "profiles.json";
+    private Gson gson = new Gson();
+    
+    public CarProfileManager() {
+        this.scanner = new Scanner(System.in);
+    }
+    
+    public CarProfile createProfile() {
+        System.out.println("Neues Fahrzeugprofil erstellen:");
+        System.out.print("Name: ");
+        String name = scanner.nextLine();
+        
+        System.out.print("Hersteller: ");
+        String manufacturer = scanner.nextLine();
+        
+        // Weitere Benutzereingaben...
+        
+        return new CarProfile.Builder()
+                .name(name)
+                .manufacturer(manufacturer)
+                // Weitere Eigenschaften...
+                .build();
+    }
+    
+    public void saveProfile(CarProfile profile) {
+        List<CarProfile> profiles = loadAllProfiles();
+        profiles.add(profile);
+        
+        try (FileWriter writer = new FileWriter(storagePath)) {
+            gson.toJson(profiles, writer);
+            System.out.println("Profil gespeichert.");
+        } catch (IOException e) {
+            System.err.println("Fehler beim Speichern: " + e.getMessage());
+        }
+    }
+    
+    public List<CarProfile> loadAllProfiles() {
+        // Code zum Laden von Profilen...
+    }
+    
+    public double calculateRange(CarProfile profile) {
+        // Komplexe Reichweitenberechnung...
+    }
+    
+    public void displayProfile(CarProfile profile) {
+        System.out.println("Profil: " + profile.getName());
+        System.out.println("Hersteller: " + profile.getManufacturer());
+        // Weitere Anzeigen...
+    }
+}</code></pre>
+</section>
+
+<section>
+    <h3>SRP – Negatives Beispiel: Beschreibung</h3>
+    <p>CarProfileManager hat zu viele Verantwortlichkeiten:</p>
+    <ul>
+        <li><b>UI-Logik:</b> Benutzereingaben über Scanner einlesen und anzeigen</li>
+        <li><b>Datenpersistenz:</b> Speichern und Laden von Profilen</li>
+        <li><b>Domänenlogik:</b> Reichweitenberechnung</li>
+        <li><b>Präsentation:</b> Anzeige von Profildaten</li>
+    </ul>
+    <p>Probleme:</p>
+    <ul>
+        <li>Mehrere Gründe für Änderungen (UI-Änderung, Geschäftslogik, Speicherformat)</li>
+        <li>Schwer testbar (z.B. UI-Logik mit Scanner)</li>
+        <li>Verletzt Clean Architecture (mischt verschiedene Schichten)</li>
+    </ul>
+</section>
+
+<section>
+    <h3>SRP – Refactoring des negativen Beispiels</h3>
+    <p>Aufteilung in spezialisierte Klassen:</p>
+    <div class="horizontal-spaced-container">
+        <div>
+            <pre><code class="java">// UI/Presentation Layer
+public class CarProfileView {
+    public CarProfileInput promptForNewProfile() {
+        // Benutzereingaben
+    }
+    
+    public void displayProfile(CarProfile profile) {
+        // Anzeige
+    }
+}</code></pre>
+        </div>
+        <div>
+            <pre><code class="java">// Application Layer
+public class CreateCarProfileUseCase {
+    private final CarProfileRepository repository;
+    
+    public CreateCarProfileUseCase(
+            CarProfileRepository repository) {
+        this.repository = repository;
+    }
+    
+    public CarProfile createProfile(CarProfileInput input) {
+        // Domain-Objekt erstellen
+        return repository.save(profile);
+    }
+}</code></pre>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>SRP – Refactoring des negativen Beispiels (Fortsetzung)</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <pre><code class="java">// Infrastructure Layer
+public class JsonCarProfileRepository 
+        implements CarProfileRepository {
+    private final String storagePath;
+    private final Gson gson;
+    
+    public JsonCarProfileRepository(String path) {
+        this.storagePath = path;
+        this.gson = new Gson();
+    }
+    
+    public CarProfile save(CarProfile profile) {
+        // Speichern
+    }
+    
+    public List<CarProfile> findAll() {
+        // Laden
+    }
+}</code></pre>
+        </div>
+        <div>
+            <pre><code class="java">// Domain Layer
+public class RangeCalculator {
+    public double calculateRange(
+            CarProfile profile,
+            RangeParameters params) {
+        // Berechnung
+    }
+}</code></pre>
+
+            <pre><code class="java">// Domain/Application Layer
+public interface CarProfileRepository {
+    CarProfile save(CarProfile profile);
+    List<CarProfile> findAll();
+}</code></pre>
+        </div>
+    </div>
 </section>
 
 <section>
     <h3>OCP – Open-Closed Principle (3P)</h3>
-    <p>Jeweils eine Klasse als positives und negatives Beispiel für OCP</p>
-    <p>Jeweils UML und Analyse mit Begründung, warum das OCP erfüllt/nicht erfüllt wurde</p>
-    <p>Falls erfüllt: warum hier sinnvoll/welches Problem gab es?</p>
-    <p>Falls nicht erfüllt: wie könnte man es lösen (inkl. UML)?</p>
+    <p>Softwaremodule sollten offen für Erweiterungen sein, aber geschlossen für Änderungen</p>
 </section>
 
 <section>
-    <h3>LSP / ISP / DIP (2P)</h3>
-    <p>Jeweils eine Klasse als positives und negatives Beispiel für entweder LSP oder ISP oder DIP</p>
-    <p>Jeweils UML und Begründung, warum hier das Prinzip erfüllt/nicht erfüllt wird</p>
-    <p>Beim Negativ-Beispiel UML einer möglichen Lösung hinzufügen</p>
+    <h3>OCP – Positives Beispiel: RangeCalculationStrategyInterface</h3>
+    <pre><code class="java">// Abstraktion (Interface)
+public interface RangeCalculationStrategyInterface {
+    
+    RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters);
+    
+    String getName();
+    
+    String getDescription();
+}
+
+// Erste Implementierung
+public class WltpBasedRangeCalculationStrategy implements RangeCalculationStrategyInterface {
+    
+    @Override
+    public RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters) {
+        // WLTP-basierte Berechnung...
+    }
+    
+    @Override
+    public String getName() {
+        return "WLTP-based Range Calculation";
+    }
+}
+
+// Zweite Implementierung
+public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculationStrategyInterface {
+    
+    @Override
+    public RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters) {
+        // Verbrauchsbasierte Berechnung...
+    }
+    
+    @Override
+    public String getName() {
+        return "Consumption-based Range Calculation";
+    }
+}</code></pre>
+</section>
+
+<section>
+    <h3>OCP – Positives Beispiel: Verwendung</h3>
+    <pre><code class="java">public class RangeCalculatorService {
+    private final List<RangeCalculationStrategyInterface> strategies;
+    private RangeCalculationStrategyInterface defaultStrategy;
+    
+    // Constructor with initialization...
+    
+    public void addStrategy(RangeCalculationStrategyInterface strategy) {
+        Objects.requireNonNull(strategy, "Strategy cannot be null");
+        strategies.add(strategy);
+    }
+    
+    public void setDefaultStrategy(RangeCalculationStrategyInterface strategy) {
+        Objects.requireNonNull(strategy, "Strategy cannot be null");
+        if (!strategies.contains(strategy)) {
+            strategies.add(strategy);
+        }
+        this.defaultStrategy = strategy;
+    }
+    
+    public RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters) {
+        return defaultStrategy.calculateRange(carProfile, parameters);
+    }
+}</code></pre>
+</section>
+
+<section>
+    <h3>OCP – Positives Beispiel: Analyse</h3>
+    <p>Das Strategy Pattern erfüllt das OCP:</p>
+    <ul>
+        <li>Geschlossen für Änderungen: RangeCalculatorService muss nicht verändert werden, wenn neue Berechnungsstrategien hinzukommen</li>
+        <li>Offen für Erweiterungen: Neue Strategien können durch Implementierung des Interfaces hinzugefügt werden</li>
+        <li>Warum hier sinnvoll? Verschiedene Berechnungsmethoden für unterschiedliche Anwendungsfälle können flexibel hinzugefügt werden</li>
+        <li>Problem, das es löst: Vermeidung von stetigen Änderungen am Service selbst bei Hinzufügen neuer Berechnungslogik</li>
+    </ul>
+</section>
+
+<section>
+    <h3>OCP – Negatives Beispiel: Direkter Berechnungsansatz</h3>
+    <pre><code class="java">public class RangeCalculator {
+    
+    public double calculateRange(CarProfile profile, String calculationType) {
+        switch (calculationType) {
+            case "WLTP":
+                return calculateWltpRange(profile);
+            case "CONSUMPTION":
+                return calculateConsumptionRange(profile);
+            default:
+                throw new IllegalArgumentException("Unknown calculation type: " + calculationType);
+        }
+    }
+    
+    private double calculateWltpRange(CarProfile profile) {
+        // WLTP-basierte Berechnung
+        return profile.getWltpRangeKm() * (1 - profile.getBatteryProfile().getDegradationPercent() / 100.0);
+    }
+    
+    private double calculateConsumptionRange(CarProfile profile) {
+        // Verbrauchsbasierte Berechnung
+        double capacity = profile.getBatteryProfile().getCapacityKwh();
+        double avgConsumption = profile.getConsumptionProfile().getAverageConsumption();
+        return (capacity * 100.0) / avgConsumption;
+    }
+    
+    // Wenn wir eine neue Berechnungsmethode hinzufügen wollen:
+    private double calculateRealWorldRange(CarProfile profile) {
+        // Neue Berechnungsmethode
+        return profile.getWltpRangeKm() * 0.8; // 80% der WLTP-Reichweite als Realwert
+    }
+}</code></pre>
+</section>
+
+<section>
+    <h3>OCP – Negatives Beispiel: Analyse</h3>
+    <p>Diese Implementierung verletzt das OCP:</p>
+    <ul>
+        <li>Nicht geschlossen für Änderungen: bei jeder neuen Berechnungsmethode muss die Klasse geändert werden (switch-Statement erweitern)</li>
+        <li>Nicht offen für Erweiterungen: ohne Änderung des bestehenden Codes können keine neuen Berechnungsmethoden hinzugefügt werden</li>
+        <li>Problem: Häufige Codeanpassungen bei Erweiterungen, erhöhtes Risiko von Regressionsfehlern</li>
+    </ul>
+</section>
+
+<section>
+    <h3>OCP – Mögliche Lösung des negativen Beispiels</h3>
+    <pre><code class="java">// Strategie-Interface
+public interface RangeCalculationStrategy {
+    double calculateRange(CarProfile profile);
+    String getName();
+}
+
+// Implementierungen
+public class WltpRangeCalculationStrategy implements RangeCalculationStrategy {
+    @Override
+    public double calculateRange(CarProfile profile) {
+        return profile.getWltpRangeKm() * (1 - profile.getBatteryProfile().getDegradationPercent() / 100.0);
+    }
+    
+    @Override
+    public String getName() {
+        return "WLTP";
+    }
+}
+
+public class ConsumptionRangeCalculationStrategy implements RangeCalculationStrategy {
+    @Override
+    public double calculateRange(CarProfile profile) {
+        double capacity = profile.getBatteryProfile().getCapacityKwh();
+        double avgConsumption = profile.getConsumptionProfile().getAverageConsumption();
+        return (capacity * 100.0) / avgConsumption;
+    }
+    
+    @Override
+    public String getName() {
+        return "CONSUMPTION";
+    }
+}</code></pre>
+</section>
+
+<section>
+    <h3>OCP – Mögliche Lösung (Fortsetzung)</h3>
+    <pre><code class="java">// Verbesserte Hauptklasse
+public class RangeCalculator {
+    private final Map<String, RangeCalculationStrategy> strategies = new HashMap<>();
+    
+    public RangeCalculator() {
+        // Registrierung der Standard-Strategien
+        registerStrategy(new WltpRangeCalculationStrategy());
+        registerStrategy(new ConsumptionRangeCalculationStrategy());
+    }
+    
+    public void registerStrategy(RangeCalculationStrategy strategy) {
+        strategies.put(strategy.getName(), strategy);
+    }
+    
+    public double calculateRange(CarProfile profile, String calculationType) {
+        RangeCalculationStrategy strategy = strategies.get(calculationType);
+        if (strategy == null) {
+            throw new IllegalArgumentException("Unknown calculation type: " + calculationType);
+        }
+        return strategy.calculateRange(profile);
+    }
+    
+    public List<String> getAvailableCalculationTypes() {
+        return new ArrayList<>(strategies.keySet());
+    }
+}</code></pre>
+</section>
+
+<section>
+    <h3>DIP – Dependency Inversion Principle (2P)</h3>
+    <p>Module höherer Ebenen sollten nicht von Modulen niedrigerer Ebenen abhängen. Beide sollten von Abstraktionen abhängen.</p>
+    <p>Abstraktionen sollten nicht von Details abhängen. Details sollten von Abstraktionen abhängen.</p>
+</section>
+
+<section>
+    <h3>DIP – Positives Beispiel: CarProfilePersistence</h3>
+    <pre><code class="java">// Abstraction im Application Layer
+public interface CarProfilePersistencePortInterface {
+    Optional<CarProfile> findById(String id);
+    List<CarProfile> findAll();
+    CarProfile save(CarProfile carProfile);
+    void delete(String id);
+}
+
+// High-level Module (Application Layer)
+public class CreateCarProfileInteractor implements CreateCarProfileUseCaseInterface {
+    private final CarProfilePersistencePortInterface persistencePort;
+
+    public CreateCarProfileInteractor(CarProfilePersistencePortInterface persistencePort) {
+        this.persistencePort = persistencePort;
+    }
+
+    @Override
+    public CarProfile createCarProfile(CreateCarProfileCommand command) {
+        // CarProfile erstellen...
+        
+        return persistencePort.save(carProfile);
+    }
+}</code></pre>
+</section>
+
+<section>
+    <h3>DIP – Positives Beispiel: Implementierung</h3>
+    <pre><code class="java">// Low-level Module (Infrastructure Layer)
+public class JsonCarProfileRepository implements CarProfilePersistencePortInterface {
+    private static final String STORAGE_DIR = "data";
+    private static final String FILE_NAME = "car_profiles.json";
+    private final Gson gson;
+    private final Path filePath;
+
+    public JsonCarProfileRepository() {
+        this.gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+                .create();
+        this.filePath = Paths.get(STORAGE_DIR, FILE_NAME);
+        ensureStorageDirectoryExists();
+    }
+    
+    @Override
+    public List<CarProfile> findAll() {
+        try (FileReader reader = new FileReader(filePath.toFile())) {
+            Type listType = new TypeToken<List<CarProfile>>() {}.getType();
+            List<CarProfile> profiles = gson.fromJson(reader, listType);
+            return profiles != null ? profiles : new ArrayList<>();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read car profiles", e);
+        }
+    }
+    
+    // Weitere Implementierungen...
+}</code></pre>
+</section>
+
+<section>
+    <h3>DIP – Positives Beispiel: Analyse</h3>
+    <ul>
+        <li>Die Abstraction (CarProfilePersistencePortInterface) im Application Layer definiert die Schnittstelle</li>
+        <li>Der High-level Interactor hängt von dieser Abstraktion ab, nicht von der konkreten Implementierung</li>
+        <li>Die konkrete Implementierung im Infrastructure Layer implementiert die Schnittstelle</li>
+        <li>Die Abhängigkeitsrichtung ist umgekehrt: Infrastructure → Application statt Application → Infrastructure</li>
+        <li>Vorteile:
+            <ul>
+                <li>Testbarkeit durch Mock-Implementierungen</li>
+                <li>Austauschbarkeit der Persistenz (z.B. für eine SQL-Datenbank) ohne Änderung an der Anwendungslogik</li>
+                <li>Entkopplung von Geschäftslogik und technischen Details</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h3>DIP – Negatives Beispiel: Direkte Abhängigkeit</h3>
+    <pre><code class="java">// Falsche direkte Abhängigkeit
+public class CarProfileManager {
+    private final JsonCarProfileRepository repository; // Konkrete Implementierung!
+    
+    public CarProfileManager() {
+        this.repository = new JsonCarProfileRepository();
+    }
+    
+    public CarProfile createProfile(String name, String manufacturer, int year) {
+        CarProfile profile = new CarProfile.Builder()
+                .name(name)
+                .manufacturer(manufacturer)
+                .year(year)
+                // Weitere Eigenschaften...
+                .build();
+        
+        return repository.save(profile);
+    }
+    
+    public List<CarProfile> getAllProfiles() {
+        return repository.findAll();
+    }
+}</code></pre>
+</section>
+
+<section>
+    <h3>DIP – Negatives Beispiel: Analyse</h3>
+    <p>Verstöße gegen DIP:</p>
+    <ul>
+        <li>Die high-level Klasse (CarProfileManager) hängt direkt von der low-level Klasse (JsonCarProfileRepository) ab</li>
+        <li>Es gibt keine Abstraktionsschicht zwischen den Modulen</li>
+        <li>Die Instanziierung erfolgt direkt in der Klasse, nicht über Dependency Injection</li>
+        <li>Probleme:
+            <ul>
+                <li>Schwer testbar (kann nicht gemockt werden)</li>
+                <li>Bei Änderung der Persistenz (z.B. von JSON zu SQL) muss CarProfileManager angepasst werden</li>
+                <li>Enge Kopplung zwischen Businesslogik und technischer Implementierung</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h3>DIP – Lösung des negativen Beispiels</h3>
+    <pre><code class="java">// Abstraktion definieren
+public interface CarProfileRepository {
+    CarProfile save(CarProfile profile);
+    List<CarProfile> findAll();
+}
+
+// High-level Modul mit DIP
+public class CarProfileManager {
+    private final CarProfileRepository repository; // Jetzt die Abstraktion!
+    
+    public CarProfileManager(CarProfileRepository repository) {
+        this.repository = repository;
+    }
+    
+    public CarProfile createProfile(String name, String manufacturer, int year) {
+        CarProfile profile = new CarProfile.Builder()
+                .name(name)
+                .manufacturer(manufacturer)
+                .year(year)
+                // Weitere Eigenschaften...
+                .build();
+        
+        return repository.save(profile);
+    }
+    
+    public List<CarProfile> getAllProfiles() {
+        return repository.findAll();
+    }
+}</code></pre>
+</section>
+
+<section>
+    <h3>DIP – Lösung des negativen Beispiels (Fortsetzung)</h3>
+    <pre><code class="java">// Low-level Implementierung
+public class JsonCarProfileRepository implements CarProfileRepository {
+    private final Gson gson;
+    private final String filePath;
+    
+    public JsonCarProfileRepository(String filePath) {
+        this.gson = new Gson();
+        this.filePath = filePath;
+    }
+    
+    @Override
+    public CarProfile save(CarProfile profile) {
+        // JSON-Implementierung...
+    }
+    
+    @Override
+    public List<CarProfile> findAll() {
+        // JSON-Implementierung...
+    }
+}
+
+// Alternative Implementierung
+public class InMemoryCarProfileRepository implements CarProfileRepository {
+    private final Map<String, CarProfile> profiles = new HashMap<>();
+    
+    @Override
+    public CarProfile save(CarProfile profile) {
+        profiles.put(profile.getId(), profile);
+        return profile;
+    }
+    
+    @Override
+    public List<CarProfile> findAll() {
+        return new ArrayList<>(profiles.values());
+    }
+}</code></pre>
+</section>
+
+<section>
+    <h3>DIP – Vergleich der Lösungen</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>Schlechte Lösung:</h5>
+            <pre><code class="text">┌─────────────────────┐
+│  CarProfileManager  │
+└─────────┬───────────┘
+          │ hängt direkt ab von
+          ▼
+┌─────────────────────┐
+│JsonCarProfileRepo   │
+└─────────────────────┘</code></pre>
+        </div>
+        <div>
+            <h5>Gute Lösung:</h5>
+            <pre><code class="text">┌─────────────────────┐
+│  CarProfileManager  │
+└─────────┬───────────┘
+          │ hängt ab von
+          ▼
+┌─────────────────────┐
+│CarProfileRepository │◄─────┐
+└─────────────────────┘      │
+          ▲                  │
+          │ implementiert    │ implementiert
+          │                  │
+┌─────────┴─────────┐ ┌──────┴──────────┐
+│JsonCarProfileRepo │ │InMemoryProfileRe│
+└───────────────────┘ └─────────────────┘</code></pre>
+        </div>
+    </div>
 </section>
