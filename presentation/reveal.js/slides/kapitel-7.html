@@ -2,13 +2,438 @@
 
 <section>
     <h3>Code Smells (2P)</h3>
-    <p>Jeweils 1 Code-Beispiel zu 2 unterschiedlichen Code Smells (die benannt werden müssen) aus der Vorlesung</p>
-    <p>Jeweils Code-Beispiel und einen möglichen Lösungsweg bzw. den genommen Lösungsweg beschreiben (inkl. (Pseudo-)Code)</p>
+    <h4>Code Smell 1: Large Class / God Class</h4>
+    <div class="horizontal-spaced-container">
+        <div>
+            <p>Die Klasse <code>CarProfileController</code> vor dem Refactoring:</p>
+            <ul>
+                <li>Enthält zu viele Verantwortlichkeiten und Methoden</li>
+                <li>Behandelt UI, Logik und Datenpersistenz gleichzeitig</li>
+                <li>Besitzt zu viele Instanzvariablen</li>
+                <li>Verstößt gegen das Single Responsibility Principle</li>
+            </ul>
+        </div>
+        <div>
+            <pre><code class="java">public class CarProfileController {
+  private static Scanner scanner;
+  private final LoadingScreenAnimation loadingScreenAnimation;
+  private Thread loadingAnimationThread;
+  private Thread loadingJsonThread;
+  private CarProfileModel carProfile;
+  private ConsumptionProfileModel consumptionProfile;
+  
+  public CarProfileController() throws LoadingException {
+    JsonCarProfilesLoader carProfileJsonLoader = 
+        SetupService.getCarProfileJsonLoader();
+    carProfile = SetupService.getCarProfile();
+    consumptionProfile = SetupService.getConsumptionProfile();
+    // ... weitere Initialisierung
+    
+    System.out.println("Hey! To begin with, 
+        let's see if you have any car profiles saved.");
+    
+    startLoadingThreads();
+    // ... weitere Logik
+  }
+  // ... weitere 10+ Methoden
+}</code></pre>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Lösung: Aufteilung der großen Klasse (God Class)</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <p>Lösung durch Aufteilung in spezialisierte Klassen:</p>
+            <ul>
+                <li>Trennung von Darstellung und Geschäftslogik</li>
+                <li><code>CarProfileController</code>: Nur UI/Benutzereingaben</li>
+                <li><code>CarProfileService</code>: Geschäftslogik</li>
+                <li>Klare Verantwortlichkeiten nach SRP</li>
+                <li>Verbesserte Testbarkeit</li>
+            </ul>
+        </div>
+        <div>
+            <pre><code class="java">// Controller nur für UI
+public class CarProfileController {
+  public static void startDialog() {
+    System.out.println("Hey! To begin with, 
+        let's see if you have any car profiles saved.");
+  }
+  
+  public static Double getConsumptionDialog(Scanner scanner) {
+    // ... UI-Logik
+  }
+  // ... weitere UI-Methoden
+}
+
+// Service mit Business-Logik
+public class CarProfileService {
+  // ... Business-Logik
+  public CarProfileService() throws LoadingException {
+    // Initialisierung
+    CarProfileController.startDialog();
+    // ... weitere Business-Logik
+  }
+}</code></pre>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Code Smell 2: Duplicate Code</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <p>Duplizierter Code in <code>WltpBasedRangeCalculationStrategy</code> und <code>ConsumptionBasedRangeCalculationStrategy</code>:</p>
+            <ul>
+                <li>Identische Methoden in beiden Klassen</li>
+                <li>Schlechte Wartbarkeit bei Änderungen</li>
+                <li>Erhöhtes Risiko für inkonsistente Implementierungen</li>
+                <li>Verstoß gegen DRY-Prinzip (Don't Repeat Yourself)</li>
+            </ul>
+        </div>
+        <div>
+            <pre><code class="java">// In WltpBasedRangeCalculationStrategy
+private String generateWeatherImpactDescription(
+        WeatherType weather, double temperature) {
+    StringBuilder impact = new StringBuilder();
+    
+    switch(weather) {
+        case SUNNY:
+            impact.append("Minimal impact - Ideal weather conditions");
+            break;
+        case CLOUDY:
+            impact.append("Slight impact - Cloud cover...");
+            break;
+        // ... weitere Fälle
+    }
+    
+    // ... weitere Logik
+    
+    return impact.toString();
+}
+
+// Identisch in ConsumptionBasedRangeCalculationStrategy
+private String generateWeatherImpactDescription(
+        WeatherType weather, double temperature) {
+    StringBuilder impact = new StringBuilder();
+    
+    switch(weather) {
+        case SUNNY:
+            impact.append("Minimal impact - Ideal weather conditions");
+            break;
+        // ... weitere identische Fälle
+    }
+}</code></pre>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Lösung: Extraktion in gemeinsame Basisklasse</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <p>Lösung durch Abstraktion:</p>
+            <ul>
+                <li>Extraktion der gemeinsamen Methoden in abstrakte Basisklasse</li>
+                <li>Beide Strategien erben von der Basisklasse</li>
+                <li>Implementierung des Template Method Patterns</li>
+                <li>Gemeinsamer Code nur einmal vorhanden</li>
+                <li>Änderungen an nur einer Stelle notwendig</li>
+            </ul>
+        </div>
+        <div>
+            <pre><code class="java">// Abstrakte Basisklasse mit gemeinsamen Methoden
+public abstract class AbstractRangeCalculationStrategy 
+        implements RangeCalculationStrategyInterface {
+    
+    protected String generateWeatherImpactDescription(
+            WeatherType weather, double temperature) {
+        StringBuilder impact = new StringBuilder();
+        
+        switch(weather) {
+            case SUNNY:
+                impact.append("Minimal impact - Ideal weather conditions");
+                break;
+            // ... weitere Fälle
+        }
+        
+        // ... weitere Logik
+        
+        return impact.toString();
+    }
+    
+    // ... weitere gemeinsame Methoden
+}
+
+// Spezialisierte Implementierungen
+public class WltpBasedRangeCalculationStrategy 
+        extends AbstractRangeCalculationStrategy {
+    // Implementiert nur die spezifische Logik
+}</code></pre>
+        </div>
+    </div>
 </section>
 
 <section>
     <h3>Refactorings (6P)</h3>
-    <p>2 unterschiedliche Refactorings aus der Vorlesung jeweils benennen, anwenden, begründen, sowie UML vorher/nachher liefern</p>
-    <p>Jeweils auf die Commits verweisen</p>
-    <p>Die Refactorings dürfen sich nicht mit den Beispielen der Code Smells überschneiden</p>
+    <h4>Refactoring 1: Extract Class</h4>
+    <p>Commit: <code>89f9ea2</code> - "refactored CarProfilecontroller to move the business logic into a CarProfileService"</p>
+</section>
+
+<section>
+    <h3>Refactoring 1: UML vor dem Refactoring</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <pre><code class="text">┌─────────────────────────┐
+│ CarProfileController     │
+├─────────────────────────┤
+│- scanner: Scanner        │
+│- loadingScreenAnimation  │
+│- loadingAnimationThread  │
+│- loadingJsonThread       │
+│- carProfile: CarProfileM.│
+│- consumptionProfile      │
+├─────────────────────────┤
+│+ CarProfileController()  │
+│+ getConsumptionDialog()  │
+│+ getSpeedDialog()        │
+│+ printNrOfParameter()    │
+│+ printParameters()       │
+│+ anotherParameterTuple...│
+│- createCarProfileDialog()│
+│- createConsumptionProfDia│
+│- startDialogCreatingCarP.│
+│- startCreatingConsumpt...│
+│- listCarProfilesDialog() │
+│- createCarProfileOrList..│
+│- startLoadingThreads()   │
+│- stopLoadingThreads()    │
+└─────────────────────────┘</code></pre>
+        </div>
+        <div>
+            <p>Probleme vor dem Refactoring:</p>
+            <ul>
+                <li>Monolithischer Controller mit 200+ Zeilen Code</li>
+                <li>Vermischung von UI und Geschäftslogik</li>
+                <li>Direkte Abhängigkeiten zu konkreten Implementierungen</li>
+                <li>Hardcodierte Prozessabläufe</li>
+                <li>Schlechte Testbarkeit durch hohe Kopplung</li>
+                <li>Schwere Wiederverwendbarkeit einzelner Funktionen</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Refactoring 1: UML nach dem Refactoring</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <pre><code class="text">┌─────────────────────────┐
+│ CarProfileController     │
+├─────────────────────────┤
+│                         │
+├─────────────────────────┤
+│+ startDialog()          │
+│+ getConsumptionDialog() │
+│+ getSpeedDialog()       │
+│+ printNrOfParameter()   │
+│+ printParameters()      │
+│+ additionalParamterDialog│
+│+ startLoadingThreads()  │
+│+ stopLoadingThreads()   │
+│+ createCarProfileDialog()│
+│+ createConsumptionProf...│
+└──────────┬──────────────┘
+           │ nutzt
+           ▼
+┌─────────────────────────┐
+│ CarProfileService        │
+├─────────────────────────┤
+│- scanner: Scanner        │
+│- loadingScreenAnimation  │
+│- loadingAnimationThread  │
+│- loadingJsonThread       │
+│- carProfile: CarProfileM.│
+│- consumptionProfile      │
+│- carProfileJsonLoader    │
+├─────────────────────────┤
+│+ CarProfileService()     │
+└─────────────────────────┘</code></pre>
+        </div>
+        <div>
+            <p>Verbesserungen durch das Refactoring:</p>
+            <ul>
+                <li>Klare Trennung von Verantwortlichkeiten nach SRP</li>
+                <li>Controller nur für UI-Interaktionen</li>
+                <li>Service enthält Geschäftslogik und Workflow</li>
+                <li>Bessere Testbarkeit durch kleinere Klassen</li>
+                <li>Leichtere Wartbarkeit durch spezialisierte Komponenten</li>
+                <li>Bessere Wiederverwendbarkeit der UI-Komponenten</li>
+                <li>Kontrolle des Workflows in einer separaten Klasse</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Refactoring 2: Extract Method</h3>
+    <p>Commit: <code>a5638e0</code> - "refactoring"</p>
+</section>
+
+<section>
+    <h3>Refactoring 2: Code vor dem Refactoring</h3>
+    <pre><code class="java">// In ConsumptionProfileModel
+public void createConsumptionProfile() {
+    Integer i = 0;
+    Boolean done = false;
+    Double consumption = 0.0;
+    Double speed = 0.0;
+    
+    while (!done) {
+        CarProfileController.printNrOfParamter(i);
+        
+        consumption = CarProfileController.getConsumptionDialog();
+        speed = CarProfileController.getSpeedDialog();
+        
+        if (speed != 0.0 && consumption != 0.0) {
+            Map<Double, Double> parameterTuple = new HashMap<>();
+            parameterTuple.put(speed, consumption);
+            parametersList.add(parameterTuple);
+            
+            CarProfileController.printParameters(consumption, speed);
+            
+            if (i >= MAX_PARAMETERS) {
+                done = true;
+            } else {
+                if (i > 0) {
+                    done = CarProfileController.anotherParameterTupleDialog();
+                } else {
+                    i++;
+                }
+            }
+        } else {
+            System.out.println("Something went wrong; Please try again.");
+        }
+    }
+}</code></pre>
+</section>
+
+<section>
+    <h3>Refactoring 2: UML vor dem Refactoring</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <pre><code class="text">┌─────────────────────────┐
+│ ConsumptionProfileModel  │
+├─────────────────────────┤
+│- MAX_PARAMETERS: int     │
+│- parametersList: List    │
+│- a: double               │
+│- b: double               │
+├─────────────────────────┤
+│+ ConsumptionProfileModel()│
+│+ getParametersList()     │
+│+ setParametersList()     │
+│+ performRegression()     │
+│+ createConsumptionProfile()│
+│+ estimateConsumption()   │
+│+ clearParameterList()    │
+└─────────────────────────┘</code></pre>
+        </div>
+        <div>
+            <p>Probleme vor dem Refactoring:</p>
+            <ul>
+                <li>Lange, komplexe Methode mit mehreren Verantwortlichkeiten</li>
+                <li>Geringe Lesbarkeit durch hohe Komplexität</li>
+                <li>Duplizierter Code innerhalb der Methode</li>
+                <li>Schwer zu testen wegen vieler Abhängigkeiten</li>
+                <li>Direktes Hinzufügen zu einer Liste ohne Kapselung</li>
+                <li>Schwer wartbar bei Änderungen</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Refactoring 2: Code nach dem Refactoring</h3>
+    <pre><code class="java">// Extrahierte Methode für Parameter-Tuple
+public void addParameterTuple(Double consumption, Double speed) {
+    if (parametersList.size() < MAX_PARAMETERS) {
+        Map<Double, Double> parameterTuple = new HashMap<>();
+        parameterTuple.put(speed, consumption);
+        parametersList.add(parameterTuple);
+    } else {
+        System.out.println("Maximum number of parameters reached. Cannot add more.");
+    }
+}
+
+// Vereinfachte Hauptmethode
+public void createConsumptionProfile(Scanner scanner) {
+    Integer i = 0;
+    Boolean done = false;
+    Double consumption = 0.0;
+    Double speed = 0.0;
+    
+    while (!done) {
+        CarProfileController.printNrOfParamter(i);
+        
+        consumption = CarProfileController.getConsumptionDialog(scanner);
+        speed = CarProfileController.getSpeedDialog(scanner);
+        
+        if (speed != 0.0 && consumption != 0.0) {
+            addParameterTuple(consumption, speed);
+            CarProfileController.printParameters(consumption, speed);
+            
+            if (i >= MAX_PARAMETERS) {
+                done = true;
+            } else {
+                if (i > 0) {
+                    done = CarProfileController.additionalParamterDialog(scanner);
+                } else {
+                    i++;
+                }
+            }
+        } else {
+            System.out.println("Something went wrong; Please try again.");
+        }
+    }
+}</code></pre>
+</section>
+
+<section>
+    <h3>Refactoring 2: UML nach dem Refactoring</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <pre><code class="text">┌─────────────────────────┐
+│ ConsumptionProfileModel  │
+├─────────────────────────┤
+│- MAX_PARAMETERS: int     │
+│- parametersList: List    │
+│- a: double               │
+│- b: double               │
+├─────────────────────────┤
+│+ ConsumptionProfileModel()│
+│+ getParametersList()     │
+│+ setParametersList()     │
+│+ performRegression()     │
+│+ createConsumptionProfile()│
+│+ addParameterTuple()     │  ← Extrahierte Methode
+│+ estimateConsumption()   │
+│+ clearParameterList()    │
+└─────────────────────────┘</code></pre>
+        </div>
+        <div>
+            <p>Verbesserungen durch das Refactoring:</p>
+            <ul>
+                <li>Bessere Lesbarkeit durch kürzere Methoden</li>
+                <li>Wiederverwendung der extrahierten Methode</li>
+                <li>Verbesserte Kapselung durch dedizierte Methode</li>
+                <li>Einfachere Wartbarkeit durch modularen Aufbau</li>
+                <li>Bessere Testbarkeit der einzelnen Methoden</li>
+                <li>Validierungslogik in separate Methode ausgelagert</li>
+                <li>Höhere Kohäsion innerhalb der Klasse</li>
+            </ul>
+        </div>
+    </div>
 </section>

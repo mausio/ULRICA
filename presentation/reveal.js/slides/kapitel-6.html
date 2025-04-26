@@ -2,30 +2,349 @@
 
 <section>
     <h3>Ubiquitous Language (2P)</h3>
-    <p>4 Beispiele für die Ubiquitous Language</p>
-    <p>Jeweils Bezeichnung, Bedeutung und kurze Begründung, warum es zur Ubiquitous Language gehört</p>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>SoC (State of Charge)</h5>
+            <ul>
+                <li><b>Bedeutung:</b> Prozentualer Ladezustand der Batterie (0-100%)</li>
+                <li><b>Verwendung:</b> Parameter für Reichweitenberechnung und Ladezeit</li>
+                <li><b>Ubiquitous Language:</b> Fachbegriff aus dem E-Mobility-Bereich, der die gemeinsame Sprache zwischen Technikern und Anwendern bildet</li>
+            </ul>
+        </div>
+        <div>
+            <h5>WLTP-Range</h5>
+            <ul>
+                <li><b>Bedeutung:</b> Standardisierte Reichweite nach Worldwide Harmonized Light Vehicles Test Procedure</li>
+                <li><b>Verwendung:</b> Basis für realistische Reichweitenberechnung</li>
+                <li><b>Ubiquitous Language:</b> Regulatorischer Begriff, der eine einheitliche Verständnisgrundlage für Fahrzeugleistung bietet</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Ubiquitous Language (Fortsetzung)</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>Charging Curve</h5>
+            <ul>
+                <li><b>Bedeutung:</b> Verlauf der Ladeleistung abhängig vom SoC</li>
+                <li><b>Verwendung:</b> Berechnung von Ladezeiten an DC-Ladestationen</li>
+                <li><b>Ubiquitous Language:</b> Technisches Konzept, das sowohl für Entwickler als auch Benutzer die Ladeeigenschaften beschreibt</li>
+            </ul>
+        </div>
+        <div>
+            <h5>Battery Type (LFP, NMC, NCA)</h5>
+            <ul>
+                <li><b>Bedeutung:</b> Chemische Zusammensetzung der Batterie (Lithium-Eisenphosphat, Nickel-Mangan-Cobalt, Nickel-Cobalt-Aluminium)</li>
+                <li><b>Verwendung:</b> Berechnung von Degradation und Ladegeschwindigkeit</li>
+                <li><b>Ubiquitous Language:</b> Chemische Klassifikation, die technische Eigenschaften für das gesamte Team eindeutig kommunizierbar macht</li>
+            </ul>
+        </div>
+    </div>
 </section>
 
 <section>
     <h3>Repositories (1.5P)</h3>
-    <p>UML, Beschreibung und Begründung des Einsatzes eines Repositories</p>
-    <p>Falls kein Repository vorhanden: ausführliche Begründung, warum es keines geben kann/hier nicht sinnvoll ist</p>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>CarProfileRepository</h5>
+            <ul>
+                <li>Persistenz von Fahrzeugprofilen ohne Offenlegung der Speichermechanismen</li>
+                <li>Domain Entities können unabhängig von der Persistenz modelliert werden</li>
+                <li>Unterstützt die Illusion einer In-Memory-Sammlung</li>
+                <li>Ermöglicht einfachen Austausch der Persistenztechnologie</li>
+            </ul>
+        </div>
+        <div>
+            <pre><code class="java">public interface CarProfilePersistencePortInterface {
+    Optional<CarProfile> findById(String id);
+    List<CarProfile> findAll();
+    CarProfile save(CarProfile carProfile);
+    void delete(String id);
+}
+
+public class JsonCarProfileRepository 
+        implements CarProfilePersistencePortInterface {
+    // Repository-Implementierung mit JSON-Persistenz
+}</code></pre>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Repository: UML und Begründung</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <pre><code class="text">┌───────────────────────────┐
+│ Application Layer          │
+├───────────────────────────┤
+│CarProfilePersistencePort   │
+│Interface                   │
+├───────────────────────────┤
+│+ findById(String): Optional│
+│+ findAll(): List<CarProfile>│
+│+ save(CarProfile): CarProfile│
+│+ delete(String): void       │
+└─────────────┬─────────────┘
+              ▲
+              │implements
+┌─────────────┴─────────────┐
+│ Infrastructure Layer       │
+├───────────────────────────┤
+│JsonCarProfileRepository    │
+├───────────────────────────┤
+│- gson: Gson                │
+│- filePath: Path            │
+│+ findById(String): Optional│
+│+ findAll(): List<CarProfile>│
+│+ save(CarProfile): CarProfile│
+│+ delete(String): void       │
+└───────────────────────────┘</code></pre>
+        </div>
+        <div>
+            <h5>Vorteile des Repository Patterns:</h5>
+            <ul>
+                <li>Klare Trennung zwischen Domänenlogik und Persistenzmechanismus</li>
+                <li>Vereinfachung des Domain Model durch Abstraktion der Persistenz</li>
+                <li>Ermöglicht die Anwendung von Clean Architecture Prinzipien</li>
+                <li>Erleichtert das Testen durch Mocking der Repository-Implementierung</li>
+                <li>Entscheidung für Datenspeicherung in JSON-Dateien bleibt flexibel änderbar</li>
+            </ul>
+        </div>
+    </div>
 </section>
 
 <section>
     <h3>Aggregates (1.5P)</h3>
-    <p>UML, Beschreibung und Begründung des Einsatzes eines Aggregates</p>
-    <p>Falls kein Aggregate vorhanden: ausführliche Begründung, warum es keines geben kann/hier nicht sinnvoll ist</p>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>CarProfile als Aggregate Root</h5>
+            <ul>
+                <li>Koordiniert mehrere Value Objects (BatteryProfile, ConsumptionProfile, ChargingCurve)</li>
+                <li>Stellt die Konsistenz zwischen den Value Objects sicher</li>
+                <li>Bildet eine transaktionale Einheit für Änderungen</li>
+                <li>Einziger Zugriffspunkt für enthaltene Value Objects</li>
+                <li>Hat eine eigene Identität (ID)</li>
+            </ul>
+        </div>
+        <div>
+            <pre><code class="java">public class CarProfile {
+    private final String id;
+    private final String name;
+    private final String manufacturer;
+    private final String model;
+    // ... weitere Attribute
+    private final BatteryProfile batteryProfile;
+    private final ConsumptionProfile consumptionProfile;
+    private final Optional<ChargingCurve> chargingCurve;
+    
+    // Immutable Aggregate mit Validierung
+    private CarProfile(Builder builder) {
+        this.id = builder.id;
+        this.name = Objects.requireNonNull(builder.name);
+        this.batteryProfile = Objects.requireNonNull(
+            builder.batteryProfile);
+        this.consumptionProfile = Objects.requireNonNull(
+            builder.consumptionProfile);
+        // ... weitere Initialisierung
+    }
+    // ...
+}</code></pre>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Aggregate: UML und Begründung</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <pre><code class="text">┌────────────────────┐
+│ CarProfile (Aggregate│
+│ Root)                │
+├────────────────────┤
+│- id: String         │
+│- name: String       │
+│- manufacturer: String│
+│- model: String      │
+│- year: int          │
+│- hasHeatPump: boolean│
+│- wltpRangeKm: double│
+└────────┬───────────┘
+         │ contains
+         ▼
+┌────────┴───────────┐
+│ BatteryProfile (VO) │◄──┐
+└────────────────────┘   │
+                          │
+┌────────────────────┐   │
+│ConsumptionProfile   │◄──┼── Aggregate
+│(VO)                 │   │ Boundary
+└────────────────────┘   │
+                          │
+┌────────────────────┐   │
+│ChargingCurve (VO)   │◄──┘
+└────────────────────┘</code></pre>
+        </div>
+        <div>
+            <h5>Vorteile des Aggregate-Musters:</h5>
+            <ul>
+                <li>Klare Abgrenzung domänenspezifischer Objektgruppen</li>
+                <li>Komplexitätsreduktion durch zusammenhängende Transaktionseinheiten</li>
+                <li>Verbesserte Performance durch Vermeidung von Dateninkonsistenzen</li>
+                <li>Natürliche Modellierung der Geschäftsrealität (ein Fahrzeug mit seinen Komponenten)</li>
+                <li>Vereinfachte Persistenz, da nur der Aggregate Root direkt persistiert wird</li>
+            </ul>
+        </div>
+    </div>
 </section>
 
 <section>
     <h3>Entities (1.5P)</h3>
-    <p>UML, Beschreibung und Begründung des Einsatzes einer Entity</p>
-    <p>Falls keine Entity vorhanden: ausführliche Begründung, warum es keine geben kann/hier nicht sinnvoll ist</p>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>CarProfile als Entity</h5>
+            <ul>
+                <li>Besitzt eine eindeutige Identität (UUID)</li>
+                <li>Identität bleibt über den gesamten Lebenszyklus erhalten</li>
+                <li>Kann verändert und weiterentwickelt werden (auch wenn in ULRICA immutable)</li>
+                <li>Wird über die Identität verglichen, nicht über Attributwerte</li>
+                <li>Repräsentiert ein reales Objekt (Elektrofahrzeug) mit eigenem Lebenszyklus</li>
+            </ul>
+        </div>
+        <div>
+            <pre><code class="java">public class CarProfile {
+    private final String id; // Eindeutige Identität
+    // ... weitere Attribute
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) 
+            return false;
+        CarProfile that = (CarProfile) o;
+        return Objects.equals(id, that.id); // Vergleich nur über ID
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+    
+    // ... weitere Methoden
+}</code></pre>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Entity: UML und Begründung</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <pre><code class="text">┌─────────────────────┐
+│ CarProfile (Entity)  │
+├─────────────────────┤
+│- id: String          │◄── Identity
+│- name: String        │
+│- manufacturer: String│
+│- model: String       │
+│- year: int           │
+│- hasHeatPump: boolean│
+│- wltpRangeKm: double │
+│- batteryProfile      │
+│- consumptionProfile  │
+│- chargingCurve       │
+├─────────────────────┤
+│+ getId(): String     │
+│+ getName(): String   │
+│+ getManufacturer():  │
+│+ getModel(): String  │
+│+ equals(Object): bool│
+│+ hashCode(): int     │
+└─────────────────────┘</code></pre>
+        </div>
+        <div>
+            <h5>Entity als Kernkonzept:</h5>
+            <ul>
+                <li>Zentrale Bedeutung in der Domäne (Fahrzeug als Hauptkonzept)</li>
+                <li>Lebenszyklus von der Erstellung bis zur Löschung</li>
+                <li>Repository-Persistenz für langfristige Speicherung</li>
+                <li>Enthält Geschäftsregeln zu seiner Verwaltung</li>
+                <li>Entity-Konzept erlaubt:
+                    <ul>
+                        <li>Eindeutige Referenzierung trotz Änderungen</li>
+                        <li>Suche und Verwaltung im Repository</li>
+                        <li>Konsistente Geschäftslogik über Lebenszeit</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
 </section>
 
 <section>
     <h3>Value Objects (1.5P)</h3>
-    <p>UML, Beschreibung und Begründung des Einsatzes eines Value Objects</p>
-    <p>Falls kein Value Object vorhanden: ausführliche Begründung, warum es keines geben kann/hier nicht sinnvoll ist</p>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>BatteryProfile als Value Object</h5>
+            <ul>
+                <li>Besitzt keine eigene Identität</li>
+                <li>Wird durch seine Attributwerte definiert</li>
+                <li>Ist immutable (unveränderlich)</li>
+                <li>Wird durch Wertgleichheit verglichen</li>
+                <li>Kapselt zusammengehörige Eigenschaften der Batterie</li>
+            </ul>
+        </div>
+        <div>
+            <pre><code class="java">public final class BatteryProfile {
+    private final BatteryType type;
+    private final double capacityKwh;
+    private final double degradationPercent;
+    private final double maxDcPowerKw;
+    private final double maxAcPowerKw;
+    
+    public BatteryProfile(BatteryType type, 
+                         double capacityKwh, 
+                         double degradationPercent,
+                         double maxDcPowerKw, 
+                         double maxAcPowerKw) {
+        // Validierungen...
+        this.type = Objects.requireNonNull(type);
+        this.capacityKwh = capacityKwh;
+        this.degradationPercent = degradationPercent;
+        this.maxDcPowerKw = maxDcPowerKw;
+        this.maxAcPowerKw = maxAcPowerKw;
+    }
+    
+    // Getter, equals, hashCode...</code></pre>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Value Objects: Weitere Beispiele und Begründung</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>Beispiele von Value Objects:</h5>
+            <ul>
+                <li><b>BatteryProfile:</b> Kapselt Batterieeigenschaften</li>
+                <li><b>ConsumptionProfile:</b> Definiert Verbrauchswerte bei verschiedenen Geschwindigkeiten</li>
+                <li><b>ChargingCurve:</b> Repräsentiert die Ladekurve über den SoC-Bereich</li>
+                <li><b>RangeParameters:</b> Bündelt Parameter für die Reichweitenberechnung</li>
+                <li><b>RangeResult:</b> Kapselt Berechnungsergebnisse</li>
+            </ul>
+        </div>
+        <div>
+            <h5>Vorteile von Value Objects:</h5>
+            <ul>
+                <li>Verbessertes Domain Modeling durch explizite Begriffe</li>
+                <li>Erhöhte Konsistenz durch Validierung bei Erstellung</li>
+                <li>Immutability verhindert unbeabsichtigte Änderungen</li>
+                <li>Vereinfacht die Testbarkeit</li>
+                <li>Eliminiert Fehlerquellen durch geteilte Referenzen</li>
+                <li>Gruppiert zusammengehörige Konzepte</li>
+                <li>Erhöht Verständlichkeit und Lesbarkeit des Codes</li>
+            </ul>
+        </div>
+    </div>
 </section>

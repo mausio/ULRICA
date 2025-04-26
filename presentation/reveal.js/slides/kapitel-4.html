@@ -2,20 +2,310 @@
 
 <section>
     <h3>Analyse GRASP: Geringe Kopplung (3P)</h3>
-    <p>Eine bis jetzt noch nicht behandelte Klasse als positives Beispiel geringer Kopplung</p>
-    <p>UML mit zusammenspielenden Klassen, Aufgabenbeschreibung der Klasse</p>
-    <p>Begründung, warum hier eine geringe Kopplung vorliegt</p>
+    <p>AcChargingController - Beispiel für geringe Kopplung</p>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>Aufgabenbeschreibung</h5>
+            <ul>
+                <li>Verantwortlich für Benutzerinteraktion bei AC-Ladungsberechnungen</li>
+                <li>Verarbeitet Benutzereingaben zu Ladeparametern</li>
+                <li>Leitet Berechnungen an Use Case weiter</li>
+                <li>Zeigt Berechnungsergebnisse über Output Port an</li>
+                <li>Verbindet Benutzer mit Anwendungslogik</li>
+            </ul>
+        </div>
+        <div>
+            <pre><code class="java">public class AcChargingController {
+    
+    private final UserInputPortInterface userInputPort;
+    private final UserOutputPortInterface userOutputPort;
+    private final CalculateAcChargingUseCaseInterface calculateAcChargingUseCase;
+    private final AcChargingOutputPortInterface acChargingOutputPort;
+
+    public AcChargingController(
+            UserInputPortInterface userInputPort,
+            UserOutputPortInterface userOutputPort,
+            CalculateAcChargingUseCaseInterface calculateAcChargingUseCase,
+            AcChargingOutputPortInterface acChargingOutputPort) {
+        this.userInputPort = userInputPort;
+        this.userOutputPort = userOutputPort;
+        this.calculateAcChargingUseCase = calculateAcChargingUseCase;
+        this.acChargingOutputPort = acChargingOutputPort;
+    }
+}</code></pre>
+        </div>
+    </div>
 </section>
 
 <section>
-    <h3>Analyse GRASP: Polymorphismus oder Pure Fabrication (3P)</h3>
-    <p>Eine Klasse als positives Beispiel entweder von Polymorphismus oder von Pure Fabrication</p>
-    <p>UML Diagramm und Begründung, warum es hier zum Einsatz kommt</p>
+    <h3>Geringe Kopplung: Beziehung zu anderen Klassen</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <pre><code class="text">┌───────────────────────┐
+│  AcChargingController │
+└───────────┬───────────┘
+            │
+            ▼ abhängig von
+┌────────────────────────────┐
+│ UserInputPortInterface     │◄─────┐
+│ UserOutputPortInterface    │◄─────┼───┐
+│ CalculateAcChargingUseCase │◄─────┘   │
+│ AcChargingOutputPortInterface◄────────┘
+└────────────────────────────┘
+            ▲
+            │ implementiert
+            │
+┌───────────┴───────────┐
+│ ConcreteImplementations│
+└───────────────────────┘</code></pre>
+        </div>
+        <div>
+            <h5>Geringe Kopplung durch:</h5>
+            <ul>
+                <li>Ausschließliche Abhängigkeit von Interfaces statt konkreten Implementierungen</li>
+                <li>Dependency Injection über Konstruktor</li>
+                <li>Klare Trennung von Ein-/Ausgabe und Business-Logik</li>
+                <li>Keine hardcodierten Abhängigkeiten</li>
+                <li>Keine Stateful-Objekte oder Singletons</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Vorteile der geringen Kopplung</h3>
+    <ul>
+        <li><b>Testbarkeit:</b> Einfaches Mocking der Abhängigkeiten für Unit-Tests</li>
+        <li><b>Wartbarkeit:</b> Änderungen an Implementierungen der Ports haben keinen Einfluss auf den Controller</li>
+        <li><b>Flexibilität:</b> Verschiedene Implementierungen können ohne Änderung am Controller ausgetauscht werden</li>
+        <li><b>Wiederverwendbarkeit:</b> Der Controller kann mit unterschiedlichen Implementierungen genutzt werden</li>
+        <li><b>Parallel Development:</b> Teams können gleichzeitig an Controller und Implementierungen arbeiten</li>
+        <li><b>Verständlichkeit:</b> Klare Verantwortlichkeiten und Abhängigkeiten</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Analyse GRASP: Polymorphismus (3P)</h3>
+    <p>RangeCalculationStrategyInterface - Anwendung des Polymorphismus</p>
+    <pre><code class="java">public interface RangeCalculationStrategyInterface {
+    
+    RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters);
+    
+    String getName();
+    
+    String getDescription();
+}</code></pre>
+    <pre><code class="java">public class WltpBasedRangeCalculationStrategy implements RangeCalculationStrategyInterface {
+    @Override
+    public RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters) {
+        // WLTP-basierte Berechnung...
+    }
+    
+    @Override
+    public String getName() {
+        return "WLTP-based Range Calculation";
+    }
+    
+    @Override
+    public String getDescription() {
+        return "Calculates range based on WLTP consumption profile with environment adaptations";
+    }
+}</code></pre>
+</section>
+
+<section>
+    <h3>Polymorphismus: UML und Anwendung</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <pre><code class="text">┌───────────────────────────┐
+│RangeCalculationStrategy    │
+│Interface                   │
+├───────────────────────────┤
+│+ calculateRange()          │
+│+ getName()                 │
+│+ getDescription()          │
+└─────────────┬─────────────┘
+              ▲
+              │ implementiert
+        ┌─────┴───────┐
+        │             │
+┌───────┴──────┐ ┌────┴───────────┐
+│WltpBased     │ │ConsumptionBased│
+│Strategy      │ │Strategy         │
+├──────────────┤ ├────────────────┤
+│+ calculateRange│ │+ calculateRange│
+│+ getName()    │ │+ getName()     │
+└──────────────┘ └────────────────┘</code></pre>
+        </div>
+        <div>
+            <h5>Anwendung im RangeCalculatorService:</h5>
+            <pre><code class="java">public class RangeCalculatorService {
+    private final List<RangeCalculationStrategyInterface> strategies;
+    private RangeCalculationStrategyInterface defaultStrategy;
+    
+    // Constructor with initialization...
+    
+    public RangeResult calculateRange(
+            CarProfile carProfile, 
+            RangeParameters parameters) {
+        return defaultStrategy.calculateRange(
+            carProfile, parameters);
+    }
+}</code></pre>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Vorteile des Polymorphismus</h3>
+    <ul>
+        <li><b>Erweiterbarkeit:</b> Neue Berechnungsstrategien können ohne Änderung des bestehenden Codes hinzugefügt werden</li>
+        <li><b>Wiederverwendbarkeit:</b> Strategien können in verschiedenen Kontexten genutzt werden</li>
+        <li><b>Kapselung:</b> Implementierungsdetails der Strategien sind hinter dem Interface verborgen</li>
+        <li><b>Wartbarkeit:</b> Änderungen an einer Strategie beeinflussen andere Teile des Systems nicht</li>
+        <li><b>Testbarkeit:</b> Strategien können isoliert getestet werden</li>
+        <li><b>Komposition:</b> Verschiedene Strategien können zur Laufzeit ausgewählt und kombiniert werden</li>
+    </ul>
 </section>
 
 <section>
     <h3>DRY – Don't Repeat Yourself (2P)</h3>
-    <p>Ein Commit angeben, bei dem duplizierter Code/duplizierte Logik aufgelöst wurde</p>
-    <p>Code-Beispiele (vorher/nachher) einfügen</p>
-    <p>Begründen und Auswirkung beschreiben – ggf. UML zum Verständnis ergänzen</p>
+    <p>Commit <code>89f9ea2</code>: Refactoring von <code>CarProfileController</code> zur Reduktion duplizierter Logik</p>
+    <ul>
+        <li>Problem: Business-Logik war mit UI-Logik vermischt im Controller</li>
+        <li>Lösung: Auslagerung der Business-Logik in einen eigenen Service</li>
+        <li>Ergebnis: Bessere Trennung der Verantwortlichkeiten und Wiederverwendbarkeit</li>
+    </ul>
+</section>
+
+<section>
+    <h3>DRY – Vorher: Überfüllter Controller</h3>
+    <pre><code class="java">public class CarProfileController {
+  private static Scanner scanner;
+  private final LoadingScreenAnimation loadingScreenAnimation;
+  private Thread loadingAnimationThread;
+  private Thread loadingJsonThread;
+  private CarProfileModel carProfile;
+  private ConsumptionProfileModel consumptionProfile;
+  
+  public CarProfileController() throws LoadingException {
+    JsonCarProfilesLoader carProfileJsonLoader = SetupService.getCarProfileJsonLoader();
+    carProfile = SetupService.getCarProfile();
+    consumptionProfile = SetupService.getConsumptionProfile();
+    loadingScreenAnimation = SetupService.getLoadingScreenAnimation();
+    loadingAnimationThread = new Thread(loadingScreenAnimation);
+    loadingJsonThread = new Thread(carProfileJsonLoader);
+    scanner = SetupService.getScanner();
+    
+    System.out.println("Hey! To begin with, let's see if you have any car profiles saved.");
+    SleepUtil.waitForFSeconds(1.0);
+    
+    startLoadingThreads();
+    
+    SleepUtil.waitForFSeconds(3.0);
+    
+    stopLoadingThreads();
+    
+    CarProfileModel[] carProfiles = carProfileJsonLoader.getCarProfiles();
+    
+    if (carProfiles == null || carProfiles.length <= 1) {
+      System.out.println("→ No car profiles could be found;\n  Continuing with creating a new car profile.");
+      SleepUtil.waitForFSeconds(2.0);
+      createCarProfileDialog();
+    } else {
+      // Weitere Logik...
+    }
+  }
+  
+  // Weitere Methoden...
+}</code></pre>
+</section>
+
+<section>
+    <h3>DRY – Nachher: Getrennter Controller und Service</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>Controller: UI-Logik</h5>
+            <pre><code class="java">public class CarProfileController {
+  
+  public static void startDialog() {
+    System.out.println(
+        "Hey! To begin with, let's see if you have any car profiles saved.");
+  }
+  
+  public static Double getConsumptionDialog(Scanner scanner) {
+    System.out.print("consumption: (in kWh) ");
+    String input = scanner.nextLine();
+    if (!input.isEmpty()) {
+      return Double.valueOf(input);
+    }
+    return null;
+  }
+  
+  // Weitere UI-Methoden...
+}</code></pre>
+        </div>
+        <div>
+            <h5>Service: Business-Logik</h5>
+            <pre><code class="java">public class CarProfileService {
+  private static Scanner scanner;
+  private LoadingScreenAnimation loadingScreenAnimation;
+  private Thread loadingAnimationThread;
+  private Thread loadingJsonThread;
+  private CarProfileModel carProfile;
+  private ConsumptionProfileModel consumptionProfile;
+  
+  public CarProfileService() throws LoadingException {
+    // Initialisierung...
+    
+    CarProfileController.startDialog();
+    
+    SleepUtil.waitForFSeconds(1.0);
+    
+    CarProfileController.startLoadingThreads(
+        loadingAnimationThread,
+        loadingJsonThread);
+        
+    // Weitere Business-Logik...
+  }
+}</code></pre>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>DRY – Auswirkungen des Refactorings</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>Vorteile</h5>
+            <ul>
+                <li>Reduktion duplizierter Logik</li>
+                <li>Verbesserte Lesbarkeit und Wartbarkeit</li>
+                <li>Klare Trennung von Verantwortlichkeiten</li>
+                <li>Einfachere Wiederverwendung von Code</li>
+                <li>Bessere Testbarkeit der Komponenten</li>
+                <li>Einfachere Erweiterbarkeit</li>
+            </ul>
+        </div>
+        <div>
+            <h5>UML nach Refactoring</h5>
+            <pre><code class="text">┌───────────────────┐
+│ CarProfileController │
+├───────────────────┤
+│+ startDialog()      │
+│+ getConsumptionDialog()│
+│+ getSpeedDialog()   │
+└────────┬──────────┘
+         │ nutzt
+         ▼
+┌────────────────────┐
+│ CarProfileService   │
+├────────────────────┤
+│- carProfile         │
+│- consumptionProfile │
+│- scanner            │
+│+ CarProfileService()│
+└────────────────────┘</code></pre>
+        </div>
+    </div>
 </section>
