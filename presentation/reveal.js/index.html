@@ -652,7 +652,7 @@ jobs:
 							<ul>
 								<li>Definition von Domain Code</li>
 								<li>Code-Beispiel aus ULRICA</li>
-								<li>Analyse des Domain Codes</li>
+								<li>Analyse der Domain-Schicht</li>
 							</ul>
 						</div>
 						<div>
@@ -677,14 +677,19 @@ jobs:
 				<section>
 					<h3>Clean Architecture</h3>
 					<div class="horizontal-spaced-container">
-					<ul>
-						<li><b>Application Layer:</b> <br/> Implementiert Use Cases (Interfaces) über Interaktoren und Ports für Kommunikation</li>
-						<li><b>Domain Layer:</b> <br/> Enthält die Entität, Value Objects, Services (z.B. Kalkulation) und Application State</li>
-						<li><b>Infrastructure Layer:</b> <br/> Konkrete Implementierungen von Repositories und Adaptern und Utils
-						</li>
-						<li><b>Presentation Layer:</b> <br/> Steuert die Benutzerinteraktion über Controller und Views und Utils</li>
-					</ul>
-					<pre style="overflow: hidden; height: 580px; width: 700px; position: relative; margin-left: 50px; bottom: 20px; right: 20px;"><code class="">➜  ulrica git:(main) ✗ tree -d
+						<ul>
+							<li><b>Application Layer:</b> <br /> Implementiert Use Cases (Interfaces) über Interaktoren
+								und Ports für Kommunikation</li>
+							<li><b>Domain Layer:</b> <br /> Enthält die Entität, Value Objects, Services (z.B.
+								Kalkulation) und Application State</li>
+							<li><b>Infrastructure Layer:</b> <br /> Konkrete Implementierungen von Repositories und
+								Adaptern und Utils
+							</li>
+							<li><b>Presentation Layer:</b> <br /> Steuert die Benutzerinteraktion über Controller und
+								Views und Utils</li>
+						</ul>
+						<pre
+							style="overflow: hidden; height: 580px; width: 700px; position: relative; margin-left: 50px; bottom: 20px; right: 20px;"><code class="">➜  ulrica git:(main) ✗ tree -d
 			.
 			├── application
 			│   ├── port
@@ -707,12 +712,12 @@ jobs:
 
 			19 directories
 	</code></pre>
-				</div>
+					</div>
 				</section>
 
 				<section>
-					<h3>Clean Architecture im Detail</h3>
-					<div class="horizontal-spaced-container">
+					<h3>Clean Architecture: UML</h3>
+					<div style="display: flex; flex-direction: column;" class="horizontal-spaced-container">
 						<div>
 							<ul>
 								<li>Domänenlogik ist unabhängig von externen Frameworks/Bibliotheken</li>
@@ -722,75 +727,68 @@ jobs:
 								<li>Abhängigkeiten zeigen immer nach innen</li>
 							</ul>
 						</div>
-						<div>
-							<img src="./assets/UMLs-imgs/Kapitel_2-Aufgabe_1.png" alt="ULRICA Clean Architecture"
-								class="uml-image">
-						</div>
+						<img style="overflow: scroll; scale: 1.1; justify-self: center; align-self: center;" src="./assets/UMLs-imgs/clean_arch.svg"
+							alt="ULRICA Clean Architecture" class="uml-image">
 					</div>
 				</section>
 
 				<section>
-					<h3>Abhängigkeitsfluss</h3>
-					<p>Die Abhängigkeiten fließen gemäß der Clean Architecture von außen nach innen:</p>
-					<pre><code>Presentation → Application → Domain ← Infrastructure
-					↓             ↓             ↑          ↑
-				Controllers    Use Cases      Entities     |
-					↓             ↓             ↑          |
-				   Views          ↓           Services     |
-								  ↓             ↑          |
-							  Input Ports       ↑          |
-								  ↓             ↑          |
-							  Output Ports -----+----------+</code></pre>
-					<p>Kern der Anwendung: Domain Layer mit den Entitäten und Business Rules</p>
-				</section>
-
-				<section>
-					<h3>Zentrale Komponenten der Architektur</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h5>Domain Layer</h5>
-							<ul>
-								<li>CarProfile (Entity)</li>
-								<li>BatteryProfile (Value Object)</li>
-								<li>ConsumptionProfile (Value Object)</li>
-								<li>RangeCalculatorService (Service)</li>
-								<li>RangeCalculationStrategyInterface</li>
-							</ul>
-						</div>
-						<div>
-							<h5>Application Layer</h5>
-							<ul>
-								<li>CalculateRangeUseCaseInterface (Port)</li>
-								<li>CalculateRangeInteractor (Use Case)</li>
-								<li>CarProfilePersistencePortInterface (Port)</li>
-								<li>NavigationUseCase (Use Case)</li>
-							</ul>
-						</div>
+					<div style="display: flex; flex-direction: column; justify-content: space-around; gap: 0;">
+						<img style="margin: 0; padding: 0;" src="assets/UMLs-imgs/2-1-1.png">
+						<img style="margin: 0; padding: 0;" src="assets/UMLs-imgs/2-1-2.png">
+						<img style="margin: 0; padding: 0;" src="assets/UMLs-imgs/2-1-3.png">
 					</div>
 				</section>
 
 				<section>
-					<h3>Zentrale Komponenten (Fortsetzung)</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h5>Infrastructure Layer</h5>
-							<ul>
-								<li>JsonCarProfileRepository</li>
-								<li>ConsoleUserInputAdapter</li>
-								<li>ConsoleUserOutputAdapter</li>
-								<li>ValidationUtils</li>
-							</ul>
-						</div>
-						<div>
-							<h5>Presentation Layer</h5>
-							<ul>
-								<li>ApplicationControllerWithActionMenu</li>
-								<li>RangeCalculationController</li>
-								<li>ActionMenuView</li>
-								<li>CarProfileView</li>
-							</ul>
-						</div>
-					</div>
+					<h3>
+						Clean Architecture: <br/> Analyse u. Begründung
+					</h3>
+				</section>
+
+				<section>
+					<h3>Domain Layer</h3>
+					<p class="subchapter">Der Domain Layer ist das <strong>Herzstück der Clean Architecture</strong> und enthält die gesamte Geschäftslogik ohne externe Abhängigkeiten</p>
+					<ul>
+						<li><strong>CarProfile</strong> (Entity): Kernentität, die ein Car mit seinen Eigenschaften repräsentiert</li>
+						<li><strong>BatteryProfile</strong> (Value Object): Immutable Objekt, das die Batterieeigenschaften eines Fahrzeugs beschreibt</li>
+						<li><strong>ConsumptionProfile</strong> (Value Object): Kapselt Verbrauchsdaten und Verbrauchfaktoren des Fahrzeugs ab</li>
+						<li><strong>RangeCalculatorService</strong> (Service): Berechnet die Reichweite basierend auf verschiedenen Strategien</li>
+						<li><strong>RangeCalculationStrategyInterface</strong>: Definiert die Schnittstelle für verschiedene Berechnungsalgorithmen</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Application Layer</h3>
+					<p class="subchapter">Der Application Layer implementiert <strong>Use Cases</strong> und definiert <strong>Ports</strong>. Die Klassen orchestrieren Domänenobjekte, ohne direkten Zugriff auf die Infrastruktur, was dadurch die <strong>Dependency Rule</strong> einhäl</p>
+					<ul>
+						<li><strong>CalculateRangeUseCaseInterface</strong> (Port): Definiert die Schnittstelle für den Anwendungsfall der Reichweitenberechnung</li>
+						<li><strong>CalculateRangeInteractor</strong> (Use Case): Implementiert die Geschäftslogik für die Reichweitenberechnung</li>
+						<li><strong>CarProfilePersistencePortInterface</strong> (Port): Abstrahiert die Datenpersistenz für Fahrzeugprofile</li>
+						<li><strong>NavigationUseCase</strong> (Use Case): Steuert die Navigationslogik und Routenplanung</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Infrastructure Layer</h3>
+					<p class="subchapter">Der Infrastructure Layer implementiert <strong>konkrete Adapter</strong> für externe Systeme. Diese Klassen sind austauschbar ohne Änderungen an inneren Schichten, was wichtig für e.g. <strong>OCP</strong> wichtig ist.</p>
+					<ul>
+						<li><strong>JsonCarProfileRepository</strong>: Implementiert die Persistenz von Fahrzeugprofilen als JSON-Dateien</li>
+						<li><strong>ConsoleUserInputAdapter</strong>: Verarbeitet Benutzereingaben über die Konsole</li>
+						<li><strong>ConsoleUserOutputAdapter</strong>: Zeigt Ausgaben und Ergebnisse in der Konsole an</li>
+						<li><strong>ValidationUtils</strong>: Hilfsmethoden zur Validierung von Eingabedaten</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Presentation Layer</h3>
+					<p class="subchapter">Der Presentation Layer kapselt die Benutzerinteraktion. Diese Klassen kommunizieren nur über definierte Schnittstellen mit inneren Schichten, was eine <strong>klare Trennung von UI und Geschäftslogik</strong> gewährleistet</p>
+					<ul>
+						<li><strong>ApplicationControllerWithActionMenu</strong>: Hauptcontroller, der die verschiedenen Aktionen der Anwendung steuert</li>
+						<li><strong>RangeCalculationController</strong>: Spezialisierter Controller für die Reichweitenberechnung</li>
+						<li><strong>ActionMenuView</strong>: Stellt das Hauptmenü der Anwendung dar</li>
+						<li><strong>CarProfileView</strong>: Visualisiert die Fahrzeugprofile und deren Details</li>
+					</ul>
 				</section>
 
 				<section>
