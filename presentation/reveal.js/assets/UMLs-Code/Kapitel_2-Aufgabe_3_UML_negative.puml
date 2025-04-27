@@ -1,0 +1,88 @@
+@startuml Dependency_Rule_Negative_Example
+
+package "Domain Layer" #DDFFDD {
+  class CarProfile {
+    -id: String
+    -name: String
+    -manufacturer: String
+    -model: String
+    -year: int
+    -batteryProfile: BatteryProfile
+    -consumptionProfile: ConsumptionProfile
+    ...
+  }
+  
+  class BatteryProfile
+  class ConsumptionProfile
+}
+
+package "Application Layer" #DDDDFF {
+  interface CarProfilePersistencePortInterface {
+    +findById(id: String): Optional<CarProfile>
+    +findAll(): List<CarProfile>
+    +save(carProfile: CarProfile): CarProfile
+    +delete(id: String): void
+  }
+  
+  class CreateCarProfileInteractor {
+    -persistencePort: CarProfilePersistencePortInterface
+    +createCarProfile(command: CreateCarProfileCommand): CarProfile
+  }
+}
+
+package "Infrastructure Layer" #FFDDDD {
+  class JsonCarProfileRepository {
+    -STORAGE_DIR: String = "data"
+    -FILE_NAME: String = "car_profiles.json"
+    -gson: Gson
+    -filePath: Path
+    +JsonCarProfileRepository()
+    +findById(id: String): Optional<CarProfile>
+    +findAll(): List<CarProfile>
+    +save(carProfile: CarProfile): CarProfile
+    +delete(id: String): void
+    -ensureStorageDirectoryExists(): void
+    -saveProfiles(profiles: List<CarProfile>): void
+  }
+  
+  class "java.io.FileReader" as FileReader
+  class "java.io.FileWriter" as FileWriter
+  class "java.nio.file.Files" as Files
+  class "java.nio.file.Path" as Path
+  class "java.nio.file.Paths" as Paths
+  
+  class "com.google.gson.Gson" as Gson
+  class "com.google.gson.GsonBuilder" as GsonBuilder
+  class "com.google.gson.TypeToken" as TypeToken
+  class "OptionalTypeAdapterFactory" as OptionalTypeAdapterFactory
+}
+
+' Compliant relationships (following Dependency Rule)
+JsonCarProfileRepository ..|> CarProfilePersistencePortInterface
+CreateCarProfileInteractor --> CarProfilePersistencePortInterface
+CarProfilePersistencePortInterface --> CarProfile
+
+' Problematic relationships (violating Dependency Rule)
+JsonCarProfileRepository --> Gson
+JsonCarProfileRepository --> GsonBuilder
+JsonCarProfileRepository --> OptionalTypeAdapterFactory
+JsonCarProfileRepository --> FileReader
+JsonCarProfileRepository --> FileWriter
+JsonCarProfileRepository --> Files
+JsonCarProfileRepository --> Paths
+JsonCarProfileRepository --> TypeToken
+JsonCarProfileRepository ..> CarProfile : "Directly uses domain objects\ninstead of DTOs"
+
+' Dependency Rule Violation Notes
+note bottom of JsonCarProfileRepository
+  Dependency Rule Violations:
+  1. Direct dependency on external libraries (Gson)
+  2. Direct dependency on file system (java.io, java.nio)
+  3. Implementation details not abstracted (paths, serialization)
+  4. Domain objects directly serialized without translation layer
+end note
+
+' Extra explanation
+note "In Clean Architecture, infrastructure implementations\nshould depend on abstractions, not directly on domain\nobjects or external libraries. The serialization and\nstorage concerns should be separated." as N1
+
+@enduml 

@@ -1,0 +1,106 @@
+@startuml Dependency_Rule_Positive_Example
+
+package "Domain Layer" #DDFFDD {
+  class RangeCalculatorService {
+    -strategies: List<RangeCalculationStrategyInterface>
+    -defaultStrategy: RangeCalculationStrategyInterface
+    +calculateRange(carProfile: CarProfile, parameters: RangeParameters): RangeResult
+    +addStrategy(strategy: RangeCalculationStrategyInterface): void
+    +setDefaultStrategy(strategy: RangeCalculationStrategyInterface): void
+    +getAvailableStrategies(): List<RangeCalculationStrategyInterface>
+    +getDefaultStrategy(): RangeCalculationStrategyInterface
+  }
+
+  class CarProfile {
+    -id: String
+    -name: String
+    -manufacturer: String
+    -model: String
+    ...
+  }
+
+  class RangeParameters {
+    -terrain: TerrainType
+    -weather: WeatherType
+    -temperatureCelsius: double
+    -environment: DrivingEnvironment
+    -efficiencyMode: EfficiencyMode
+    -stateOfChargePercent: double
+    ...
+  }
+
+  class RangeResult {
+    -estimatedRangeKm: double
+    -averageConsumptionKwhPer100Km: double
+    -weatherImpactDescription: String
+    -terrainImpactDescription: String
+    -environmentImpactDescription: String
+    -batteryConditionDescription: String
+    ...
+  }
+
+  interface RangeCalculationStrategyInterface {
+    +calculateRange(carProfile: CarProfile, parameters: RangeParameters): RangeResult
+    +getName(): String
+    +getDescription(): String
+  }
+
+  class ProfileSelectionService {
+    +getSelectedProfile(): CarProfile
+    +selectProfile(profile: CarProfile): void
+    +clearSelection(): void
+  }
+}
+
+package "Application Layer" #DDDDFF {
+  interface CalculateRangeUseCaseInterface {
+    +calculateRange(terrain: TerrainType, weather: WeatherType, 
+    temperatureCelsius: double, environment: DrivingEnvironment, 
+    efficiencyMode: EfficiencyMode, stateOfChargePercent: double): boolean
+  }
+
+  class CalculateRangeInteractor {
+    -rangeCalculatorService: RangeCalculatorService
+    -outputPort: RangeCalculationOutputPortInterface
+    -profileSelectionService: ProfileSelectionService
+    +calculateRange(terrain: TerrainType, weather: WeatherType, 
+    temperatureCelsius: double, environment: DrivingEnvironment, 
+    efficiencyMode: EfficiencyMode, stateOfChargePercent: double): boolean
+  }
+
+  interface RangeCalculationOutputPortInterface {
+    +showCalculationResult(...)
+    +showImpactAnalysis(...)
+    +showError(message: String)
+    ...
+  }
+}
+
+package "Presentation Layer" #FFDDDD {
+  class RangeCalculationView {
+    -userOutputPort: UserOutputPortInterface
+    -decimalFormat: DecimalFormat
+    +showCalculationResult(...)
+    +showImpactAnalysis(...)
+    +showError(message: String)
+    ...
+  }
+}
+
+' Relationships
+CalculateRangeInteractor ..|> CalculateRangeUseCaseInterface
+CalculateRangeInteractor --> RangeCalculatorService
+CalculateRangeInteractor --> ProfileSelectionService
+CalculateRangeInteractor --> RangeCalculationOutputPortInterface
+RangeCalculationView ..|> RangeCalculationOutputPortInterface
+
+' Domain Relationships
+RangeCalculatorService --> RangeCalculationStrategyInterface
+RangeCalculatorService --> CarProfile
+RangeCalculatorService --> RangeParameters
+RangeCalculatorService --> RangeResult
+
+' Dependency Rule explanation
+note "Dependency Rule Compliance:\n- CalculateRangeInteractor depends on interfaces and domain objects\n- Dependencies point inward toward Domain layer\n- Clean separation between application logic and presentation\n- Communication with outside layers via interfaces (ports)" as N1
+
+@enduml 
