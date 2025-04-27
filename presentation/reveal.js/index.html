@@ -171,7 +171,8 @@
 <body>
 	<div class="reveal">
 		<div class="slides">
-			<section>
+
+			<section alt="Anfang/Einleitung">
 				<h3>Programmentwurf - Protokoll</h3>
 				<p class="gray center">zu</p>
 				<img style="margin: 50px 0;" src="./assets/ulrica-blue.png" alt="ULRICA Logo" class="logo">
@@ -183,7 +184,7 @@
 					<p>TINF21CS1</p>
 				</div>
 			</section>
-			<section>
+			<section alt="Kapitel 1">
 				<section>
 					<h2 class="chapter-title">Kapitel 1: Einleitung (4P)</h2>
 				</section>
@@ -632,13 +633,275 @@ jobs:
 					<p>Clean Architecture mit klarer Trennung der Schichten</p>
 				</section> -->
 			</section>
-			<section data-include="slides/kapitel-2.html"></section>
-			<section data-include="slides/kapitel-3.html"></section>
+			<section alt="Kapitel 2">
+				<section>
+					<h2 class="chapter-title">Kapitel 2: Softwarearchitektur (8P)</h2>
+				</section>
+				
+				<section>
+					<h3>Gewählte Architektur (4P)</h3>
+					<p>ULRICA implementiert <b>Clean Architecture</b> mit einer klaren Trennung der Schichten</p>
+					<ul>
+						<li><b>Domain Layer:</b> Enthält die Kernentitäten, Value Objects und Fachlogik (CarProfile, BatteryProfile, etc.)</li>
+						<li><b>Application Layer:</b> Implementiert Use Cases über Interaktoren und definiert Ports für die Kommunikation</li>
+						<li><b>Infrastructure Layer:</b> Bietet konkrete Implementierungen von Repositories und Adaptern</li>
+						<li><b>Presentation Layer:</b> Steuert die Benutzerinteraktion über Controller und Views</li>
+					</ul>
+					<p>Fokus auf Dependency Inversion Principle und Dependency Rule</p>
+				</section>
+				
+				<section>
+					<h3>Clean Architecture im Detail</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<ul>
+								<li>Domänenlogik ist unabhängig von externen Frameworks/Bibliotheken</li>
+								<li>Application Layer enthält anwendungsspezifische Regeln</li>
+								<li>Ports definieren Schnittstellen zwischen Schichten</li>
+								<li>Adapters verbinden externe Systeme mit inneren Schichten</li>
+								<li>Abhängigkeiten zeigen immer nach innen</li>
+							</ul>
+						</div>
+						<div>
+							<img src="assets/UMLs-imgs/Kapitel_2-Aufgabe_1.png" alt="ULRICA Clean Architecture" class="uml-image">
+						</div>
+					</div>
+				</section>
+				
+				<section>
+					<h3>Abhängigkeitsfluss</h3>
+					<p>Die Abhängigkeiten fließen gemäß der Clean Architecture von außen nach innen:</p>
+					<pre><code>Presentation → Application → Domain ← Infrastructure
+					↓             ↓             ↑          ↑
+				Controllers    Use Cases      Entities     |
+					↓             ↓             ↑          |
+				   Views          ↓           Services     |
+								  ↓             ↑          |
+							  Input Ports       ↑          |
+								  ↓             ↑          |
+							  Output Ports -----+----------+</code></pre>
+					<p>Kern der Anwendung: Domain Layer mit den Entitäten und Business Rules</p>
+				</section>
+				
+				<section>
+					<h3>Zentrale Komponenten der Architektur</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<h5>Domain Layer</h5>
+							<ul>
+								<li>CarProfile (Entity)</li>
+								<li>BatteryProfile (Value Object)</li>
+								<li>ConsumptionProfile (Value Object)</li>
+								<li>RangeCalculatorService (Service)</li>
+								<li>RangeCalculationStrategyInterface</li>
+							</ul>
+						</div>
+						<div>
+							<h5>Application Layer</h5>
+							<ul>
+								<li>CalculateRangeUseCaseInterface (Port)</li>
+								<li>CalculateRangeInteractor (Use Case)</li>
+								<li>CarProfilePersistencePortInterface (Port)</li>
+								<li>NavigationUseCase (Use Case)</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+				
+				<section>
+					<h3>Zentrale Komponenten (Fortsetzung)</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<h5>Infrastructure Layer</h5>
+							<ul>
+								<li>JsonCarProfileRepository</li>
+								<li>ConsoleUserInputAdapter</li>
+								<li>ConsoleUserOutputAdapter</li>
+								<li>ValidationUtils</li>
+							</ul>
+						</div>
+						<div>
+							<h5>Presentation Layer</h5>
+							<ul>
+								<li>ApplicationControllerWithActionMenu</li>
+								<li>RangeCalculationController</li>
+								<li>ActionMenuView</li>
+								<li>CarProfileView</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+				
+				<section>
+					<h3>Domain Code (1P)</h3>
+					<p>Domain Code ist der zentrale Teil der Anwendung, der:</p>
+					<ul>
+						<li>Die Fachlogik der Domäne (Geschäftsregeln) abbildet</li>
+						<li>Unabhängig von externen Systemen (Datenbank, UI) funktioniert</li>
+						<li>Die Kernkonzepte der Anwendung definiert</li>
+						<li>Keine Abhängigkeiten zu anderen Schichten hat</li>
+						<li>Idealerweise ausschließlich die Standardbibliothek nutzt</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h3>Beispiel Domain Code: RangeCalculatorService</h3>
+					<pre><code class="java">public class RangeCalculatorService {
+					private final List<RangeCalculationStrategyInterface> strategies;
+					private RangeCalculationStrategyInterface defaultStrategy;
+				
+					public RangeCalculatorService() {
+						this.strategies = new ArrayList<>();
+						
+						// Initialize with standard strategies
+						WltpBasedRangeCalculationStrategy wltpStrategy = 
+							new WltpBasedRangeCalculationStrategy();
+						ConsumptionBasedRangeCalculationStrategy consumptionStrategy = 
+							new ConsumptionBasedRangeCalculationStrategy();
+						
+						this.strategies.add(wltpStrategy);
+						this.strategies.add(consumptionStrategy);
+						
+						// Set default strategy
+						this.defaultStrategy = consumptionStrategy;
+					}
+					
+					public RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters) {
+						Objects.requireNonNull(carProfile, "Car profile cannot be null");
+						Objects.requireNonNull(parameters, "Range parameters cannot be null");
+						
+						return defaultStrategy.calculateRange(carProfile, parameters);
+					}
+				}</code></pre>
+				</section>
+				
+				<section>
+					<h3>Analyse der Domain-Schicht</h3>
+					<ul>
+						<li>Enthält reine Java-Klassen, keine externen Frameworks</li>
+						<li>Domänenlogik kann unabhängig getestet werden</li>
+						<li>Verwendung von Design Patterns (Strategy, Builder)</li>
+						<li>Value Objects für immutable Datenstrukturen</li>
+						<li>Strikte Validierung von Eingabeparametern</li>
+						<li>Kapselung von Geschäftsregeln in spezialisierten Services</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h3>Analyse der Dependency Rule (3P)</h3>
+					<p>Die <b>Dependency Rule</b> ist eine zentrale Säule der Clean Architecture:</p>
+					<ul>
+						<li>Die Abhängigkeiten dürfen nur nach innen, zum Zentrum der Architektur zeigen</li>
+						<li>Innere Schichten (Domain) dürfen nichts über äußere Schichten wissen</li>
+						<li>Äußere Schichten (Infrastruktur) dürfen von inneren abhängen</li>
+						<li>Die Abstraktionen (Interfaces) gehören zur inneren Schicht</li>
+						<li>Die Implementierungen gehören zur äußeren Schicht</li>
+					</ul>
+					<img src="assets/UMLs-imgs/Kapitel_2-Aufgabe_3.png" alt="Dependency Rule UML" class="uml-image">
+				</section>
+				
+				<section>
+					<h3>Positives Beispiel: CalculateRangeInteractor</h3>
+					<pre><code class="java">public class CalculateRangeInteractor implements CalculateRangeUseCaseInterface {
+					
+					private final RangeCalculatorService rangeCalculatorService;
+					private final RangeCalculationOutputPortInterface outputPort;
+					private final ProfileSelectionService profileSelectionService;
+					
+					public CalculateRangeInteractor(
+							RangeCalculatorService rangeCalculatorService,
+							RangeCalculationOutputPortInterface outputPort,
+							ProfileSelectionService profileSelectionService) {
+						this.rangeCalculatorService = Objects.requireNonNull(rangeCalculatorService);
+						this.outputPort = Objects.requireNonNull(outputPort);
+						this.profileSelectionService = Objects.requireNonNull(profileSelectionService);
+					}
+					
+					@Override
+					public void calculateRange(CalculateRangeCommand command) {
+						CarProfile profile = profileSelectionService.getSelectedProfile();
+						// Weitere Implementierung...
+						
+						RangeResult result = rangeCalculatorService.calculateRange(profile, parameters);
+						outputPort.displayRangeResult(result);
+					}
+				}</code></pre>
+				</section>
+				
+				<section>
+					<h3>Analyse des positiven Beispiels</h3>
+					<ul>
+						<li>Implementiert ein Interface aus der Application-Schicht</li>
+						<li>Abhängigkeiten werden über Konstruktor-Injection bereitgestellt</li>
+						<li>Abhängigkeiten sind alle Interfaces oder Domain-Services</li>
+						<li>Keine Abhängigkeit zu konkreten Implementierungen der äußeren Schichten</li>
+						<li>Ausgabe erfolgt über ein Port-Interface (RangeCalculationOutputPortInterface)</li>
+						<li>Strikte Validierung mit Objects.requireNonNull()</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h3>Negatives Beispiel: JsonCarProfileRepository</h3>
+					<pre><code class="java">public class JsonCarProfileRepository implements CarProfilePersistencePortInterface {
+					private static final String STORAGE_DIR = "data";
+					private static final String FILE_NAME = "car_profiles.json";
+					private final Gson gson;
+					private final Path filePath;
+				
+					public JsonCarProfileRepository() {
+						this.gson = new GsonBuilder()
+								.setPrettyPrinting()
+								.registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+								.create();
+						this.filePath = Paths.get(STORAGE_DIR, FILE_NAME);
+						ensureStorageDirectoryExists();
+					}
+					
+					@Override
+					public List<CarProfile> findAll() {
+						try (FileReader reader = new FileReader(filePath.toFile())) {
+							Type listType = new TypeToken<List<CarProfile>>() {}.getType();
+							List<CarProfile> profiles = gson.fromJson(reader, listType);
+							return profiles != null ? profiles : new ArrayList<>();
+						} catch (IOException e) {
+							throw new RuntimeException("Failed to read car profiles", e);
+						}
+					}
+				}</code></pre>
+				</section>
+				
+				<section>
+					<h3>Analyse des negativen Beispiels</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<p>Verstöße gegen die Dependency Rule:</p>
+							<ul>
+								<li>Direkte Abhängigkeit zu externen Bibliotheken (Gson)</li>
+								<li>Direkter Zugriff auf das Dateisystem (java.io, java.nio)</li>
+								<li>Hartcodierte Pfade (STORAGE_DIR, FILE_NAME)</li>
+								<li>Ausnahmebehandlung mit generischen Exceptions</li>
+								<li>Direkte Implementierung der Dateioperationen</li>
+							</ul>
+						</div>
+						<div>
+							<p>Verbesserungsvorschlag:</p>
+							<ul>
+								<li>Einführung eines FileStoragePortInterface</li>
+								<li>Auslagerung der JSON-Serialisierung</li>
+								<li>Konfigurierbare Pfade (z.B. über Umgebungsvariablen)</li>
+								<li>Fachliche Exceptions wie ProfileNotFoundException</li>
+								<li>Strikte Trennung von Persistenz und Domänenmodell</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+			</section>
+			<!-- <section data-include="slides/kapitel-3.html"></section>
 			<section data-include="slides/kapitel-4.html"></section>
 			<section data-include="slides/kapitel-5.html"></section>
 			<section data-include="slides/kapitel-6.html"></section>
 			<section data-include="slides/kapitel-7.html"></section>
-			<section data-include="slides/kapitel-8.html"></section>
+			<section data-include="slides/kapitel-8.html"></section> -->
 		</div>
 	</div>
 
