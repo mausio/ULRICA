@@ -25,10 +25,6 @@
 
 	code {
 		border-radius: 5px;
-	}
-
-
-	code {
 		font-size: 1rem !important;
 	}
 
@@ -175,7 +171,7 @@
 			<section alt="Anfang/Einleitung">
 				<h3>Programmentwurf - Protokoll</h3>
 				<p class="gray center">zu</p>
-				<img style="margin: 50px 0;" src="./assets/ulrica-blue.png" alt="ULRICA Logo" class="logo">
+				<img style="margin: 50px 0;" src="./assets/imgs/ulrica-blue.png" alt="ULRICA Logo" class="logo">
 				<div class="horizontal-container gray">
 					<p>Robin Schwenzfeier</p>
 					<p>-</p>
@@ -637,19 +633,83 @@ jobs:
 				<section>
 					<h2 class="chapter-title">Kapitel 2: Softwarearchitektur (8P)</h2>
 				</section>
-				
+
+				<section>
+					<h3 class="subchapter">Inhalt des Kapitels</h3>
+					<div class="horizontal-spaced-container"
+						style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+						<div>
+							<h6>1. Gewählte Architektur (4P)</h6>
+							<ul>
+								<li>Clean Architecture</li>
+								<li>Architekturschichten</li>
+								<li>Analyse und Begründung</li>
+								<li>UML der wichtigsten Klassen</li>
+							</ul>
+						</div>
+						<div>
+							<h6>2. Domain Code (1P)</h6>
+							<ul>
+								<li>Definition von Domain Code</li>
+								<li>Code-Beispiel aus ULRICA</li>
+								<li>Analyse des Domain Codes</li>
+							</ul>
+						</div>
+						<div>
+							<h6>3. Analyse der Dependency Rule (3P)</h6>
+							<ul>
+								<li>Positives Beispiel</li>
+								<li>Negatives Beispiel</li>
+								<li>UML der Abhängigkeiten</li>
+								<li>Lösungsansätze</li>
+							</ul>
+						</div>
+						<div>
+						</div>
+					</div>
+				</section>
+
+
 				<section>
 					<h3>Gewählte Architektur (4P)</h3>
-					<p>ULRICA implementiert <b>Clean Architecture</b> mit einer klaren Trennung der Schichten</p>
-					<ul>
-						<li><b>Domain Layer:</b> Enthält die Kernentitäten, Value Objects und Fachlogik (CarProfile, BatteryProfile, etc.)</li>
-						<li><b>Application Layer:</b> Implementiert Use Cases über Interaktoren und definiert Ports für die Kommunikation</li>
-						<li><b>Infrastructure Layer:</b> Bietet konkrete Implementierungen von Repositories und Adaptern</li>
-						<li><b>Presentation Layer:</b> Steuert die Benutzerinteraktion über Controller und Views</li>
-					</ul>
-					<p>Fokus auf Dependency Inversion Principle und Dependency Rule</p>
 				</section>
-				
+
+				<section>
+					<h3>Clean Architecture</h3>
+					<div class="horizontal-spaced-container">
+					<ul>
+						<li><b>Application Layer:</b> <br/> Implementiert Use Cases (Interfaces) über Interaktoren und Ports für Kommunikation</li>
+						<li><b>Domain Layer:</b> <br/> Enthält die Entität, Value Objects, Services (z.B. Kalkulation) und Application State</li>
+						<li><b>Infrastructure Layer:</b> <br/> Konkrete Implementierungen von Repositories und Adaptern und Utils
+						</li>
+						<li><b>Presentation Layer:</b> <br/> Steuert die Benutzerinteraktion über Controller und Views und Utils</li>
+					</ul>
+					<pre style="overflow: hidden; height: 580px; width: 700px; position: relative; margin-left: 50px; bottom: 20px; right: 20px;"><code class="">➜  ulrica git:(main) ✗ tree -d
+			.
+			├── application
+			│   ├── port
+			│   │   ├── in
+			│   │   └── out
+			│   ├── service
+			│   └── usecase
+			├── domain
+			│   ├── entity
+			│   ├── service
+			│   └── valueobject
+			├── infrastructure
+			│   ├── adapter
+			│   ├── persistence
+			│   └── util
+			└── presentation
+				├── controller
+				├── util
+				└── view
+
+			19 directories
+	</code></pre>
+				</div>
+				</section>
+
 				<section>
 					<h3>Clean Architecture im Detail</h3>
 					<div class="horizontal-spaced-container">
@@ -663,11 +723,12 @@ jobs:
 							</ul>
 						</div>
 						<div>
-							<img src="assets/UMLs-imgs/Kapitel_2-Aufgabe_1.png" alt="ULRICA Clean Architecture" class="uml-image">
+							<img src="./assets/UMLs-imgs/Kapitel_2-Aufgabe_1.png" alt="ULRICA Clean Architecture"
+								class="uml-image">
 						</div>
 					</div>
 				</section>
-				
+
 				<section>
 					<h3>Abhängigkeitsfluss</h3>
 					<p>Die Abhängigkeiten fließen gemäß der Clean Architecture von außen nach innen:</p>
@@ -682,7 +743,7 @@ jobs:
 							  Output Ports -----+----------+</code></pre>
 					<p>Kern der Anwendung: Domain Layer mit den Entitäten und Business Rules</p>
 				</section>
-				
+
 				<section>
 					<h3>Zentrale Komponenten der Architektur</h3>
 					<div class="horizontal-spaced-container">
@@ -707,7 +768,7 @@ jobs:
 						</div>
 					</div>
 				</section>
-				
+
 				<section>
 					<h3>Zentrale Komponenten (Fortsetzung)</h3>
 					<div class="horizontal-spaced-container">
@@ -731,7 +792,7 @@ jobs:
 						</div>
 					</div>
 				</section>
-				
+
 				<section>
 					<h3>Domain Code (1P)</h3>
 					<p>Domain Code ist der zentrale Teil der Anwendung, der:</p>
@@ -743,7 +804,7 @@ jobs:
 						<li>Idealerweise ausschließlich die Standardbibliothek nutzt</li>
 					</ul>
 				</section>
-				
+
 				<section>
 					<h3>Beispiel Domain Code: RangeCalculatorService</h3>
 					<pre><code class="java">public class RangeCalculatorService {
@@ -774,7 +835,7 @@ jobs:
 					}
 				}</code></pre>
 				</section>
-				
+
 				<section>
 					<h3>Analyse der Domain-Schicht</h3>
 					<ul>
@@ -786,7 +847,7 @@ jobs:
 						<li>Kapselung von Geschäftsregeln in spezialisierten Services</li>
 					</ul>
 				</section>
-				
+
 				<section>
 					<h3>Analyse der Dependency Rule (3P)</h3>
 					<p>Die <b>Dependency Rule</b> ist eine zentrale Säule der Clean Architecture:</p>
@@ -799,7 +860,7 @@ jobs:
 					</ul>
 					<img src="assets/UMLs-imgs/Kapitel_2-Aufgabe_3.png" alt="Dependency Rule UML" class="uml-image">
 				</section>
-				
+
 				<section>
 					<h3>Positives Beispiel: CalculateRangeInteractor</h3>
 					<pre><code class="java">public class CalculateRangeInteractor implements CalculateRangeUseCaseInterface {
@@ -827,7 +888,7 @@ jobs:
 					}
 				}</code></pre>
 				</section>
-				
+
 				<section>
 					<h3>Analyse des positiven Beispiels</h3>
 					<ul>
@@ -839,7 +900,7 @@ jobs:
 						<li>Strikte Validierung mit Objects.requireNonNull()</li>
 					</ul>
 				</section>
-				
+
 				<section>
 					<h3>Negatives Beispiel: JsonCarProfileRepository</h3>
 					<pre><code class="java">public class JsonCarProfileRepository implements CarProfilePersistencePortInterface {
@@ -869,7 +930,7 @@ jobs:
 					}
 				}</code></pre>
 				</section>
-				
+
 				<section>
 					<h3>Analyse des negativen Beispiels</h3>
 					<div class="horizontal-spaced-container">
