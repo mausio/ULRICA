@@ -12,27 +12,41 @@
 	<link rel="stylesheet" href="dist/theme/white.css">
 
 	<!-- Theme used for syntax highlighted code -->
-	<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/lightfair.css">
 </head>
 <style>
 	code:not(.hljs) {
 		font-size: 1.25rem;
 	}
 
+	pre {
+		border-radius: 5px;
+	}
+
+	code {
+		border-radius: 5px;
+	}
+
+
+	code {
+		font-size: 1rem !important;
+	}
+
+
 	/* Syntax highlighting styles similar to the screenshot */
 	.hljs-keyword {
-		color: red;
+		color: blue;
 		/* softer green */
 		font-weight: 500;
 	}
 
 	.hljs-built_in {
-		color: darkred;
+		color: darkblue;
 		font-weight: normal;
 	}
 
 	.hljs-string {
-		color: #d19a66;
+		color: rgb(0, 167, 206);
 		/* softer yellow/orange */
 		font-weight: normal;
 	}
@@ -335,8 +349,10 @@
 									class="hljs-built_in">package</span></span>
 							<ul>
 								<li>Dieser Befehl kompiliert den Code und erstellt eine ausführbare JAR-Datei im
-									Verzeichnis <code>target/</code></li>
-								<li>Die JAR-Datei wird als <code style="background-color: whitesmoke; padding: 2px; border-radius: 5px;" class="primary-color">ULRICA-1.0-SNAPSHOT.jar</code> gespeichert</li>
+									Verzeichnis <span>target/</span></li>
+								<li>Die JAR-Datei wird als <span
+										style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"
+										class="primary-color">ULRICA-1.0-SNAPSHOT.jar</span> gespeichert</li>
 							</ul>
 						</li>
 						<li>JAR-Datei ausführen: <span
@@ -354,23 +370,17 @@
 
 				<section>
 					<h3>Technischer Überblick (2P)</h3>
-					<p>ULRICA wurde mit folgenden Technologien implementiert:</p>
+					<p class="subchapter">Welche Technologien? Welche Architektur?</p>
+				</section>
+				<section>
+					<h3>Technologien: Überblick</h3>
 					<ul>
-						<li><strong>Java (JDK 17):</strong> Objektorientierte Programmiersprache - ermöglicht klare
-							Strukturierung mit Design
-							Patterns und Clean Architecture</li>
-						<li><strong>Maven:</strong> Build-Management-Tool - vereinfacht Abhängigkeiten, Build und Tests
-						</li>
-						<li><strong>JSON/GSON:</strong> Datenaustauschformat und Java-Bibliothek für Persistenz von
-							Fahrzeugprofilen</li>
-						<li><strong>JUnit 4:</strong> Test-Framework mit 106 automatisierten Tests für
-							Qualitätssicherung</li>
-						<li><strong>JaCoCo:</strong> Code-Coverage-Tool mit einer Gesamtabdeckung von 47%
-							(Linienabdeckung)</li>
-						<li><strong>Clean Architecture:</strong> Strukturierungsprinzip für bessere Wartbarkeit und
-							Testbarkeit</li>
-						<li><strong>Design Patterns:</strong> Strategy, Adapter, Repository, Builder für besseres Design
-						</li>
+						<li><strong>Java (JDK 17):</strong> Objektorientierte Programmiersprache</li>
+						<li><strong>Maven:</strong> Build-Management-Tool</li>
+						<li><strong>JSON/GSON:</strong> Datenaustauschformat und Java-Bibliothek für Persistenz</li>
+						<li><strong>JUnit 4:</strong> Test-Framework für automatisierten Tests</li>
+						<li><strong>JaCoCo:</strong> Code-Coverage-Tool</li>
+						<li><strong>Github Workflow:</strong>CI/CD Pipeline-Tool mit Maven Build</li>
 					</ul>
 				</section>
 
@@ -378,24 +388,25 @@
 					<h3>Java (JDK 17)</h3>
 					<div class="horizontal-spaced-container">
 						<div>
-							<h5>Vorteile für ULRICA</h5>
+							<h5>Vorteile:</h5>
 							<ul>
-								<li>Plattformunabhängigkeit durch JVM</li>
+								<li>Plattformunabhängigkeit durch Java Virtual Machine</li>
 								<li>Starke objektorientierte Programmierung</li>
-								<li>Typ-Sicherheit reduziert Laufzeitfehler</li>
-								<li>Modernes JDK 17 mit LTS-Support</li>
-								<li>Umfangreiche Bibliotheken verfügbar</li>
-								<li>Ideale Grundlage für Clean Architecture</li>
+								<li>Typ-Sicherheit bei Laufzeit</li>
+								<li>LongTermSupport</li>
+								<li>Umfangreiche Bibliotheken verfügbar -> GSON</li>
+								<li>Ideale Grundlage für Clean Architecture und Implementierung von Prinzipien</li>
 							</ul>
 						</div>
 						<div>
-							<h5>Alternativen-Vergleich</h5>
+							<h5>Alternativen:</h5>
 							<ul>
-								<li>Kotlin: Eleganter, aber weniger etabliert</li>
-								<li>C#: Ähnlich stark, aber plattformabhängiger</li>
-								<li>Python: Einfacher, aber weniger performant</li>
-								<li>JavaScript: Weniger typsicher und strukturiert</li>
-								<li>C++: Höhere Performance, aber komplexere Entwicklung</li>
+								<li><strong>Kotlin</strong>:<br>Eleganter, aber weniger etabliert (auch nicht erlaubt)
+								</li>
+								<li><strong>Python</strong>: <br>Einfacher, aber weniger performant und relativ
+									unbekannt für mich</li>
+								<li><strong>JavaScript</strong>:<br>Mir sehr bekannt, aber schwierig
+									Architekturprinzipien zu implementieren (auch nicht erlaubt)</li>
 							</ul>
 						</div>
 					</div>
@@ -405,31 +416,31 @@
 					<h3>Maven</h3>
 					<div class="horizontal-spaced-container">
 						<div>
-							<h5>Vorteile für ULRICA</h5>
+							<h5>Vorteile</h5>
 							<ul>
-								<li>Deklaratives Projektmanagement</li>
+								<li>"Plug&Play" für Nutzer:innen</li>
+								<li>Konsistente Projektstruktur</li>
 								<li>Automatisiertes Abhängigkeitsmanagement</li>
 								<li>Standardisierte Build-Lebenszyklen</li>
 								<li>Integration mit JUnit und JaCoCo</li>
 								<li>Plugin-Ökosystem für erweiterte Funktionen</li>
-								<li>Konsistente Projektstruktur</li>
 							</ul>
 						</div>
 						<div>
 							<h5>Konfiguration in ULRICA</h5>
 							<pre><code class="xml">&lt;dependencies&gt;
-					&lt;dependency&gt;
-						&lt;groupId&gt;junit&lt;/groupId&gt;
-						&lt;artifactId&gt;junit&lt;/artifactId&gt;
-						&lt;version&gt;4.13.2&lt;/version&gt;
-						&lt;scope&gt;test&lt;/scope&gt;
-					&lt;/dependency&gt;
-					&lt;dependency&gt;
-						&lt;groupId&gt;com.google.code.gson&lt;/groupId&gt;
-						&lt;artifactId&gt;gson&lt;/artifactId&gt;
-						&lt;version&gt;2.10.1&lt;/version&gt;  
-					&lt;/dependency&gt;
-				&lt;/dependencies&gt;</code></pre>
+	&lt;dependency&gt;
+		&lt;groupId&gt;junit&lt;/groupId&gt;
+		&lt;artifactId&gt;junit&lt;/artifactId&gt;
+		&lt;version&gt;4.13.2&lt;/version&gt;
+		&lt;scope&gt;test&lt;/scope&gt;
+	&lt;/dependency&gt;
+	&lt;dependency&gt;
+		&lt;groupId&gt;com.google.code.gson&lt;/groupId&gt;
+		&lt;artifactId&gt;gson&lt;/artifactId&gt;
+		&lt;version&gt;2.10.1&lt;/version&gt;  
+	&lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
 						</div>
 					</div>
 				</section>
@@ -438,35 +449,35 @@
 					<h3>JSON & GSON</h3>
 					<div class="horizontal-spaced-container">
 						<div>
-							<h5>Vorteile für ULRICA</h5>
+							<h5>Vorteile</h5>
 							<ul>
 								<li>Leichtgewichtiges Datenformat</li>
-								<li>Menschenlesbar und einfach zu bearbeiten</li>
-								<li>Ideal für Konfigurationsdaten wie Fahrzeugprofile</li>
+								<li>Für Menschen lesbar und einfach zu bearbeiten</li>
+								<li>Ideal für Konfigurationsdaten, e.g. Fahrzeugprofile</li>
 								<li>Weit verbreitet und unterstützt</li>
 								<li>GSON bietet einfache Java-Integration</li>
 								<li>TypeAdapter für komplexe Datentypen</li>
 							</ul>
 						</div>
 						<div>
-							<h5>Implementierung in ULRICA</h5>
-							<pre><code class="java">public class JsonCarProfileRepository 
-						implements CarProfilePersistencePortInterface {
-					
-					private final Gson gson;
-					private final Path filePath;
-				
-					public JsonCarProfileRepository() {
-						this.gson = new GsonBuilder()
-							.setPrettyPrinting()
-							.registerTypeAdapterFactory(
-								new OptionalTypeAdapterFactory())
-							.create();
-						this.filePath = Paths.get(
-							STORAGE_DIR, FILE_NAME);
-					}
-					// ...
-				}</code></pre>
+							<h5>Implementierung</h5>
+							<pre style="width: 500px"><code class="java">public class JsonCarProfileRepository 
+
+implements CarProfilePersistencePortInterface { // Implementierung des Persistenz-Ports für Fahrzeugprofile
+	private final Gson gson; // Gson-Instanz für JSON-Serialisierung/Deserialisierung
+	private final Path filePath; // Pfad zur JSON-Datei
+
+	public JsonCarProfileRepository() {
+		this.gson = new GsonBuilder() 
+			.setPrettyPrinting() // Formatiert die JSON-Ausgabe lesbar
+			.registerTypeAdapterFactory( // Ermöglicht die Serialisierung von Optional-Werten
+				new OptionalTypeAdapterFactory())  // Registriert eine Factory zur Unterstützung von "Optional<T>"-Typen
+			.create(); // Factory: Entwurfsmuster (Design Pattern) für die Erstellung von bestimmten Objekten
+		this.filePath = Paths.get(
+			STORAGE_DIR, FILE_NAME); // Definiert den Speicherort der JSON-Datei
+	}
+	// ...
+}</code></pre>
 						</div>
 					</div>
 				</section>
@@ -475,45 +486,26 @@
 					<h3>Test-Framework: JUnit</h3>
 					<div class="horizontal-spaced-container">
 						<div>
-							<h5>Vorteile für ULRICA</h5>
+							<h5>Vorteile</h5>
 							<ul>
 								<li>De-facto Standard für Java-Tests</li>
 								<li>Umfangreiche Assertions-Bibliothek</li>
-								<li>106 automatisierte Tests in ULRICA</li>
 								<li>Integration mit Build-Tools und JaCoCo</li>
-								<li>Mock-Objekte und Stubs für isolierte Tests</li>
-								<li>Test-getriebene Entwicklung unterstützt</li>
+								<li>Test-getriebene Entwicklung (TDD) wird unterstützt</li>
 							</ul>
 						</div>
 						<div>
-							<h5>Implementierung in ULRICA</h5>
-							<pre><code class="java">@Test
-				public void testCompareStrategies() {
-					// Given: Identifiziere beide Strategien
-					RangeCalculationStrategyInterface wltpStrategy = null;
-					RangeCalculationStrategyInterface consumptionStrategy = null;
-					
-					for (RangeCalculationStrategyInterface strategy : 
-							 rangeCalculatorService.getAvailableStrategies()) {
-						if (strategy instanceof WltpBasedRangeCalculationStrategy) {
-							wltpStrategy = strategy;
-						}
-						if (strategy instanceof ConsumptionBasedRangeCalculationStrategy) {
-							consumptionStrategy = strategy;
-						}
-					}
-					
-					// When & Then...
-				}</code></pre>
 						</div>
 					</div>
 				</section>
 
 				<section>
 					<h3>Code-Coverage: JaCoCo</h3>
+					<p class="subchapter">Fokus auf qualitative Tests u. kritische Komponenten, statt bloßer Maximierung
+					</p>
 					<div class="horizontal-spaced-container">
 						<div>
-							<h5>Vorteile für ULRICA</h5>
+							<h5>Vorteile</h5>
 							<ul>
 								<li>Detaillierte Abdeckungsmetriken</li>
 								<li>Integration mit Maven und CI/CD</li>
@@ -524,7 +516,7 @@
 							</ul>
 						</div>
 						<div>
-							<h5>Ergebnisse in ULRICA</h5>
+							<h5>Ergebnisse</h5>
 							<ul>
 								<li>Gesamtabdeckung: 47%</li>
 								<li>Domain Layer: 68%</li>
@@ -533,13 +525,81 @@
 								<li>Infrastructure Layer: 36%</li>
 								<li>Core-Komponenten: 75%</li>
 							</ul>
-							<p>Fokus auf qualitativ hochwertige Tests für kritische Komponenten statt bloßer Maximierung
-								der Abdeckung</p>
+
 						</div>
 					</div>
 				</section>
 
 				<section>
+					<h3>Github Workflow</h3>
+					<p class="subchapter">Kontinuierliche Integration und automatische Qualitätssicherung</p>
+					<div class="horizontal-spaced-container">
+						<div>
+							<h5>Vorteile</h5>
+							<ul>
+								<li>Automatisierte Builds bei jedem Commit</li>
+								<li>Kontinuierliche Ausführung der Tests</li>
+								<li>Automatische Code-Coverage-Analyse</li>
+								<li>Codequalitätsmessung mit CLOC</li>
+								<li>E-Mail-Benachrichtigungen über Build-Status</li>
+								<li>Früherkennung von Fehlern und Qualitätsproblemen</li>
+							</ul>
+						</div>
+						<div>
+							<h5>Implementierung</h5>
+							<pre style="width: 400px"><code class="yaml">name: Java CI with Maven
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    
+    - name: Build, test and check coverage
+      run: mvn -B verify
+    
+    - name: Install CLOC
+      run: sudo apt-get install -y cloc
+
+    - name: Count Java lines of code
+      run: cloc --include-lang=Java ./src/main/java/org/ulrica
+
+    # E-Mail-Benachrichtigung über Ergebnisse
+    - name: Send Email with Results
+      uses: dawidd6/action-send-mail@v3
+      # ...</code></pre>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Kleines Add-On: Mails</h3>
+					<div style="display: flex; flex-direction: row; justify-content: space-evenly;">
+						<img src="./assets/imgs/Screenshot 2025-04-27 at 12.41.23.jpeg"
+							style="height: 580px; margin: 0; border-radius: 20px;" />
+						<div style="display: flex; flex-direction: column; justify-content: space-between;">
+							<img src="./assets/imgs/IMG_1931.PNG"
+								style="height: 280px; margin: 0; border-radius: 20px;" />
+							<img src="./assets/imgs/IMG_1932.PNG"
+								style="height: 280px; margin: 0; border-radius: 20px;" />
+						</div>
+					</div>
+				</section>
+
+				<!-- <section>
 					<h3>Clean Architecture</h3>
 					<div class="horizontal-spaced-container">
 						<div>
@@ -570,7 +630,7 @@
 					<h3>Architekturübersicht</h3>
 					<img src="./assets/architecture.png" alt="ULRICA Architecture" style="max-height: 500px;">
 					<p>Clean Architecture mit klarer Trennung der Schichten</p>
-				</section>
+				</section> -->
 			</section>
 			<section data-include="slides/kapitel-2.html"></section>
 			<section data-include="slides/kapitel-3.html"></section>
