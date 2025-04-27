@@ -1,0 +1,44 @@
+@startuml
+
+interface CarProfilePersistencePortInterface {
+  +findById(id: String): Optional<CarProfile>
+  +findAll(): List<CarProfile>
+  +save(carProfile: CarProfile): CarProfile
+  +delete(id: String): void
+}
+
+class MockCarProfileRepository {
+  -profiles: Map<String, CarProfile>
+  -saveCount: int
+  -deleteCount: int
+  -findCount: int
+  +MockCarProfileRepository()
+  +MockCarProfileRepository(includeTestData: boolean)
+  +findAll(): List<CarProfile>
+  +findById(id: String): Optional<CarProfile>
+  +save(profile: CarProfile): CarProfile
+  +delete(id: String): void
+  +getProfileCount(): int
+  +getSaveCount(): int
+  +getDeleteCount(): int
+  +getFindCount(): int
+  +resetCounters(): void
+  +clear(): void
+  +containsProfile(id: String): boolean
+}
+
+class CreateCarProfileInteractor {
+  -persistencePort: CarProfilePersistencePortInterface
+  +createCarProfile(command: CreateCarProfileCommand): CarProfile
+}
+
+MockCarProfileRepository ..|> CarProfilePersistencePortInterface
+CreateCarProfileInteractor --> CarProfilePersistencePortInterface: uses >
+
+note "In-memory Repository Mock\nwith operation tracking" as N1
+MockCarProfileRepository .. N1
+
+note "Test class CreateCarProfileInteractorTest uses\nMockCarProfileRepository to verify CRUD operations\nand validate profile creation" as N2
+N2 .. CreateCarProfileInteractor
+
+@enduml 

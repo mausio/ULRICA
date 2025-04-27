@@ -1,0 +1,98 @@
+@startuml GRASP_Low_Coupling
+
+package "Presentation Layer" {
+  class AcChargingController {
+    -userInputPort: UserInputPortInterface
+    -userOutputPort: UserOutputPortInterface
+    -calculateAcChargingUseCase: CalculateAcChargingUseCaseInterface
+    -acChargingOutputPort: AcChargingOutputPortInterface
+    +AcChargingController(userInputPort: UserInputPortInterface, userOutputPort: UserOutputPortInterface, calculateAcChargingUseCase: CalculateAcChargingUseCaseInterface, acChargingOutputPort: AcChargingOutputPortInterface)
+    +processChargingCalculation(): boolean
+  }
+}
+
+package "Application Layer" {
+  interface UserInputPortInterface {
+    +readLine(): String
+    +readInt(): int
+    +readDouble(): double
+    +readBoolean(yesOption: String, noOption: String): boolean
+  }
+  
+  interface UserOutputPortInterface {
+    +display(message: String): void
+    +displayLine(message: String): void
+    +displayPrompt(prompt: String): void
+  }
+  
+  interface CalculateAcChargingUseCaseInterface {
+    +calculateAcCharging(command: CalculateAcChargingCommand): void
+  }
+  
+  interface AcChargingOutputPortInterface {
+    +displayAcChargingResult(result: AcChargingResult): void
+  }
+  
+  class CalculateAcChargingInteractor {
+    -profileSelectionService: ProfileSelectionService
+    -acChargingCalculator: AcChargingCalculator
+    -outputPort: AcChargingOutputPortInterface
+    +calculateAcCharging(command: CalculateAcChargingCommand): void
+  }
+}
+
+package "Infrastructure Layer" {
+  class ConsoleUserInputAdapter {
+    -scanner: Scanner
+    +readLine(): String
+    +readInt(): int
+    +readDouble(): double
+    +readBoolean(yesOption: String, noOption: String): boolean
+  }
+  
+  class ConsoleUserOutputAdapter {
+    +display(message: String): void
+    +displayLine(message: String): void
+    +displayPrompt(prompt: String): void
+  }
+  
+  class AcChargingView {
+    -userOutputPort: UserOutputPortInterface
+    -acChargingCalculator: AcChargingCalculator
+    +displayAcChargingResult(result: AcChargingResult): void
+  }
+}
+
+package "Domain Layer" {
+  class AcChargingCalculator {
+    +calculateChargingTime(profile: CarProfile, startingSoc: double, targetSoc: double, chargerPower: double, efficiency: double, ambientTemperature: double): AcChargingResult
+  }
+  
+  interface ProfileSelectionService {
+    +getSelectedProfile(): CarProfile
+    +selectProfile(profile: CarProfile): void
+    +clearSelection(): void
+  }
+}
+
+' Dependencies
+AcChargingController --> UserInputPortInterface
+AcChargingController --> UserOutputPortInterface
+AcChargingController --> CalculateAcChargingUseCaseInterface
+AcChargingController --> AcChargingOutputPortInterface
+
+ConsoleUserInputAdapter ..|> UserInputPortInterface
+ConsoleUserOutputAdapter ..|> UserOutputPortInterface
+CalculateAcChargingInteractor ..|> CalculateAcChargingUseCaseInterface
+AcChargingView ..|> AcChargingOutputPortInterface
+
+CalculateAcChargingInteractor --> ProfileSelectionService
+CalculateAcChargingInteractor --> AcChargingCalculator
+CalculateAcChargingInteractor --> AcChargingOutputPortInterface
+
+' Note explaining low coupling
+note "Low Coupling is achieved by:\n1. Depending only on abstractions (interfaces)\n2. Dependency injection through constructor\n3. Clear separation of concerns between layers\n4. No direct dependencies on concrete implementations\n5. No global state or singletons" as N1
+
+AcChargingController .. N1
+
+@enduml 

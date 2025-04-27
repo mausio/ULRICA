@@ -1,4 +1,6 @@
-<section>Kapitel 6: Domain Driven Design (8P)</section>
+<section>
+    <h2 class="chapter-title">Kapitel 6: Domain Driven Design (8P)</h2>
+</section>
 
 <section>
     <h3>Ubiquitous Language (2P)</h3>
@@ -76,31 +78,7 @@ public class JsonCarProfileRepository
     <h3>Repository: UML und Begründung</h3>
     <div class="horizontal-spaced-container">
         <div>
-            <pre><code class="text">┌───────────────────────────┐
-│ Application Layer          │
-├───────────────────────────┤
-│CarProfilePersistencePort   │
-│Interface                   │
-├───────────────────────────┤
-│+ findById(String): Optional│
-│+ findAll(): List<CarProfile>│
-│+ save(CarProfile): CarProfile│
-│+ delete(String): void       │
-└─────────────┬─────────────┘
-              ▲
-              │implements
-┌─────────────┴─────────────┐
-│ Infrastructure Layer       │
-├───────────────────────────┤
-│JsonCarProfileRepository    │
-├───────────────────────────┤
-│- gson: Gson                │
-│- filePath: Path            │
-│+ findById(String): Optional│
-│+ findAll(): List<CarProfile>│
-│+ save(CarProfile): CarProfile│
-│+ delete(String): void       │
-└───────────────────────────┘</code></pre>
+            <img src="assets/UMLs-imgs/Kapitel_6-Aufgabe_2.png" alt="Repository Pattern UML Diagram" class="uml-image">
         </div>
         <div>
             <h5>Vorteile des Repository Patterns:</h5>
@@ -159,32 +137,7 @@ public class JsonCarProfileRepository
     <h3>Aggregate: UML und Begründung</h3>
     <div class="horizontal-spaced-container">
         <div>
-            <pre><code class="text">┌────────────────────┐
-│ CarProfile (Aggregate│
-│ Root)                │
-├────────────────────┤
-│- id: String         │
-│- name: String       │
-│- manufacturer: String│
-│- model: String      │
-│- year: int          │
-│- hasHeatPump: boolean│
-│- wltpRangeKm: double│
-└────────┬───────────┘
-         │ contains
-         ▼
-┌────────┴───────────┐
-│ BatteryProfile (VO) │◄──┐
-└────────────────────┘   │
-                          │
-┌────────────────────┐   │
-│ConsumptionProfile   │◄──┼── Aggregate
-│(VO)                 │   │ Boundary
-└────────────────────┘   │
-                          │
-┌────────────────────┐   │
-│ChargingCurve (VO)   │◄──┘
-└────────────────────┘</code></pre>
+            <img src="assets/UMLs-imgs/Kapitel_6-Aufgabe_3.png" alt="Aggregate Pattern UML Diagram" class="uml-image">
         </div>
         <div>
             <h5>Vorteile des Aggregate-Musters:</h5>
@@ -241,42 +194,16 @@ public class JsonCarProfileRepository
     <h3>Entity: UML und Begründung</h3>
     <div class="horizontal-spaced-container">
         <div>
-            <pre><code class="text">┌─────────────────────┐
-│ CarProfile (Entity)  │
-├─────────────────────┤
-│- id: String          │◄── Identity
-│- name: String        │
-│- manufacturer: String│
-│- model: String       │
-│- year: int           │
-│- hasHeatPump: boolean│
-│- wltpRangeKm: double │
-│- batteryProfile      │
-│- consumptionProfile  │
-│- chargingCurve       │
-├─────────────────────┤
-│+ getId(): String     │
-│+ getName(): String   │
-│+ getManufacturer():  │
-│+ getModel(): String  │
-│+ equals(Object): bool│
-│+ hashCode(): int     │
-└─────────────────────┘</code></pre>
+            <img src="assets/UMLs-imgs/Kapitel_6-Aufgabe_4.png" alt="Entity Pattern UML Diagram" class="uml-image">
         </div>
         <div>
-            <h5>Entity als Kernkonzept:</h5>
+            <h5>Vorteile des Entity-Musters:</h5>
             <ul>
-                <li>Zentrale Bedeutung in der Domäne (Fahrzeug als Hauptkonzept)</li>
-                <li>Lebenszyklus von der Erstellung bis zur Löschung</li>
-                <li>Repository-Persistenz für langfristige Speicherung</li>
-                <li>Enthält Geschäftsregeln zu seiner Verwaltung</li>
-                <li>Entity-Konzept erlaubt:
-                    <ul>
-                        <li>Eindeutige Referenzierung trotz Änderungen</li>
-                        <li>Suche und Verwaltung im Repository</li>
-                        <li>Konsistente Geschäftslogik über Lebenszeit</li>
-                    </ul>
-                </li>
+                <li>Eindeutige Identifikation von Objekten unabhängig von ihren Attributen</li>
+                <li>Möglichkeit, Entitäten über ihren Lebenszyklus hinweg zu verfolgen</li>
+                <li>Konsistente Identifikation in verschiedenen Kontexten des Systems</li>
+                <li>Klare Unterscheidung zwischen Identität und Attributen</li>
+                <li>Natürliche Abbildung von realen Objekten mit eigener Identität</li>
             </ul>
         </div>
     </div>
@@ -288,27 +215,36 @@ public class JsonCarProfileRepository
         <div>
             <h5>BatteryProfile als Value Object</h5>
             <ul>
-                <li>Besitzt keine eigene Identität</li>
-                <li>Wird durch seine Attributwerte definiert</li>
-                <li>Ist immutable (unveränderlich)</li>
-                <li>Wird durch Wertgleichheit verglichen</li>
-                <li>Kapselt zusammengehörige Eigenschaften der Batterie</li>
+                <li>Keine eigene Identität</li>
+                <li>Immutable (unveränderlich) nach Erstellung</li>
+                <li>Vergleich basiert auf allen Attributwerten</li>
+                <li>Beschreibt eine Messung oder ein Konzept</li>
+                <li>Kann problemlos ersetzt werden</li>
+                <li>Validiert sich selbst bei der Erstellung</li>
             </ul>
         </div>
         <div>
-            <pre><code class="java">public final class BatteryProfile {
+            <pre><code class="java">public class BatteryProfile {
     private final BatteryType type;
     private final double capacityKwh;
     private final double degradationPercent;
     private final double maxDcPowerKw;
     private final double maxAcPowerKw;
     
-    public BatteryProfile(BatteryType type, 
-                         double capacityKwh, 
-                         double degradationPercent,
-                         double maxDcPowerKw, 
-                         double maxAcPowerKw) {
-        // Validierungen...
+    public BatteryProfile(BatteryType type, double capacityKwh, 
+                          double degradationPercent, 
+                          double maxDcPowerKw, double maxAcPowerKw) {
+        // Validierung bei Konstruktion
+        if (capacityKwh <= 0) {
+            throw new IllegalArgumentException("Capacity must be positive");
+        }
+        if (degradationPercent < 0 || degradationPercent > 100) {
+            throw new IllegalArgumentException(
+                "Degradation must be between 0 and 100%");
+        }
+        // ... weitere Validierungen
+        
+        // Immutable Initialisierung
         this.type = Objects.requireNonNull(type);
         this.capacityKwh = capacityKwh;
         this.degradationPercent = degradationPercent;
@@ -316,35 +252,87 @@ public class JsonCarProfileRepository
         this.maxAcPowerKw = maxAcPowerKw;
     }
     
-    // Getter, equals, hashCode...</code></pre>
+    // Getter, keine Setter (immutable)
+    // ...
+}</code></pre>
         </div>
     </div>
 </section>
 
 <section>
-    <h3>Value Objects: Weitere Beispiele und Begründung</h3>
+    <h3>Value Objects: UML und Begründung</h3>
     <div class="horizontal-spaced-container">
         <div>
-            <h5>Beispiele von Value Objects:</h5>
-            <ul>
-                <li><b>BatteryProfile:</b> Kapselt Batterieeigenschaften</li>
-                <li><b>ConsumptionProfile:</b> Definiert Verbrauchswerte bei verschiedenen Geschwindigkeiten</li>
-                <li><b>ChargingCurve:</b> Repräsentiert die Ladekurve über den SoC-Bereich</li>
-                <li><b>RangeParameters:</b> Bündelt Parameter für die Reichweitenberechnung</li>
-                <li><b>RangeResult:</b> Kapselt Berechnungsergebnisse</li>
-            </ul>
+            <img src="assets/UMLs-imgs/Kapitel_6-Aufgabe_5.png" alt="Value Objects UML Diagram" class="uml-image">
         </div>
         <div>
             <h5>Vorteile von Value Objects:</h5>
             <ul>
-                <li>Verbessertes Domain Modeling durch explizite Begriffe</li>
-                <li>Erhöhte Konsistenz durch Validierung bei Erstellung</li>
-                <li>Immutability verhindert unbeabsichtigte Änderungen</li>
-                <li>Vereinfacht die Testbarkeit</li>
-                <li>Eliminiert Fehlerquellen durch geteilte Referenzen</li>
-                <li>Gruppiert zusammengehörige Konzepte</li>
-                <li>Erhöht Verständlichkeit und Lesbarkeit des Codes</li>
+                <li>Unveränderlichkeit verhindert unerwartet veränderte Zustände</li>
+                <li>Bessere Vorhersagbarkeit des Programmverhaltens</li>
+                <li>Einfachere Parallelisierung durch Thread-Safety</li>
+                <li>Natürliche Modellierung von Konzepten ohne eigene Identität</li>
+                <li>Performancevorteile durch Vermeidung von Änderungsverfolgung</li>
+                <li>Erleichterte Vergleichs- und Hash-Operationen</li>
             </ul>
         </div>
     </div>
+</section>
+
+<section>
+    <h3>Domain Services (1P)</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>RangeCalculatorService</h5>
+            <ul>
+                <li>Enthält domänenspezifische Operationen, die keiner einzelnen Entity oder Value Object zugeordnet werden können</li>
+                <li>Zustandslos und auf Operationen fokussiert</li>
+                <li>Koordiniert mehrere Domain Objects</li>
+                <li>Implementiert komplexe Algorithmen der Fachdomäne</li>
+                <li>Berechnet Reichweiten basierend auf verschiedenen Faktoren</li>
+            </ul>
+        </div>
+        <div>
+            <pre><code class="java">public class RangeCalculatorService {
+    private final List<RangeCalculationStrategyInterface> strategies;
+    private RangeCalculationStrategyInterface defaultStrategy;
+
+    public RangeCalculatorService() {
+        // Initialisierung mit Standardstrategien
+    }
+    
+    public RangeResult calculateRange(
+            CarProfile carProfile, 
+            RangeParameters parameters) {
+        Objects.requireNonNull(carProfile);
+        Objects.requireNonNull(parameters);
+        
+        // Berechnung durch aktive Strategie
+        return defaultStrategy.calculateRange(
+            carProfile, parameters);
+    }
+    
+    public void addStrategy(
+            RangeCalculationStrategyInterface strategy) {
+        // Strategie hinzufügen
+    }
+    
+    // Weitere domänenspezifische Operationen
+}</code></pre>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Zusammenfassung: DDD in ULRICA</h3>
+    <ul>
+        <li><b>Ubiquitous Language:</b> Gemeinsames Vokabular zwischen Entwicklern und Fachexperten (SoC, WLTP, Charging Curve)</li>
+        <li><b>Entities:</b> Objekte mit eigener Identität und Lebenszyklus (CarProfile)</li>
+        <li><b>Value Objects:</b> Immutable Objekte ohne eigene Identität (BatteryProfile, ConsumptionProfile)</li>
+        <li><b>Aggregates:</b> Konsistente Objektgruppen mit klaren Grenzen (CarProfile als Root)</li>
+        <li><b>Repositories:</b> Persistenz-Abstraktion für Domain Objects (CarProfileRepository)</li>
+        <li><b>Domain Services:</b> Operationen, die keiner einzelnen Entity zugeordnet werden können (RangeCalculatorService)</li>
+        <li><b>Bounded Contexts:</b> Trennung in klare Domänenbereiche (Reichweitenberechnung, Ladeberechnung)</li>
+    </ul>
+    <p>DDD hilft bei der sauberen Modellierung der Problemdomäne und fördert die Kommunikation zwischen allen Beteiligten.</p>
 </section>

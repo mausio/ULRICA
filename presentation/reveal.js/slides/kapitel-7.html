@@ -1,129 +1,76 @@
-<section>Kapitel 7: Refactoring (8P)</section>
+<section>
+    <h2 class="chapter-title">Kapitel 7: Architektur (8P)</h2>
+</section>
 
 <section>
-    <h3>Code Smells (2P)</h3>
-    <h4>Code Smell 1: Large Class / God Class</h4>
+    <h3>Schichtenarchitektur (2P)</h3>
     <div class="horizontal-spaced-container">
         <div>
-            <p>Die Klasse <code>CarProfileController</code> vor dem Refactoring:</p>
+            <h5>Klassische Schichten in ULRICA</h5>
             <ul>
-                <li>Enthält zu viele Verantwortlichkeiten und Methoden</li>
-                <li>Behandelt UI, Logik und Datenpersistenz gleichzeitig</li>
-                <li>Besitzt zu viele Instanzvariablen</li>
-                <li>Verstößt gegen das Single Responsibility Principle</li>
+                <li><b>Presentation Layer:</b> UI-Komponenten, Controller</li>
+                <li><b>Application Layer:</b> Services, Use Cases, DTOs</li>
+                <li><b>Domain Layer:</b> Entities, Value Objects, Domain Services</li>
+                <li><b>Infrastructure Layer:</b> Repositories, externe Dienste</li>
             </ul>
+            <p>Die Abhängigkeiten verlaufen stets von oben nach unten, jede Schicht darf nur auf Schichten zugreifen, die sich unter ihr befinden.</p>
         </div>
         <div>
-            <pre><code class="java">public class CarProfileController {
-  private static Scanner scanner;
-  private final LoadingScreenAnimation loadingScreenAnimation;
-  private Thread loadingAnimationThread;
-  private Thread loadingJsonThread;
-  private CarProfileModel carProfile;
-  private ConsumptionProfileModel consumptionProfile;
-  
-  public CarProfileController() throws LoadingException {
-    JsonCarProfilesLoader carProfileJsonLoader = 
-        SetupService.getCarProfileJsonLoader();
-    carProfile = SetupService.getCarProfile();
-    consumptionProfile = SetupService.getConsumptionProfile();
-    // ... weitere Initialisierung
-    
-    System.out.println("Hey! To begin with, 
-        let's see if you have any car profiles saved.");
-    
-    startLoadingThreads();
-    // ... weitere Logik
-  }
-  // ... weitere 10+ Methoden
-}</code></pre>
+            <img src="assets/img/layered-arch.png" alt="Layered Architecture Diagram" class="uml-image">
         </div>
     </div>
 </section>
 
 <section>
-    <h3>Lösung: Aufteilung der großen Klasse (God Class)</h3>
+    <h3>Hexagonale Architektur (2P)</h3>
     <div class="horizontal-spaced-container">
         <div>
-            <p>Lösung durch Aufteilung in spezialisierte Klassen:</p>
+            <h5>Ports und Adapter in ULRICA</h5>
             <ul>
-                <li>Trennung von Darstellung und Geschäftslogik</li>
-                <li><code>CarProfileController</code>: Nur UI/Benutzereingaben</li>
-                <li><code>CarProfileService</code>: Geschäftslogik</li>
-                <li>Klare Verantwortlichkeiten nach SRP</li>
-                <li>Verbesserte Testbarkeit</li>
+                <li>Kern-Domain ist unabhängig von externen Abhängigkeiten</li>
+                <li>Alle externen Interaktionen über definierte Ports</li>
+                <li>Ports definieren Schnittstellen, Adapter implementieren sie</li>
+                <li>Beispiel: CarProfilePersistencePortInterface & JsonCarProfileRepository</li>
             </ul>
         </div>
         <div>
-            <pre><code class="java">// Controller nur für UI
-public class CarProfileController {
-  public static void startDialog() {
-    System.out.println("Hey! To begin with, 
-        let's see if you have any car profiles saved.");
-  }
-  
-  public static Double getConsumptionDialog(Scanner scanner) {
-    // ... UI-Logik
-  }
-  // ... weitere UI-Methoden
-}
-
-// Service mit Business-Logik
-public class CarProfileService {
-  // ... Business-Logik
-  public CarProfileService() throws LoadingException {
-    // Initialisierung
-    CarProfileController.startDialog();
-    // ... weitere Business-Logik
-  }
-}</code></pre>
+            <img src="assets/img/hexagonal-arch.png" alt="Hexagonal Architecture Diagram" class="uml-image">
         </div>
     </div>
 </section>
 
 <section>
-    <h3>Code Smell 2: Duplicate Code</h3>
+    <h3>Domain-Driven Design (2P)</h3>
     <div class="horizontal-spaced-container">
         <div>
-            <p>Duplizierter Code in <code>WltpBasedRangeCalculationStrategy</code> und <code>ConsumptionBasedRangeCalculationStrategy</code>:</p>
+            <h5>DDD-Patterns in ULRICA</h5>
             <ul>
-                <li>Identische Methoden in beiden Klassen</li>
-                <li>Schlechte Wartbarkeit bei Änderungen</li>
-                <li>Erhöhtes Risiko für inkonsistente Implementierungen</li>
-                <li>Verstoß gegen DRY-Prinzip (Don't Repeat Yourself)</li>
+                <li>Entities mit klarer Identität (CarProfile)</li>
+                <li>Value Objects für unveränderliche Werteobjekte (BatteryProfile)</li>
+                <li>Aggregates für Transaktionsgrenzen (CarProfile als Root)</li>
+                <li>Repositories für Objektpersistenz (CarProfileRepository)</li>
+                <li>Domain Services für komplexe Operationen (RangeCalculatorService)</li>
+                <li>Ubiquitous Language als gemeinsames Vokabular</li>
             </ul>
         </div>
         <div>
-            <pre><code class="java">// In WltpBasedRangeCalculationStrategy
-private String generateWeatherImpactDescription(
-        WeatherType weather, double temperature) {
-    StringBuilder impact = new StringBuilder();
+            <pre><code class="java">// Domain-Driven Design Beispiel
+// Entity mit Value Objects
+public class CarProfile {
+    private final String id;
+    private final String name;
+    private final BatteryProfile batteryProfile;
+    private final ConsumptionProfile consumptionProfile;
+    private final Optional<ChargingCurve> chargingCurve;
     
-    switch(weather) {
-        case SUNNY:
-            impact.append("Minimal impact - Ideal weather conditions");
-            break;
-        case CLOUDY:
-            impact.append("Slight impact - Cloud cover...");
-            break;
-        // ... weitere Fälle
+    // Builder-Pattern für komplexe Objekte
+    public static class Builder {
+        // Builder-Implementierung
     }
     
-    // ... weitere Logik
-    
-    return impact.toString();
-}
-
-// Identisch in ConsumptionBasedRangeCalculationStrategy
-private String generateWeatherImpactDescription(
-        WeatherType weather, double temperature) {
-    StringBuilder impact = new StringBuilder();
-    
-    switch(weather) {
-        case SUNNY:
-            impact.append("Minimal impact - Ideal weather conditions");
-            break;
-        // ... weitere identische Fälle
+    // Domain-Logik innerhalb der Entity
+    public double getEffectiveCapacityKwh() {
+        return batteryProfile.getEffectiveCapacityKwh();
     }
 }</code></pre>
         </div>
@@ -131,309 +78,144 @@ private String generateWeatherImpactDescription(
 </section>
 
 <section>
-    <h3>Lösung: Extraktion in gemeinsame Basisklasse</h3>
+    <h3>Clean Architecture (2P)</h3>
     <div class="horizontal-spaced-container">
         <div>
-            <p>Lösung durch Abstraktion:</p>
+            <h5>Dependency Rule in ULRICA</h5>
             <ul>
-                <li>Extraktion der gemeinsamen Methoden in abstrakte Basisklasse</li>
-                <li>Beide Strategien erben von der Basisklasse</li>
-                <li>Implementierung des Template Method Patterns</li>
-                <li>Gemeinsamer Code nur einmal vorhanden</li>
-                <li>Änderungen an nur einer Stelle notwendig</li>
+                <li>Abhängigkeiten zeigen immer nach innen zur Domain</li>
+                <li>Domain ist unabhängig von externen Frameworks</li>
+                <li>Interfaces definieren die Abhängigkeiten (Dependency Inversion)</li>
+                <li>Use Cases koordinieren die Anwendungslogik</li>
+                <li>DTOs für die Datentransformation zwischen Schichten</li>
             </ul>
         </div>
         <div>
-            <pre><code class="java">// Abstrakte Basisklasse mit gemeinsamen Methoden
-public abstract class AbstractRangeCalculationStrategy 
-        implements RangeCalculationStrategyInterface {
+            <img src="assets/img/clean-arch.png" alt="Clean Architecture Diagram" class="uml-image">
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Konkretes Beispiel: Reichweitenberechnung</h3>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>Architektur in der Praxis</h5>
+            <ul>
+                <li><b>Presentation:</b> RangeCalculationFragment.kt</li>
+                <li><b>Application:</b> RangeCalculationUseCase.java</li>
+                <li><b>Domain:</b> RangeCalculatorService.java</li>
+                <li><b>Infrastructure:</b> SpeedConsumptionRepository.java</li>
+            </ul>
+        </div>
+        <div>
+            <pre><code class="java">// Presentation Layer (UI)
+public void onCalculateButtonClicked() {
+    // Sammelt Benutzereingaben
+    RangeParameters params = collectUserInputs();
     
-    protected String generateWeatherImpactDescription(
-            WeatherType weather, double temperature) {
-        StringBuilder impact = new StringBuilder();
-        
-        switch(weather) {
-            case SUNNY:
-                impact.append("Minimal impact - Ideal weather conditions");
-                break;
-            // ... weitere Fälle
-        }
-        
-        // ... weitere Logik
-        
-        return impact.toString();
-    }
-    
-    // ... weitere gemeinsame Methoden
+    // Delegiert an Application Layer
+    viewModel.calculateRange(params);
 }
 
-// Spezialisierte Implementierungen
-public class WltpBasedRangeCalculationStrategy 
-        extends AbstractRangeCalculationStrategy {
-    // Implementiert nur die spezifische Logik
+// Application Layer (Use Case)
+public RangeResultDto calculateRange(RangeParameters params) {
+    // Wendet Geschäftsregeln an
+    RangeResult result = rangeCalculatorService.calculateRange(
+        currentCarProfile, params);
+    
+    // Transformiert Domain-Objekt in DTO
+    return mapToDto(result);
+}
+
+// Domain Layer (Domain Service)
+public RangeResult calculateRange(CarProfile car, 
+                                 RangeParameters params) {
+    // Enthält die Kernlogik der Berechnung
+    double range = calculateBaseRange(car, params);
+    range = applyTemperatureEffect(range, params.getTemperature());
+    
+    return new RangeResult(range, params);
 }</code></pre>
         </div>
     </div>
 </section>
 
 <section>
-    <h3>Refactorings (6P)</h3>
-    <h4>Refactoring 1: Extract Class</h4>
-    <p>Commit: <code>89f9ea2</code> - "refactored CarProfilecontroller to move the business logic into a CarProfileService"</p>
-</section>
-
-<section>
-    <h3>Refactoring 1: UML vor dem Refactoring</h3>
+    <h3>Vor- und Nachteile der Architektur</h3>
     <div class="horizontal-spaced-container">
         <div>
-            <pre><code class="text">┌─────────────────────────┐
-│ CarProfileController     │
-├─────────────────────────┤
-│- scanner: Scanner        │
-│- loadingScreenAnimation  │
-│- loadingAnimationThread  │
-│- loadingJsonThread       │
-│- carProfile: CarProfileM.│
-│- consumptionProfile      │
-├─────────────────────────┤
-│+ CarProfileController()  │
-│+ getConsumptionDialog()  │
-│+ getSpeedDialog()        │
-│+ printNrOfParameter()    │
-│+ printParameters()       │
-│+ anotherParameterTuple...│
-│- createCarProfileDialog()│
-│- createConsumptionProfDia│
-│- startDialogCreatingCarP.│
-│- startCreatingConsumpt...│
-│- listCarProfilesDialog() │
-│- createCarProfileOrList..│
-│- startLoadingThreads()   │
-│- stopLoadingThreads()    │
-└─────────────────────────┘</code></pre>
+            <h5>Vorteile</h5>
+            <ul>
+                <li>Hohe Testbarkeit durch klare Trennung der Verantwortlichkeiten</li>
+                <li>Unabhängigkeit der Domain von externen Frameworks</li>
+                <li>Bessere Wartbarkeit durch klare Struktur</li>
+                <li>Erweiterbarkeit durch Plugins-Architektur</li>
+                <li>Langfristige Flexibilität bei Technologiewechseln</li>
+            </ul>
         </div>
         <div>
-            <p>Probleme vor dem Refactoring:</p>
+            <h5>Herausforderungen</h5>
             <ul>
-                <li>Monolithischer Controller mit 200+ Zeilen Code</li>
-                <li>Vermischung von UI und Geschäftslogik</li>
-                <li>Direkte Abhängigkeiten zu konkreten Implementierungen</li>
-                <li>Hardcodierte Prozessabläufe</li>
-                <li>Schlechte Testbarkeit durch hohe Kopplung</li>
-                <li>Schwere Wiederverwendbarkeit einzelner Funktionen</li>
+                <li>Höherer initialer Entwicklungsaufwand</li>
+                <li>Mehr Quellcode durch zusätzliche Abstraktionsebenen</li>
+                <li>Komplexere Projektstruktur</li>
+                <li>Einarbeitungszeit für neue Entwickler</li>
+                <li>Bewusstes "Overengineering" für zukünftige Flexibilität</li>
             </ul>
         </div>
     </div>
 </section>
 
 <section>
-    <h3>Refactoring 1: UML nach dem Refactoring</h3>
+    <h3>Schematische Darstellung der Architektur in ULRICA</h3>
+    <img src="assets/UMLs-imgs/Kapitel_7-Übersicht.png" alt="Architecture Overview" class="fullwidth-image">
+</section>
+
+<section>
+    <h3>Integration mit Android</h3>
     <div class="horizontal-spaced-container">
         <div>
-            <pre><code class="text">┌─────────────────────────┐
-│ CarProfileController     │
-├─────────────────────────┤
-│                         │
-├─────────────────────────┤
-│+ startDialog()          │
-│+ getConsumptionDialog() │
-│+ getSpeedDialog()       │
-│+ printNrOfParameter()   │
-│+ printParameters()      │
-│+ additionalParamterDialog│
-│+ startLoadingThreads()  │
-│+ stopLoadingThreads()   │
-│+ createCarProfileDialog()│
-│+ createConsumptionProf...│
-└──────────┬──────────────┘
-           │ nutzt
-           ▼
-┌─────────────────────────┐
-│ CarProfileService        │
-├─────────────────────────┤
-│- scanner: Scanner        │
-│- loadingScreenAnimation  │
-│- loadingAnimationThread  │
-│- loadingJsonThread       │
-│- carProfile: CarProfileM.│
-│- consumptionProfile      │
-│- carProfileJsonLoader    │
-├─────────────────────────┤
-│+ CarProfileService()     │
-└─────────────────────────┘</code></pre>
-        </div>
-        <div>
-            <p>Verbesserungen durch das Refactoring:</p>
+            <h5>Anpassungen für Android</h5>
             <ul>
-                <li>Klare Trennung von Verantwortlichkeiten nach SRP</li>
-                <li>Controller nur für UI-Interaktionen</li>
-                <li>Service enthält Geschäftslogik und Workflow</li>
-                <li>Bessere Testbarkeit durch kleinere Klassen</li>
-                <li>Leichtere Wartbarkeit durch spezialisierte Komponenten</li>
-                <li>Bessere Wiederverwendbarkeit der UI-Komponenten</li>
-                <li>Kontrolle des Workflows in einer separaten Klasse</li>
+                <li>Presentation Layer verwendet Android-UI-Framework</li>
+                <li>ViewModels als Brücke zwischen UI und Application Layer</li>
+                <li>Dependency Injection mit Dagger/Hilt</li>
+                <li>Room Database als persistenz-Adapter</li>
+                <li>Coroutines für asynchrone Operationen</li>
             </ul>
         </div>
-    </div>
-</section>
-
-<section>
-    <h3>Refactoring 2: Extract Method</h3>
-    <p>Commit: <code>a5638e0</code> - "refactoring"</p>
-</section>
-
-<section>
-    <h3>Refactoring 2: Code vor dem Refactoring</h3>
-    <pre><code class="java">// In ConsumptionProfileModel
-public void createConsumptionProfile() {
-    Integer i = 0;
-    Boolean done = false;
-    Double consumption = 0.0;
-    Double speed = 0.0;
+        <div>
+            <pre><code class="kotlin">// ViewModel als Teil des Presentation Layers
+class RangeViewModel @Inject constructor(
+    private val rangeCalculationUseCase: RangeCalculationUseCase
+) : ViewModel() {
     
-    while (!done) {
-        CarProfileController.printNrOfParamter(i);
-        
-        consumption = CarProfileController.getConsumptionDialog();
-        speed = CarProfileController.getSpeedDialog();
-        
-        if (speed != 0.0 && consumption != 0.0) {
-            Map<Double, Double> parameterTuple = new HashMap<>();
-            parameterTuple.put(speed, consumption);
-            parametersList.add(parameterTuple);
-            
-            CarProfileController.printParameters(consumption, speed);
-            
-            if (i >= MAX_PARAMETERS) {
-                done = true;
-            } else {
-                if (i > 0) {
-                    done = CarProfileController.anotherParameterTupleDialog();
-                } else {
-                    i++;
-                }
+    private val _rangeResult = MutableLiveData<RangeResultDto>()
+    val rangeResult: LiveData<RangeResultDto> = _rangeResult
+    
+    fun calculateRange(params: RangeParameters) {
+        viewModelScope.launch {
+            // Asynchroner Aufruf des Use Cases
+            val result = withContext(Dispatchers.Default) {
+                rangeCalculationUseCase.calculateRange(params)
             }
-        } else {
-            System.out.println("Something went wrong; Please try again.");
+            _rangeResult.value = result
         }
     }
 }</code></pre>
-</section>
-
-<section>
-    <h3>Refactoring 2: UML vor dem Refactoring</h3>
-    <div class="horizontal-spaced-container">
-        <div>
-            <pre><code class="text">┌─────────────────────────┐
-│ ConsumptionProfileModel  │
-├─────────────────────────┤
-│- MAX_PARAMETERS: int     │
-│- parametersList: List    │
-│- a: double               │
-│- b: double               │
-├─────────────────────────┤
-│+ ConsumptionProfileModel()│
-│+ getParametersList()     │
-│+ setParametersList()     │
-│+ performRegression()     │
-│+ createConsumptionProfile()│
-│+ estimateConsumption()   │
-│+ clearParameterList()    │
-└─────────────────────────┘</code></pre>
-        </div>
-        <div>
-            <p>Probleme vor dem Refactoring:</p>
-            <ul>
-                <li>Lange, komplexe Methode mit mehreren Verantwortlichkeiten</li>
-                <li>Geringe Lesbarkeit durch hohe Komplexität</li>
-                <li>Duplizierter Code innerhalb der Methode</li>
-                <li>Schwer zu testen wegen vieler Abhängigkeiten</li>
-                <li>Direktes Hinzufügen zu einer Liste ohne Kapselung</li>
-                <li>Schwer wartbar bei Änderungen</li>
-            </ul>
         </div>
     </div>
 </section>
 
 <section>
-    <h3>Refactoring 2: Code nach dem Refactoring</h3>
-    <pre><code class="java">// Extrahierte Methode für Parameter-Tuple
-public void addParameterTuple(Double consumption, Double speed) {
-    if (parametersList.size() < MAX_PARAMETERS) {
-        Map<Double, Double> parameterTuple = new HashMap<>();
-        parameterTuple.put(speed, consumption);
-        parametersList.add(parameterTuple);
-    } else {
-        System.out.println("Maximum number of parameters reached. Cannot add more.");
-    }
-}
-
-// Vereinfachte Hauptmethode
-public void createConsumptionProfile(Scanner scanner) {
-    Integer i = 0;
-    Boolean done = false;
-    Double consumption = 0.0;
-    Double speed = 0.0;
-    
-    while (!done) {
-        CarProfileController.printNrOfParamter(i);
-        
-        consumption = CarProfileController.getConsumptionDialog(scanner);
-        speed = CarProfileController.getSpeedDialog(scanner);
-        
-        if (speed != 0.0 && consumption != 0.0) {
-            addParameterTuple(consumption, speed);
-            CarProfileController.printParameters(consumption, speed);
-            
-            if (i >= MAX_PARAMETERS) {
-                done = true;
-            } else {
-                if (i > 0) {
-                    done = CarProfileController.additionalParamterDialog(scanner);
-                } else {
-                    i++;
-                }
-            }
-        } else {
-            System.out.println("Something went wrong; Please try again.");
-        }
-    }
-}</code></pre>
-</section>
-
-<section>
-    <h3>Refactoring 2: UML nach dem Refactoring</h3>
-    <div class="horizontal-spaced-container">
-        <div>
-            <pre><code class="text">┌─────────────────────────┐
-│ ConsumptionProfileModel  │
-├─────────────────────────┤
-│- MAX_PARAMETERS: int     │
-│- parametersList: List    │
-│- a: double               │
-│- b: double               │
-├─────────────────────────┤
-│+ ConsumptionProfileModel()│
-│+ getParametersList()     │
-│+ setParametersList()     │
-│+ performRegression()     │
-│+ createConsumptionProfile()│
-│+ addParameterTuple()     │  ← Extrahierte Methode
-│+ estimateConsumption()   │
-│+ clearParameterList()    │
-└─────────────────────────┘</code></pre>
-        </div>
-        <div>
-            <p>Verbesserungen durch das Refactoring:</p>
-            <ul>
-                <li>Bessere Lesbarkeit durch kürzere Methoden</li>
-                <li>Wiederverwendung der extrahierten Methode</li>
-                <li>Verbesserte Kapselung durch dedizierte Methode</li>
-                <li>Einfachere Wartbarkeit durch modularen Aufbau</li>
-                <li>Bessere Testbarkeit der einzelnen Methoden</li>
-                <li>Validierungslogik in separate Methode ausgelagert</li>
-                <li>Höhere Kohäsion innerhalb der Klasse</li>
-            </ul>
-        </div>
-    </div>
+    <h3>Zusammenfassung: Architektur in ULRICA</h3>
+    <ul>
+        <li><b>Schichtenarchitektur:</b> Klare Trennung der Verantwortlichkeiten in vier Schichten</li>
+        <li><b>Hexagonale Architektur:</b> Ports und Adapter für externe Abhängigkeiten</li>
+        <li><b>Domain-Driven Design:</b> Fokus auf die Domäne mit Entities, Value Objects, Services</li>
+        <li><b>Clean Architecture:</b> Abhängigkeitsregel mit nach innen gerichteten Abhängigkeiten</li>
+        <li><b>Android-Integration:</b> Anpassung der Architektur an die Android-Plattform</li>
+    </ul>
+    <p>Die Kombination dieser Architekturansätze ermöglicht eine flexible, wartbare und testbare Anwendung mit klar getrennten Verantwortlichkeiten.</p>
 </section>

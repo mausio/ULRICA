@@ -1,41 +1,11 @@
-<section>Kapitel 4: Weitere Prinzipien (8P)</section>
+<section>
+    <h2 class="chapter-title">Kapitel 4: Weitere Prinzipien (8P)</h2>
+</section>
 
 <section>
     <h3>Analyse GRASP: Geringe Kopplung (3P)</h3>
     <p>AcChargingController - Beispiel für geringe Kopplung</p>
-    <p style="font-size: 1.2rem; color: #ff5733;">TODO: UML "Kapitel_4-Aufgabe_1" muss hier hin</p>
-    <div class="horizontal-spaced-container">
-        <div>
-            <h5>Aufgabenbeschreibung</h5>
-            <ul>
-                <li>Verantwortlich für Benutzerinteraktion bei AC-Ladungsberechnungen</li>
-                <li>Verarbeitet Benutzereingaben zu Ladeparametern</li>
-                <li>Leitet Berechnungen an Use Case weiter</li>
-                <li>Zeigt Berechnungsergebnisse über Output Port an</li>
-                <li>Verbindet Benutzer mit Anwendungslogik</li>
-            </ul>
-        </div>
-        <div>
-            <pre><code class="java">public class AcChargingController {
-    
-    private final UserInputPortInterface userInputPort;
-    private final UserOutputPortInterface userOutputPort;
-    private final CalculateAcChargingUseCaseInterface calculateAcChargingUseCase;
-    private final AcChargingOutputPortInterface acChargingOutputPort;
-
-    public AcChargingController(
-            UserInputPortInterface userInputPort,
-            UserOutputPortInterface userOutputPort,
-            CalculateAcChargingUseCaseInterface calculateAcChargingUseCase,
-            AcChargingOutputPortInterface acChargingOutputPort) {
-        this.userInputPort = userInputPort;
-        this.userOutputPort = userOutputPort;
-        this.calculateAcChargingUseCase = calculateAcChargingUseCase;
-        this.acChargingOutputPort = acChargingOutputPort;
-    }
-}</code></pre>
-        </div>
-    </div>
+    <img src="assets/UMLs-imgs/Kapitel_4-Aufgabe_1.png" alt="Geringe Kopplung UML Diagram" class="uml-image">
 </section>
 
 <section>
@@ -88,31 +58,7 @@
 <section>
     <h3>Analyse GRASP: Polymorphismus (3P)</h3>
     <p>RangeCalculationStrategyInterface - Anwendung des Polymorphismus</p>
-    <p style="font-size: 1.2rem; color: #ff5733;">TODO: UML "Kapitel_4-Aufgabe_2" muss hier hin</p>
-    <pre><code class="java">public interface RangeCalculationStrategyInterface {
-    
-    RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters);
-    
-    String getName();
-    
-    String getDescription();
-}</code></pre>
-    <pre><code class="java">public class WltpBasedRangeCalculationStrategy implements RangeCalculationStrategyInterface {
-    @Override
-    public RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters) {
-        // WLTP-basierte Berechnung...
-    }
-    
-    @Override
-    public String getName() {
-        return "WLTP-based Range Calculation";
-    }
-    
-    @Override
-    public String getDescription() {
-        return "Calculates range based on WLTP consumption profile with environment adaptations";
-    }
-}</code></pre>
+    <img src="assets/UMLs-imgs/Kapitel_4-Aufgabe_2.png" alt="Polymorphismus UML Diagram" class="uml-image">
 </section>
 
 <section>
@@ -173,11 +119,26 @@
 <section>
     <h3>DRY – Don't Repeat Yourself (2P)</h3>
     <p>Commit <code>89f9ea2</code>: Refactoring von <code>CarProfileController</code> zur Reduktion duplizierter Logik</p>
-    <ul>
-        <li>Problem: Business-Logik war mit UI-Logik vermischt im Controller</li>
-        <li>Lösung: Auslagerung der Business-Logik in einen eigenen Service</li>
-        <li>Ergebnis: Bessere Trennung der Verantwortlichkeiten und Wiederverwendbarkeit</li>
-    </ul>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>Problem:</h5>
+            <ul>
+                <li>Business-Logik war mit UI-Logik vermischt</li>
+                <li>Duplizierter Code für ähnliche Operationen</li>
+                <li>Schwer zu erkennendes Muster im Code</li>
+                <li>Hohe Fehleranfälligkeit bei Änderungen</li>
+            </ul>
+        </div>
+        <div>
+            <h5>Lösung:</h5>
+            <ul>
+                <li>Auslagerung der Business-Logik in einen Service</li>
+                <li>Zusammenfassung ähnlicher Methoden</li>
+                <li>Einführung von Hilfsmethoden für gemeinsame Funktionalität</li>
+                <li>Trennung von UI und Geschäftslogik</li>
+            </ul>
+        </div>
+    </div>
 </section>
 
 <section>
@@ -250,64 +211,49 @@
         <div>
             <h5>Service: Business-Logik</h5>
             <pre><code class="java">public class CarProfileService {
-  private static Scanner scanner;
-  private LoadingScreenAnimation loadingScreenAnimation;
-  private Thread loadingAnimationThread;
-  private Thread loadingJsonThread;
+  
+  private JsonCarProfilesLoader carProfileJsonLoader;
   private CarProfileModel carProfile;
-  private ConsumptionProfileModel consumptionProfile;
   
   public CarProfileService() throws LoadingException {
-    // Initialisierung...
+    this.carProfileJsonLoader = 
+      SetupService.getCarProfileJsonLoader();
     
+    // UI-Interaktion über Controller
     CarProfileController.startDialog();
     
-    SleepUtil.waitForFSeconds(1.0);
+    // Laden der Profile
+    loadProfiles();
     
-    CarProfileController.startLoadingThreads(
-        loadingAnimationThread,
-        loadingJsonThread);
-        
     // Weitere Business-Logik...
   }
+  
+  private void loadProfiles() {
+    // Gemeinsame Ladelogik, nicht mehr dupliziert
+    CarProfileModel[] profiles = 
+        carProfileJsonLoader.getCarProfiles();
+    
+    if (profiles == null || profiles.length <= 1) {
+      createNewProfile();
+    } else {
+      selectExistingProfile(profiles);
+    }
+  }
+  
+  // Weitere Business-Methoden...
 }</code></pre>
         </div>
     </div>
 </section>
 
 <section>
-    <h3>DRY – Auswirkungen des Refactorings</h3>
-    <div class="horizontal-spaced-container">
-        <div>
-            <h5>Vorteile</h5>
-            <ul>
-                <li>Reduktion duplizierter Logik</li>
-                <li>Verbesserte Lesbarkeit und Wartbarkeit</li>
-                <li>Klare Trennung von Verantwortlichkeiten</li>
-                <li>Einfachere Wiederverwendung von Code</li>
-                <li>Bessere Testbarkeit der Komponenten</li>
-                <li>Einfachere Erweiterbarkeit</li>
-            </ul>
-        </div>
-        <div>
-            <h5>UML nach Refactoring</h5>
-            <pre><code class="text">┌───────────────────┐
-│ CarProfileController │
-├───────────────────┤
-│+ startDialog()      │
-│+ getConsumptionDialog()│
-│+ getSpeedDialog()   │
-└────────┬──────────┘
-         │ nutzt
-         ▼
-┌────────────────────┐
-│ CarProfileService   │
-├────────────────────┤
-│- carProfile         │
-│- consumptionProfile │
-│- scanner            │
-│+ CarProfileService()│
-└────────────────────┘</code></pre>
-        </div>
-    </div>
+    <h3>DRY – Vorteile der Refaktorierung</h3>
+    <ul>
+        <li><b>Bessere Wartbarkeit:</b> Änderungen an UI oder Business-Logik können unabhängig durchgeführt werden</li>
+        <li><b>Geringere Redundanz:</b> Gemeinsam genutzter Code ist an einer zentralen Stelle definiert</li>
+        <li><b>Bessere Testbarkeit:</b> Service kann unabhängig von UI getestet werden</li>
+        <li><b>Single Responsibility Principle:</b> Klassen haben nur eine Verantwortlichkeit</li>
+        <li><b>Clean Architecture:</b> Klare Trennung der Schichten zwischen Presentation und Application</li>
+        <li><b>Übersichtlichkeit:</b> Kürzere Klassen mit klaren Zuständigkeiten</li>
+    </ul>
 </section>

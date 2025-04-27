@@ -1,0 +1,87 @@
+@startuml DDD_Repository
+
+package "Application Layer" {
+  interface CarProfilePersistencePortInterface {
+    +findById(id: String): Optional<CarProfile>
+    +findAll(): List<CarProfile>
+    +save(carProfile: CarProfile): CarProfile
+    +delete(id: String): void
+  }
+  
+  class CreateCarProfileInteractor {
+    -persistencePort: CarProfilePersistencePortInterface
+    +createCarProfile(command: CreateCarProfileCommand): CarProfile
+  }
+  
+  class DeleteCarProfileInteractor {
+    -persistencePort: CarProfilePersistencePortInterface
+    +deleteCarProfile(id: String): boolean
+  }
+}
+
+package "Domain Layer" {
+  class CarProfile {
+    -id: String
+    -name: String
+    -manufacturer: String
+    -model: String
+    -year: int
+    -hasHeatPump: boolean
+    -wltpRangeKm: double
+    -batteryProfile: BatteryProfile
+    -consumptionProfile: ConsumptionProfile
+    -chargingCurve: Optional<ChargingCurve>
+    +getId(): String
+    +getName(): String
+    +getManufacturer(): String
+    +getModel(): String
+    // other getters
+  }
+  
+  class BatteryProfile
+  class ConsumptionProfile
+  class ChargingCurve
+}
+
+package "Infrastructure Layer" {
+  class JsonCarProfileRepository {
+    -STORAGE_DIR: String
+    -FILE_NAME: String
+    -gson: Gson
+    -filePath: Path
+    -ensureStorageDirectoryExists(): void
+    +findById(id: String): Optional<CarProfile>
+    +findAll(): List<CarProfile>
+    +save(carProfile: CarProfile): CarProfile
+    +delete(id: String): void
+  }
+}
+
+' Relationships
+CarProfilePersistencePortInterface --> CarProfile : operates on
+CreateCarProfileInteractor --> CarProfilePersistencePortInterface : uses
+DeleteCarProfileInteractor --> CarProfilePersistencePortInterface : uses
+JsonCarProfileRepository ..|> CarProfilePersistencePortInterface : implements
+
+CarProfile --> BatteryProfile : contains
+CarProfile --> ConsumptionProfile : contains
+CarProfile --> ChargingCurve : optionally contains
+
+' Notes
+note right of CarProfilePersistencePortInterface
+  Repository Pattern:
+  - Provides collection-like interface for domain objects
+  - Abstracts persistence mechanism
+  - Supports domain model independence
+  - Part of the application layer as a port
+end note
+
+note right of JsonCarProfileRepository
+  Repository Implementation:
+  - JSON file-based storage
+  - Handles serialization/deserialization
+  - Manages file system access
+  - Infrastructure concern
+end note
+
+@enduml 

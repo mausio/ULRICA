@@ -1,4 +1,6 @@
-<section>Kapitel 8: Entwurfsmuster (8P)</section>
+<section>
+    <h2 class="chapter-title">Kapitel 8: Entwurfsmuster (8P)</h2>
+</section>
 
 <section>
     <h3>Entwurfsmuster 1: Strategy Pattern (4P)</h3>
@@ -148,50 +150,7 @@ public class RangeCalculatorService {
 
 <section>
     <h3>Strategy Pattern: UML-Diagramm</h3>
-    <div class="centered-container">
-        <pre><code class="text">
-┌───────────────────────────────────┐
-│ <<interface>>                     │
-│ RangeCalculationStrategyInterface │
-├───────────────────────────────────┤
-│ + calculateRange(CarProfile,      │
-│   RangeParameters): RangeResult   │
-│ + getName(): String               │
-│ + getDescription(): String        │
-└─────────────────┬─────────────────┘
-          ▲        ▲
-          │        │
-          │        │
-┌─────────┴──────┐ │ ┌─────────────────────────┐
-│ WltpBasedRange │ │ │ ConsumptionBasedRange   │
-│ CalculationStra│ │ │ CalculationStrategy     │
-│ tegy           │ │ │                         │
-├────────────────┤ │ ├─────────────────────────┤
-│ + calculateRang│ │ │ + calculateRange(...)   │
-│ e(...): RangeRe│ │ │   : RangeResult         │
-│ sult           │ │ │ - getBaseConsumption(...│
-│ + getName():   │ │ │   ): double             │
-│   String       │ │ │ - calculateTerrainFactor│
-│ + getDescriptio│ │ │   (...): double         │
-│   n(): String  │ │ │ - calculateWeatherFactor│
-└────────────────┘ │ │   (...): double         │
-                   │ └─────────────────────────┘
-                   │
-                   │
-           ┌───────┴─────────────┐
-           │ Client:             │
-           │ RangeCalculatorServi│
-           │ ce                  │
-           ├─────────────────────┤
-           │ - strategies: List  │
-           │ - defaultStrategy   │
-           ├─────────────────────┤
-           │ + setDefaultStrategy│
-           │   (...)             │
-           │ + calculateRange(...)│
-           └─────────────────────┘
-</code></pre>
-    </div>
+    <img src="assets/UMLs-imgs/Kapitel_8-Aufgabe_1.png" alt="Strategy Pattern UML Diagram" class="uml-image">
 </section>
 
 <section>
@@ -216,6 +175,11 @@ public class RangeCalculatorService {
             </ul>
         </div>
     </div>
+</section>
+
+<section>
+    <h3>Adapter Pattern: UML-Diagramm</h3>
+    <img src="assets/UMLs-imgs/Kapitel_8-Aufgabe_2.png" alt="Adapter Pattern UML Diagram" class="uml-image">
 </section>
 
 <section>
@@ -248,8 +212,7 @@ package org.ulrica.infrastructure.adapter;
 import java.util.Scanner;
 import org.ulrica.application.port.out.UserInputPortInterface;
 
-public class ConsoleUserInputAdapter 
-        implements UserInputPortInterface {
+public class ConsoleUserInputAdapter implements UserInputPortInterface {
     private final Scanner scanner;
     
     public ConsoleUserInputAdapter(Scanner scanner) {
@@ -258,148 +221,88 @@ public class ConsoleUserInputAdapter
     
     @Override
     public String readLine() {
-        return scanner.nextLine().trim();
+        return scanner.nextLine();
     }
     
     @Override
     public int readInt() {
-        try {
-            int result = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
-            return result;
-        } catch (Exception e) {
-            scanner.nextLine();
-            return 0; // Default value
-        }
+        return Integer.parseInt(scanner.nextLine());
     }
     
-    // ... weitere Methoden
+    // Weitere Methoden...
 }</code></pre>
         </div>
     </div>
 </section>
 
 <section>
-    <h3>Adapter Pattern: Weitere Implementierung</h3>
+    <h3>Adapter Pattern: Verwendung im Client</h3>
     <div class="horizontal-spaced-container">
         <div>
-            <pre><code class="java">// Output-Adapter-Implementierung
-package org.ulrica.infrastructure.adapter;
-
-import org.ulrica.application.port.out.UserOutputPortInterface;
-
-public class ConsoleUserOutputAdapter 
-        implements UserOutputPortInterface {
-    
-    @Override
-    public void display(String message) {
-        System.out.print(message);
-    }
-    
-    @Override
-    public void displayLine(String message) {
-        System.out.println(message);
-    }
-    
-    @Override
-    public void displayPrompt(String prompt) {
-        System.out.print(prompt);
-    }
-}</code></pre>
-        </div>
-        <div>
-            <h4>Client-Code in der Anwendungsschicht</h4>
-            <pre><code class="java">// Beispiel: Verwendung in einem Service
+            <pre><code class="java">// Controller aus der Presentation-Schicht
 public class RangeCalculationController {
-    private final UserInputPortInterface inputPort;
-    private final UserOutputPortInterface outputPort;
+    private final UserInputPortInterface userInputPort;
+    private final UserOutputPortInterface userOutputPort;
+    private final CalculateRangeUseCaseInterface calculateRangeUseCase;
     
     public RangeCalculationController(
-            UserInputPortInterface inputPort,
-            UserOutputPortInterface outputPort) {
-        this.inputPort = inputPort;
-        this.outputPort = outputPort;
+            UserInputPortInterface userInputPort,
+            UserOutputPortInterface userOutputPort,
+            CalculateRangeUseCaseInterface calculateRangeUseCase) {
+        this.userInputPort = userInputPort;
+        this.userOutputPort = userOutputPort;
+        this.calculateRangeUseCase = calculateRangeUseCase;
     }
     
-    public void askForParameters() {
-        outputPort.displayPrompt("Enter temperature: ");
-        double temperature = inputPort.readDouble();
+    public void processRangeCalculation() {
+        // Benutzereingaben über Port sammeln
+        userOutputPort.displayPrompt("Enter temperature (°C)");
+        double temperature = userInputPort.readDouble();
         
-        outputPort.displayPrompt("Use WLTP calculation? (y/n): ");
-        boolean useWltp = inputPort.readBoolean("y", "n");
+        // Use Case über Interface ausführen
+        CalculateRangeCommand command = 
+                new CalculateRangeCommand(/* ... */);
+        calculateRangeUseCase.calculateRange(command);
         
-        // ... weitere Logik
+        // Controller kennt keine konkreten Implementierungen
     }
 }</code></pre>
         </div>
+        <div>
+            <h4>Hauptvorteile des Adapter Patterns:</h4>
+            <ul>
+                <li>Clean Architecture durch Trennung von Domain und externen Systemen</li>
+                <li>Erleichterte Tests durch einfaches Mocken der Ports</li>
+                <li>Hohe Austauschbarkeit der Ein-/Ausgabemechanismen</li>
+                <li>Zentralisierte Fehlerbehandlung in den Adaptern</li>
+                <li>Domänenlogik bleibt frei von Ein-/Ausgabedetails</li>
+                <li>Konversion zwischen technischen und Domänen-Datenformaten</li>
+            </ul>
+        </div>
     </div>
 </section>
 
 <section>
-    <h3>Adapter Pattern: UML-Diagramm</h3>
-    <div class="centered-container">
-        <pre><code class="text">
-┌───────────────────────────┐     ┌────────────────────────┐
-│ <<interface>>             │     │ <<interface>>          │
-│ UserInputPortInterface    │     │ UserOutputPortInterface│
-├───────────────────────────┤     ├────────────────────────┤
-│ + readLine(): String      │     │ + display(String): void│
-│ + readInt(): int          │     │ + displayLine(String): │
-│ + readDouble(): double    │     │   void                 │
-│ + readBoolean(String,     │     │ + displayPrompt(String)│
-│   String): boolean        │     │   : void               │
-└─────────────┬─────────────┘     └──────────┬─────────────┘
-              ▲                               ▲
-              │                               │
-              │ implements                    │ implements
-              │                               │
-┌─────────────┴─────────────┐     ┌──────────┴─────────────┐
-│ ConsoleUserInputAdapter   │     │ ConsoleUserOutputAdapter│
-├───────────────────────────┤     ├────────────────────────┤
-│ - scanner: Scanner        │     │                        │
-├───────────────────────────┤     ├────────────────────────┤
-│ + ConsoleUserInputAdapter │     │ + display(String): void│
-│   (Scanner)               │     │ + displayLine(String): │
-│ + readLine(): String      │     │   void                 │
-│ + readInt(): int          │     │ + displayPrompt(String)│
-│ + readDouble(): double    │     │   : void               │
-│ + readBoolean(String,     │     └────────────────────────┘
-│   String): boolean        │
-└───────────────────────────┘          ┌────────────────────────┐
-              ▲                         │ Client:                │
-              │                         │ RangeCalculationControl│
-              │ adapts                  │ ler                    │
-              │                         ├────────────────────────┤
-┌─────────────┴─────────────┐          │ - inputPort: UserInputP│
-│ java.util.Scanner         │◄─────────┤   ortInterface         │
-│ (java.util)               │          │ - outputPort: UserOutpu│
-└───────────────────────────┘          │   tPortInterface       │
-                                       └────────────────────────┘
-</code></pre>
-    </div>
-</section>
-
-<section>
-    <h3>Adapter Pattern: Vorteile im Kontext des Projekts</h3>
+    <h3>Zusammenfassung der Entwurfsmuster in ULRICA</h3>
     <div class="horizontal-spaced-container">
         <div>
-            <h4>Architektonische Vorteile</h4>
+            <h4>Strategy Pattern</h4>
             <ul>
-                <li>Einhaltung des Dependency Inversion Principle</li>
-                <li>Domänen- und Anwendungsschicht kennen keine konkreten I/O-Mechanismen</li>
-                <li>Infrastrukturschicht passt sich an die Ports der Anwendungsschicht an</li>
-                <li>Clean Architecture mit nach innen gerichteten Abhängigkeiten</li>
+                <li>Ermöglicht austauschbare Berechnungsstrategien</li>
+                <li>Unterstützt OCP durch Erweiterbarkeit</li>
+                <li>Vereinfacht das Hinzufügen neuer Berechnungsmethoden</li>
+                <li>Beispiel: Reichweitenberechnung mit verschiedenen Algorithmen</li>
             </ul>
         </div>
         <div>
-            <h4>Praktische Vorteile</h4>
+            <h4>Adapter Pattern</h4>
             <ul>
-                <li>Leichte Austauschbarkeit der I/O-Mechanismen (z.B. Console → GUI)</li>
-                <li>Höhere Testbarkeit durch Mocking der Ports</li>
-                <li>Isolation der Geschäftslogik von technischen Details</li>
-                <li>Vereinfachte Wartung und Erweiterbarkeit</li>
-                <li>Wiederverwendbarkeit der Anwendungslogik in anderen Kontexten</li>
+                <li>Überbrückt die Kluft zwischen Domain und externen Systemen</li>
+                <li>Fördert saubere Schichtenarchitektur</li>
+                <li>Erhöht die Testbarkeit durch Entkopplung</li>
+                <li>Beispiel: Konsolen-I/O-Adapter für Benutzerinteraktion</li>
             </ul>
         </div>
     </div>
+    <p style="text-align: center; margin-top: 2rem;">Beide Muster fördern die Clean Architecture und verbessern die Wartbarkeit, Testbarkeit und Flexibilität des Gesamtsystems.</p>
 </section>

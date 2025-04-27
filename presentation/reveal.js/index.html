@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-	<title>reveal.js</title>
+	<title>ULRICA - Programmentwurf Protokoll</title>
 
 	<link rel="stylesheet" href="dist/reset.css">
 	<link rel="stylesheet" href="dist/reveal.css">
@@ -18,23 +18,25 @@
 	code:not(.hljs) {
 		font-size: 1.25rem;
 	}
-	
+
 	/* Syntax highlighting styles similar to the screenshot */
 	.hljs-keyword {
-		color: red; /* softer green */
+		color: red;
+		/* softer green */
 		font-weight: 500;
 	}
-	
+
 	.hljs-built_in {
 		color: darkred;
 		font-weight: normal;
 	}
-	
+
 	.hljs-string {
-		color: #d19a66; /* softer yellow/orange */
+		color: #d19a66;
+		/* softer yellow/orange */
 		font-weight: normal;
 	}
-	
+
 	.hljs {
 		font-size: 1.25rem;
 		background: transparent;
@@ -54,33 +56,26 @@
 	}
 
 	h4 {
-		font-size: 2rem;
+		font-size: 2.25rem;
 		font-weight: semibold;
 	}
 
 	h5 {
-		font-size: 1.75rem;
+		font-size: 2rem;
 		font-weight: semibold;
-		text-align: start;
-		align-self: start;
 	}
 
 	h6 {
-		font-size: 1rem;
-		text-align: start;
-		align-self: start;
+		font-size: 1.75rem;
+		font-weight: semibold;
 	}
 
 	p {
 		font-size: 1.75rem;
-		text-align: start;
-		align-self: start;
 	}
 
 	li {
 		font-size: 1.75rem;
-		text-align: start;
-		align-self: start;
 		margin: 5px 0;
 	}
 
@@ -94,22 +89,69 @@
 		align-self: start;
 	}
 
+	.primary-color {
+		color: rgb(0, 167, 206) !important;
+	}
 
-  .horizontal-container {
-    display: flex;
-    gap: 2rem;
-    justify-content: center;
-  }
 
-  .horizontal-spaced-container {
-	display: flex;
-    gap: 2rem;
-    justify-content: space-evenly;
-  }
+	.horizontal-container {
+		display: flex;
+		gap: 2rem;
+		justify-content: center;
+	}
 
-  .gray{
-	color: #808080;
-  }
+	.horizontal-spaced-container {
+		display: flex;
+		gap: 2rem;
+		justify-content: space-evenly;
+	}
+
+	.gray {
+		color: #808080;
+	}
+
+	.slide-number {
+		font-size: 16px !important;
+		color: #333 !important;
+		background-color: rgba(255, 255, 255, 0.7);
+		padding: 3px 8px !important;
+		border-radius: 10px;
+	}
+
+	.chapter-title {
+		font-size: 3.5rem;
+		margin-bottom: 2rem;
+		color: #333;
+		text-align: center;
+	}
+
+	.uml-image {
+		max-width: 90%;
+		max-height: 70vh;
+		margin: 0 auto;
+	}
+
+	.center {
+		text-align: center;
+	}
+
+	.acronym-letter {
+		font-weight: 900;
+		font-size: 120%;
+	}
+
+	.name-explanation {
+		font-size: 2.5rem;
+		text-align: center;
+		margin: 2rem 0;
+	}
+
+	.subchapter {
+		color: #666;
+		font-size: 1.8rem;
+		margin-top: 1rem;
+		font-style: italic;
+	}
 </style>
 
 <body>
@@ -117,17 +159,419 @@
 		<div class="slides">
 			<section>
 				<h3>Programmentwurf - Protokoll</h3>
-				<p class="gray">zu</p>
+				<p class="gray center">zu</p>
 				<img style="margin: 50px 0;" src="./assets/ulrica-blue.png" alt="ULRICA Logo" class="logo">
 				<div class="horizontal-container gray">
 					<p>Robin Schwenzfeier</p>
 					<p>-</p>
 					<p>4868455</p>
 					<p>-</p>
-					<p>TBD</p>
+					<p>TINF21CS1</p>
 				</div>
 			</section>
-			<section data-include="slides/kapitel-1.html"></section>
+			<section>
+				<section>
+					<h2 class="chapter-title">Kapitel 1: Einleitung (4P)</h2>
+				</section>
+
+				<section>
+					<h3 class="subchapter">Inhalt des Kapitels</h3>
+					<div class="horizontal-spaced-container"
+						style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+						<div>
+							<h6>1. Übersicht über die Applikation (1P)</h6>
+							<ul>
+								<li>Name und Bedeutung</li>
+								<li>Features und Funktionen</li>
+								<li>Probleme, die sie löst</li>
+							</ul>
+						</div>
+						<div>
+							<h6>2. Starten der Applikation (1P)</h6>
+							<ul>
+								<li>Voraussetzungen</li>
+								<li>Schritte zum Starten</li>
+								<li>Alternative zum Starten</li>
+							</ul>
+						</div>
+						<div>
+							<h6>3. Technischer Überblick (2P)</h6>
+							<ul>
+								<li>Java (JDK 17)</li>
+								<li>Maven</li>
+								<li>JSON & GSON</li>
+								<li>JUnit & JaCoCo</li>
+								<li>Clean Architecture</li>
+							</ul>
+						</div>
+						<div>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Übersicht über die Applikation (1P)</h3>
+					<p class="subchapter">Was macht die Applikation? Wie funktioniert sie? Welches Problem löst sie?</p>
+				</section>
+
+				<section>
+					<h3><strong>ULRICA</strong>: Name erklärt</h3>
+					<p class="subchapter">Ein Acronym.</p>
+					<p class="name-explanation">
+						<span class="acronym-letter primary-color">U</span>niversa<span
+							class="acronym-letter primary-color">L</span>
+						<span class="acronym-letter primary-color">R</span>ange and dest<span
+							class="acronym-letter primary-color">I</span>nation
+						<span class="acronym-letter primary-color">CA</span>lculator
+					</p>
+				</section>
+
+				<section>
+					<h3>Features der Applikation</h3>
+					<p class="subchapter">Probleme, die sie löst.</p>
+					<ul>
+						<li><span class="primary-color">1.</span> Erstellt und verwaltet Fahrzeugprofile für
+							Elektrofahrzeuge</li>
+						<li><span class="primary-color">2.</span> Berechnet verbleibende Reichweite von
+							Elektrofahrzeugen</li>
+						<li><span class="primary-color">3. + 4.</span> Berechnet Ladezeiten an DC- und AC-Ladestationen
+						</li>
+						<li><s><span class="primary-color">5.</span> Berechnet und simmuliert eine Route</s></li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Features der Applikation</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<h5><span class="primary-color">1.</span> Fahrzeugprofil-Management</h5>
+							<ul>
+								<li>Erstellung, Anzeige und Löschung von Fahrzeugprofilen</li>
+								<li>Konfiguration von Batteriedaten (Typ, Kapazität, Degradation, etc.)</li>
+								<li>Definition von Verbrauchsprofilen (bei 50km/h, 100km/h, 130km/h)</li>
+							</ul>
+						</div>
+						<div>
+							<h5><span class="primary-color">2.</span> Reichweitenberechnung</h5>
+							<ul>
+								<li>Strategie-Pattern für verschiedene Berechnungsmethoden</li>
+								<li>WLTP-basierte Berechnung mit "echten" Bedingungen</li>
+								<li>Temperatureinflüsse</li>
+								<li>Geländebedingungen</li>
+								<li>etc.</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Features der Applikation</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<h5><span class="primary-color">3.</span> DC (Schnelles) Laden</h5>
+							<ul>
+								<li>SoC-basierte Berechnungen</li>
+								<li>Temperatureinflüsse beim Laden</li>
+								<li>Leistungsreduktion basierend auf Batteriezustand</li>
+								<li>Detaillierte Ladezeitschätzungen</li>
+								<li>Berücksichtigung von Batterie-Typ</li>
+							</ul>
+						</div>
+						<div>
+							<h5><span class="primary-color">4.</span> AC (Langsames) Laden</h5>
+							<ul>
+								<li>Verschiedene Anschlusstypen (Haushalt, Camping, Wallbox)</li>
+								<li>Berechnung von Effizienzverlusten</li>
+								<li>Temperatur-Effizenzfaktoren</li>
+								<li>Ladezeitprognosen</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+
+
+				<section>
+					<h3>Starten der Applikation (1P)</h3>
+					<p class="subchapter">Was brauche ich? Wie startet man die Applikation?</p>
+				</section>
+				<section>
+					<h3>Voraussetzungen:</h3>
+					<ul>
+						<li>Java 17 oder höher</li>
+						<li>Maven</li>
+						<li>Git</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Schritte zum Starten:</h3>
+					<ol>
+						<li>
+							Repository klonen: <span
+								style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span
+									class="hljs-keyword">git</span> <span class="hljs-built_in">clone</span>
+								https://github.com/mausio/ULRICA</span>
+						</li>
+						<li style="text-align: start;">In Projektverzeichnis wechseln: <span
+								style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span
+									class="hljs-keyword">cd </span>/path/to/ULRICA</span></li>
+						<li>Projekt kompilieren: <span
+								style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span
+									class="hljs-keyword">mvn</span> <span class="hljs-built_in">clean</span> <span
+									class="hljs-built_in">compile</span></span>
+						</li>
+						<li>ULRICA starten: <span
+								style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span
+									class="hljs-keyword">mvn</span> <span class="hljs-built_in">exec:java</span>
+								-Dexec.mainClass="org.ulrica.App"</span>
+						</li>
+					</ol>
+				</section>
+				<section>
+					<h3>Alternative zum Starten:</h3>
+					<ol>
+						<li>JAR-Datei erstellen: <span
+								style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span
+									class="hljs-keyword">mvn</span> <span class="hljs-built_in">clean</span> <span
+									class="hljs-built_in">package</span></span>
+							<ul>
+								<li>Dieser Befehl kompiliert den Code und erstellt eine ausführbare JAR-Datei im
+									Verzeichnis <code>target/</code></li>
+								<li>Die JAR-Datei wird als <code style="background-color: whitesmoke; padding: 2px; border-radius: 5px;" class="primary-color">ULRICA-1.0-SNAPSHOT.jar</code> gespeichert</li>
+							</ul>
+						</li>
+						<li>JAR-Datei ausführen: <span
+								style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span
+									class="hljs-keyword">java</span> <span class="hljs-built_in">-jar</span>
+								target/ULRICA-1.0-SNAPSHOT.jar</span>
+							<ul>
+								<li>Stellt sicher, dass Java 17 oder höher installiert ist</li>
+								<li>Die JAR-Datei enthält alle notwendigen Abhängigkeiten</li>
+								<li>Kann auf jedem System mit Java 17+ ausgeführt werden</li>
+							</ul>
+						</li>
+					</ol>
+				</section>
+
+				<section>
+					<h3>Technischer Überblick (2P)</h3>
+					<p>ULRICA wurde mit folgenden Technologien implementiert:</p>
+					<ul>
+						<li><strong>Java (JDK 17):</strong> Objektorientierte Programmiersprache - ermöglicht klare
+							Strukturierung mit Design
+							Patterns und Clean Architecture</li>
+						<li><strong>Maven:</strong> Build-Management-Tool - vereinfacht Abhängigkeiten, Build und Tests
+						</li>
+						<li><strong>JSON/GSON:</strong> Datenaustauschformat und Java-Bibliothek für Persistenz von
+							Fahrzeugprofilen</li>
+						<li><strong>JUnit 4:</strong> Test-Framework mit 106 automatisierten Tests für
+							Qualitätssicherung</li>
+						<li><strong>JaCoCo:</strong> Code-Coverage-Tool mit einer Gesamtabdeckung von 47%
+							(Linienabdeckung)</li>
+						<li><strong>Clean Architecture:</strong> Strukturierungsprinzip für bessere Wartbarkeit und
+							Testbarkeit</li>
+						<li><strong>Design Patterns:</strong> Strategy, Adapter, Repository, Builder für besseres Design
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Java (JDK 17)</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<h5>Vorteile für ULRICA</h5>
+							<ul>
+								<li>Plattformunabhängigkeit durch JVM</li>
+								<li>Starke objektorientierte Programmierung</li>
+								<li>Typ-Sicherheit reduziert Laufzeitfehler</li>
+								<li>Modernes JDK 17 mit LTS-Support</li>
+								<li>Umfangreiche Bibliotheken verfügbar</li>
+								<li>Ideale Grundlage für Clean Architecture</li>
+							</ul>
+						</div>
+						<div>
+							<h5>Alternativen-Vergleich</h5>
+							<ul>
+								<li>Kotlin: Eleganter, aber weniger etabliert</li>
+								<li>C#: Ähnlich stark, aber plattformabhängiger</li>
+								<li>Python: Einfacher, aber weniger performant</li>
+								<li>JavaScript: Weniger typsicher und strukturiert</li>
+								<li>C++: Höhere Performance, aber komplexere Entwicklung</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Maven</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<h5>Vorteile für ULRICA</h5>
+							<ul>
+								<li>Deklaratives Projektmanagement</li>
+								<li>Automatisiertes Abhängigkeitsmanagement</li>
+								<li>Standardisierte Build-Lebenszyklen</li>
+								<li>Integration mit JUnit und JaCoCo</li>
+								<li>Plugin-Ökosystem für erweiterte Funktionen</li>
+								<li>Konsistente Projektstruktur</li>
+							</ul>
+						</div>
+						<div>
+							<h5>Konfiguration in ULRICA</h5>
+							<pre><code class="xml">&lt;dependencies&gt;
+					&lt;dependency&gt;
+						&lt;groupId&gt;junit&lt;/groupId&gt;
+						&lt;artifactId&gt;junit&lt;/artifactId&gt;
+						&lt;version&gt;4.13.2&lt;/version&gt;
+						&lt;scope&gt;test&lt;/scope&gt;
+					&lt;/dependency&gt;
+					&lt;dependency&gt;
+						&lt;groupId&gt;com.google.code.gson&lt;/groupId&gt;
+						&lt;artifactId&gt;gson&lt;/artifactId&gt;
+						&lt;version&gt;2.10.1&lt;/version&gt;  
+					&lt;/dependency&gt;
+				&lt;/dependencies&gt;</code></pre>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>JSON & GSON</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<h5>Vorteile für ULRICA</h5>
+							<ul>
+								<li>Leichtgewichtiges Datenformat</li>
+								<li>Menschenlesbar und einfach zu bearbeiten</li>
+								<li>Ideal für Konfigurationsdaten wie Fahrzeugprofile</li>
+								<li>Weit verbreitet und unterstützt</li>
+								<li>GSON bietet einfache Java-Integration</li>
+								<li>TypeAdapter für komplexe Datentypen</li>
+							</ul>
+						</div>
+						<div>
+							<h5>Implementierung in ULRICA</h5>
+							<pre><code class="java">public class JsonCarProfileRepository 
+						implements CarProfilePersistencePortInterface {
+					
+					private final Gson gson;
+					private final Path filePath;
+				
+					public JsonCarProfileRepository() {
+						this.gson = new GsonBuilder()
+							.setPrettyPrinting()
+							.registerTypeAdapterFactory(
+								new OptionalTypeAdapterFactory())
+							.create();
+						this.filePath = Paths.get(
+							STORAGE_DIR, FILE_NAME);
+					}
+					// ...
+				}</code></pre>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Test-Framework: JUnit</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<h5>Vorteile für ULRICA</h5>
+							<ul>
+								<li>De-facto Standard für Java-Tests</li>
+								<li>Umfangreiche Assertions-Bibliothek</li>
+								<li>106 automatisierte Tests in ULRICA</li>
+								<li>Integration mit Build-Tools und JaCoCo</li>
+								<li>Mock-Objekte und Stubs für isolierte Tests</li>
+								<li>Test-getriebene Entwicklung unterstützt</li>
+							</ul>
+						</div>
+						<div>
+							<h5>Implementierung in ULRICA</h5>
+							<pre><code class="java">@Test
+				public void testCompareStrategies() {
+					// Given: Identifiziere beide Strategien
+					RangeCalculationStrategyInterface wltpStrategy = null;
+					RangeCalculationStrategyInterface consumptionStrategy = null;
+					
+					for (RangeCalculationStrategyInterface strategy : 
+							 rangeCalculatorService.getAvailableStrategies()) {
+						if (strategy instanceof WltpBasedRangeCalculationStrategy) {
+							wltpStrategy = strategy;
+						}
+						if (strategy instanceof ConsumptionBasedRangeCalculationStrategy) {
+							consumptionStrategy = strategy;
+						}
+					}
+					
+					// When & Then...
+				}</code></pre>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Code-Coverage: JaCoCo</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<h5>Vorteile für ULRICA</h5>
+							<ul>
+								<li>Detaillierte Abdeckungsmetriken</li>
+								<li>Integration mit Maven und CI/CD</li>
+								<li>Identifikation von ungetesteten Codebereichen</li>
+								<li>Visualisierung der Testabdeckung</li>
+								<li>Qualitätssicherung während der Entwicklung</li>
+								<li>Motivation zur Erhöhung der Testabdeckung</li>
+							</ul>
+						</div>
+						<div>
+							<h5>Ergebnisse in ULRICA</h5>
+							<ul>
+								<li>Gesamtabdeckung: 47%</li>
+								<li>Domain Layer: 68%</li>
+								<li>Application Layer: 53%</li>
+								<li>Presentation Layer: 42%</li>
+								<li>Infrastructure Layer: 36%</li>
+								<li>Core-Komponenten: 75%</li>
+							</ul>
+							<p>Fokus auf qualitativ hochwertige Tests für kritische Komponenten statt bloßer Maximierung
+								der Abdeckung</p>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Clean Architecture</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<h5>Vorteile für ULRICA</h5>
+							<ul>
+								<li>Separation of Concerns</li>
+								<li>Unabhängige Domänenlogik</li>
+								<li>Dependency Inversion Principle</li>
+								<li>Testbarkeit durch lose Kopplung</li>
+								<li>Austauschbarkeit von Infrastruktur</li>
+								<li>Strukturierte Codebasis</li>
+							</ul>
+						</div>
+						<div>
+							<h5>Schichten in ULRICA</h5>
+							<ul>
+								<li><strong>Domain:</strong> 3 Packages, 23 Klassen</li>
+								<li><strong>Application:</strong> 3 Packages, 26 Klassen</li>
+								<li><strong>Infrastructure:</strong> 3 Packages, 7 Klassen</li>
+								<li><strong>Presentation:</strong> 3 Packages, 16 Klassen</li>
+							</ul>
+							<p>Details in Kapitel 2: Softwarearchitektur</p>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Architekturübersicht</h3>
+					<img src="./assets/architecture.png" alt="ULRICA Architecture" style="max-height: 500px;">
+					<p>Clean Architecture mit klarer Trennung der Schichten</p>
+				</section>
+			</section>
 			<section data-include="slides/kapitel-2.html"></section>
 			<section data-include="slides/kapitel-3.html"></section>
 			<section data-include="slides/kapitel-4.html"></section>
@@ -146,12 +590,13 @@
 		// Debug logging
 		console.log('RevealHighlight plugin:', typeof RevealHighlight);
 		console.log('hljs global:', typeof window.hljs);
-		
+
 		// More info about initialization & config:
 		// - https://revealjs.com/initialization/
 		// - https://revealjs.com/config/
 		Reveal.initialize({
 			hash: true,
+			slideNumber: true,
 
 			// Explicit highlight config
 			highlight: {
@@ -170,6 +615,7 @@
 			const promise = fetch(url)
 				.then(response => response.text())
 				.then(html => {
+					section.html = ""
 					section.innerHTML = html;
 				});
 			loadSlidesPromises.push(promise);
@@ -179,9 +625,9 @@
 		Promise.all(loadSlidesPromises).then(() => {
 			// Force Reveal to update
 			Reveal.sync();
-			
+
 			// Try multiple ways to initialize highlighting
-			
+
 			// 1. Through Reveal plugin
 			const highlight = Reveal.getPlugin('highlight');
 			if (highlight) {
@@ -189,7 +635,7 @@
 					highlight.highlightBlock(block);
 				});
 			}
-			
+
 			// 2. Direct hljs initialization if available
 			if (window.hljs) {
 				window.hljs.configure({

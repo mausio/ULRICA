@@ -1,13 +1,31 @@
 <section>
-    <h3>Kapitel 5: Unit Tests (8P)</h3>
+    <h2 class="chapter-title">Kapitel 5: Unit Tests (8P)</h2>
 </section>
 
 <section>
     <h3>10 Unit Tests (2P)</h3>
-    <ul>
-        <li>Umfangreiche Test-Suite mit verschiedenen Testtypen</li>
-        <li>Fokus auf Domain-Logic und Clean Architecture</li>
-    </ul>
+    <div class="horizontal-spaced-container">
+        <div>
+            <h5>Test-Strategie</h5>
+            <ul>
+                <li>Fokus auf Domain-Logik als kritischen Kern</li>
+                <li>106 automatisierte Tests (JUnit)</li>
+                <li>47% Gesamtabdeckung (JaCoCo)</li>
+                <li>Spezielle Tests für Randfälle und Fehlerbedingungen</li>
+                <li>Mocks für externe Abhängigkeiten</li>
+            </ul>
+        </div>
+        <div>
+            <h5>Testarten in ULRICA</h5>
+            <ul>
+                <li>Unit-Tests für isolierte Klassen</li>
+                <li>Integrationstests für Komponenteninteraktion</li>
+                <li>Parametrisierte Tests für Datenvalidierung</li>
+                <li>Exception-Tests für Fehlerszenarien</li>
+                <li>Stresstest für Berechnung mit großen Datenmengen</li>
+            </ul>
+        </div>
+    </div>
 </section>
 
 <section>
@@ -255,400 +273,224 @@ public void testInvalidConstructorArguments() {
         new ChargingCurve(new HashMap<>());
     });
     
-    // Test mit ungültigem Batterie-Prozent (negativ)
-    Map<Double, Double> invalidBatteryPercent1 = new HashMap<>();
-    invalidBatteryPercent1.put(-10.0, 150.0);
-    invalidBatteryPercent1.put(50.0, 100.0);
+    // Test mit fehlenden Schlüsselpunkten
+    Map<Double, Double> incompletePoints = new HashMap<>();
+    incompletePoints.put(50.0, 100.0);
     assertThrows(IllegalArgumentException.class, () -> {
-        new ChargingCurve(invalidBatteryPercent1);
-    });
-    
-    // Test mit ungültigem Batterie-Prozent (über 100%)
-    Map<Double, Double> invalidBatteryPercent2 = new HashMap<>();
-    invalidBatteryPercent2.put(0.0, 150.0);
-    invalidBatteryPercent2.put(110.0, 100.0);
-    assertThrows(IllegalArgumentException.class, () -> {
-        new ChargingCurve(invalidBatteryPercent2);
+        new ChargingCurve(incompletePoints);
     });
 }</code></pre>
-    <p>Testet die umfassende Robustheit und Fehlerbehandlung in Value Objects</p>
+    <p>Testet die Robustheit und Fehlerbehandlung bei ungültigen Eingabedaten</p>
 </section>
 
 <section>
-    <h3>Test #9: Strategie-Vergleich im Range Calculator</h3>
+    <h3>Test #9: ProfileSelectionService - Statusverwaltung</h3>
     <pre><code class="java">@Test
-public void testCompareStrategies() {
-    // Strategien finden
-    RangeCalculationStrategyInterface wltpStrategy = null;
-    RangeCalculationStrategyInterface consumptionStrategy = null;
+public void testProfileSelection() {
+    // Initial kein Profil ausgewählt
+    assertFalse(profileSelectionService.hasSelectedProfile());
     
-    for (RangeCalculationStrategyInterface strategy : rangeCalculatorService.getAvailableStrategies()) {
-        if (strategy instanceof WltpBasedRangeCalculationStrategy) {
-            wltpStrategy = strategy;
-        }
-        if (strategy instanceof ConsumptionBasedRangeCalculationStrategy) {
-            consumptionStrategy = strategy;
-        }
-    }
-    
-    // Strategien sollten gefunden worden sein
-    assertNotNull("WLTP strategy should be available", wltpStrategy);
-    assertNotNull("Consumption strategy should be available", consumptionStrategy);
-    
-    // Mit beiden Strategien berechnen
-    RangeResult wltpResult = rangeCalculatorService.calculateRangeWithStrategy(
-        mockCarProfile, parameters, wltpStrategy);
-    RangeResult consumptionResult = rangeCalculatorService.calculateRangeWithStrategy(
-        mockCarProfile, parameters, consumptionStrategy);
-    
-    // Beide Ergebnisse validieren
-    assertNotNull(wltpResult);
-    assertNotNull(consumptionResult);
-    assertTrue(wltpResult.getEstimatedRangeKm() > 0);
-    assertTrue(consumptionResult.getEstimatedRangeKm() > 0);
-}</code></pre>
-    <p>Testet den Vergleich unterschiedlicher Berechnungs-Strategien für die gleichen Eingabeparameter</p>
-</section>
-
-<section>
-    <h3>Test #10: ExecuteAction - Rollenbasierte Tests</h3>
-    <pre><code class="java">@Test
-public void testExecuteAction_InvalidChoice() {
-    // Setup: Profil ausgewählt, aber ungültige Aktion
+    // Profil auswählen
+    CarProfile testProfile = new CarProfile.Builder()
+        .id("test-id")
+        .name("Test Car")
+        .build();
     profileSelectionService.selectProfile(testProfile);
     
-    // Test mit ungültiger Aktionsauswahl (99)
-    boolean result = executeActionInteractor.executeAction(99); 
+    // Status und ausgewähltes Profil validieren
+    assertTrue(profileSelectionService.hasSelectedProfile());
+    assertEquals(testProfile, profileSelectionService.getSelectedProfile());
     
-    // Validierung: Aktion sollte fehlschlagen, keine Controller aufgerufen
-    assertFalse(result);
-    assertEquals(0, dcChargingController.getProcessCallCount());
-    assertEquals(0, acChargingController.getProcessCallCount());
-    assertEquals(0, rangeCalculationController.getProcessCallCount());
+    // Auswahl zurücksetzen
+    profileSelectionService.clearSelection();
     
-    // Fehlerausgang sollte korrekt angezeigt werden
-    assertTrue(actionResultView.getErrorCount() > 0);
+    // Validieren dass kein Profil mehr ausgewählt ist
+    assertFalse(profileSelectionService.hasSelectedProfile());
+    assertThrows(IllegalStateException.class, () -> {
+        profileSelectionService.getSelectedProfile();
+    });
 }</code></pre>
-    <p>Testet die korrekte Rollenverteilung zwischen Interactor, Service und UI-Komponenten</p>
+    <p>Testet die korrekte Statusverwaltung und Fehlerfälle im ProfileSelectionService</p>
 </section>
 
 <section>
-    <h3>ATRIP – Automatic, Thorough, Professional (2P)</h3>
-</section>
-
-<section>
-    <h4>Automatic</h4>
-    <pre><code class="java">// Testcase in DcChargingCalculatorTest.java
-@Before
-public void setUp() {
-    calculator = new DcChargingCalculator();
-    batteryProfile = new BatteryProfile(
-        BatteryType.NMC,
-        80.0,  
-        5.0,   
-        250.0, 
-        11.0   
+    <h3>Test #10: Validierung von Value Objects</h3>
+    <pre><code class="java">@Test
+public void testValueObjectValidation() {
+    // Gültige Werte
+    BatteryProfile validProfile = new BatteryProfile(
+        BatteryType.LFP, 
+        80.0,         // Kapazität in kWh
+        5.0,          // Degradation in Prozent
+        150.0,        // Max DC Ladeleistung
+        11.0          // Max AC Ladeleistung
     );
     
-    // Komplexes Testobjekt mit Builder-Pattern erstellen
-    mockCarProfile = new CarProfile.Builder()
-        .id("test-id")
-        .name("Test EV")
-        .manufacturer("Test Manufacturer")
-        .model("Test Model")
-        .year(2023)
-        .hasHeatPump(true)
-        .wltpRangeKm(500)
-        .maxDcPowerKw(250.0)
-        .maxAcPowerKw(11.0)
-        .batteryProfile(batteryProfile)
-        .consumptionProfile(new ConsumptionProfile(15, 20, 25))
-        .build();
+    // Eigenschaften validieren
+    assertEquals(BatteryType.LFP, validProfile.getType());
+    assertEquals(80.0, validProfile.getCapacityKwh(), 0.001);
+    assertEquals(5.0, validProfile.getDegradationPercent(), 0.001);
+    assertEquals(76.0, validProfile.getRemainingCapacityKwh(), 0.001); // 80 - 5%
+    
+    // Ungültige Werte
+    assertThrows(IllegalArgumentException.class, () -> {
+        new BatteryProfile(
+            BatteryType.LFP, 
+            -10.0,      // Negative Kapazität
+            5.0, 
+            150.0, 
+            11.0
+        );
+    });
+    
+    assertThrows(IllegalArgumentException.class, () -> {
+        new BatteryProfile(
+            BatteryType.LFP, 
+            80.0, 
+            110.0,      // Degradation > 100%
+            150.0, 
+            11.0
+        );
+    });
 }</code></pre>
-    <p>Tests sind vollständig automatisiert durch:</p>
-    <ul>
-        <li>JUnit Test-Framework mit standardisiertem Lebenszyklus (@Before, @Test, @After)</li>
-        <li>Automatische Testdaten-Generierung über Builder-Pattern und Factory-Methoden</li>
-        <li>Einsatz von Helper-Klassen wie MockCarProfile und MockChargingCurve</li>
-        <li>Konsistente Test-Fixture über @Before für vergleichbare Testbedingungen</li>
-        <li>Keine manuelle Interaktion erforderlich, volle CI/CD-Integration möglich</li>
-    </ul>
+    <p>Testet die Validierung und Fehlerbehandlung bei der Erstellung von Value Objects</p>
 </section>
 
 <section>
-    <h4>Thorough</h4>
-    <pre><code class="java">// Testabdeckung im ChargingCurveTest.java
-@Test public void testConstructorAndGetters() { ... }
-@Test public void testGetChargingPowerAt_ExactPoints() { ... }
-@Test public void testGetChargingPowerAt_Interpolation() { ... }
-@Test public void testGetChargingPowerAt_OutOfRangeLow() { ... }
-@Test public void testGetChargingPowerAt_OutOfRangeHigh() { ... }
-@Test public void testEqualsAndHashCode() { ... }
-@Test public void testInvalidConstructorArguments() { ... }
-@Test public void testInvalidGetChargingPowerAt() { ... }
-
-// Temperatur-Tests in DcChargingCalculatorTest
-@Test public void testCalculateChargingTime_BasicScenario() { ... }
-@Test public void testCalculateChargingTime_LowTemperature() { ... }
-@Test public void testCalculateChargingTime_WithChargingCurve() { ... }
-@Test public void testCalculateChargingTime_HigherSoC() { ... }</code></pre>
-    <p>Hohe Testabdeckung durch:</p>
-    <ul>
-        <li>Umfassende Testgruppen zu allen Aspekten einer Komponente</li>
-        <li>Systematisches Testen aller Pfade (normaler Ablauf, Grenzfälle, Fehlerszenarien)</li>
-        <li>Explizite Tests für Interpolation, Extrapolation und Randwerte</li>
-        <li>Vollständige Abdeckung von Validierungslogik (Beispiel: alle Invalid-Fälle)</li>
-        <li>Kombinatorik relevanter Parameter (Temperaturen, SOC-Werte, Ladekurven)</li>
-        <li>Testen von Value-Object-Invarianten (Equals/HashCode, Immutability)</li>
-    </ul>
-</section>
-
-<section>
-    <h4>Professional</h4>
-    <pre><code class="java">@Test
-public void testCompareStrategies() {
-    // Given: Identifiziere beide Strategien aus dem Service
-    RangeCalculationStrategyInterface wltpStrategy = null;
-    RangeCalculationStrategyInterface consumptionStrategy = null;
-    
-    for (RangeCalculationStrategyInterface strategy : 
-            rangeCalculatorService.getAvailableStrategies()) {
-        if (strategy instanceof WltpBasedRangeCalculationStrategy) {
-            wltpStrategy = strategy;
-        }
-        if (strategy instanceof ConsumptionBasedRangeCalculationStrategy) {
-            consumptionStrategy = strategy;
-        }
-    }
-    
-    // Assert: Strategien sollten verfügbar sein
-    assertNotNull("WLTP strategy should be available", wltpStrategy);
-    assertNotNull("Consumption strategy should be available", consumptionStrategy);
-    
-    // When: Berechne Range mit beiden Strategien
-    RangeResult wltpResult = rangeCalculatorService.calculateRangeWithStrategy(
-        mockCarProfile, parameters, wltpStrategy);
-    RangeResult consumptionResult = rangeCalculatorService.calculateRangeWithStrategy(
-        mockCarProfile, parameters, consumptionStrategy);
-    
-    // Then: Validiere die Ergebnisse beider Strategien
-    assertNotNull(wltpResult);
-    assertNotNull(consumptionResult);
-    assertTrue("WLTP range should be positive", wltpResult.getEstimatedRangeKm() > 0);
-    assertTrue("Consumption range should be positive", 
-        consumptionResult.getEstimatedRangeKm() > 0);
-}</code></pre>
-    <p>Professionelle Teststruktur durch:</p>
-    <ul>
-        <li>Strenge Einhaltung des Given-When-Then / Arrange-Act-Assert Patterns</li>
-        <li>Aussagekräftige Assertion-Nachrichten für bessere Fehlererkennung</li>
-        <li>Konsequente, semantische Benennung nach testing_whatBehavior_underWhatConditions</li>
-        <li>Tests als lebende Dokumentation der Komponentenfunktionalität</li>
-        <li>Systematische Organisation von verwandten Tests in strukturierten Testklassen</li>
-        <li>Unit Tests spiegeln die Clean Architecture wider (Domain, Application, Infrastructure)</li>
-    </ul>
-</section>
-
-<section>
-    <h3>Fakes und Mocks (4P)</h3>
-</section>
-
-<section>
-    <h3>Mock #1: MockProfileSelectionService</h3>
-    <pre><code class="java">public class MockProfileSelectionService implements ProfileSelectionService {
-    
-    private CarProfile selectedProfile;
-    private int selectionCount = 0;
-    private int clearCount = 0;
-    
-    public MockProfileSelectionService() {
-        this.selectedProfile = null;
-    }
-    
-    public MockProfileSelectionService(CarProfile initialProfile) {
-        this.selectedProfile = initialProfile;
-    }
-
-    @Override
-    public CarProfile getSelectedProfile() {
-        return selectedProfile;
-    }
-
-    @Override
-    public void selectProfile(CarProfile profile) {
-        this.selectedProfile = profile;
-        this.selectionCount++;
-    }
-
-    @Override
-    public void clearSelection() {
-        this.selectedProfile = null;
-        this.clearCount++;
-    }
-    
-    // Test-spezifische Methoden für Validierung
-    public int getSelectionCount() {
-        return selectionCount;
-    }
-    
-    public int getClearCount() {
-        return clearCount;
-    }
-    
-    public boolean hasSelectedProfile() {
-        return selectedProfile != null;
-    }
-}</code></pre>
-    <p>Implementiert das ProfileSelectionService Interface mit zusätzlichen Testfunktionen</p>
-</section>
-
-<section>
-    <h3>Mock #1: Analyse</h3>
-    <div class="horizontal-container">
+    <h3>Mock-Objekte in Tests (3P)</h3>
+    <div class="horizontal-spaced-container">
         <div>
-            <h4>Einsatzzweck</h4>
+            <h5>Warum Mocks in ULRICA?</h5>
             <ul>
-                <li>Simuliert den ProfileSelectionService für Tests von abhängigen Komponenten</li>
-                <li>Ermöglicht die Isolierung der ExecuteActionInteractor-Klasse vom echten Service</li>
-                <li>Bietet Counters für Methodenaufrufe zur Verifizierung der Interaktionen</li>
-                <li>Erleichtert sowohl Setup als auch Validierung in komplexen Testszenarien</li>
+                <li>Isolierung der Testbedingungen</li>
+                <li>Simulation von schwer erzeugbaren Zuständen</li>
+                <li>Schnellere Testausführung ohne externe Abhängigkeiten</li>
+                <li>Vermeidung von Seiteneffekten</li>
+                <li>Validierung von Interaktionen zwischen Komponenten</li>
             </ul>
         </div>
         <div>
-            <h4>Vorteile</h4>
+            <h5>Mock-Implementierungen</h5>
             <ul>
-                <li>Eliminiert externe Abhängigkeiten (Datenbank, Filesystem)</li>
-                <li>Erlaubt präzise Kontrolle des Testzustands und -verhaltens</li>
-                <li>Verbessert Testgeschwindigkeit durch Vermeidung realer Datenbankoperationen</li>
-                <li>Ermöglicht Test-spezifische Validierungsmethoden (getSelectionCount, hasSelectedProfile)</li>
-                <li>Unterstützt vollständige Überprüfung des Interact-Verhaltens mit und ohne Profil</li>
+                <li>Handgeschriebene Mocks für einfache Fälle</li>
+                <li>Interface-basierte Mocks für Ports und Adapters</li>
+                <li>Simulierte externe Services</li>
+                <li>Mock-Repositories für In-Memory-Testing</li>
+                <li>Test-spezifische OutputPorts für Validierung</li>
             </ul>
         </div>
     </div>
 </section>
 
 <section>
-    <h3>Mock #1: UML Beziehungsdiagramm</h3>
-    <pre><code class="text">┌───────────────────────┐         ┌───────────────────────┐
-│ProfileSelectionService │         │ExecuteActionInteractor │
-├───────────────────────┤         ├───────────────────────┤
-│+getSelectedProfile()  │◄────────┤-profileSelectionService│
-│+selectProfile()       │         │+executeAction()        │
-│+clearSelection()      │         └───────────────────────┘
-└───────────┬───────────┘                    ▲
-            ▲                                │
-            │implements                      │uses
-            │                                │
-┌───────────┴───────────┐         ┌───────────────────────┐
-│MockProfileSelection   │◄────────┤ExecuteActionInteractor│
-│Service                │         │Test                    │
-├───────────────────────┤         ├───────────────────────┤
-│-selectedProfile       │         │+testExecuteAction_     │
-│-selectionCount        │         │  NoProfileSelected()   │
-│-clearCount            │         │+testExecuteAction_     │
-│+getSelectionCount()   │         │  DcCharging()          │
-│+getClearCount()       │         └───────────────────────┘
-│+hasSelectedProfile()  │
-└───────────────────────┘</code></pre>
-    <p>Das Mock-Objekt implementiert das Interface, fügt zusätzliche Funktionalität für Tests hinzu und wird in Tests verwendet, um die abhängige Klasse isoliert zu testen.</p>
+    <h3>Einsatz von Mock-Objekten</h3>
+    <img src="assets/UMLs-imgs/Kapitel_5-Aufgabe_3.png" alt="Mock Objects UML Diagram" class="uml-image">
 </section>
 
 <section>
-    <h3>Mock #2: RangeCalculationStrategyInterface Mock</h3>
+    <h3>2 Test mit Mock-Objekten (3P)</h3>
     <pre><code class="java">@Test
-public void testAddStrategy() {
-    // Ausgangszustand dokumentieren
-    int initialCount = rangeCalculatorService.getAvailableStrategies().size();
+public void testDcChargingControllerWithMocks() {
+    // Mock-Objekte erstellen
+    UserInputPortInterface mockInputPort = new MockUserInputPort();
+    UserOutputPortInterface mockOutputPort = new MockUserOutputPort();
+    CalculateDcChargingUseCaseInterface mockUseCase = new MockDcChargingUseCase();
+    DcChargingOutputPortInterface mockResultPort = new MockDcChargingOutputPort();
     
-    // Mock-Strategie als anonyme Implementierung erstellen
-    RangeCalculationStrategyInterface mockStrategy = new RangeCalculationStrategyInterface() {
-        @Override
-        public RangeResult calculateRange(CarProfile carProfile, RangeParameters params) {
-            // Vordefiniertes Ergebnis zurückgeben
-            return new RangeResult(
-                300.0,  // Fest definierte Reichweite
-                20.0,   // Fest definierter Verbrauch
-                "No weather impact",
-                "No terrain impact",
-                "No environment impact",
-                "Battery in good condition"
-            );
-        }
-        
-        @Override
-        public String getName() {
-            return "MockStrategy";
-        }
-        
-        @Override
-        public String getDescription() {
-            return "A mock strategy for testing";
-        }
-    };
+    // Controller mit Mock-Objekten initialisieren
+    DcChargingController controller = new DcChargingController(
+        mockInputPort, mockOutputPort, mockUseCase, mockResultPort);
     
-    // Strategie zum Service hinzufügen
-    rangeCalculatorService.addStrategy(mockStrategy);
+    // Controller-Methode ausführen
+    boolean result = controller.processDcCharging();
     
-    // Überprüfen: Strategie wurde erfolgreich hinzugefügt
-    assertEquals(initialCount + 1, rangeCalculatorService.getAvailableStrategies().size());
+    // Überprüfung der Interaktionen mit den Mocks
+    assertTrue(result);
+    MockUserOutputPort outputMock = (MockUserOutputPort) mockOutputPort;
+    assertTrue(outputMock.displayCalled);
+    assertTrue(outputMock.displayedMessages.size() > 0);
     
-    // Mit Mock-Strategie berechnen
-    RangeResult result = rangeCalculatorService.calculateRangeWithStrategy(
-        mockCarProfile, parameters, mockStrategy);
+    MockDcChargingUseCase useCaseMock = (MockDcChargingUseCase) mockUseCase;
+    assertTrue(useCaseMock.calculateCalled);
+    assertNotNull(useCaseMock.lastCommand);
+}
+
+// Mock-Implementierungen
+class MockUserInputPort implements UserInputPortInterface {
+    public boolean readDoubleCalled = false;
+    public double valueToReturn = 50.0;
     
-    // Ergebnis validieren
-    assertEquals(300.0, result.getEstimatedRangeKm(), 0.1);
-    assertEquals(20.0, result.getAverageConsumptionKwhPer100Km(), 0.1);
+    @Override
+    public double readDouble() {
+        readDoubleCalled = true;
+        return valueToReturn;
+    }
+    
+    // Weitere Mock-Methoden...
+}
+
+class MockUserOutputPort implements UserOutputPortInterface {
+    public boolean displayCalled = false;
+    public List<String> displayedMessages = new ArrayList<>();
+    
+    @Override
+    public void display(String message) {
+        displayCalled = true;
+        displayedMessages.add(message);
+    }
+    
+    // Weitere Mock-Methoden...
 }</code></pre>
-    <p>Ein fortgeschrittenes Inline-Mock einer Strategie mittels anonymer Implementierung</p>
 </section>
 
 <section>
-    <h3>Mock #2: Analyse</h3>
-    <div class="horizontal-container">
-        <div>
-            <h4>Einsatzzweck</h4>
-            <ul>
-                <li>Simulation einer Berechnungsstrategie für Tests im RangeCalculatorService</li>
-                <li>Implementiert das RangeCalculationStrategyInterface mit vollständig kontrolliertem Verhalten</li>
-                <li>Ermöglicht das Testen der Service-Methoden mit vorhersagbaren Ergebnissen</li>
-                <li>Demonstriert die Erweiterbarkeit durch das Strategy-Pattern</li>
-            </ul>
-        </div>
-        <div>
-            <h4>Vorteile</h4>
-            <ul>
-                <li>Inline-Definition für spezifische Testfälle ohne separate Klasse</li>
-                <li>Vorhersagbare Ergebnisse durch fest definierte Rückgabewerte</li>
-                <li>Verifikation der Strategy-Integration in den Service</li>
-                <li>Unterstützt Test der dynamischen Strategieerweiterung</li>
-                <li>Validierung der Adapterfunktionalität des Service gegenüber Strategien</li>
-                <li>Kontrolle des Verhaltens ohne komplexe Domain-Logik</li>
-            </ul>
-        </div>
-    </div>
-</section>
-
-<section>
-    <h3>Mock #2: UML Beziehungsdiagramm</h3>
-    <pre><code class="text">┌──────────────────────────┐         ┌────────────────────────┐
-│RangeCalculationStrategy  │         │RangeCalculatorService   │
-│Interface                 │◄────────┤-availableStrategies     │
-├──────────────────────────┤         │-defaultStrategy         │
-│+calculateRange()         │         ├────────────────────────┤
-│+getName()                │         │+calculateRange()        │
-│+getDescription()         │         │+addStrategy()           │
-└────────────┬─────────────┘         │+setDefaultStrategy()    │
-             ▲                       └────────────┬────────────┘
-             │implements                          ▲
-             │                                    │tested by
-┌────────────┴─────────────┐         ┌────────────┴────────────┐
-│Anonymous Implementation  │         │RangeCalculatorServiceTest│
-│(MockStrategy)            │         ├────────────────────────┤
-├──────────────────────────┤         │+testAddStrategy()       │
-│+calculateRange() {       │         │+testSetDefaultStrategy()│
-│  return new RangeResult()│         │+testCompareStrategies() │
-│}                         │         └────────────────────────┘
-└──────────────────────────┘</code></pre>
-    <p>Die anonyme Implementierung von RangeCalculationStrategyInterface wird verwendet, um den RangeCalculatorService isoliert zu testen.</p>
+    <h3>Test mit komplexerem Mock-Objekt</h3>
+    <pre><code class="java">@Test
+public void testExecuteActionInteractorWithMocks() {
+    // Komplexeres Setup mit mehreren zusammenarbeitenden Mocks
+    MockProfileSelectionService mockProfileService = new MockProfileSelectionService();
+    MockActionMenuView mockActionView = new MockActionMenuView();
+    MockDcChargingController mockDcController = new MockDcChargingController();
+    MockAcChargingController mockAcController = new MockAcChargingController();
+    MockRangeCalculationController mockRangeController = new MockRangeCalculationController();
+    
+    // Testprofile vorbereiten
+    CarProfile testProfile = new CarProfile.Builder()
+            .id("test-id")
+            .name("Test Car")
+            .manufacturer("Test Manufacturer")
+            .build();
+    mockProfileService.selectProfile(testProfile);
+    
+    // Interactor mit Mocks initialisieren
+    ExecuteActionInteractor interactor = new ExecuteActionInteractor(
+            mockProfileService,
+            mockActionView,
+            mockDcController,
+            mockAcController,
+            mockRangeController);
+    
+    // Verschiedene Aktionen testen
+    
+    // DC-Ladung (Aktion 1)
+    mockDcController.setReturnValue(true);
+    boolean dcResult = interactor.executeAction(1);
+    assertTrue(dcResult);
+    assertEquals(1, mockDcController.callCount);
+    assertEquals(0, mockAcController.callCount);
+    assertEquals(0, mockRangeController.callCount);
+    
+    // AC-Ladung (Aktion 2)
+    mockAcController.setReturnValue(true);
+    boolean acResult = interactor.executeAction(2);
+    assertTrue(acResult);
+    assertEquals(1, mockDcController.callCount);
+    assertEquals(1, mockAcController.callCount);
+    assertEquals(0, mockRangeController.callCount);
+    
+    // Ungültige Aktion
+    boolean invalidResult = interactor.executeAction(99);
+    assertFalse(invalidResult);
+    assertEquals(1, mockActionView.errorCount);
+}</code></pre>
 </section>

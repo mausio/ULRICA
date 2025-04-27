@@ -1,0 +1,126 @@
+@startuml DDD_Entity
+
+package "Domain Layer" {
+  class CarProfile {
+    -id: String
+    -name: String
+    -manufacturer: String
+    -model: String
+    -year: int
+    -hasHeatPump: boolean
+    -wltpRangeKm: double
+    -batteryProfile: BatteryProfile
+    -consumptionProfile: ConsumptionProfile
+    -chargingCurve: Optional<ChargingCurve>
+    +getId(): String
+    +getName(): String
+    +getManufacturer(): String
+    +getModel(): String
+    +equals(o: Object): boolean
+    +hashCode(): int
+  }
+  
+  class BatteryProfile
+  class ConsumptionProfile
+  class ChargingCurve
+  
+  class "CarProfile.Builder" as CarProfileBuilder {
+    -id: String
+    -name: String
+    -manufacturer: String
+    -model: String
+    -year: int
+    -hasHeatPump: boolean
+    -wltpRangeKm: double
+    -maxDcPowerKw: double
+    -maxAcPowerKw: double
+    -batteryProfile: BatteryProfile
+    -consumptionProfile: ConsumptionProfile
+    -chargingCurve: Optional<ChargingCurve>
+    +id(id: String): Builder
+    +name(name: String): Builder
+    +manufacturer(manufacturer: String): Builder
+    +model(model: String): Builder
+    +build(): CarProfile
+  }
+}
+
+package "Application Layer" {
+  class CreateCarProfileInteractor {
+    -persistencePort: CarProfilePersistencePortInterface
+    +createCarProfile(command: CreateCarProfileCommand): CarProfile
+  }
+  
+  interface CarProfilePersistencePortInterface {
+    +findById(id: String): Optional<CarProfile>
+    +findAll(): List<CarProfile>
+    +save(carProfile: CarProfile): CarProfile
+    +delete(id: String): void
+  }
+  
+  class DeleteCarProfileInteractor {
+    -persistencePort: CarProfilePersistencePortInterface
+    +deleteCarProfile(id: String): boolean
+  }
+  
+  interface ProfileSelectionService {
+    +getSelectedProfile(): CarProfile
+    +selectProfile(profile: CarProfile): void
+    +clearSelection(): void
+  }
+}
+
+package "Infrastructure Layer" {
+  class JsonCarProfileRepository {
+    -STORAGE_DIR: String
+    -FILE_NAME: String
+    -gson: Gson
+    -filePath: Path
+    +findById(id: String): Optional<CarProfile>
+    +findAll(): List<CarProfile>
+    +save(carProfile: CarProfile): CarProfile
+    +delete(id: String): void
+  }
+}
+
+' Relationships
+CarProfile *--> BatteryProfile
+CarProfile *--> ConsumptionProfile
+CarProfile o--> ChargingCurve
+CarProfile <.. CarProfileBuilder : builds
+
+CreateCarProfileInteractor --> CarProfilePersistencePortInterface : uses
+DeleteCarProfileInteractor --> CarProfilePersistencePortInterface : uses
+ProfileSelectionService --> CarProfile : references
+CarProfilePersistencePortInterface --> CarProfile : persists
+JsonCarProfileRepository ..|> CarProfilePersistencePortInterface : implements
+
+' Notes
+note right of CarProfile
+  Entity Characteristics:
+  - Has a unique identity (id)
+  - Lifecycle from creation to deletion
+  - Equality based on identity, not on attributes
+  - Mutable over time (through immutable instances)
+  - Tracked and persisted through repository
+end note
+
+note bottom of CarProfile
+  Equals and HashCode implementation:
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) 
+      return false;
+    CarProfile that = (CarProfile) o;
+    return Objects.equals(id, that.id);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
+end note
+
+@enduml 

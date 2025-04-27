@@ -1,0 +1,104 @@
+@startuml Adapter_Pattern
+
+package "Application Layer" {
+  interface UserInputPortInterface {
+    +readLine(): String
+    +readInt(): int
+    +readDouble(): double
+    +readBoolean(yesOption: String, noOption: String): boolean
+  }
+  
+  interface UserOutputPortInterface {
+    +display(message: String): void
+    +displayLine(message: String): void
+    +displayPrompt(prompt: String): void
+  }
+  
+  class UserInputService {
+    -userInputPort: UserInputPortInterface
+    -userOutputPort: UserOutputPortInterface
+    -validationService: InputValidationServiceInterface
+    +UserInputService(userInputPort: UserInputPortInterface, userOutputPort: UserOutputPortInterface, validationService: InputValidationServiceInterface)
+    +getValidatedTextInput(prompt: String, fieldName: String): String
+    +getValidatedIntInput(prompt: String, fieldName: String): int
+    +getValidatedDoubleInput(prompt: String, fieldName: String): double
+    +getBooleanInput(prompt: String): boolean
+    +selectBatteryType(): BatteryType
+  }
+  
+  class RangeCalculationController {
+    -calculateRangeUseCase: CalculateRangeUseCaseInterface
+    -userInputPort: UserInputPortInterface
+    -rangeCalculationView: RangeCalculationOutputPortInterface
+    +RangeCalculationController(calculateRangeUseCase: CalculateRangeUseCaseInterface, userInputPort: UserInputPortInterface, rangeCalculationView: RangeCalculationOutputPortInterface)
+    +processRangeCalculation(): boolean
+  }
+}
+
+package "Infrastructure Layer" {
+  class ConsoleUserInputAdapter {
+    -scanner: Scanner
+    +ConsoleUserInputAdapter(scanner: Scanner)
+    +readLine(): String
+    +readInt(): int
+    +readDouble(): double
+    +readBoolean(yesOption: String, noOption: String): boolean
+  }
+  
+  class ConsoleUserOutputAdapter {
+    +display(message: String): void
+    +displayLine(message: String): void
+    +displayPrompt(prompt: String): void
+  }
+  
+  class Scanner
+}
+
+package "External Systems" {
+  class "java.util.Scanner" as JavaScanner
+  class "System.out" as SystemOut
+}
+
+' Relationships
+UserInputPortInterface <|.. ConsoleUserInputAdapter : implements
+UserOutputPortInterface <|.. ConsoleUserOutputAdapter : implements
+
+UserInputService --> UserInputPortInterface : depends on
+UserInputService --> UserOutputPortInterface : depends on
+RangeCalculationController --> UserInputPortInterface : depends on
+
+ConsoleUserInputAdapter --> Scanner : adapts
+ConsoleUserOutputAdapter --> SystemOut : adapts
+
+' Notes
+note right of UserInputPortInterface
+  Target Interface (Input):
+  - Defines the domain-specific interface for input operations
+  - Part of the application layer
+  - Abstracts the input mechanism from the business logic
+end note
+
+note right of UserOutputPortInterface
+  Target Interface (Output):
+  - Defines the domain-specific interface for output operations
+  - Part of the application layer
+  - Abstracts the output mechanism from the business logic
+end note
+
+note bottom of ConsoleUserInputAdapter
+  Adapter (Input):
+  - Implements the domain-specific UserInputPortInterface
+  - Adapts java.util.Scanner (adaptee) to the required interface
+  - Handles input conversion and error scenarios
+end note
+
+note bottom of ConsoleUserOutputAdapter
+  Adapter (Output):
+  - Implements the domain-specific UserOutputPortInterface
+  - Adapts System.out (adaptee) to the required interface
+  - Maps domain messages to console output format
+end note
+
+note "The Adapter Pattern decouples\nthe application from external\ninput/output mechanisms,\nmaking it more maintainable,\ntestable and flexible" as N1
+
+@enduml 
