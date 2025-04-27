@@ -25,7 +25,7 @@
 
 	code {
 		border-radius: 5px;
-		font-size: 1rem !important;
+		font-size: 0.9rem !important;
 	}
 
 
@@ -222,7 +222,7 @@
 
 				<section>
 					<h3>Übersicht über die Applikation (1P)</h3>
-					<p class="subchapter">Was macht die Applikation? Wie funktioniert sie? Welches Problem löst sie?</p>
+					<p class="subchapter">Was macht die Applikation? Wie funktioniert sie? Welches Problem löst sie/welchen Zweck hat sie?</p>
 				</section>
 
 				<section>
@@ -303,7 +303,7 @@
 
 				<section>
 					<h3>Starten der Applikation (1P)</h3>
-					<p class="subchapter">Was brauche ich? Wie startet man die Applikation?</p>
+					<p class="subchapter">Wie startet man die Applikation? Was für Voraussetzungen werden benötigt? Schritt-für-Schritt-Anleitung</p>
 				</section>
 				<section>
 					<h3>Voraussetzungen:</h3>
@@ -367,7 +367,7 @@
 
 				<section>
 					<h3>Technischer Überblick (2P)</h3>
-					<p class="subchapter">Welche Technologien? Welche Architektur?</p>
+					<p class="subchapter">Nennung und Erläuterung der Technologien (z.B. Java, MySQL, …), jeweils Begründung für den Einsatz der Technologien</p>
 				</section>
 				<section>
 					<h3>Technologien: Überblick</h3>
@@ -672,6 +672,7 @@ jobs:
 
 				<section>
 					<h3>Gewählte Architektur (4P)</h3>
+					<p class="subchapter">In der Vorlesung wurden Softwarearchitekturen vorgestellt. Welche Architektur wurde davon umgesetzt? Analyse und Begründung inkl. UML der wichtigsten Klassen, sowie Einordnung dieser Klassen in die gewählte Architektur</p>
 				</section>
 
 				<section>
@@ -727,8 +728,8 @@ jobs:
 								<li>Abhängigkeiten zeigen immer nach innen</li>
 							</ul>
 						</div>
-						<img style="overflow: scroll; scale: 1.1; justify-self: center; align-self: center;" src="./assets/UMLs-imgs/clean_arch.svg"
-							alt="ULRICA Clean Architecture" class="uml-image">
+						<img style="overflow: scroll; scale: 1.1; justify-self: center; align-self: center;"
+							src="./assets/UMLs-imgs/clean_arch.svg" alt="ULRICA Clean Architecture" class="uml-image">
 					</div>
 				</section>
 
@@ -742,50 +743,71 @@ jobs:
 
 				<section>
 					<h3>
-						Clean Architecture: <br/> Analyse u. Begründung
+						Clean Architecture: <br /> Analyse u. Begründung
 					</h3>
 				</section>
 
 				<section>
 					<h3>Domain Layer</h3>
-					<p class="subchapter">Der Domain Layer ist das <strong>Herzstück der Clean Architecture</strong> und enthält die gesamte Geschäftslogik ohne externe Abhängigkeiten</p>
+					<p class="subchapter">Der Domain Layer ist das <strong>Herzstück der Clean Architecture</strong> und
+						enthält die gesamte Geschäftslogik ohne externe Abhängigkeiten</p>
 					<ul>
-						<li><strong>CarProfile</strong> (Entity): Kernentität, die ein Car mit seinen Eigenschaften repräsentiert</li>
-						<li><strong>BatteryProfile</strong> (Value Object): Immutable Objekt, das die Batterieeigenschaften eines Fahrzeugs beschreibt</li>
-						<li><strong>ConsumptionProfile</strong> (Value Object): Kapselt Verbrauchsdaten und Verbrauchfaktoren des Fahrzeugs ab</li>
-						<li><strong>RangeCalculatorService</strong> (Service): Berechnet die Reichweite basierend auf verschiedenen Strategien</li>
-						<li><strong>RangeCalculationStrategyInterface</strong>: Definiert die Schnittstelle für verschiedene Berechnungsalgorithmen</li>
+						<li><strong>CarProfile</strong> (Entity): Kernentität, die ein Car mit seinen Eigenschaften
+							repräsentiert</li>
+						<li><strong>BatteryProfile</strong> (Value Object): Immutable Objekt, das die
+							Batterieeigenschaften eines Fahrzeugs beschreibt</li>
+						<li><strong>ConsumptionProfile</strong> (Value Object): Kapselt Verbrauchsdaten und
+							Verbrauchfaktoren des Fahrzeugs ab</li>
+						<li><strong>RangeCalculatorService</strong> (Service): Berechnet die Reichweite basierend auf
+							verschiedenen Strategien</li>
+						<li><strong>RangeCalculationStrategyInterface</strong>: Definiert die Schnittstelle für
+							verschiedene Berechnungsalgorithmen</li>
 					</ul>
 				</section>
 
 				<section>
 					<h3>Application Layer</h3>
-					<p class="subchapter">Der Application Layer implementiert <strong>Use Cases</strong> und definiert <strong>Ports</strong>. Die Klassen orchestrieren Domänenobjekte, ohne direkten Zugriff auf die Infrastruktur, was dadurch die <strong>Dependency Rule</strong> einhäl</p>
+					<p class="subchapter">Der Application Layer implementiert <strong>Use Cases</strong> und definiert
+						<strong>Ports</strong>. Die Klassen orchestrieren Domänenobjekte, ohne direkten Zugriff auf die
+						Infrastruktur, was dadurch die <strong>Dependency Rule</strong> einhäl
+					</p>
 					<ul>
-						<li><strong>CalculateRangeUseCaseInterface</strong> (Port): Definiert die Schnittstelle für den Anwendungsfall der Reichweitenberechnung</li>
-						<li><strong>CalculateRangeInteractor</strong> (Use Case): Implementiert die Geschäftslogik für die Reichweitenberechnung</li>
-						<li><strong>CarProfilePersistencePortInterface</strong> (Port): Abstrahiert die Datenpersistenz für Fahrzeugprofile</li>
-						<li><strong>NavigationUseCase</strong> (Use Case): Steuert die Navigationslogik und Routenplanung</li>
+						<li><strong>CalculateRangeUseCaseInterface</strong> (Port): Definiert die Schnittstelle für den
+							Anwendungsfall der Reichweitenberechnung</li>
+						<li><strong>CalculateRangeInteractor</strong> (Use Case): Implementiert die Geschäftslogik für
+							die Reichweitenberechnung</li>
+						<li><strong>CarProfilePersistencePortInterface</strong> (Port): Abstrahiert die Datenpersistenz
+							für Fahrzeugprofile</li>
+						<li><strong>NavigationUseCase</strong> (Use Case): Steuert die Navigationslogik und
+							Routenplanung</li>
 					</ul>
 				</section>
 
 				<section>
 					<h3>Infrastructure Layer</h3>
-					<p class="subchapter">Der Infrastructure Layer implementiert <strong>konkrete Adapter</strong> für externe Systeme. Diese Klassen sind austauschbar ohne Änderungen an inneren Schichten, was wichtig für e.g. <strong>OCP</strong> wichtig ist.</p>
+					<p class="subchapter">Der Infrastructure Layer implementiert <strong>konkrete Adapter</strong> für
+						externe Systeme. Diese Klassen sind austauschbar ohne Änderungen an inneren Schichten, was
+						wichtig für e.g. <strong>OCP</strong> wichtig ist.</p>
 					<ul>
-						<li><strong>JsonCarProfileRepository</strong>: Implementiert die Persistenz von Fahrzeugprofilen als JSON-Dateien</li>
+						<li><strong>JsonCarProfileRepository</strong>: Implementiert die Persistenz von Fahrzeugprofilen
+							als JSON-Dateien</li>
 						<li><strong>ConsoleUserInputAdapter</strong>: Verarbeitet Benutzereingaben über die Konsole</li>
-						<li><strong>ConsoleUserOutputAdapter</strong>: Zeigt Ausgaben und Ergebnisse in der Konsole an</li>
+						<li><strong>ConsoleUserOutputAdapter</strong>: Zeigt Ausgaben und Ergebnisse in der Konsole an
+						</li>
 						<li><strong>ValidationUtils</strong>: Hilfsmethoden zur Validierung von Eingabedaten</li>
 					</ul>
 				</section>
 
 				<section>
 					<h3>Presentation Layer</h3>
-					<p class="subchapter">Der Presentation Layer kapselt die Benutzerinteraktion. Diese Klassen kommunizieren nur über definierte Schnittstellen mit inneren Schichten, was eine <strong>klare Trennung von UI und Geschäftslogik</strong> gewährleistet</p>
+					<p class="subchapter">Der Presentation Layer kapselt die Benutzerinteraktion. Diese Klassen
+						kommunizieren nur über definierte Schnittstellen mit inneren Schichten, was eine <strong>klare
+							Trennung von UI und Geschäftslogik</strong> gewährleistet</p>
 					<ul>
-						<li><strong>ApplicationControllerWithActionMenu</strong>: Hauptcontroller, der die verschiedenen Aktionen der Anwendung steuert</li>
-						<li><strong>RangeCalculationController</strong>: Spezialisierter Controller für die Reichweitenberechnung</li>
+						<li><strong>ApplicationControllerWithActionMenu</strong>: Hauptcontroller, der die verschiedenen
+							Aktionen der Anwendung steuert</li>
+						<li><strong>RangeCalculationController</strong>: Spezialisierter Controller für die
+							Reichweitenberechnung</li>
 						<li><strong>ActionMenuView</strong>: Stellt das Hauptmenü der Anwendung dar</li>
 						<li><strong>CarProfileView</strong>: Visualisiert die Fahrzeugprofile und deren Details</li>
 					</ul>
@@ -793,64 +815,99 @@ jobs:
 
 				<section>
 					<h3>Domain Code (1P)</h3>
-					<p>Domain Code ist der zentrale Teil der Anwendung, der:</p>
+					<p class="subchapter">Kurze Erläuterung in eigenen Worten, was Domain Code ist – 1 Beispiel im Code zeigen, das bisher noch nicht gezeigt wurde.</p>
 					<ul>
-						<li>Die Fachlogik der Domäne (Geschäftsregeln) abbildet</li>
-						<li>Unabhängig von externen Systemen (Datenbank, UI) funktioniert</li>
-						<li>Die Kernkonzepte der Anwendung definiert</li>
-						<li>Keine Abhängigkeiten zu anderen Schichten hat</li>
-						<li>Idealerweise ausschließlich die Standardbibliothek nutzt</li>
+						<li>Bildet die Fachlogik der Domäne (Geschäftsregeln) ab</li>
+						<li>Modelliert Prozesse, Regeln und Datenstrukturen</li>
+						<li>Unabhängig von externen Systemen (Datenbank, UI, Frameworks,...)</li>
+						<li>Bleibt Stabil bei Änderung (an Technologien)</li>
+						<li>Domäne orientiert (Entity, Valueobject, Aggregate)</li>
+						<li>Bleibt fachlich und ist frei von Presentation- und Persistenzlogik (siehe Domainlayer)</li>
 					</ul>
 				</section>
 
 				<section>
 					<h3>Beispiel Domain Code: RangeCalculatorService</h3>
-					<pre><code class="java">public class RangeCalculatorService {
-					private final List<RangeCalculationStrategyInterface> strategies;
-					private RangeCalculationStrategyInterface defaultStrategy;
-				
-					public RangeCalculatorService() {
-						this.strategies = new ArrayList<>();
-						
-						// Initialize with standard strategies
-						WltpBasedRangeCalculationStrategy wltpStrategy = 
-							new WltpBasedRangeCalculationStrategy();
-						ConsumptionBasedRangeCalculationStrategy consumptionStrategy = 
-							new ConsumptionBasedRangeCalculationStrategy();
-						
-						this.strategies.add(wltpStrategy);
-						this.strategies.add(consumptionStrategy);
-						
-						// Set default strategy
-						this.defaultStrategy = consumptionStrategy;
-					}
-					
-					public RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters) {
-						Objects.requireNonNull(carProfile, "Car profile cannot be null");
-						Objects.requireNonNull(parameters, "Range parameters cannot be null");
-						
-						return defaultStrategy.calculateRange(carProfile, parameters);
-					}
-				}</code></pre>
+					<pre><code class="java" >public class RangeCalculatorService { // Reichweitenberechnung innerhalb der Domäne
+	private final List<RangeCalculationStrategyInterface> strategies; // Hält verschiedene fachliche Berechnungsstrategien
+	private RangeCalculationStrategyInterface defaultStrategy; // Definiert, welche Strategie standardmäßig verwendet wird
+
+	public RangeCalculatorService() { // wird direkt mit zwei vordefinierten Strategien gestartet
+		this.strategies = new ArrayList<>();
+		
+		WltpBasedRangeCalculationStrategy wltpStrategy = new WltpBasedRangeCalculationStrategy(); // Strategie basierend auf WLTP-Standard
+		ConsumptionBasedRangeCalculationStrategy consumptionStrategy = new ConsumptionBasedRangeCalculationStrategy(); // Strategie basierend auf realem Verbrauch
+
+		this.strategies.add(wltpStrategy); // Beide Strategien werden in die Domain-intern verfügbare Liste aufgenommen
+		this.strategies.add(consumptionStrategy);
+
+		this.defaultStrategy = consumptionStrategy; // Standardmäßig wird die Verbrauchsstrategie für Berechnungen genutzt
+	}
+	
+	public void addStrategy(RangeCalculationStrategyInterface strategy) { // neue Strategien werden fachlich verfügbar gemacht
+		Objects.requireNonNull(strategy, "Strategy cannot be null"); // Eine Strategie muss immer gültig sein
+		strategies.add(strategy); // Neue Strategie wird der Liste hinzugefügt
+	}
+	
+	public void setDefaultStrategy(RangeCalculationStrategyInterface strategy) { // Hier kann eine andere Standardstrategie gesetzt werden
+		Objects.requireNonNull(strategy, "Strategy cannot be null"); // Die Strategie darf nicht null sein
+		if (!strategies.contains(strategy)) { // Falls sie noch nicht bekannt ist, wird sie aufgenommen
+			strategies.add(strategy);
+		}
+		this.defaultStrategy = strategy; // Danach wird sie als neue Standardstrategie gespeichert
+	}
+	
+	public List<RangeCalculationStrategyInterface> getAvailableStrategies() { // Gibt alle aktuell verfügbaren Strategien der Domäne zurück
+		return new ArrayList<>(strategies); // Liefert eine Kopie, damit die interne Liste geschützt bleibt
+	}
+	
+	public RangeCalculationStrategyInterface getDefaultStrategy() { // Gibt die aktuelle Standardstrategie zurück
+		return defaultStrategy;
+	}
+	
+	public RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters) { // Berechnet die Reichweite basierend auf dem Fahrzeugprofil und Standardstrategie
+		Objects.requireNonNull(carProfile, "Car profile cannot be null"); // Ein Fahrzeugprofil ist zwingend notwendig
+		Objects.requireNonNull(parameters, "Range parameters cannot be null"); // Auch die Parameter müssen angegeben sein
+		
+		return defaultStrategy.calculateRange(carProfile, parameters); // Übergibt die Berechnung an die Standardstrategie
+	}
+	
+	public RangeResult calculateRangeWithStrategy(CarProfile carProfile, RangeParameters parameters, RangeCalculationStrategyInterface strategy) { // Alternativ kann eine konkrete Strategie verwendet werden
+		Objects.requireNonNull(carProfile, "Car profile cannot be null"); // Fahrzeugprofil darf nicht fehlen
+		Objects.requireNonNull(parameters, "Range parameters cannot be null"); // Parameter dürfen nicht fehlen
+		Objects.requireNonNull(strategy, "Strategy cannot be null"); // Auch die Strategie muss vorhanden sein
+		
+		return strategy.calculateRange(carProfile, parameters); // Übergibt die Berechnung an die angegebene Strategie
+	}
+}</code></pre>
 				</section>
 
 				<section>
-					<h3>Analyse der Domain-Schicht</h3>
+					<h3>Analyse des Domain Codes</h3>
 					<ul>
-						<li>Enthält reine Java-Klassen, keine externen Frameworks</li>
-						<li>Domänenlogik kann unabhängig getestet werden</li>
-						<li>Verwendung von Design Patterns (Strategy, Builder)</li>
-						<li>Value Objects für immutable Datenstrukturen</li>
-						<li>Strikte Validierung von Eingabeparametern</li>
-						<li>Kapselung von Geschäftsregeln in spezialisierten Services</li>
+						<li>Service kapselt reine Fachlogik zur Reichweitenberechnung</li>
+						<li>Strategien sind fachliche Varianten zur Reichweitenermittlung</li>
+						<li>Keine technische Infrastruktur wie DB, API oder UI enthalten</li>
+						<li>Arbeitet nur mit Domain-spezifischen Typen (CarProfile, RangeParameters)</li>
+						<li>Erweiterbarkeit durch neue Strategien innerhalb der Domäne möglich</li>
+						<li>Berechnungen (calculateRange) folgen direkt fachlichen Regeln</li>
 					</ul>
 				</section>
 
 				<section>
 					<h3>Analyse der Dependency Rule (3P)</h3>
-					<p>Die <b>Dependency Rule</b> ist eine zentrale Säule der Clean Architecture:</p>
+					<p class="subchapter">In der Vorlesung wurde im Rahmen der ‘Clean Architecture’ die s.g. Dependency
+						Rule vorgestellt. Je 1 Klasse zeigen, die die Dependency Rule einhält und 1 Klasse, die die
+						Dependency Rule verletzt; jeweils UML (mind. die betreffende Klasse inkl. der Klassen, die von
+						ihr abhängen bzw. von der sie abhängt) und Analyse der Abhängigkeiten in beide Richtungen (d.h.,
+						von wem hängt die Klasse ab und wer hängt von der Klasse ab) in Bezug auf die Dependency Rule
+					</p>
+				</section>
+
+				<section>
+					<h3>Analyse der Dependency Rule </h3>
 					<ul>
-						<li>Die Abhängigkeiten dürfen nur nach innen, zum Zentrum der Architektur zeigen</li>
+						<li>Die Abhängigkeiten zeigen nur zum Zentrum der Architektur (größtenteils)</li>
 						<li>Innere Schichten (Domain) dürfen nichts über äußere Schichten wissen</li>
 						<li>Äußere Schichten (Infrastruktur) dürfen von inneren abhängen</li>
 						<li>Die Abstraktionen (Interfaces) gehören zur inneren Schicht</li>
