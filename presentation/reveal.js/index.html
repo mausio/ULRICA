@@ -172,7 +172,7 @@
 	}
 
 	.subchapter {
-		color: #666;
+		color: rgb(179, 177, 195);
 		font-size: 1.8rem;
 		margin-top: 1rem;
 		font-style: italic;
@@ -1050,8 +1050,478 @@ jobs:
 			<!-- <section data-include="slides/kapitel-3.html"></section>
 			<section data-include="slides/kapitel-4.html"></section>
 			<section data-include="slides/kapitel-5.html"></section>
-			<section data-include="slides/kapitel-6.html"></section>
-			<section data-include="slides/kapitel-7.html"></section> -->
+			<section data-include="slides/kapitel-6.html"></section> -->
+
+			<section>
+				<section>
+					<h2 class="chapter-title">Kapitel 7:<br />Refactoring (8P)</h2>
+				</section>
+
+				<section>
+					<h3 class="subchapter">Inhalt des Kapitels</h3>
+					<div class="horizontal-spaced-container"
+						style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 50px;">
+						<div>
+							<h4>1. Code Smells (2P)</h4>
+							<ul>
+								<li>Lange Methode in "RangeCalculationController"</li>
+								<li>Duplizierter Code in "Charging Calculators"</li>
+							</ul>
+						</div>
+						<div>
+							<h4>2. Refactorings (6P)</h4>
+							<ul>
+								<li>"Extract Method"</li>
+								<li>Ersetzen von Conditionals mit Polymorphism</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Code Smells (2p)</h3>
+					<p class="subchapter">Jeweils 1 Code-Beispiel zu 2 unterschiedlichen Code Smells (die benannt werden
+						müssen) aus der
+						Vorlesung; jeweils Code-Beispiel und einen möglichen Lösungsweg bzw. den genommen Lösungsweg
+						beschreiben (inkl.
+						(Pseudo-)Code)</p>
+				</section>
+
+				<section>
+					<h4>Code Smell 1: Lange Methode</h4>
+					<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">/* public class RangeCalculationController {
+			private final CalculateRangeUseCaseInterface calculateRangeUseCase;
+			private final UserInputPortInterface userInputPort;
+			private final RangeCalculationOutputPortInterface outputPort;
+			
+			public RangeCalculationController(
+					CalculateRangeUseCaseInterface calculateRangeUseCase,
+					UserInputPortInterface userInputPort,
+					RangeCalculationOutputPortInterface outputPort) {
+				this.calculateRangeUseCase = Objects.requireNonNull(calculateRangeUseCase, "Calculate range use case cannot be null");
+				this.userInputPort = Objects.requireNonNull(userInputPort, "User input port cannot be null");
+				this.outputPort = Objects.requireNonNull(outputPort, "Output port cannot be null");
+			} */
+			
+			public boolean processRangeCalculation() {
+				try {
+					outputPort.showRangeCalculationHeader();
+					
+					TerrainType terrain = getTerrainType();
+					WeatherType weather = getWeatherType();
+					double temperature = getTemperature();
+					DrivingEnvironment environment = getDrivingEnvironment();
+					double stateOfCharge = getStateOfCharge();
+					EfficiencyMode efficiencyMode = getEfficiencyMode();
+					
+					return calculateRangeUseCase.calculateRange(
+							terrain,
+							weather,
+							temperature,
+							environment,
+							efficiencyMode,
+							stateOfCharge
+					);
+				} catch (Exception e) {
+					outputPort.showError("An error occurred: " + e.getMessage());
+					return false;
+				}
+	}
+/*...</code></pre>
+				</section>
+
+				<section>
+					<h3>Code Smell 1: Analyse</h3>
+					<ul>
+						<li>Die Methode ist zu lang und komplex -> Unübersichtlich</li>
+						<li>Viele verschiedene Verantwortlichkeiten in einer Methode</li>
+						<li>Schlechte Lesbarkeit und Wartbarkeit</li>
+						<li>Schwer zu testen</li>
+						<li>Verletzt das Single Responsibility Principle</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Code Smell 1: Lösungsvorschlag</h3>
+					<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">public boolean processRangeCalculation() {
+	try {
+		outputPort.showRangeCalculationHeader(); // Ausgabe eines Headers vor der Berechnung
+
+		RangeParameters parameters = collectRangeParameters(); // Sammeln aller Eingabewerte in ein Objekt
+		return calculateRangeUseCase.calculateRange(parameters); // Aufruf der Reichweitenberechnung mit Parametern
+
+	} catch (InvalidInputException e) {
+		outputPort.showError("Invalid input: " + e.getMessage()); // Ausgabe eines Fehlers bei ungültiger Eingabe
+		return false;
+	} catch (Exception e) {
+		outputPort.showError("Unexpected error: " + e.getMessage()); // Allgemeine Fehlerbehandlung
+		return false;
+	}
+}
+
+private RangeParameters collectRangeParameters() {
+	return new RangeParameters(
+		getTerrainType(),          // Ermittlung des Geländetyps
+		getWeatherType(),          // Ermittlung der Wetterbedingungen
+		getTemperature(),          // Abfrage der aktuellen Temperatur
+		getDrivingEnvironment(),   // Ermittlung der Fahrumgebung
+		getEfficiencyMode(),       // Auswahl des Effizienzmodus
+		getStateOfCharge()         // Abfrage des aktuellen Ladezustands
+	);
+}
+</code></pre>
+				</section>
+
+
+				<section>
+					<h3>Code Smell 2: Duplicate Code</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">// DcChargingCalculator
+private double calculateTemperatureEfficiencyFactor(double batteryTemperatureCelsius) {
+	if (batteryTemperatureCelsius < MIN_BATTERY_TEMPERATURE || 
+		batteryTemperatureCelsius > MAX_BATTERY_TEMPERATURE) {
+		return 0.0;
+	}
+	
+	if (batteryTemperatureCelsius >= OPTIMAL_TEMPERATURE_MIN && 
+		batteryTemperatureCelsius <= OPTIMAL_TEMPERATURE_MAX) {
+		return 1.0;
+	}
+	
+	if (batteryTemperatureCelsius < OPTIMAL_TEMPERATURE_MIN) {
+		return 0.5 + 0.5 * (batteryTemperatureCelsius - MIN_BATTERY_TEMPERATURE) / 
+			(OPTIMAL_TEMPERATURE_MIN - MIN_BATTERY_TEMPERATURE);
+	} else {
+		return 0.5 + 0.5 * (MAX_BATTERY_TEMPERATURE - batteryTemperatureCelsius) / 
+			(MAX_BATTERY_TEMPERATURE - OPTIMAL_TEMPERATURE_MAX);
+	}
+}
+
+// AcChargingCalculator
+private double calculateTemperatureEfficiency(double ambientTemperatureCelsius) {
+	if (ambientTemperatureCelsius < MIN_BATTERY_TEMPERATURE || 
+		ambientTemperatureCelsius > MAX_BATTERY_TEMPERATURE) {
+		return 0.0;
+	}
+	
+	if (ambientTemperatureCelsius >= OPTIMAL_TEMPERATURE_MIN && 
+		ambientTemperatureCelsius <= OPTIMAL_TEMPERATURE_MAX) {
+		return 1.0;
+	}
+	
+	if (ambientTemperatureCelsius < OPTIMAL_TEMPERATURE_MIN) {
+		return 0.7 + 0.3 * (ambientTemperatureCelsius - MIN_BATTERY_TEMPERATURE) / 
+			(OPTIMAL_TEMPERATURE_MIN - MIN_BATTERY_TEMPERATURE);
+	} else {
+		return 0.7 + 0.3 * (MAX_BATTERY_TEMPERATURE - ambientTemperatureCelsius) / 
+			(MAX_BATTERY_TEMPERATURE - OPTIMAL_TEMPERATURE_MAX);
+	}
+}</code></pre>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Code Smell 2: Analyse</h3>
+					<ul>
+						<li>Fast identischer Code in beiden Klassen (DC & AC Charging Calculators)</li>
+						<li>Nur minimale Unterschiede in den Konstanten (0.5 vs 0.7)</li>
+						<li>Verletzt das DRY-Prinzip (Don't Repeat Yourself)</li>
+						<li>Schwer zu warten bei Änderungen</li>
+						<li>Fehleranfällig bei Updates</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Code Smell 2: Lösungsvorschlag</h3>
+					<p class="subchapter">Logik kombinieren durch Berechnung</p>
+					<pre><code class="java">public class TemperatureEfficiencyCalculator {
+	private final double minEfficiency;
+	private final double maxEfficiency;
+	
+	public TemperatureEfficiencyCalculator(double minEfficiency, double maxEfficiency) {
+		this.minEfficiency = minEfficiency;
+		this.maxEfficiency = maxEfficiency;
+	}
+	
+	public double calculateEfficiency(double temperature) {
+		if (temperature < MIN_BATTERY_TEMPERATURE || 
+			temperature > MAX_BATTERY_TEMPERATURE) {
+			return 0.0;
+		}
+		
+		if (temperature >= OPTIMAL_TEMPERATURE_MIN && 
+			temperature <= OPTIMAL_TEMPERATURE_MAX) {
+			return 1.0;
+		}
+		
+		if (temperature < OPTIMAL_TEMPERATURE_MIN) {
+			return minEfficiency + (maxEfficiency - minEfficiency) * 
+				(temperature - MIN_BATTERY_TEMPERATURE) / 
+				(OPTIMAL_TEMPERATURE_MIN - MIN_BATTERY_TEMPERATURE);
+		} else {
+			return minEfficiency + (maxEfficiency - minEfficiency) * 
+				(MAX_BATTERY_TEMPERATURE - temperature) / 
+				(MAX_BATTERY_TEMPERATURE - OPTIMAL_TEMPERATURE_MAX);
+		}
+	}
+}</code></pre>
+				</section>
+
+
+				<section>
+					<h3>Refactorings (2p)</h3>
+					<p class="subchapter">2 unterschiedliche Refactorings aus der Vorlesung jeweils benennen, anwenden,
+						begründen, sowie UML vorher/nachher liefern; jeweils auf die Commits verweisen – die
+						Refactorings dürfen sich nicht mit den Beispielen der Code Smells überschneiden</p>
+				</section>
+
+
+				<section>
+					<h3>Refactoring 1: Code</h3>
+					<p class="subchapter">Extrahieren der Parameter-Erfassung in eine separate Methode (commit a5638e0)
+					</p>
+					<div class="horizontal-spaced-container" style="gap: 20px;">
+						<div style="width: 50%;">
+							<h5>Vorher</h5>
+							<pre
+								style="width: 550px; height: 450px; overflow: hidden; position: relative; right: 80px;"><code class="java">public boolean processRangeCalculation() {
+					try {
+						outputPort.showRangeCalculationHeader();
+						
+						TerrainType terrain = getTerrainType();
+						WeatherType weather = getWeatherType();
+						double temperature = getTemperature();
+						DrivingEnvironment environment = getDrivingEnvironment();
+						double stateOfCharge = getStateOfCharge();
+						EfficiencyMode efficiencyMode = getEfficiencyMode();
+						
+						return calculateRangeUseCase.calculateRange(
+								terrain,
+								weather,
+								temperature,
+								environment,
+								efficiencyMode,
+								stateOfCharge
+						);
+					} catch (Exception e) {
+						outputPort.showError("An error occurred: " + e.getMessage());
+						return false;
+					}
+				}</code></pre>
+						</div>
+						<div style="width: 50%;">
+							<h5>Nachher</h5>
+							<pre style="width: 550px; height: 450px; overflow: hidden;"><code class="java">public boolean processRangeCalculation() {
+					try {
+						outputPort.showRangeCalculationHeader();
+						RangeParameters parameters = collectRangeParameters();
+						return calculateRangeUseCase.calculateRange(parameters);
+					} catch (Exception e) {
+						outputPort.showError("An error occurred: " + e.getMessage());
+						return false;
+					}
+				}
+				
+				private RangeParameters collectRangeParameters() {
+					TerrainType terrain = getTerrainType();
+					WeatherType weather = getWeatherType();
+					double temperature = getTemperature();
+					DrivingEnvironment environment = getDrivingEnvironment();
+					double stateOfCharge = getStateOfCharge();
+					EfficiencyMode efficiencyMode = getEfficiencyMode();
+					
+					return new RangeParameters(
+						terrain,
+						weather,
+						temperature,
+						environment,
+						efficiencyMode,
+						stateOfCharge
+					);
+				}</code></pre>
+						</div>
+					</div>
+				</section>
+
+
+				<section>
+					<h3>Refactoring 1: Erklärung</h3>
+					<div class="horizontal-spaced-container">
+						<div style="width: 50%;">
+							<h4>Vorteile</h4>
+							<ul>
+								<li>Bessere Wartbarkeit durch modularen Code</li>
+								<li>Einfachere Testbarkeit durch isolierte Funktionalität</li>
+								<li>Reduzierte Komplexität in der Hauptmethode</li>
+								<li>Einhaltung des <strong>Single Responsibility Principle (SRP)</strong> durch klare Trennung
+									der Verantwortlichkeiten</li>
+								<li>Einhaltung des <strong>Don't Repeat Yourself (DRY)</strong> Prinzips durch Vermeidung von
+									Code-Duplikation</li>
+							</ul>
+						</div>
+						<div style="width: 50%;">
+							<h4>Änderungen</h4>
+							<ul>
+								<li>Extraktion der Parameter-Erfassung in separate Methode <code>collectRangeParameters()</code></li>
+								<li>Einführung einer neuen Klasse <code>RangeParameters</code> zur Kapselung der Parameter</li>
+								<li>Vereinfachung der Hauptmethode <code>processRangeCalculation()</code></li>
+								<li>Reduzierung der Parameteranzahl im Use Case Interface</li>
+								<li>Verbesserte Lesbarkeit durch klare Trennung von Parameter-Erfassung und Geschäftslogik</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Refactoring 1: UML-Diagramme</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<h5>Vorher</h5>
+							<img style="scale: 1.35; position:  relative; right: 55px;"
+								src="assets/UMLs-imgs/refactoring1_before.puml.png" alt="Extract Method UML Before"
+								class="uml-image">
+						</div>
+						<div>
+							<h5>Nachher</h5>
+							<img style="scale: 1.35; position:  relative; left: 50px;"
+								src="assets/UMLs-imgs/refactoring1_after.puml.png" alt="Extract Method UML After"
+								class="uml-image">
+						</div>
+					</div>
+				</section>
+
+
+				<section>
+					<h3>Refactoring 2: Code</h3>
+					<p class="subchapter">Ersetzen der Logik in den ChargingCalculators durch Polymorphie
+						(943b4c7)</p>
+					<div  class="horizontal-spaced-container">
+						<div style="width: 50%;">
+							<h5>Vorher</h5>
+							<pre style="width: 550px; height: 450px; overflow: hidden; position: relative; right: 80px;"><code class="java">public class DcChargingCalculator {
+					private double calculatePowerReductionPercent(double startingSocPercent, double targetSocPercent) {
+						if (targetSocPercent > 80) {
+							return 60.0;
+						} else if (targetSocPercent > 60) {
+							return 30.0;
+						} else {
+							return 5.0;
+						}
+					}
+				}
+				
+				public class AcChargingCalculator {
+					private double calculateEfficiencyLoss(int connectorType) {
+						switch (connectorType) {
+							case HOUSEHOLD_SOCKET:
+								return 0.1;
+							case CAMPING_SOCKET:
+								return 0.07;
+							case WALLBOX:
+								return 0.05;
+							default:
+								throw new IllegalArgumentException("Invalid connector type: " + connectorType);
+						}
+					}
+				}</code></pre>
+						</div>
+						<div style="width: 50%;">
+							<h5>Nachher</h5>
+							<pre style="width: 550px; height: 450px; overflow: hidden;"><code class="java">public interface ChargingStrategy {
+					double calculateEfficiency();
+				}
+				
+				public class HouseholdSocketStrategy implements ChargingStrategy {
+					@Override
+					public double calculateEfficiency() {
+						return 0.1;
+					}
+				}
+				
+				public class CampingSocketStrategy implements ChargingStrategy {
+					@Override
+					public double calculateEfficiency() {
+						return 0.07;
+					}
+				}
+				
+				public class WallboxStrategy implements ChargingStrategy {
+					@Override
+					public double calculateEfficiency() {
+						return 0.05;
+					}
+				}
+				
+				public class DcChargingStrategy implements ChargingStrategy {
+					private final double targetSocPercent;
+					
+					public DcChargingStrategy(double targetSocPercent) {
+						this.targetSocPercent = targetSocPercent;
+					}
+					
+					@Override
+					public double calculateEfficiency() {
+						if (targetSocPercent > 80) {
+							return 0.4; // 60% reduction
+						} else if (targetSocPercent > 60) {
+							return 0.7; // 30% reduction
+						} else {
+							return 0.95; // 5% reduction
+						}
+					}
+				}</code></pre>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Refactoring 2: Erklärung</h3>
+					<div class="horizontal-spaced-container">
+						<div style="width: 50%;">
+							<h4>Vorteile</h4>
+							<ul>
+								<li>Bessere Wartbarkeit durch klare Trennung der Verantwortlichkeiten</li>
+								<li>Einfache Erweiterbarkeit durch neue Strategien</li>
+								<li>Bessere Testbarkeit durch isolierte Komponenten</li>
+								<li>Einhaltung des <strong>Open/Closed Principle</strong></li>
+								<li>Reduzierte Komplexität in den Charging Calculators</li>
+							</ul>
+						</div>
+						<div style="width: 50%;">
+							<h4>Änderungen</h4>
+							<ul>
+								<li>Einführung des <code>ChargingStrategy</code> Interfaces</li>
+								<li>Implementierung konkreter Strategien: <code>HouseholdSocketStrategy</code>, <code>CampingSocketStrategy</code>, <code>WallboxStrategy</code>, <code>DcChargingStrategy</code></li>
+								<li>Ersetzung der Logik durch polymorphe Methodenaufrufe</li>
+								<li>Kapselung der Effizienzberechnung in den jeweiligen Strategieklassen</li>
+								<li>Einführung von Konstruktoren für kontextabhängige Strategien</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+
+
+
+				<section>
+					<h3>Refactoring 2: UML-Diagramme</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<h5>Vorher</h5>
+							<img style="scale: 1.3; position: relative; right: 60px;" src="assets/UMLs-imgs/refactoring2_before.puml.png"
+								alt="Replace Conditional with Polymorphism UML Before" class="uml-image">
+						</div>
+						<div>
+							<h5>Nachher</h5>
+							<img style="scale: 1.3;  position: relative; left: 50px;"  src="assets/UMLs-imgs/refactoring2_after.puml.png"
+								alt="Replace Conditional with Polymorphism UML After" class="uml-image">
+						</div>
+					</div>
+				</section>
+
+			</section>
+
 			<section>
 				<section>
 					<h2 class="chapter-title">Kapitel 8: <br /> Entwurfsmuster (8P)</h2>
@@ -1543,41 +2013,47 @@ public class RangeCalculatorService {
 						</div>
 					</div>
 				</section>
-		
-		<section>
-			<h4>Strategie Pattern: Vergleich</h4>
-			<table style="margin: 0 auto; margin-top: 30px; padding: 0;">
-				<thead>
-					<tr>
-						<th>Aspekt</th>
-						<th>ConsumptionBasedRangeCalculationStrategy</th>
-						<th>WltpBasedRangeCalculationStrategy</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>Basis für Berechnung</td>
-						<td>Verbrauchsprofile des Fahrzeugs bei verschiedenen Geschwindigkeiten (50, 100, 130 km/h)</td>
-						<td>WLTP-Reichweite des Fahrzeugs als Fixwert</td>
-					</tr>
-					<tr>
-						<td>Kalkulation Grundverbrauch</td>
-						<td>Basierend auf dem aktuellen Fahrumfeld (DrivingEnvironment) wird ein Verbrauchswert (kWh/100km) gewählt</td>
-						<td>Es wird ein durchschnittlicher Verbrauch aus der WLTP-Reichweite und Batteriekapazität berechnet</td>
-					</tr>
-					<tr>
-						<td>Berücksichtigte Faktoren</td>
-						<td>Effizienzmodus, Geländeart, Wetterbedingungen, Temperatur, Batterieladestand</td>
-						<td>Effizienzmodus, Geländeart, Wetterbedingungen, Temperatur, Batterieladestand, zusätzlich ein Fahrumgebungsfaktor (EnvironmentFactor)</td>
-					</tr>
-				</tbody>
-			</table>
-		</section>
 
-		<section>
-			<h3>Strategy Pattern: UML-Diagramm</h3>
-			<img style="scale: 1.25; margin: 0; padding: 0; margin-top: 50px;" src="assets/UMLs-imgs/Kapitel_8-Aufgabe_1.png" alt="Strategy Pattern UML Diagram" class="uml-image">
-		</section>
+				<section>
+					<h4>Strategie Pattern: Vergleich</h4>
+					<table style="margin: 0 auto; margin-top: 30px; padding: 0;">
+						<thead>
+							<tr>
+								<th>Aspekt</th>
+								<th>ConsumptionBasedRangeCalculationStrategy</th>
+								<th>WltpBasedRangeCalculationStrategy</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Basis für Berechnung</td>
+								<td>Verbrauchsprofile des Fahrzeugs bei verschiedenen Geschwindigkeiten (50, 100, 130
+									km/h)</td>
+								<td>WLTP-Reichweite des Fahrzeugs als Fixwert</td>
+							</tr>
+							<tr>
+								<td>Kalkulation Grundverbrauch</td>
+								<td>Basierend auf dem aktuellen Fahrumfeld (DrivingEnvironment) wird ein Verbrauchswert
+									(kWh/100km) gewählt</td>
+								<td>Es wird ein durchschnittlicher Verbrauch aus der WLTP-Reichweite und
+									Batteriekapazität berechnet</td>
+							</tr>
+							<tr>
+								<td>Berücksichtigte Faktoren</td>
+								<td>Effizienzmodus, Geländeart, Wetterbedingungen, Temperatur, Batterieladestand</td>
+								<td>Effizienzmodus, Geländeart, Wetterbedingungen, Temperatur, Batterieladestand,
+									zusätzlich ein Fahrumgebungsfaktor (EnvironmentFactor)</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+
+				<section>
+					<h3>Strategy Pattern: UML-Diagramm</h3>
+					<img style="scale: 1.25; margin: 0; padding: 0; margin-top: 50px;"
+						src="assets/UMLs-imgs/Kapitel_8-Aufgabe_1.png" alt="Strategy Pattern UML Diagram"
+						class="uml-image">
+				</section>
 
 
 
@@ -1585,47 +2061,48 @@ public class RangeCalculatorService {
 
 
 
-<section>
-	<h3>Entwurfsmuster 2: Adapter Pattern (4P)</h3>
-	<div class="horizontal-spaced-container">
-		<div style="width: 50%;">
-			<h4>Überblick</h4>
-			<ul>
-				<li><b>Art/Kategorie:</b> Strukturmuster (Structural Pattern)</li>
-				<li><b>Zweck:</b> Konvertiert die Schnittstelle einer Klasse in eine andere, die vom Client erwartet wird</li>
-				<li><b>Verwendung:</b> Integration von I/O-Operationen in die Clean Architecture</li>
-			</ul>
-		</div>
-		<div style="width: 50%;">
-			<h4>Vorteile</h4>
-			<ul>
-				<li>Flexibilität durch lose Kopplung</li>
-				<li>Einfach zu erweitern</li>
-				<li>Trennt Geschäftslogik von externen Ressourcen u. Komponenten</li>
-				<li>Ermöglicht Zusammenarbeit nicht-kompatibler Schnittstellen</li>
-			</ul>
-		</div>
-	</div>
-</section>
+				<section>
+					<h3>Entwurfsmuster 2: Adapter Pattern (4P)</h3>
+					<div class="horizontal-spaced-container">
+						<div style="width: 50%;">
+							<h4>Überblick</h4>
+							<ul>
+								<li><b>Art/Kategorie:</b> Strukturmuster (Structural Pattern)</li>
+								<li><b>Zweck:</b> Konvertiert die Schnittstelle einer Klasse in eine andere, die vom
+									Client erwartet wird</li>
+								<li><b>Verwendung:</b> Integration von I/O-Operationen in die Clean Architecture</li>
+							</ul>
+						</div>
+						<div style="width: 50%;">
+							<h4>Vorteile</h4>
+							<ul>
+								<li>Flexibilität durch lose Kopplung</li>
+								<li>Einfach zu erweitern</li>
+								<li>Trennt Geschäftslogik von externen Ressourcen u. Komponenten</li>
+								<li>Ermöglicht Zusammenarbeit nicht-kompatibler Schnittstellen</li>
+							</ul>
+						</div>
+					</div>
+				</section>
 
-<section>
-	<h3 style="padding: 0; margin-top: 0;">Entwurfsmuster 2: <br /> Adapter Pattern (Fortsetzung)</h3>
-	<div style="width: 100%;">
-		<h4 style="margin-top: 50px; padding: 0; margin-bottom: 0;">Nachteile</h4>
-		<ul>
-			<li>Zusätzliche Komplexität durch zusätzliche Abstraktionsebene</li>
-			<li>Möglicher Overhead durch zusätzliche Methodenaufrufe</li>
-			<li>Erhöhte Anzahl von Klassen und Interfaces</li>
-			<li>Externe können abrupt aufrufen</li>
-		</ul>
-	</div>
-</section>
+				<section>
+					<h3 style="padding: 0; margin-top: 0;">Entwurfsmuster 2: <br /> Adapter Pattern (Fortsetzung)</h3>
+					<div style="width: 100%;">
+						<h4 style="margin-top: 50px; padding: 0; margin-bottom: 0;">Nachteile</h4>
+						<ul>
+							<li>Zusätzliche Komplexität durch zusätzliche Abstraktionsebene</li>
+							<li>Möglicher Overhead durch zusätzliche Methodenaufrufe</li>
+							<li>Erhöhte Anzahl von Klassen und Interfaces</li>
+							<li>Externe können abrupt aufrufen</li>
+						</ul>
+					</div>
+				</section>
 
-<section>
-	<h3>Adapter Pattern: Port-Interfaces</h3>
-	<div class="horizontal-spaced-container">
-		<div>
-			<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">// Port Interface für Benutzereingaben
+				<section>
+					<h3>Adapter Pattern: Port-Interfaces</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">// Port Interface für Benutzereingaben
 public interface UserInputPortInterface {
     String readLine();
     int readInt();
@@ -1648,15 +2125,15 @@ public interface UserOutputPortInterface {
     void clearScreen();
     void displayProgressBar(int current, int total);
 }</code></pre>
-		</div>
-	</div>
-</section>
+						</div>
+					</div>
+				</section>
 
-<section>
-	<h3>Adapter Pattern: ConsoleUserInputAdapter</h3>
-	<div class="horizontal-spaced-container">
-		<div>
-			<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">
+				<section>
+					<h3>Adapter Pattern: ConsoleUserInputAdapter</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">
 public class ConsoleUserInputAdapter implements UserInputPortInterface {
     private final Scanner scanner;
     
@@ -1748,15 +2225,15 @@ public class ConsoleUserInputAdapter implements UserInputPortInterface {
         }
     }
 }</code></pre>
-		</div>
-	</div>
-</section>
+						</div>
+					</div>
+				</section>
 
-<section>
-	<h3>Adapter Pattern: ConsoleUserOutputAdapter</h3>
-	<div class="horizontal-spaced-container">
-		<div>
-			<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">
+				<section>
+					<h3>Adapter Pattern: ConsoleUserOutputAdapter</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">
 public class ConsoleUserOutputAdapter implements UserOutputPortInterface {
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_RED = "\u001B[31m";
@@ -1852,15 +2329,15 @@ public class ConsoleUserOutputAdapter implements UserOutputPortInterface {
         }
     }
 }</code></pre>
-		</div>
-	</div>
-</section>
+						</div>
+					</div>
+				</section>
 
-<section>
-	<h3>Adapter Pattern: Verwendung im Controller</h3>
-	<div class="horizontal-spaced-container">
-		<div>
-			<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">
+				<section>
+					<h3>Adapter Pattern: Verwendung im Controller</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">
 public class RangeCalculationController {
     private final UserInputPortInterface userInputPort;
     private final UserOutputPortInterface userOutputPort;
@@ -1937,107 +2414,86 @@ public class RangeCalculationController {
         }
     }
 }</code></pre>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Adapter Pattern: UML-Diagramm</h3>
+					<img style="scale: 1.3" src="assets/UMLs-imgs/Kapitel_8-Aufgabe_2.png"
+						alt="Adapter Pattern UML Diagram" class="uml-image">
+				</section>
+			</section>
+
+
 		</div>
 	</div>
-</section>
 
-<section>
-	<h3>Adapter Pattern: UML-Diagramm</h3>
-	<img style="scale: 1.3" src="assets/UMLs-imgs/Kapitel_8-Aufgabe_2.png" alt="Adapter Pattern UML Diagram" class="uml-image">
-</section>
+	<script src="dist/reveal.js"></script>
+	<script src="plugin/notes/notes.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+	<script src="plugin/highlight/highlight.js"></script>
+	<script>
+		// Debug logging
+		console.log('RevealHighlight plugin:', typeof RevealHighlight);
+		console.log('hljs global:', typeof window.hljs);
 
-<section>
-	<h3>Zusammenfassung der Entwurfsmuster in ULRICA</h3>
-	<div class="horizontal-spaced-container">
-		<div>
-			<h4>Strategy Pattern</h4>
-			<ul>
-				<li>Ermöglicht austauschbare Berechnungsstrategien</li>
-				<li>Unterstützt OCP durch Erweiterbarkeit</li>
-				<li>Vereinfacht das Hinzufügen neuer Berechnungsmethoden</li>
-				<li>Beispiel: Reichweitenberechnung mit verschiedenen Algorithmen</li>
-			</ul>
-		</div>
-		<div>
-			<h4>Adapter Pattern</h4>
-			<ul>
-				<li>Überbrückt die Kluft zwischen Domain und externen Systemen</li>
-				<li>Fördert saubere Schichtenarchitektur</li>
-				<li>Erhöht die Testbarkeit durch Entkopplung</li>
-				<li>Beispiel: Konsolen-I/O-Adapter für Benutzerinteraktion</li>
-			</ul>
-		</div>
-	</div>
-	<p style="text-align: center; margin-top: 2rem;">Beide Muster fördern die Clean Architecture und verbessern die Wartbarkeit, Testbarkeit und Flexibilität des Gesamtsystems.</p>
-</section>
-		</div>
-		</div>
+		// More info about initialization & config:
+		// - https://revealjs.com/initialization/
+		// - https://revealjs.com/config/
+		Reveal.initialize({
+			hash: true,
+			slideNumber: true,
 
-		<script src="dist/reveal.js"></script>
-		<script src="plugin/notes/notes.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/highlight/highlight.js"></script>
-		<script>
-			// Debug logging
-			console.log('RevealHighlight plugin:', typeof RevealHighlight);
-			console.log('hljs global:', typeof window.hljs);
+			// Explicit highlight config
+			highlight: {
+				highlightOnLoad: true,
+				escapeHTML: false
+			},
 
-			// More info about initialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
-				slideNumber: true,
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+		});
 
-				// Explicit highlight config
-				highlight: {
-					highlightOnLoad: true,
-					escapeHTML: false
-				},
+		// Load all slide content, then initialize highlight.js
+		const loadSlidesPromises = [];
+		document.querySelectorAll('[data-include]').forEach((section) => {
+			const url = section.getAttribute('data-include');
+			const promise = fetch(url)
+				.then(response => response.text())
+				.then(html => {
+					section.html = ""
+					section.innerHTML = html;
+				});
+			loadSlidesPromises.push(promise);
+		});
 
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
-			});
+		// After all slides are loaded, re-initialize highlight.js
+		Promise.all(loadSlidesPromises).then(() => {
+			// Force Reveal to update
+			Reveal.sync();
 
-			// Load all slide content, then initialize highlight.js
-			const loadSlidesPromises = [];
-			document.querySelectorAll('[data-include]').forEach((section) => {
-				const url = section.getAttribute('data-include');
-				const promise = fetch(url)
-					.then(response => response.text())
-					.then(html => {
-						section.html = ""
-						section.innerHTML = html;
-					});
-				loadSlidesPromises.push(promise);
-			});
+			// Try multiple ways to initialize highlighting
 
-			// After all slides are loaded, re-initialize highlight.js
-			Promise.all(loadSlidesPromises).then(() => {
-				// Force Reveal to update
-				Reveal.sync();
+			// 1. Through Reveal plugin
+			const highlight = Reveal.getPlugin('highlight');
+			if (highlight) {
+				document.querySelectorAll('code').forEach(block => {
+					highlight.highlightBlock(block);
+				});
+			}
 
-				// Try multiple ways to initialize highlighting
-
-				// 1. Through Reveal plugin
-				const highlight = Reveal.getPlugin('highlight');
-				if (highlight) {
-					document.querySelectorAll('code').forEach(block => {
-						highlight.highlightBlock(block);
-					});
-				}
-
-				// 2. Direct hljs initialization if available
-				if (window.hljs) {
-					window.hljs.configure({
-						languages: ['bash', 'javascript', 'html', 'xml', 'css']
-					});
-					document.querySelectorAll('code.bash, code.hljs.bash').forEach(block => {
-						window.hljs.highlightElement(block);
-					});
-				}
-			});
-		</script>
-	</body>
+			// 2. Direct hljs initialization if available
+			if (window.hljs) {
+				window.hljs.configure({
+					languages: ['bash', 'javascript', 'html', 'xml', 'css']
+				});
+				document.querySelectorAll('code.bash, code.hljs.bash').forEach(block => {
+					window.hljs.highlightElement(block);
+				});
+			}
+		});
+	</script>
+</body>
 
 </html>

@@ -1,0 +1,25 @@
+@startuml
+class RangeCalculationController {
+    - outputPort: OutputPort
+    - calculateRangeUseCase: CalculateRangeUseCase
+    + processRangeCalculation(): boolean
+    - getTerrainType(): TerrainType
+    - getWeatherType(): WeatherType
+    - getTemperature(): double
+    - getDrivingEnvironment(): DrivingEnvironment
+    - getStateOfCharge(): double
+    - getEfficiencyMode(): EfficiencyMode
+}
+
+class OutputPort {
+    + showRangeCalculationHeader(): void
+    + showError(String): void
+}
+
+class CalculateRangeUseCase {
+    + calculateRange(TerrainType, WeatherType, double, DrivingEnvironment, EfficiencyMode, double): boolean
+}
+
+RangeCalculationController --> OutputPort
+RangeCalculationController --> CalculateRangeUseCase
+@enduml 

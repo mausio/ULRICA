@@ -1,76 +1,167 @@
 <section>
-    <h2 class="chapter-title">Kapitel 7: Architektur (8P)</h2>
+    <h2 class="chapter-title">Kapitel 7: <br /> Refactoring (8P)</h2>
 </section>
 
 <section>
-    <h3>Schichtenarchitektur (2P)</h3>
-    <div class="horizontal-spaced-container">
+    <h3 class="subchapter">Inhalt des Kapitels</h3>
+    <div class="horizontal-spaced-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
         <div>
-            <h5>Klassische Schichten in ULRICA</h5>
+            <h6>1. Code Smells (2P)</h6>
             <ul>
-                <li><b>Presentation Layer:</b> UI-Komponenten, Controller</li>
-                <li><b>Application Layer:</b> Services, Use Cases, DTOs</li>
-                <li><b>Domain Layer:</b> Entities, Value Objects, Domain Services</li>
-                <li><b>Infrastructure Layer:</b> Repositories, externe Dienste</li>
+                <li>Long Method in RangeCalculationController</li>
+                <li>Duplicate Code in Charging Calculators</li>
             </ul>
-            <p>Die Abhängigkeiten verlaufen stets von oben nach unten, jede Schicht darf nur auf Schichten zugreifen, die sich unter ihr befinden.</p>
         </div>
         <div>
-            <img src="assets/img/layered-arch.png" alt="Layered Architecture Diagram" class="uml-image">
+            <h6>2. Refactorings (6P)</h6>
+            <ul>
+                <li>Extract Method</li>
+                <li>Replace Conditional with Polymorphism</li>
+            </ul>
         </div>
     </div>
 </section>
 
 <section>
-    <h3>Hexagonale Architektur (2P)</h3>
-    <div class="horizontal-spaced-container">
-        <div>
-            <h5>Ports und Adapter in ULRICA</h5>
-            <ul>
-                <li>Kern-Domain ist unabhängig von externen Abhängigkeiten</li>
-                <li>Alle externen Interaktionen über definierte Ports</li>
-                <li>Ports definieren Schnittstellen, Adapter implementieren sie</li>
-                <li>Beispiel: CarProfilePersistencePortInterface & JsonCarProfileRepository</li>
-            </ul>
-        </div>
-        <div>
-            <img src="assets/img/hexagonal-arch.png" alt="Hexagonal Architecture Diagram" class="uml-image">
-        </div>
-    </div>
+    <h3>Code Smells (2p}</h3>
+    <p class="subchapter">Jeweils 1 Code-Beispiel zu 2 unterschiedlichen Code Smells (die benannt werden müssen) aus der
+        Vorlesung; jeweils Code-Beispiel und einen möglichen Lösungsweg bzw. den genommen Lösungsweg beschreiben (inkl.
+        (Pseudo-)Code)</p>
 </section>
 
 <section>
-    <h3>Domain-Driven Design (2P)</h3>
-    <div class="horizontal-spaced-container">
-        <div>
-            <h5>DDD-Patterns in ULRICA</h5>
-            <ul>
-                <li>Entities mit klarer Identität (CarProfile)</li>
-                <li>Value Objects für unveränderliche Werteobjekte (BatteryProfile)</li>
-                <li>Aggregates für Transaktionsgrenzen (CarProfile als Root)</li>
-                <li>Repositories für Objektpersistenz (CarProfileRepository)</li>
-                <li>Domain Services für komplexe Operationen (RangeCalculatorService)</li>
-                <li>Ubiquitous Language als gemeinsames Vokabular</li>
-            </ul>
-        </div>
-        <div>
-            <pre><code class="java">// Domain-Driven Design Beispiel
-// Entity mit Value Objects
-public class CarProfile {
-    private final String id;
-    private final String name;
-    private final BatteryProfile batteryProfile;
-    private final ConsumptionProfile consumptionProfile;
-    private final Optional<ChargingCurve> chargingCurve;
+    <h3>Code Smell 1: Long Method</h3>
+    <p class="subchapter">RangeCalculationController.processRangeCalculation() ist zu lang und hat zu viele
+        Verantwortlichkeiten</p>
+    <pre><code class="java">/* public class RangeCalculationController {
+    private final CalculateRangeUseCaseInterface calculateRangeUseCase;
+    private final UserInputPortInterface userInputPort;
+    private final RangeCalculationOutputPortInterface outputPort;
     
-    // Builder-Pattern für komplexe Objekte
-    public static class Builder {
-        // Builder-Implementierung
+    public RangeCalculationController(
+            CalculateRangeUseCaseInterface calculateRangeUseCase,
+            UserInputPortInterface userInputPort,
+            RangeCalculationOutputPortInterface outputPort) {
+        this.calculateRangeUseCase = Objects.requireNonNull(calculateRangeUseCase, "Calculate range use case cannot be null");
+        this.userInputPort = Objects.requireNonNull(userInputPort, "User input port cannot be null");
+        this.outputPort = Objects.requireNonNull(outputPort, "Output port cannot be null");
     }
     
-    // Domain-Logik innerhalb der Entity
-    public double getEffectiveCapacityKwh() {
-        return batteryProfile.getEffectiveCapacityKwh();
+    public boolean processRangeCalculation() {
+try {
+    outputPort.showRangeCalculationHeader();
+    
+    TerrainType terrain = getTerrainType();
+    WeatherType weather = getWeatherType();
+    double temperature = getTemperature();
+    DrivingEnvironment environment = getDrivingEnvironment();
+    double stateOfCharge = getStateOfCharge();
+    EfficiencyMode efficiencyMode = getEfficiencyMode();
+    
+    return calculateRangeUseCase.calculateRange(
+            terrain,
+            weather,
+            temperature,
+            environment,
+            efficiencyMode,
+            stateOfCharge
+    );
+} catch (Exception e) {
+    outputPort.showError("An error occurred: " + e.getMessage());
+    return false;
+}
+}</code></pre>
+</section>
+
+<section>
+    <h3>Code Smell 1: Analyse</h3>
+    <ul>
+        <li>Die Methode ist zu lang und komplex</li>
+        <li>Viele verschiedene Verantwortlichkeiten in einer Methode</li>
+        <li>Schlechte Lesbarkeit und Wartbarkeit</li>
+        <li>Schwer zu testen</li>
+        <li>Verletzt das Single Responsibility Principle</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Code Smell 1: Lösungsvorschlag</h3>
+    <pre><code class="java">public boolean processRangeCalculation() {
+    try {
+        outputPort.showRangeCalculationHeader();
+        
+        RangeParameters parameters = collectRangeParameters();
+        return calculateRangeUseCase.calculateRange(parameters);
+    } catch (Exception e) {
+        outputPort.showError("An error occurred: " + e.getMessage());
+        return false;
+    }
+}
+
+private RangeParameters collectRangeParameters() {
+    TerrainType terrain = getTerrainType();
+    WeatherType weather = getWeatherType();
+    double temperature = getTemperature();
+    DrivingEnvironment environment = getDrivingEnvironment();
+    double stateOfCharge = getStateOfCharge();
+    EfficiencyMode efficiencyMode = getEfficiencyMode();
+    
+    return new RangeParameters(
+        terrain,
+        weather,
+        temperature,
+        environment,
+        efficiencyMode,
+        stateOfCharge
+    );
+}</code></pre>
+</section>
+
+<section>
+    <h3>Code Smell 2: Duplicate Code</h3>
+    <p class="subchapter">Ähnliche Temperaturberechnungen in DcChargingCalculator und AcChargingCalculator</p>
+    <div class="horizontal-spaced-container">
+        <div>
+            <pre><code class="java">// DcChargingCalculator
+private double calculateTemperatureEfficiencyFactor(double batteryTemperatureCelsius) {
+    if (batteryTemperatureCelsius < MIN_BATTERY_TEMPERATURE || 
+        batteryTemperatureCelsius > MAX_BATTERY_TEMPERATURE) {
+        return 0.0;
+    }
+    
+    if (batteryTemperatureCelsius >= OPTIMAL_TEMPERATURE_MIN && 
+        batteryTemperatureCelsius <= OPTIMAL_TEMPERATURE_MAX) {
+        return 1.0;
+    }
+    
+    if (batteryTemperatureCelsius < OPTIMAL_TEMPERATURE_MIN) {
+        return 0.5 + 0.5 * (batteryTemperatureCelsius - MIN_BATTERY_TEMPERATURE) / 
+            (OPTIMAL_TEMPERATURE_MIN - MIN_BATTERY_TEMPERATURE);
+    } else {
+        return 0.5 + 0.5 * (MAX_BATTERY_TEMPERATURE - batteryTemperatureCelsius) / 
+            (MAX_BATTERY_TEMPERATURE - OPTIMAL_TEMPERATURE_MAX);
+    }
+}</code></pre>
+        </div>
+        <div>
+            <pre><code class="java">// AcChargingCalculator
+private double calculateTemperatureEfficiency(double ambientTemperatureCelsius) {
+    if (ambientTemperatureCelsius < MIN_BATTERY_TEMPERATURE || 
+        ambientTemperatureCelsius > MAX_BATTERY_TEMPERATURE) {
+        return 0.0;
+    }
+    
+    if (ambientTemperatureCelsius >= OPTIMAL_TEMPERATURE_MIN && 
+        ambientTemperatureCelsius <= OPTIMAL_TEMPERATURE_MAX) {
+        return 1.0;
+    }
+    
+    if (ambientTemperatureCelsius < OPTIMAL_TEMPERATURE_MIN) {
+        return 0.7 + 0.3 * (ambientTemperatureCelsius - MIN_BATTERY_TEMPERATURE) / 
+            (OPTIMAL_TEMPERATURE_MIN - MIN_BATTERY_TEMPERATURE);
+    } else {
+        return 0.7 + 0.3 * (MAX_BATTERY_TEMPERATURE - ambientTemperatureCelsius) / 
+            (MAX_BATTERY_TEMPERATURE - OPTIMAL_TEMPERATURE_MAX);
     }
 }</code></pre>
         </div>
@@ -78,129 +169,196 @@ public class CarProfile {
 </section>
 
 <section>
-    <h3>Clean Architecture (2P)</h3>
-    <div class="horizontal-spaced-container">
-        <div>
-            <h5>Dependency Rule in ULRICA</h5>
-            <ul>
-                <li>Abhängigkeiten zeigen immer nach innen zur Domain</li>
-                <li>Domain ist unabhängig von externen Frameworks</li>
-                <li>Interfaces definieren die Abhängigkeiten (Dependency Inversion)</li>
-                <li>Use Cases koordinieren die Anwendungslogik</li>
-                <li>DTOs für die Datentransformation zwischen Schichten</li>
-            </ul>
-        </div>
-        <div>
-            <img src="assets/img/clean-arch.png" alt="Clean Architecture Diagram" class="uml-image">
-        </div>
-    </div>
+    <h3>Code Smell 2: Analyse</h3>
+    <ul>
+        <li>Fast identischer Code in beiden Klassen</li>
+        <li>Nur minimale Unterschiede in den Konstanten (0.5 vs 0.7)</li>
+        <li>Verletzt das DRY-Prinzip (Don't Repeat Yourself)</li>
+        <li>Schwer zu warten bei Änderungen</li>
+        <li>Fehleranfällig bei Updates</li>
+    </ul>
 </section>
 
 <section>
-    <h3>Konkretes Beispiel: Reichweitenberechnung</h3>
+    <h3>Code Smell 2: Lösungsvorschlag</h3>
+    <pre><code class="java">public class TemperatureEfficiencyCalculator {
+    private final double minEfficiency;
+    private final double maxEfficiency;
+    
+    public TemperatureEfficiencyCalculator(double minEfficiency, double maxEfficiency) {
+        this.minEfficiency = minEfficiency;
+        this.maxEfficiency = maxEfficiency;
+    }
+    
+    public double calculateEfficiency(double temperature) {
+        if (temperature < MIN_BATTERY_TEMPERATURE || 
+            temperature > MAX_BATTERY_TEMPERATURE) {
+            return 0.0;
+        }
+        
+        if (temperature >= OPTIMAL_TEMPERATURE_MIN && 
+            temperature <= OPTIMAL_TEMPERATURE_MAX) {
+            return 1.0;
+        }
+        
+        if (temperature < OPTIMAL_TEMPERATURE_MIN) {
+            return minEfficiency + (maxEfficiency - minEfficiency) * 
+                (temperature - MIN_BATTERY_TEMPERATURE) / 
+                (OPTIMAL_TEMPERATURE_MIN - MIN_BATTERY_TEMPERATURE);
+        } else {
+            return minEfficiency + (maxEfficiency - minEfficiency) * 
+                (MAX_BATTERY_TEMPERATURE - temperature) / 
+                (MAX_BATTERY_TEMPERATURE - OPTIMAL_TEMPERATURE_MAX);
+        }
+    }
+}</code></pre>
+</section>
+
+<section>
+    <h3>Refactoring 1: Extract Method</h3>
+    <p class="subchapter">Extrahieren der Parameter-Erfassung in eine separate Methode</p>
     <div class="horizontal-spaced-container">
         <div>
-            <h5>Architektur in der Praxis</h5>
-            <ul>
-                <li><b>Presentation:</b> RangeCalculationFragment.kt</li>
-                <li><b>Application:</b> RangeCalculationUseCase.java</li>
-                <li><b>Domain:</b> RangeCalculatorService.java</li>
-                <li><b>Infrastructure:</b> SpeedConsumptionRepository.java</li>
-            </ul>
+            <h5>Vorher</h5>
+            <pre><code class="java">public boolean processRangeCalculation() {
+    try {
+        outputPort.showRangeCalculationHeader();
+        
+        TerrainType terrain = getTerrainType();
+        WeatherType weather = getWeatherType();
+        double temperature = getTemperature();
+        DrivingEnvironment environment = getDrivingEnvironment();
+        double stateOfCharge = getStateOfCharge();
+        EfficiencyMode efficiencyMode = getEfficiencyMode();
+        
+        return calculateRangeUseCase.calculateRange(
+                terrain,
+                weather,
+                temperature,
+                environment,
+                efficiencyMode,
+                stateOfCharge
+        );
+    } catch (Exception e) {
+        outputPort.showError("An error occurred: " + e.getMessage());
+        return false;
+    }
+}</code></pre>
         </div>
         <div>
-            <pre><code class="java">// Presentation Layer (UI)
-public void onCalculateButtonClicked() {
-    // Sammelt Benutzereingaben
-    RangeParameters params = collectUserInputs();
-    
-    // Delegiert an Application Layer
-    viewModel.calculateRange(params);
+            <h5>Nachher</h5>
+            <pre><code class="java">public boolean processRangeCalculation() {
+    try {
+        outputPort.showRangeCalculationHeader();
+        RangeParameters parameters = collectRangeParameters();
+        return calculateRangeUseCase.calculateRange(parameters);
+    } catch (Exception e) {
+        outputPort.showError("An error occurred: " + e.getMessage());
+        return false;
+    }
 }
 
-// Application Layer (Use Case)
-public RangeResultDto calculateRange(RangeParameters params) {
-    // Wendet Geschäftsregeln an
-    RangeResult result = rangeCalculatorService.calculateRange(
-        currentCarProfile, params);
+private RangeParameters collectRangeParameters() {
+    TerrainType terrain = getTerrainType();
+    WeatherType weather = getWeatherType();
+    double temperature = getTemperature();
+    DrivingEnvironment environment = getDrivingEnvironment();
+    double stateOfCharge = getStateOfCharge();
+    EfficiencyMode efficiencyMode = getEfficiencyMode();
     
-    // Transformiert Domain-Objekt in DTO
-    return mapToDto(result);
-}
-
-// Domain Layer (Domain Service)
-public RangeResult calculateRange(CarProfile car, 
-                                 RangeParameters params) {
-    // Enthält die Kernlogik der Berechnung
-    double range = calculateBaseRange(car, params);
-    range = applyTemperatureEffect(range, params.getTemperature());
-    
-    return new RangeResult(range, params);
+    return new RangeParameters(
+        terrain,
+        weather,
+        temperature,
+        environment,
+        efficiencyMode,
+        stateOfCharge
+    );
 }</code></pre>
         </div>
     </div>
 </section>
 
 <section>
-    <h3>Vor- und Nachteile der Architektur</h3>
-    <div class="horizontal-spaced-container">
-        <div>
-            <h5>Vorteile</h5>
-            <ul>
-                <li>Hohe Testbarkeit durch klare Trennung der Verantwortlichkeiten</li>
-                <li>Unabhängigkeit der Domain von externen Frameworks</li>
-                <li>Bessere Wartbarkeit durch klare Struktur</li>
-                <li>Erweiterbarkeit durch Plugins-Architektur</li>
-                <li>Langfristige Flexibilität bei Technologiewechseln</li>
-            </ul>
-        </div>
-        <div>
-            <h5>Herausforderungen</h5>
-            <ul>
-                <li>Höherer initialer Entwicklungsaufwand</li>
-                <li>Mehr Quellcode durch zusätzliche Abstraktionsebenen</li>
-                <li>Komplexere Projektstruktur</li>
-                <li>Einarbeitungszeit für neue Entwickler</li>
-                <li>Bewusstes "Overengineering" für zukünftige Flexibilität</li>
-            </ul>
-        </div>
-    </div>
+    <h3>Refactoring 1: UML-Diagramm</h3>
+    <img src="assets/UMLs-imgs/Kapitel_7-Refactoring_1.png" alt="Extract Method UML" class="uml-image">
 </section>
 
 <section>
-    <h3>Schematische Darstellung der Architektur in ULRICA</h3>
-    <img src="assets/UMLs-imgs/Kapitel_7-Übersicht.png" alt="Architecture Overview" class="fullwidth-image">
-</section>
-
-<section>
-    <h3>Integration mit Android</h3>
+    <h3>Refactoring 2: Replace Conditional with Polymorphism</h3>
+    <p class="subchapter">Ersetzen der bedingten Logik in den Charging Calculators durch Polymorphie</p>
     <div class="horizontal-spaced-container">
         <div>
-            <h5>Anpassungen für Android</h5>
-            <ul>
-                <li>Presentation Layer verwendet Android-UI-Framework</li>
-                <li>ViewModels als Brücke zwischen UI und Application Layer</li>
-                <li>Dependency Injection mit Dagger/Hilt</li>
-                <li>Room Database als persistenz-Adapter</li>
-                <li>Coroutines für asynchrone Operationen</li>
-            </ul>
+            <h5>Vorher</h5>
+            <pre><code class="java">public class DcChargingCalculator {
+    private double calculatePowerReductionPercent(double startingSocPercent, double targetSocPercent) {
+        if (targetSocPercent > 80) {
+            return 60.0;
+        } else if (targetSocPercent > 60) {
+            return 30.0;
+        } else {
+            return 5.0;
+        }
+    }
+}
+
+public class AcChargingCalculator {
+    private double calculateEfficiencyLoss(int connectorType) {
+        switch (connectorType) {
+            case HOUSEHOLD_SOCKET:
+                return 0.1;
+            case CAMPING_SOCKET:
+                return 0.07;
+            case WALLBOX:
+                return 0.05;
+            default:
+                throw new IllegalArgumentException("Invalid connector type: " + connectorType);
+        }
+    }
+}</code></pre>
         </div>
         <div>
-            <pre><code class="kotlin">// ViewModel als Teil des Presentation Layers
-class RangeViewModel @Inject constructor(
-    private val rangeCalculationUseCase: RangeCalculationUseCase
-) : ViewModel() {
+            <h5>Nachher</h5>
+            <pre><code class="java">public interface ChargingStrategy {
+    double calculateEfficiency();
+}
+
+public class HouseholdSocketStrategy implements ChargingStrategy {
+    @Override
+    public double calculateEfficiency() {
+        return 0.1;
+    }
+}
+
+public class CampingSocketStrategy implements ChargingStrategy {
+    @Override
+    public double calculateEfficiency() {
+        return 0.07;
+    }
+}
+
+public class WallboxStrategy implements ChargingStrategy {
+    @Override
+    public double calculateEfficiency() {
+        return 0.05;
+    }
+}
+
+public class DcChargingStrategy implements ChargingStrategy {
+    private final double targetSocPercent;
     
-    private val _rangeResult = MutableLiveData<RangeResultDto>()
-    val rangeResult: LiveData<RangeResultDto> = _rangeResult
+    public DcChargingStrategy(double targetSocPercent) {
+        this.targetSocPercent = targetSocPercent;
+    }
     
-    fun calculateRange(params: RangeParameters) {
-        viewModelScope.launch {
-            // Asynchroner Aufruf des Use Cases
-            val result = withContext(Dispatchers.Default) {
-                rangeCalculationUseCase.calculateRange(params)
-            }
-            _rangeResult.value = result
+    @Override
+    public double calculateEfficiency() {
+        if (targetSocPercent > 80) {
+            return 0.4; // 60% reduction
+        } else if (targetSocPercent > 60) {
+            return 0.7; // 30% reduction
+        } else {
+            return 0.95; // 5% reduction
         }
     }
 }</code></pre>
@@ -209,13 +367,18 @@ class RangeViewModel @Inject constructor(
 </section>
 
 <section>
-    <h3>Zusammenfassung: Architektur in ULRICA</h3>
+    <h3>Refactoring 2: UML-Diagramm</h3>
+    <img src="assets/UMLs-imgs/Kapitel_7-Refactoring_2.png" alt="Replace Conditional with Polymorphism UML"
+        class="uml-image">
+</section>
+
+<section>
+    <h3>Refactoring 2: Vorteile</h3>
     <ul>
-        <li><b>Schichtenarchitektur:</b> Klare Trennung der Verantwortlichkeiten in vier Schichten</li>
-        <li><b>Hexagonale Architektur:</b> Ports und Adapter für externe Abhängigkeiten</li>
-        <li><b>Domain-Driven Design:</b> Fokus auf die Domäne mit Entities, Value Objects, Services</li>
-        <li><b>Clean Architecture:</b> Abhängigkeitsregel mit nach innen gerichteten Abhängigkeiten</li>
-        <li><b>Android-Integration:</b> Anpassung der Architektur an die Android-Plattform</li>
+        <li>Bessere Wartbarkeit durch klare Trennung der Verantwortlichkeiten</li>
+        <li>Einfache Erweiterbarkeit durch neue Strategien</li>
+        <li>Bessere Testbarkeit durch isolierte Komponenten</li>
+        <li>Einhaltung des Open/Closed Principle</li>
+        <li>Reduzierte Komplexität in den Charging Calculators</li>
     </ul>
-    <p>Die Kombination dieser Architekturansätze ermöglicht eine flexible, wartbare und testbare Anwendung mit klar getrennten Verantwortlichkeiten.</p>
 </section>

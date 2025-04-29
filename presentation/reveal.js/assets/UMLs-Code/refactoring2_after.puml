@@ -1,0 +1,34 @@
+@startuml
+interface ChargingStrategy {
+    + calculateEfficiency(): double
+}
+
+class HouseholdSocketStrategy {
+    + calculateEfficiency(): double
+}
+
+class CampingSocketStrategy {
+    + calculateEfficiency(): double
+}
+
+class WallboxStrategy {
+    + calculateEfficiency(): double
+}
+
+class DcChargingStrategy {
+    - targetSocPercent: double
+    + DcChargingStrategy(double)
+    + calculateEfficiency(): double
+}
+
+class ChargingCalculator {
+    - strategy: ChargingStrategy
+    + calculateChargingTime(): double
+}
+
+ChargingStrategy <|.. HouseholdSocketStrategy
+ChargingStrategy <|.. CampingSocketStrategy
+ChargingStrategy <|.. WallboxStrategy
+ChargingStrategy <|.. DcChargingStrategy
+ChargingCalculator --> ChargingStrategy
+@enduml 

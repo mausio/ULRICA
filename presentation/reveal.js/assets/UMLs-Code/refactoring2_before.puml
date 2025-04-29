@@ -1,0 +1,16 @@
+@startuml
+class DcChargingCalculator {
+    - calculatePowerReductionPercent(double, double): double
+}
+
+class AcChargingCalculator {
+    - calculateEfficiencyLoss(int): double
+}
+
+class ChargingCalculator {
+    + calculateChargingTime(): double
+}
+
+ChargingCalculator <|-- DcChargingCalculator
+ChargingCalculator <|-- AcChargingCalculator
+@enduml 
