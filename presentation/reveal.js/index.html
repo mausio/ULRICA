@@ -99,6 +99,21 @@
 		align-self: start;
 	}
 
+	thead {
+		font-size: 1.4rem;
+	}
+
+	tr {
+		font-size: 1.3rem;
+	}
+
+	th {
+		font-size: 1.4rem;
+	}
+
+
+
+
 	.primary-color {
 		color: rgb(0, 167, 206) !important;
 	}
@@ -902,7 +917,7 @@ jobs:
 
 				<section>
 					<h3>Analyse der Dependency Rule (3P)</h3>
-					<p class="subchapter">In der Vorlesung wurde im Rahmen der ‘Clean Architecture’ die s.g. Dependency
+					<p class="subchapter">In der Vorlesung wurde im Rahmen der 'Clean Architecture' die s.g. Dependency
 						Rule vorgestellt. Je 1 Klasse zeigen, die die Dependency Rule einhält und 1 Klasse, die die
 						Dependency Rule verletzt; jeweils UML (mind. die betreffende Klasse inkl. der Klassen, die von
 						ihr abhängen bzw. von der sie abhängt) und Analyse der Abhängigkeiten in beide Richtungen (d.h.,
@@ -1040,95 +1055,429 @@ jobs:
 			<section>
 				<section>
 					<h2 class="chapter-title">Kapitel 8: <br /> Entwurfsmuster (8P)</h2>
+					<p class="subchapter">Zwei unterschiedliche Entwurfsmuster aus der Vorlesung (oder nach Absprache
+						auch andere) jeweils benennen, sinnvoll einsetzen, begründen und UML-Diagramm</p>
 				</section>
 
 				<section>
-					<h3>Entwurfsmuster 1: Strategy Pattern (4P)</h3>
+					<h3>Entwurfsmuster 1: <br /> Strategy Pattern (4P)</h3>
 					<div class="horizontal-spaced-container">
-						<div>
+						<div style="width: 50%;">
 							<h4>Überblick</h4>
 							<ul>
-								<li><b>Kategorie:</b> Verhaltensmuster (Behavioral Pattern)</li>
-								<li><b>Zweck:</b> Definiert eine Familie von Algorithmen, kapselt sie und macht sie
-									austauschbar</li>
+								<li><b>Kategorie/Art:</b> Behavioral Pattern</li>
+								<li><b>Zweck:</b> Definiert eine Familie von Algorithmen, kapselt sie ab und macht sie
+									austauschbar (Laufzeit u. Compilezeit)</li>
 								<li><b>Verwendung:</b> Implementierung verschiedener Berechnungsstrategien für die
 									Reichweite von Elektrofahrzeugen</li>
 							</ul>
 						</div>
-						<div>
-							<h4>Key Features</h4>
+						<div style="width: 50%;">
+							<h4>Vorteile</h4>
 							<ul>
 								<li>Kapselung von unterschiedlichen Algorithmen in getrennten Klassen</li>
 								<li>Laufzeitentscheidung über zu verwendende Strategie</li>
-								<li>Leichte Erweiterbarkeit um neue Strategien</li>
-								<li>Einhaltung des Open/Closed Principles</li>
+								<li>Leichte Erweiterbarkeit um neue Strategien (Auch gut für OCP)</li>
+								<li>Einhaltung des <strong>Open/Closed Principles</strong></li>
 								<li>Vermeidung von bedingten Verzweigungen durch Polymorphie</li>
 							</ul>
 						</div>
 					</div>
 				</section>
 
+
 				<section>
-					<h3>Strategy Pattern: Interface und Implementierungen</h3>
+					<h3 style="padding: 0; margin-top: 0;">Entwurfsmuster 1: <br /> Strategy Pattern (Forsetzung)</h3>
+					<div style="width: 100%;">
+						<h4 style="margin-top: 50px; padding: 0; margin-bottom: 0;">Nachteile</h4>
+						<ul>
+							<li>Erhöhte Komplexität durch viele kleine Klassen</li>
+							<li>Client/Klasse muss die verschiedenen Strategien kennen</li>
+							<li>Möglicher Overhead durch zusätzliche Erstellung von Objekten</li>
+							<li>Strategie-Auswahl kann komplex werden</li>
+							<li>Schwieriger zu debuggen durch verteilte Logik</li>
+						</ul>
+					</div>
+				</section>
+
+
+				<section>
+					<h3>Strategy Pattern: Interface</h3>
 					<div class="horizontal-spaced-container">
 						<div>
-							<pre><code class="java">// Das Strategy Interface
-			public interface RangeCalculationStrategyInterface {
-				
-				RangeResult calculateRange(CarProfile carProfile, 
-										  RangeParameters parameters);
-				
-				String getName();
-				
-				String getDescription();
-			}
-			
-			// Erste Strategie-Implementierung
-			public class WltpBasedRangeCalculationStrategy 
-					implements RangeCalculationStrategyInterface {
-				
-				@Override
-				public RangeResult calculateRange(CarProfile carProfile, 
-												 RangeParameters parameters) {
-					// Berechnung basierend auf WLTP-Werten
-					double baseWltpRange = carProfile.getWltpRangeKm();
-					double batteryCapacity = carProfile.getBatteryProfile()
-											.getRemainingCapacityKwh();
-					// ... weitere Berechnungen
-					return new RangeResult(/* ... */);
-				}
-				// ... weitere Methoden
-			}</code></pre>
+							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">// Das Strategy Interface
+public interface RangeCalculationStrategyInterface {
+	RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters);
+	
+	String getName();
+	
+	String getDescription();
+}
+
+</code></pre>
 						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Strategy Pattern: Erste Implementierung</h3>
+					<div class="horizontal-spaced-container">
 						<div>
-							<pre><code class="java">// Zweite Strategie-Implementierung
-			public class ConsumptionBasedRangeCalculationStrategy 
-					implements RangeCalculationStrategyInterface {
-				
-				@Override
-				public RangeResult calculateRange(CarProfile carProfile, 
-												 RangeParameters parameters) {
-					// Berechnung basierend auf Verbrauchsprofil
-					ConsumptionProfile profile = carProfile
-												.getConsumptionProfile();
-					double baseConsumption = getBaseConsumption(
-						profile, parameters.getEnvironment());
-					// ... weitere Berechnungen
-					return new RangeResult(/* ... */);
-				}
-			
-				private double getBaseConsumption(
-						ConsumptionProfile profile, 
-						DrivingEnvironment environment) {
-					// Unterschiedliche Verbrauchswerte je nach Umgebung
-					return switch(environment) {
-						case CITY -> profile.getConsumptionAt50Kmh();
-						case RURAL -> profile.getConsumptionAt100Kmh();
-						case HIGHWAY -> profile.getConsumptionAt130Kmh();
-					};
-				}
-				// ... weitere Methoden
-			}</code></pre>
+							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">// Erste Strategie-Implementierung
+public class WltpBasedRangeCalculationStrategy implements RangeCalculationStrategyInterface {
+
+	@Override
+	public RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters) {
+		Objects.requireNonNull(carProfile, "Car profile cannot be null!!!");
+		Objects.requireNonNull(parameters, "Range parameters cannot be null");
+		
+		double baseWltpRange = carProfile.getWltpRangeKm();
+		double batteryCapacity = carProfile.getBatteryProfile().getRemainingCapacityKwh();
+		double currentSoC = parameters.getStateOfChargePercent();
+		
+		double baseConsumption = (batteryCapacity * 100.0) / baseWltpRange;
+		
+		double modeConsumption = baseConsumption * parameters.getEfficiencyMode().getConsumptionFactor();
+		
+		double terrainFactor = calculateTerrainFactor(parameters.getTerrain());
+		double terrainConsumption = modeConsumption * terrainFactor;
+		
+		double weatherFactor = calculateWeatherFactor(parameters.getWeather(), parameters.getTemperatureCelsius());
+		double weatherConsumption = terrainConsumption * weatherFactor;
+		
+		double environmentFactor = calculateEnvironmentFactor(parameters.getEnvironment());
+		double finalConsumption = weatherConsumption * environmentFactor;
+		
+		double availableEnergy = batteryCapacity * (currentSoC / 100.0);
+		double estimatedRange = (availableEnergy * 100.0) / finalConsumption;
+		
+		String weatherImpact = generateWeatherImpactDescription(parameters.getWeather(), parameters.getTemperatureCelsius());
+		String terrainImpact = generateTerrainImpactDescription(parameters.getTerrain());
+		String environmentImpact = generateEnvironmentImpactDescription(parameters.getEnvironment());
+		String batteryCondition = generateBatteryConditionDescription(parameters.getStateOfChargePercent(), parameters.getTemperatureCelsius());
+		
+		return new RangeResult(
+				estimatedRange,
+				finalConsumption,
+				weatherImpact,
+				terrainImpact,
+				environmentImpact,
+				batteryCondition
+		);
+	}
+	
+	private double calculateTerrainFactor(TerrainType terrain) {
+		return switch(terrain) {
+			case FLAT -> 1.0;
+			case HILLY -> 1.15;
+			case MOUNTAINOUS -> 1.35;
+		};
+	}
+	
+	private double calculateWeatherFactor(WeatherType weather, double temperature) {
+		double weatherMultiplier = switch(weather) {
+			case SUNNY -> 0.9;
+			case CLOUDY -> 0.95;
+			case RAIN -> 1.1;
+			case SNOW -> 1.3;
+			case STRONG_WIND -> 1.2;
+		};
+		
+		double tempFactor;
+		if (temperature < -10) {
+			tempFactor = 1.4;
+		} else if (temperature < 0) {
+			tempFactor = 1.2;
+		} else if (temperature < 10) {
+			tempFactor = 1.0;
+		} else if (temperature <= 25) {
+			tempFactor = 0.9;
+		} else if (temperature <= 35) {
+			tempFactor = 0.95;
+		} else {
+			tempFactor = 1.1;
+		}
+		
+		return weatherMultiplier * tempFactor;
+	}
+	
+	private double calculateEnvironmentFactor(DrivingEnvironment environment) {
+		return switch(environment) {
+			case CITY -> 0.8;     
+			case RURAL -> 1.0;    
+			case HIGHWAY -> 1.1; 
+		};
+	}
+	
+	private String generateWeatherImpactDescription(WeatherType weather, double temperature) {
+		StringBuilder impact = new StringBuilder();
+		
+		switch(weather) {
+			case SUNNY:
+				impact.append("Minimal impact - Ideal weather conditions");
+				break;
+			case CLOUDY:
+				impact.append("Slight impact - Cloud cover has minimal effect on efficiency");
+				break;
+			case RAIN:
+				impact.append("Moderate impact - Rain increases rolling resistance");
+				break;
+			case SNOW:
+				impact.append("Severe impact - Snow conditions significantly reduce range");
+				break;
+			case STRONG_WIND:
+				impact.append("Significant impact - Strong winds increase air resistance");
+				break;
+		}
+		
+		if (temperature < 0) {
+			impact.append(", Cold temperature reduces battery efficiency");
+		} else if (temperature > 30) {
+			impact.append(", High temperature requires additional cooling");
+		}
+		
+		return impact.toString();
+	}
+	
+	private String generateTerrainImpactDescription(TerrainType terrain) {
+		return switch(terrain) {
+			case FLAT -> "Minimal impact - Flat terrain optimal for efficiency";
+			case HILLY -> "Moderate impact - Hills affect energy consumption";
+			case MOUNTAINOUS -> "Significant impact - Mountainous terrain substantially increases consumption";
+		};
+	}
+	
+	private String generateEnvironmentImpactDescription(DrivingEnvironment environment) {
+		return switch(environment) {
+			case CITY -> "Stop-and-go traffic at " + environment.getAvgSpeedKmh() + " km/h - Benefits from regenerative braking";
+			case RURAL -> "Medium speed driving at " + environment.getAvgSpeedKmh() + " km/h - Moderate air resistance";
+			case HIGHWAY -> "Constant high speed at " + environment.getAvgSpeedKmh() + " km/h - Increased air resistance";
+		};
+	}
+	
+	private String generateBatteryConditionDescription(double soc, double temperature) {
+		StringBuilder condition = new StringBuilder();
+		
+		if (soc > 80) {
+			condition.append("High SoC (").append(soc).append("%) - Optimal operating range");
+		} else if (soc > 40) {
+			condition.append("Medium SoC (").append(soc).append("%) - Good operating range");
+		} else if (soc > 20) {
+			condition.append("Low SoC (").append(soc).append("%) - Consider charging soon");
+		} else {
+			condition.append("Very low SoC (").append(soc).append("%) - Critical level, charge immediately");
+		}
+		
+		condition.append(", ");
+		
+		if (temperature < -10) {
+			condition.append("Battery temperature very cold (").append(temperature).append("°C) - Severely reduced efficiency");
+		} else if (temperature < 0) {
+			condition.append("Battery temperature cold (").append(temperature).append("°C) - Reduced efficiency");
+		} else if (temperature < 10) {
+			condition.append("Battery temperature cool (").append(temperature).append("°C) - Slightly reduced efficiency");
+		} else if (temperature <= 30) {
+			condition.append("Battery temperature optimal (").append(temperature).append("°C) - Maximum efficiency");
+		} else if (temperature <= 40) {
+			condition.append("Battery temperature warm (").append(temperature).append("°C) - Slightly reduced efficiency");
+		} else {
+			condition.append("Battery temperature hot (").append(temperature).append("°C) - Reduced efficiency, potential for degradation");
+		}
+		
+		return condition.toString();
+	}
+
+	@Override
+	public String getName() {
+		return "WLTP-based Range Calculation";
+	}
+
+	@Override
+	public String getDescription() {
+		return "Calculates range based on the car's WLTP rating adjusted for external conditions";
+	}
+} 
+</code></pre>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Strategy Pattern: Zweite Implementierung</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">// Zweite Strategie-Implementierung
+
+public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculationStrategyInterface {
+
+    @Override
+    public RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters) {
+        Objects.requireNonNull(carProfile, "Car profile cannot be null");
+        Objects.requireNonNull(parameters, "Range parameters cannot be null");
+        
+        ConsumptionProfile consumptionProfile = carProfile.getConsumptionProfile();
+        double baseConsumption = getBaseConsumption(consumptionProfile, parameters.getEnvironment());
+        
+        double modeConsumption = baseConsumption * parameters.getEfficiencyMode().getConsumptionFactor();
+        
+        double terrainFactor = calculateTerrainFactor(parameters.getTerrain());
+        double terrainConsumption = modeConsumption * terrainFactor;
+        
+        double weatherFactor = calculateWeatherFactor(parameters.getWeather(), parameters.getTemperatureCelsius());
+        double finalConsumption = terrainConsumption * weatherFactor;
+        
+        double availableEnergy = carProfile.getBatteryProfile().getRemainingCapacityKwh() *
+                (parameters.getStateOfChargePercent() / 100.0);
+        double estimatedRange = (availableEnergy * 100.0) / finalConsumption;
+        
+        String weatherImpact = generateWeatherImpactDescription(parameters.getWeather(), parameters.getTemperatureCelsius());
+        String terrainImpact = generateTerrainImpactDescription(parameters.getTerrain());
+        String environmentImpact = generateEnvironmentImpactDescription(parameters.getEnvironment());
+        String batteryCondition = generateBatteryConditionDescription(parameters.getStateOfChargePercent(), parameters.getTemperatureCelsius());
+        
+        return new RangeResult(
+                estimatedRange,
+                finalConsumption,
+                weatherImpact,
+                terrainImpact,
+                environmentImpact,
+                batteryCondition
+        );
+    }
+    
+    private double getBaseConsumption(ConsumptionProfile profile, DrivingEnvironment environment) {
+        return switch(environment) {
+            case CITY -> profile.getConsumptionAt50Kmh();
+            case RURAL -> profile.getConsumptionAt100Kmh();
+            case HIGHWAY -> profile.getConsumptionAt130Kmh();
+        };
+    }
+    
+    private double calculateTerrainFactor(TerrainType terrain) {
+        return switch(terrain) {
+            case FLAT -> 1.0;
+            case HILLY -> 1.05;
+            case MOUNTAINOUS -> 1.1;
+        };
+    }
+    
+    private double calculateWeatherFactor(WeatherType weather, double temperature) {
+        double weatherMultiplier = switch(weather) {
+            case SUNNY -> 0.9;
+            case CLOUDY -> 1.0;
+            case RAIN -> 1.2;
+            case SNOW -> 1.3;
+            case STRONG_WIND -> 1.1;
+        };
+        
+        double tempFactor;
+        if (temperature < -10) {
+            tempFactor = 1.4;
+        } else if (temperature < 0) {
+            tempFactor = 1.15;
+        } else if (temperature < 10) {
+            tempFactor = 1.0;
+        } else if (temperature <= 25) {
+            tempFactor = 0.9;
+        } else if (temperature <= 35) {
+            tempFactor = 1.1;
+        } else {
+            tempFactor = 1.2;
+        }
+        
+        return weatherMultiplier * tempFactor;
+    }
+    
+    private String generateWeatherImpactDescription(WeatherType weather, double temperature) {
+        StringBuilder impact = new StringBuilder();
+        
+        switch(weather) {
+            case SUNNY:
+                impact.append("Minimal impact -> Ideal weather conditions");
+                break;
+            case CLOUDY:
+                impact.append("Slight impact -> Cloud cover has minimal effect on efficiency");
+                break;
+            case RAIN:
+                impact.append("Moderate impact -> Rain increases rolling resistance");
+                break;
+            case SNOW:
+                impact.append("Severe impact - Snow conditions significantly reduce range");
+                break;
+            case STRONG_WIND:
+                impact.append("Significant impact - Strong winds increase air resistance");
+                break;
+        }
+        
+        if (temperature < 0) {
+            impact.append(", Cold temperature reduces battery efficiency!");
+        } else if (temperature > 30) {
+            impact.append(", High temperature requires additional cooling!");
+        }
+        
+        return impact.toString();
+    }
+    
+    private String generateTerrainImpactDescription(TerrainType terrain) {
+        return switch(terrain) {
+            case FLAT -> "Minimal impact - Flat terrain optimal for efficiency";
+            case HILLY -> "Moderate impact - Hills affect energy consumption";
+            case MOUNTAINOUS -> "Significant impact - Mountainous terrain substantially increases consumption";
+        };
+    }
+    
+    private String generateEnvironmentImpactDescription(DrivingEnvironment environment) {
+        return switch(environment) {
+            case CITY -> "Stop-and-go traffic at " + environment.getAvgSpeedKmh() + " kmh - Benefits from regenerative braking";
+            case RURAL -> "Medium speed driving at " + environment.getAvgSpeedKmh() + " km/h - Moderate air resistance!";
+            case HIGHWAY -> "Constant high speed at " + environment.getAvgSpeedKmh() + " km/h - Increased air resistance!";
+        };
+    }
+    
+    private String generateBatteryConditionDescription(double soc, double temperature) {
+        StringBuilder condition = new StringBuilder();
+        
+        if (soc > 80) {
+            condition.append("High SoC (").append(soc).append("%) -> Optimal operating range.");
+        } else if (soc > 40) {
+            condition.append("Medium SoC (").append(soc).append("%) -> Good operating range.");
+        } else if (soc > 20) {
+            condition.append("Low SoC (").append(soc).append("%) - Consider charging soon.");
+        } else {
+            condition.append("Very low SoC (").append(soc).append("%) - Critical level!!! charge immediately.");
+        }
+        
+        condition.append(", ");
+        
+        if (temperature < -10) {
+            condition.append("Battery temperature tooo cold!!! (").append(temperature).append("°C) -> Severely reduced efficiency");
+        } else if (temperature < 0) {
+            condition.append("Battery temperature cold (").append(temperature).append("°C) -> Reduced efficiency");
+        } else if (temperature < 10) {
+            condition.append("Battery temperature cool (").append(temperature).append("°C) -> Slightly reduced efficiency");
+        } else if (temperature <= 30) {
+            condition.append("Battery temperature optimal (").append(temperature).append("°C) -> Maximum efficiency");
+        } else if (temperature <= 40) {
+            condition.append("Battery temperature warm (perfectly fine) (").append(temperature).append("°C) -> Slightly reduced efficiency");
+        } else {
+            condition.append("Battery temperature too hot!!! (").append(temperature).append("°C) - Reduced efficiency! potential for degradation!!!");
+        }
+        
+        return condition.toString();
+    }
+
+    @Override
+    public String getName() {
+        return "Consumption-based Range Calculation";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Calculates range based on the car's consumption profile adjusted for external conditions";
+    }
+} 
+
+			</code></pre>
 						</div>
 					</div>
 				</section>
@@ -1137,293 +1486,327 @@ jobs:
 					<h3>Strategy Pattern: Verwendung im Client</h3>
 					<div class="horizontal-spaced-container">
 						<div>
-							<pre><code class="java">// Client-Klasse, die die Strategien verwendet
-			public class RangeCalculatorService {
-				private final List<RangeCalculationStrategyInterface> 
-															strategies;
-				private RangeCalculationStrategyInterface defaultStrategy;
-			
-				public RangeCalculatorService() {
-					this.strategies = new ArrayList<>();
-					
-					// Initialisierung mit Standardstrategien
-					WltpBasedRangeCalculationStrategy wltpStrategy = 
-							new WltpBasedRangeCalculationStrategy();
-					ConsumptionBasedRangeCalculationStrategy 
-							consumptionStrategy = 
-							new ConsumptionBasedRangeCalculationStrategy();
-					
-					this.strategies.add(wltpStrategy);
-					this.strategies.add(consumptionStrategy);
-					
-					// Standard-Strategie setzen
-					this.defaultStrategy = consumptionStrategy;
-				}
-				
-				// Strategie zur Laufzeit ändern
-				public void setDefaultStrategy(
-						RangeCalculationStrategyInterface strategy) {
-					// ... Validierung
-					this.defaultStrategy = strategy;
-				}
-				
-				// Berechnung mit der ausgewählten Strategie
-				public RangeResult calculateRange(
-						CarProfile carProfile, 
-						RangeParameters parameters) {
-					return defaultStrategy.calculateRange(
-							carProfile, parameters);
-				}
-			}</code></pre>
-						</div>
-						<div>
-							<h4>Vorteile des Strategy Patterns im Projekt:</h4>
-							<ul>
-								<li>Unterschiedliche Berechnungsmethoden für Reichweite (WLTP-basiert vs.
-									verbrauchsbasiert)
-								</li>
-								<li>Einfaches Hinzufügen neuer Strategien ohne Änderungen im Client-Code</li>
-								<li>Klare Trennung von Algorithmus und Kontext</li>
-								<li>Erhöhte Testbarkeit durch isolierte Strategien</li>
-								<li>Auswahl der passenden Strategie je nach Anwendungsfall</li>
-								<li>Reduzierte Komplexität im RangeCalculatorService</li>
-							</ul>
+							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">// Client-Klasse, die die Strategien verwendet
+public class RangeCalculatorService {
+    private final List<RangeCalculationStrategyInterface> strategies;
+    private RangeCalculationStrategyInterface defaultStrategy;
+
+    public RangeCalculatorService() {
+        this.strategies = new ArrayList<>();
+        
+        WltpBasedRangeCalculationStrategy wltpStrategy = new WltpBasedRangeCalculationStrategy();
+        ConsumptionBasedRangeCalculationStrategy consumptionStrategy = new ConsumptionBasedRangeCalculationStrategy();
+        
+        this.strategies.add(wltpStrategy);
+        this.strategies.add(consumptionStrategy);
+        
+        this.defaultStrategy = consumptionStrategy;
+    }
+    
+    public void addStrategy(RangeCalculationStrategyInterface strategy) {
+        Objects.requireNonNull(strategy, "Strategy cannot be null");
+        strategies.add(strategy);
+    }
+    
+    public void setDefaultStrategy(RangeCalculationStrategyInterface strategy) {
+        Objects.requireNonNull(strategy, "Strategy cannot be null");
+        if (!strategies.contains(strategy)) {
+            strategies.add(strategy);
+        }
+        this.defaultStrategy = strategy;
+    }
+    
+    public List<RangeCalculationStrategyInterface> getAvailableStrategies() {
+        return new ArrayList<>(strategies);
+    }
+    
+    public RangeCalculationStrategyInterface getDefaultStrategy() {
+        return defaultStrategy;
+    }
+    
+    public RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters) {
+        Objects.requireNonNull(carProfile, "Car profile cannot be null");
+        Objects.requireNonNull(parameters, "Range parameters cannot be null");
+        
+        return defaultStrategy.calculateRange(carProfile, parameters);
+    }
+    
+    public RangeResult calculateRangeWithStrategy(CarProfile carProfile, RangeParameters parameters, RangeCalculationStrategyInterface strategy) {
+        Objects.requireNonNull(carProfile, "Car profile cannot be null");
+        Objects.requireNonNull(parameters, "Range parameters cannot be null");
+        Objects.requireNonNull(strategy, "Strategy cannot be null");
+        
+        return strategy.calculateRange(carProfile, parameters);
+    }
+} 
+</code></pre>
 						</div>
 					</div>
 				</section>
+		
+		<section>
+			<h4>Strategie Pattern: Vergleich</h4>
+			<table style="margin: 0 auto; margin-top: 30px; padding: 0;">
+				<thead>
+					<tr>
+						<th>Aspekt</th>
+						<th>ConsumptionBasedRangeCalculationStrategy</th>
+						<th>WltpBasedRangeCalculationStrategy</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Basis für Berechnung</td>
+						<td>Verbrauchsprofile des Fahrzeugs bei verschiedenen Geschwindigkeiten (50, 100, 130 km/h)</td>
+						<td>WLTP-Reichweite des Fahrzeugs als Fixwert</td>
+					</tr>
+					<tr>
+						<td>Kalkulation Grundverbrauch</td>
+						<td>Basierend auf dem aktuellen Fahrumfeld (DrivingEnvironment) wird ein Verbrauchswert (kWh/100km) gewählt</td>
+						<td>Es wird ein durchschnittlicher Verbrauch aus der WLTP-Reichweite und Batteriekapazität berechnet</td>
+					</tr>
+					<tr>
+						<td>Berücksichtigte Faktoren</td>
+						<td>Effizienzmodus, Geländeart, Wetterbedingungen, Temperatur, Batterieladestand</td>
+						<td>Effizienzmodus, Geländeart, Wetterbedingungen, Temperatur, Batterieladestand, zusätzlich ein Fahrumgebungsfaktor (EnvironmentFactor)</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
 
-				<section>
-					<h3>Strategy Pattern: UML-Diagramm</h3>
-					<img src="assets/UMLs-imgs/Kapitel_8-Aufgabe_1.png" alt="Strategy Pattern UML Diagram"
-						class="uml-image">
-				</section>
+		<section>
+			<h3>Strategy Pattern: UML-Diagramm</h3>
+			<img style="scale: 1.25; margin: 0; padding: 0; margin-top: 50px;" src="assets/UMLs-imgs/Kapitel_8-Aufgabe_1.png" alt="Strategy Pattern UML Diagram" class="uml-image">
+		</section>
 
-				<section>
-					<h3>Entwurfsmuster 2: Adapter Pattern (4P)</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h4>Überblick</h4>
-							<ul>
-								<li><b>Kategorie:</b> Strukturmuster (Structural Pattern)</li>
-								<li><b>Zweck:</b> Konvertiert die Schnittstelle einer Klasse in eine andere, die vom
-									Client
-									erwartet wird</li>
-								<li><b>Verwendung:</b> Integration von I/O-Operationen in die Clean Architecture</li>
-							</ul>
-						</div>
-						<div>
-							<h4>Key Features</h4>
-							<ul>
-								<li>Ermöglicht Zusammenarbeit nicht-kompatibler Schnittstellen</li>
-								<li>Trennt Geschäftslogik von externen Ressourcen</li>
-								<li>Unterstützt das Dependency Inversion Principle</li>
-								<li>Erhöht Flexibilität durch lose Kopplung</li>
-								<li>Vereinfacht das Testen durch einfache Mock-Implementierungen</li>
-							</ul>
-						</div>
-					</div>
-				</section>
 
-				<section>
-					<h3>Adapter Pattern: UML-Diagramm</h3>
-					<img src="assets/UMLs-imgs/Kapitel_8-Aufgabe_2.png" alt="Adapter Pattern UML Diagram"
-						class="uml-image">
-				</section>
 
-				<section>
-					<h3>Adapter Pattern: Port-Interfaces und Adapter</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<pre><code class="java">// Port Interface in der Anwendungsschicht
-			package org.ulrica.application.port.out;
-			
-			public interface UserInputPortInterface {
-				String readLine();
-				int readInt();
-				double readDouble();
-				boolean readBoolean(String yesOption, String noOption);
-			}
-			
-			// Port Interface in der Anwendungsschicht
-			package org.ulrica.application.port.out;
-			
-			public interface UserOutputPortInterface {
-				void display(String message);
-				void displayLine(String message);
-				void displayPrompt(String prompt);
-			}</code></pre>
-						</div>
-						<div>
-							<pre><code class="java">// Adapter-Implementierung in der Infrastrukturschicht
-			package org.ulrica.infrastructure.adapter;
-			
-			import java.util.Scanner;
-			import org.ulrica.application.port.out.UserInputPortInterface;
-			
-			public class ConsoleUserInputAdapter implements UserInputPortInterface {
-				private final Scanner scanner;
+
+		<section>
+			<h3>Entwurfsmuster 2: Adapter Pattern (4P)</h3>
+			<div class="horizontal-spaced-container">
+				<div>
+					<h4>Überblick</h4>
+					<ul>
+						<li><b>Kategorie:</b> Strukturmuster (Structural Pattern)</li>
+						<li><b>Zweck:</b> Konvertiert die Schnittstelle einer Klasse in eine andere, die vom
+							Client
+							erwartet wird</li>
+						<li><b>Verwendung:</b> Integration von I/O-Operationen in die Clean Architecture</li>
+					</ul>
+				</div>
+				<div>
+					<h4>Key Features</h4>
+					<ul>
+						<li>Ermöglicht Zusammenarbeit nicht-kompatibler Schnittstellen</li>
+						<li>Trennt Geschäftslogik von externen Ressourcen</li>
+						<li>Unterstützt das Dependency Inversion Principle</li>
+						<li>Erhöht Flexibilität durch lose Kopplung</li>
+						<li>Vereinfacht das Testen durch einfache Mock-Implementierungen</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<h3>Adapter Pattern: UML-Diagramm</h3>
+			<img src="assets/UMLs-imgs/Kapitel_8-Aufgabe_2.png" alt="Adapter Pattern UML Diagram" class="uml-image">
+		</section>
+
+		<section>
+			<h3>Adapter Pattern: Port-Interfaces und Adapter</h3>
+			<div class="horizontal-spaced-container">
+				<div>
+					<pre><code class="java">// Port Interface in der Anwendungsschicht
+				package org.ulrica.application.port.out;
 				
-				public ConsoleUserInputAdapter(Scanner scanner) {
-					this.scanner = scanner;
+				public interface UserInputPortInterface {
+					String readLine();
+					int readInt();
+					double readDouble();
+					boolean readBoolean(String yesOption, String noOption);
 				}
 				
-				@Override
-				public String readLine() {
-					return scanner.nextLine();
-				}
+				// Port Interface in der Anwendungsschicht
+				package org.ulrica.application.port.out;
 				
-				@Override
-				public int readInt() {
-					return Integer.parseInt(scanner.nextLine());
-				}
+				public interface UserOutputPortInterface {
+					void display(String message);
+					void displayLine(String message);
+					void displayPrompt(String prompt);
+				}</code></pre>
+				</div>
+				<div>
+					<pre><code class="java">// Adapter-Implementierung in der Infrastrukturschicht
+				package org.ulrica.infrastructure.adapter;
 				
-				// Weitere Methoden...
-			}</code></pre>
-						</div>
-					</div>
-				</section>
-
-				<section>
-					<h3>Adapter Pattern: Verwendung im Client</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<pre><code class="java">// Controller aus der Presentation-Schicht
-			public class RangeCalculationController {
-				private final UserInputPortInterface userInputPort;
-				private final UserOutputPortInterface userOutputPort;
-				private final CalculateRangeUseCaseInterface calculateRangeUseCase;
+				import java.util.Scanner;
+				import org.ulrica.application.port.out.UserInputPortInterface;
 				
-				public RangeCalculationController(
-						UserInputPortInterface userInputPort,
-						UserOutputPortInterface userOutputPort,
-						CalculateRangeUseCaseInterface calculateRangeUseCase) {
-					this.userInputPort = userInputPort;
-					this.userOutputPort = userOutputPort;
-					this.calculateRangeUseCase = calculateRangeUseCase;
-				}
-				
-				public void processRangeCalculation() {
-					// Benutzereingaben über Port sammeln
-					userOutputPort.displayPrompt("Enter temperature (°C)");
-					double temperature = userInputPort.readDouble();
+				public class ConsoleUserInputAdapter implements UserInputPortInterface {
+					private final Scanner scanner;
 					
-					// Use Case über Interface ausführen
-					CalculateRangeCommand command = 
-							new CalculateRangeCommand(/* ... */);
-					calculateRangeUseCase.calculateRange(command);
+					public ConsoleUserInputAdapter(Scanner scanner) {
+						this.scanner = scanner;
+					}
 					
-					// Controller kennt keine konkreten Implementierungen
-				}
-			}</code></pre>
-						</div>
-						<div>
-							<h4>Hauptvorteile des Adapter Patterns:</h4>
-							<ul>
-								<li>Clean Architecture durch Trennung von Domain und externen Systemen</li>
-								<li>Erleichterte Tests durch einfaches Mocken der Ports</li>
-								<li>Hohe Austauschbarkeit der Ein-/Ausgabemechanismen</li>
-								<li>Zentralisierte Fehlerbehandlung in den Adaptern</li>
-								<li>Domänenlogik bleibt frei von Ein-/Ausgabedetails</li>
-								<li>Konversion zwischen technischen und Domänen-Datenformaten</li>
-							</ul>
-						</div>
-					</div>
-				</section>
+					@Override
+					public String readLine() {
+						return scanner.nextLine();
+					}
+					
+					@Override
+					public int readInt() {
+						return Integer.parseInt(scanner.nextLine());
+					}
+					
+					// Weitere Methoden...
+				}</code></pre>
+				</div>
+			</div>
+		</section>
 
-				<section>
-					<h3>Zusammenfassung der Entwurfsmuster in ULRICA</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h4>Strategy Pattern</h4>
-							<ul>
-								<li>Ermöglicht austauschbare Berechnungsstrategien</li>
-								<li>Unterstützt OCP durch Erweiterbarkeit</li>
-								<li>Vereinfacht das Hinzufügen neuer Berechnungsmethoden</li>
-								<li>Beispiel: Reichweitenberechnung mit verschiedenen Algorithmen</li>
-							</ul>
-						</div>
-						<div>
-							<h4>Adapter Pattern</h4>
-							<ul>
-								<li>Überbrückt die Kluft zwischen Domain und externen Systemen</li>
-								<li>Fördert saubere Schichtenarchitektur</li>
-								<li>Erhöht die Testbarkeit durch Entkopplung</li>
-								<li>Beispiel: Konsolen-I/O-Adapter für Benutzerinteraktion</li>
-							</ul>
-						</div>
-					</div>
-					<p style="text-align: center; margin-top: 2rem;">Beide Muster fördern die Clean Architecture und
-						verbessern die Wartbarkeit, Testbarkeit und Flexibilität des Gesamtsystems.</p>
-				</section>
-			</section>
+		<section>
+			<h3>Adapter Pattern: Verwendung im Client</h3>
+			<div class="horizontal-spaced-container">
+				<div>
+					<pre><code class="java">// Controller aus der Presentation-Schicht
+				public class RangeCalculationController {
+					private final UserInputPortInterface userInputPort;
+					private final UserOutputPortInterface userOutputPort;
+					private final CalculateRangeUseCaseInterface calculateRangeUseCase;
+					
+					public RangeCalculationController(
+							UserInputPortInterface userInputPort,
+							UserOutputPortInterface userOutputPort,
+							CalculateRangeUseCaseInterface calculateRangeUseCase) {
+						this.userInputPort = userInputPort;
+						this.userOutputPort = userOutputPort;
+						this.calculateRangeUseCase = calculateRangeUseCase;
+					}
+					
+					public void processRangeCalculation() {
+						// Benutzereingaben über Port sammeln
+						userOutputPort.displayPrompt("Enter temperature (°C)");
+						double temperature = userInputPort.readDouble();
+						
+						// Use Case über Interface ausführen
+						CalculateRangeCommand command = 
+								new CalculateRangeCommand(/* ... */);
+						calculateRangeUseCase.calculateRange(command);
+						
+						// Controller kennt keine konkreten Implementierungen
+					}
+				}</code></pre>
+				</div>
+				<div>
+					<h4>Hauptvorteile des Adapter Patterns:</h4>
+					<ul>
+						<li>Clean Architecture durch Trennung von Domain und externen Systemen</li>
+						<li>Erleichterte Tests durch einfaches Mocken der Ports</li>
+						<li>Hohe Austauschbarkeit der Ein-/Ausgabemechanismen</li>
+						<li>Zentralisierte Fehlerbehandlung in den Adaptern</li>
+						<li>Domänenlogik bleibt frei von Ein-/Ausgabedetails</li>
+						<li>Konversion zwischen technischen und Domänen-Datenformaten</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<h3>Zusammenfassung der Entwurfsmuster in ULRICA</h3>
+			<div class="horizontal-spaced-container">
+				<div>
+					<h4>Strategy Pattern</h4>
+					<ul>
+						<li>Ermöglicht austauschbare Berechnungsstrategien</li>
+						<li>Unterstützt OCP durch Erweiterbarkeit</li>
+						<li>Vereinfacht das Hinzufügen neuer Berechnungsmethoden</li>
+						<li>Beispiel: Reichweitenberechnung mit verschiedenen Algorithmen</li>
+					</ul>
+				</div>
+				<div>
+					<h4>Adapter Pattern</h4>
+					<ul>
+						<li>Überbrückt die Kluft zwischen Domain und externen Systemen</li>
+						<li>Fördert saubere Schichtenarchitektur</li>
+						<li>Erhöht die Testbarkeit durch Entkopplung</li>
+						<li>Beispiel: Konsolen-I/O-Adapter für Benutzerinteraktion</li>
+					</ul>
+				</div>
+			</div>
+			<p style="text-align: center; margin-top: 2rem;">Beide Muster fördern die Clean Architecture und
+				verbessern die Wartbarkeit, Testbarkeit und Flexibilität des Gesamtsystems.</p>
+		</section>
+		</section>
 		</div>
-	</div>
+		</div>
 
-	<script src="dist/reveal.js"></script>
-	<script src="plugin/notes/notes.js"></script>
-	<script src="plugin/markdown/markdown.js"></script>
-	<script src="plugin/highlight/highlight.js"></script>
-	<script>
-		// Debug logging
-		console.log('RevealHighlight plugin:', typeof RevealHighlight);
-		console.log('hljs global:', typeof window.hljs);
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// Debug logging
+			console.log('RevealHighlight plugin:', typeof RevealHighlight);
+			console.log('hljs global:', typeof window.hljs);
 
-		// More info about initialization & config:
-		// - https://revealjs.com/initialization/
-		// - https://revealjs.com/config/
-		Reveal.initialize({
-			hash: true,
-			slideNumber: true,
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+				slideNumber: true,
 
-			// Explicit highlight config
-			highlight: {
-				highlightOnLoad: true,
-				escapeHTML: false
-			},
+				// Explicit highlight config
+				highlight: {
+					highlightOnLoad: true,
+					escapeHTML: false
+				},
 
-			// Learn about plugins: https://revealjs.com/plugins/
-			plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
-		});
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+			});
 
-		// Load all slide content, then initialize highlight.js
-		const loadSlidesPromises = [];
-		document.querySelectorAll('[data-include]').forEach((section) => {
-			const url = section.getAttribute('data-include');
-			const promise = fetch(url)
-				.then(response => response.text())
-				.then(html => {
-					section.html = ""
-					section.innerHTML = html;
-				});
-			loadSlidesPromises.push(promise);
-		});
+			// Load all slide content, then initialize highlight.js
+			const loadSlidesPromises = [];
+			document.querySelectorAll('[data-include]').forEach((section) => {
+				const url = section.getAttribute('data-include');
+				const promise = fetch(url)
+					.then(response => response.text())
+					.then(html => {
+						section.html = ""
+						section.innerHTML = html;
+					});
+				loadSlidesPromises.push(promise);
+			});
 
-		// After all slides are loaded, re-initialize highlight.js
-		Promise.all(loadSlidesPromises).then(() => {
-			// Force Reveal to update
-			Reveal.sync();
+			// After all slides are loaded, re-initialize highlight.js
+			Promise.all(loadSlidesPromises).then(() => {
+				// Force Reveal to update
+				Reveal.sync();
 
-			// Try multiple ways to initialize highlighting
+				// Try multiple ways to initialize highlighting
 
-			// 1. Through Reveal plugin
-			const highlight = Reveal.getPlugin('highlight');
-			if (highlight) {
-				document.querySelectorAll('code').forEach(block => {
-					highlight.highlightBlock(block);
-				});
-			}
+				// 1. Through Reveal plugin
+				const highlight = Reveal.getPlugin('highlight');
+				if (highlight) {
+					document.querySelectorAll('code').forEach(block => {
+						highlight.highlightBlock(block);
+					});
+				}
 
-			// 2. Direct hljs initialization if available
-			if (window.hljs) {
-				window.hljs.configure({
-					languages: ['bash', 'javascript', 'html', 'xml', 'css']
-				});
-				document.querySelectorAll('code.bash, code.hljs.bash').forEach(block => {
-					window.hljs.highlightElement(block);
-				});
-			}
-		});
-	</script>
-</body>
+				// 2. Direct hljs initialization if available
+				if (window.hljs) {
+					window.hljs.configure({
+						languages: ['bash', 'javascript', 'html', 'xml', 'css']
+					});
+					document.querySelectorAll('code.bash, code.hljs.bash').forEach(block => {
+						window.hljs.highlightElement(block);
+					});
+				}
+			});
+		</script>
+	</body>
 
 </html>
