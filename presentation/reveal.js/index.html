@@ -1582,163 +1582,394 @@ public class RangeCalculatorService {
 
 
 
-		<section>
-			<h3>Entwurfsmuster 2: Adapter Pattern (4P)</h3>
-			<div class="horizontal-spaced-container">
-				<div>
-					<h4>Überblick</h4>
-					<ul>
-						<li><b>Kategorie:</b> Strukturmuster (Structural Pattern)</li>
-						<li><b>Zweck:</b> Konvertiert die Schnittstelle einer Klasse in eine andere, die vom
-							Client
-							erwartet wird</li>
-						<li><b>Verwendung:</b> Integration von I/O-Operationen in die Clean Architecture</li>
-					</ul>
-				</div>
-				<div>
-					<h4>Key Features</h4>
-					<ul>
-						<li>Ermöglicht Zusammenarbeit nicht-kompatibler Schnittstellen</li>
-						<li>Trennt Geschäftslogik von externen Ressourcen</li>
-						<li>Unterstützt das Dependency Inversion Principle</li>
-						<li>Erhöht Flexibilität durch lose Kopplung</li>
-						<li>Vereinfacht das Testen durch einfache Mock-Implementierungen</li>
-					</ul>
-				</div>
-			</div>
-		</section>
 
-		<section>
-			<h3>Adapter Pattern: UML-Diagramm</h3>
-			<img src="assets/UMLs-imgs/Kapitel_8-Aufgabe_2.png" alt="Adapter Pattern UML Diagram" class="uml-image">
-		</section>
 
-		<section>
-			<h3>Adapter Pattern: Port-Interfaces und Adapter</h3>
-			<div class="horizontal-spaced-container">
-				<div>
-					<pre><code class="java">// Port Interface in der Anwendungsschicht
-				package org.ulrica.application.port.out;
-				
-				public interface UserInputPortInterface {
-					String readLine();
-					int readInt();
-					double readDouble();
-					boolean readBoolean(String yesOption, String noOption);
-				}
-				
-				// Port Interface in der Anwendungsschicht
-				package org.ulrica.application.port.out;
-				
-				public interface UserOutputPortInterface {
-					void display(String message);
-					void displayLine(String message);
-					void displayPrompt(String prompt);
-				}</code></pre>
-				</div>
-				<div>
-					<pre><code class="java">// Adapter-Implementierung in der Infrastrukturschicht
-				package org.ulrica.infrastructure.adapter;
-				
-				import java.util.Scanner;
-				import org.ulrica.application.port.out.UserInputPortInterface;
-				
-				public class ConsoleUserInputAdapter implements UserInputPortInterface {
-					private final Scanner scanner;
-					
-					public ConsoleUserInputAdapter(Scanner scanner) {
-						this.scanner = scanner;
-					}
-					
-					@Override
-					public String readLine() {
-						return scanner.nextLine();
-					}
-					
-					@Override
-					public int readInt() {
-						return Integer.parseInt(scanner.nextLine());
-					}
-					
-					// Weitere Methoden...
-				}</code></pre>
-				</div>
-			</div>
-		</section>
 
-		<section>
-			<h3>Adapter Pattern: Verwendung im Client</h3>
-			<div class="horizontal-spaced-container">
-				<div>
-					<pre><code class="java">// Controller aus der Presentation-Schicht
-				public class RangeCalculationController {
-					private final UserInputPortInterface userInputPort;
-					private final UserOutputPortInterface userOutputPort;
-					private final CalculateRangeUseCaseInterface calculateRangeUseCase;
-					
-					public RangeCalculationController(
-							UserInputPortInterface userInputPort,
-							UserOutputPortInterface userOutputPort,
-							CalculateRangeUseCaseInterface calculateRangeUseCase) {
-						this.userInputPort = userInputPort;
-						this.userOutputPort = userOutputPort;
-						this.calculateRangeUseCase = calculateRangeUseCase;
-					}
-					
-					public void processRangeCalculation() {
-						// Benutzereingaben über Port sammeln
-						userOutputPort.displayPrompt("Enter temperature (°C)");
-						double temperature = userInputPort.readDouble();
-						
-						// Use Case über Interface ausführen
-						CalculateRangeCommand command = 
-								new CalculateRangeCommand(/* ... */);
-						calculateRangeUseCase.calculateRange(command);
-						
-						// Controller kennt keine konkreten Implementierungen
-					}
-				}</code></pre>
-				</div>
-				<div>
-					<h4>Hauptvorteile des Adapter Patterns:</h4>
-					<ul>
-						<li>Clean Architecture durch Trennung von Domain und externen Systemen</li>
-						<li>Erleichterte Tests durch einfaches Mocken der Ports</li>
-						<li>Hohe Austauschbarkeit der Ein-/Ausgabemechanismen</li>
-						<li>Zentralisierte Fehlerbehandlung in den Adaptern</li>
-						<li>Domänenlogik bleibt frei von Ein-/Ausgabedetails</li>
-						<li>Konversion zwischen technischen und Domänen-Datenformaten</li>
-					</ul>
-				</div>
-			</div>
-		</section>
+<section>
+	<h3>Entwurfsmuster 2: Adapter Pattern (4P)</h3>
+	<div class="horizontal-spaced-container">
+		<div style="width: 50%;">
+			<h4>Überblick</h4>
+			<ul>
+				<li><b>Art/Kategorie:</b> Strukturmuster (Structural Pattern)</li>
+				<li><b>Zweck:</b> Konvertiert die Schnittstelle einer Klasse in eine andere, die vom Client erwartet wird</li>
+				<li><b>Verwendung:</b> Integration von I/O-Operationen in die Clean Architecture</li>
+			</ul>
+		</div>
+		<div style="width: 50%;">
+			<h4>Vorteile</h4>
+			<ul>
+				<li>Flexibilität durch lose Kopplung</li>
+				<li>Einfach zu erweitern</li>
+				<li>Trennt Geschäftslogik von externen Ressourcen u. Komponenten</li>
+				<li>Ermöglicht Zusammenarbeit nicht-kompatibler Schnittstellen</li>
+			</ul>
+		</div>
+	</div>
+</section>
 
-		<section>
-			<h3>Zusammenfassung der Entwurfsmuster in ULRICA</h3>
-			<div class="horizontal-spaced-container">
-				<div>
-					<h4>Strategy Pattern</h4>
-					<ul>
-						<li>Ermöglicht austauschbare Berechnungsstrategien</li>
-						<li>Unterstützt OCP durch Erweiterbarkeit</li>
-						<li>Vereinfacht das Hinzufügen neuer Berechnungsmethoden</li>
-						<li>Beispiel: Reichweitenberechnung mit verschiedenen Algorithmen</li>
-					</ul>
-				</div>
-				<div>
-					<h4>Adapter Pattern</h4>
-					<ul>
-						<li>Überbrückt die Kluft zwischen Domain und externen Systemen</li>
-						<li>Fördert saubere Schichtenarchitektur</li>
-						<li>Erhöht die Testbarkeit durch Entkopplung</li>
-						<li>Beispiel: Konsolen-I/O-Adapter für Benutzerinteraktion</li>
-					</ul>
-				</div>
-			</div>
-			<p style="text-align: center; margin-top: 2rem;">Beide Muster fördern die Clean Architecture und
-				verbessern die Wartbarkeit, Testbarkeit und Flexibilität des Gesamtsystems.</p>
-		</section>
-		</section>
+<section>
+	<h3 style="padding: 0; margin-top: 0;">Entwurfsmuster 2: <br /> Adapter Pattern (Fortsetzung)</h3>
+	<div style="width: 100%;">
+		<h4 style="margin-top: 50px; padding: 0; margin-bottom: 0;">Nachteile</h4>
+		<ul>
+			<li>Zusätzliche Komplexität durch zusätzliche Abstraktionsebene</li>
+			<li>Möglicher Overhead durch zusätzliche Methodenaufrufe</li>
+			<li>Erhöhte Anzahl von Klassen und Interfaces</li>
+			<li>Externe können abrupt aufrufen</li>
+		</ul>
+	</div>
+</section>
+
+<section>
+	<h3>Adapter Pattern: Port-Interfaces</h3>
+	<div class="horizontal-spaced-container">
+		<div>
+			<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">// Port Interface für Benutzereingaben
+public interface UserInputPortInterface {
+    String readLine();
+    int readInt();
+    double readDouble();
+    boolean readBoolean(String yesOption, String noOption);
+    String readStringWithValidation(String prompt, String errorMessage, java.util.function.Predicate<String> validator);
+    int readIntInRange(String prompt, int min, int max);
+    double readDoubleInRange(String prompt, double min, double max);
+}
+
+// Port Interface für Benutzerausgaben
+public interface UserOutputPortInterface {
+    void display(String message);
+    void displayLine(String message);
+    void displayPrompt(String prompt);
+    void displayError(String errorMessage);
+    void displaySuccess(String successMessage);
+    void displayWarning(String warningMessage);
+    void displayTable(String[] headers, String[][] data);
+    void clearScreen();
+    void displayProgressBar(int current, int total);
+}</code></pre>
+		</div>
+	</div>
+</section>
+
+<section>
+	<h3>Adapter Pattern: ConsoleUserInputAdapter</h3>
+	<div class="horizontal-spaced-container">
+		<div>
+			<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">
+public class ConsoleUserInputAdapter implements UserInputPortInterface {
+    private final Scanner scanner;
+    
+    public ConsoleUserInputAdapter(Scanner scanner) {
+        this.scanner = Objects.requireNonNull(scanner, "Scanner cannot be null");
+    }
+    
+    @Override
+    public String readLine() {
+        return scanner.nextLine();
+    }
+    
+    @Override
+    public int readInt() {
+        while (true) {
+            try {
+                return Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+            }
+        }
+    }
+    
+    @Override
+    public double readDouble() {
+        while (true) {
+            try {
+                return Double.parseDouble(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+            }
+        }
+    }
+    
+    @Override
+    public boolean readBoolean(String yesOption, String noOption) {
+        while (true) {
+            String input = scanner.nextLine().toLowerCase();
+            if (input.equals(yesOption.toLowerCase())) {
+                return true;
+            } else if (input.equals(noOption.toLowerCase())) {
+                return false;
+            }
+            System.out.println("Invalid input. Please enter '" + yesOption + "' or '" + noOption + "'.");
+        }
+    }
+    
+    @Override
+    public String readStringWithValidation(String prompt, String errorMessage, Predicate<String> validator) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine();
+            if (validator.test(input)) {
+                return input;
+            }
+            System.out.println(errorMessage);
+        }
+    }
+    
+    @Override
+    public int readIntInRange(String prompt, int min, int max) {
+        while (true) {
+            System.out.print(prompt);
+            try {
+                int value = Integer.parseInt(scanner.nextLine());
+                if (value >= min && value <= max) {
+                    return value;
+                }
+                System.out.println("Please enter a number between " + min + " and " + max);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+            }
+        }
+    }
+    
+    @Override
+    public double readDoubleInRange(String prompt, double min, double max) {
+        while (true) {
+            System.out.print(prompt);
+            try {
+                double value = Double.parseDouble(scanner.nextLine());
+                if (value >= min && value <= max) {
+                    return value;
+                }
+                System.out.println("Please enter a number between " + min + " and " + max);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+            }
+        }
+    }
+}</code></pre>
+		</div>
+	</div>
+</section>
+
+<section>
+	<h3>Adapter Pattern: ConsoleUserOutputAdapter</h3>
+	<div class="horizontal-spaced-container">
+		<div>
+			<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">
+public class ConsoleUserOutputAdapter implements UserOutputPortInterface {
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_RED = "\u001B[31m";
+    private static final String ANSI_GREEN = "\u001B[32m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
+    private static final String ANSI_CLEAR = "\033[H\033[2J";
+    
+    @Override
+    public void display(String message) {
+        System.out.print(message);
+    }
+    
+    @Override
+    public void displayLine(String message) {
+        System.out.println(message);
+    }
+    
+    @Override
+    public void displayPrompt(String prompt) {
+        System.out.print(prompt + ": ");
+    }
+    
+    @Override
+    public void displayError(String errorMessage) {
+        System.out.println(ANSI_RED + "Error: " + errorMessage + ANSI_RESET);
+    }
+    
+    @Override
+    public void displaySuccess(String successMessage) {
+        System.out.println(ANSI_GREEN + "Success: " + successMessage + ANSI_RESET);
+    }
+    
+    @Override
+    public void displayWarning(String warningMessage) {
+        System.out.println(ANSI_YELLOW + "Warning: " + warningMessage + ANSI_RESET);
+    }
+    
+    @Override
+    public void displayTable(String[] headers, String[][] data) {
+        // Calculate column widths
+        int[] columnWidths = new int[headers.length];
+        for (int i = 0; i < headers.length; i++) {
+            columnWidths[i] = headers[i].length();
+            for (String[] row : data) {
+                if (row[i].length() > columnWidths[i]) {
+                    columnWidths[i] = row[i].length();
+                }
+            }
+        }
+        
+        // Print headers
+        StringBuilder format = new StringBuilder("|");
+        for (int width : columnWidths) {
+            format.append(" %-").append(width).append("s |");
+        }
+        format.append("\n");
+        
+        System.out.println(format.toString().formatted((Object[]) headers));
+        
+        // Print separator
+        System.out.println("-".repeat(Arrays.stream(columnWidths).sum() + headers.length * 3 + 1));
+        
+        // Print data
+        for (String[] row : data) {
+            System.out.println(format.toString().formatted((Object[]) row));
+        }
+    }
+    
+    @Override
+    public void clearScreen() {
+        System.out.print(ANSI_CLEAR);
+        System.out.flush();
+    }
+    
+    @Override
+    public void displayProgressBar(int current, int total) {
+        int width = 50;
+        int progress = (int) ((double) current / total * width);
+        
+        StringBuilder bar = new StringBuilder("[");
+        for (int i = 0; i < width; i++) {
+            if (i < progress) {
+                bar.append("=");
+            } else {
+                bar.append(" ");
+            }
+        }
+        bar.append("] ").append(current).append("/").append(total);
+        
+        System.out.print("\r" + bar.toString());
+        if (current == total) {
+            System.out.println();
+        }
+    }
+}</code></pre>
+		</div>
+	</div>
+</section>
+
+<section>
+	<h3>Adapter Pattern: Verwendung im Controller</h3>
+	<div class="horizontal-spaced-container">
+		<div>
+			<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">
+public class RangeCalculationController {
+    private final UserInputPortInterface userInputPort;
+    private final UserOutputPortInterface userOutputPort;
+    private final CalculateRangeUseCaseInterface calculateRangeUseCase;
+    
+    public RangeCalculationController(
+            UserInputPortInterface userInputPort,
+            UserOutputPortInterface userOutputPort,
+            CalculateRangeUseCaseInterface calculateRangeUseCase) {
+        this.userInputPort = Objects.requireNonNull(userInputPort, "UserInputPort cannot be null");
+        this.userOutputPort = Objects.requireNonNull(userOutputPort, "UserOutputPort cannot be null");
+        this.calculateRangeUseCase = Objects.requireNonNull(calculateRangeUseCase, "CalculateRangeUseCase cannot be null");
+    }
+    
+    public void processRangeCalculation() {
+        try {
+            // Benutzereingaben über Port sammeln
+            userOutputPort.displayPrompt("Enter temperature (°C)");
+            double temperature = userInputPort.readDoubleInRange("", -50, 50);
+            
+            userOutputPort.displayPrompt("Enter state of charge (%)");
+            double soc = userInputPort.readDoubleInRange("", 0, 100);
+            
+            userOutputPort.displayPrompt("Select weather condition (SUNNY, CLOUDY, RAIN, SNOW, STRONG_WIND)");
+            WeatherType weather = WeatherType.valueOf(userInputPort.readStringWithValidation(
+                "",
+                "Invalid weather condition. Please enter one of: SUNNY, CLOUDY, RAIN, SNOW, STRONG_WIND",
+                input -> Arrays.stream(WeatherType.values())
+                    .map(Enum::name)
+                    .anyMatch(name -> name.equalsIgnoreCase(input))
+            ).toUpperCase());
+            
+            userOutputPort.displayPrompt("Select terrain type (FLAT, HILLY, MOUNTAINOUS)");
+            TerrainType terrain = TerrainType.valueOf(userInputPort.readStringWithValidation(
+                "",
+                "Invalid terrain type. Please enter one of: FLAT, HILLY, MOUNTAINOUS",
+                input -> Arrays.stream(TerrainType.values())
+                    .map(Enum::name)
+                    .anyMatch(name -> name.equalsIgnoreCase(input))
+            ).toUpperCase());
+            
+            userOutputPort.displayPrompt("Select driving environment (CITY, RURAL, HIGHWAY)");
+            DrivingEnvironment environment = DrivingEnvironment.valueOf(userInputPort.readStringWithValidation(
+                "",
+                "Invalid driving environment. Please enter one of: CITY, RURAL, HIGHWAY",
+                input -> Arrays.stream(DrivingEnvironment.values())
+                    .map(Enum::name)
+                    .anyMatch(name -> name.equalsIgnoreCase(input))
+            ).toUpperCase());
+            
+            userOutputPort.displayPrompt("Select efficiency mode (NORMAL, ECO, SPORT)");
+            EfficiencyMode mode = EfficiencyMode.valueOf(userInputPort.readStringWithValidation(
+                "",
+                "Invalid efficiency mode. Please enter one of: NORMAL, ECO, SPORT",
+                input -> Arrays.stream(EfficiencyMode.values())
+                    .map(Enum::name)
+                    .anyMatch(name -> name.equalsIgnoreCase(input))
+            ).toUpperCase());
+            
+            // Use Case über Interface ausführen
+            RangeParameters parameters = new RangeParameters(
+                temperature,
+                soc,
+                weather,
+                terrain,
+                environment,
+                mode
+            );
+            
+            calculateRangeUseCase.calculateRange(parameters);
+            
+        } catch (Exception e) {
+            userOutputPort.displayError("An error occurred during range calculation: " + e.getMessage());
+        }
+    }
+}</code></pre>
+		</div>
+	</div>
+</section>
+
+<section>
+	<h3>Adapter Pattern: UML-Diagramm</h3>
+	<img style="scale: 1.3" src="assets/UMLs-imgs/Kapitel_8-Aufgabe_2.png" alt="Adapter Pattern UML Diagram" class="uml-image">
+</section>
+
+<section>
+	<h3>Zusammenfassung der Entwurfsmuster in ULRICA</h3>
+	<div class="horizontal-spaced-container">
+		<div>
+			<h4>Strategy Pattern</h4>
+			<ul>
+				<li>Ermöglicht austauschbare Berechnungsstrategien</li>
+				<li>Unterstützt OCP durch Erweiterbarkeit</li>
+				<li>Vereinfacht das Hinzufügen neuer Berechnungsmethoden</li>
+				<li>Beispiel: Reichweitenberechnung mit verschiedenen Algorithmen</li>
+			</ul>
+		</div>
+		<div>
+			<h4>Adapter Pattern</h4>
+			<ul>
+				<li>Überbrückt die Kluft zwischen Domain und externen Systemen</li>
+				<li>Fördert saubere Schichtenarchitektur</li>
+				<li>Erhöht die Testbarkeit durch Entkopplung</li>
+				<li>Beispiel: Konsolen-I/O-Adapter für Benutzerinteraktion</li>
+			</ul>
+		</div>
+	</div>
+	<p style="text-align: center; margin-top: 2rem;">Beide Muster fördern die Clean Architecture und verbessern die Wartbarkeit, Testbarkeit und Flexibilität des Gesamtsystems.</p>
+</section>
 		</div>
 		</div>
 
