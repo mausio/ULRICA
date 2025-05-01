@@ -1049,8 +1049,703 @@ jobs:
 			</section>
 			<!-- <section data-include="slides/kapitel-3.html"></section>
 			<section data-include="slides/kapitel-4.html"></section>
-			<section data-include="slides/kapitel-5.html"></section>
-			<section data-include="slides/kapitel-6.html"></section> -->
+			<section data-include="slides/kapitel-5.html"></section> -->
+
+			<section>
+				<section>
+					<h2 class="chapter-title">Kapitel 6: <br /> Domain Driven Design (DDD) (8P)</h2>
+				</section>
+
+				<section>
+					<h3 style="margin-bottom: 60px;" class="subchapter">Inhalt des Kapitels</h3>
+					<div class="horizontal-spaced-container"
+						style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+						<div>
+							<h6>1. Ubiquitous Language (2P)</h6>
+							<ul>
+								<li>4 Beispiele für die Ubiquitous Language</li>
+								<li>Bezeichnung und Bedeutung</li>
+								<li>Begründung der Zugehörigkeit</li>
+							</ul>
+						</div>
+						<div>
+							<h6>2. Repositories (1.5P)</h6>
+							<ul>
+								<li>UML-Diagramm</li>
+								<li>Beschreibung des Repositories</li>
+								<li>Begründung des Einsatzes</li>
+							</ul>
+						</div>
+						<div>
+							<h6>3. Aggregates (1.5P)</h6>
+							<ul>
+								<li>UML-Diagramm</li>
+								<li>Beschreibung des Aggregates</li>
+								<li>Begründung des Einsatzes</li>
+							</ul>
+						</div>
+						<div>
+							<h6>4. Entities & Value Objects (3P)</h6>
+							<ul>
+								<li>UML-Diagramme</li>
+								<li>Beschreibung der Komponenten</li>
+								<li>Begründung des Einsatzes</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+
+
+				<section>
+					<h3>Ubiquitous Language (2p)</h3>
+					<p class="subchapter">Vier Beispiele für die Ubiquitous Language; jeweils Bezeichnung, Bedeutung und
+						kurze Begründung, warum es zur Ubiquitous Language gehört</p>
+				</section>
+
+				<section>
+					<h3>Ubiquitous Language</h3>
+					<table>
+						<thead>
+							<tr>
+								<th>Begriff</th>
+								<th>Bedeutung</th>
+								<th>Verwendung</th>
+								<th>Ubiquitous Language</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><b>SoC (State of Charge)</b></td>
+								<td>Prozentualer Ladezustand der Batterie (0-100%)</td>
+								<td>Parameter für Reichweitenberechnung und Ladezeit</td>
+								<td>Fachbegriff aus dem E-Mobility-Bereich, der die gemeinsame Sprache zwischen
+									Technikern und Anwendern bildet</td>
+							</tr>
+							<tr>
+								<td><b>WLTP-Range</b></td>
+								<td>Standardisierte Reichweite nach <span
+										style="font-style: italic; background-color: whitesmoke; border-radius: 5px; padding: 1px 2px;">Worldwide
+										Harmonized Light Vehicles Test Procedure</span></td>
+								<td>Basis für realistische Reichweitenberechnung</td>
+								<td>Regulatorischer Begriff, der eine einheitliche Verständnisgrundlage für
+									Fahrzeugleistung bietet</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+
+				<section>
+					<h3>Ubiquitous Language (Fortsetzung)</h3>
+					<table>
+						<thead>
+							<tr>
+								<th>Begriff</th>
+								<th>Bedeutung</th>
+								<th>Verwendung</th>
+								<th>Ubiquitous Language</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><b>Charging Curve</b></td>
+								<td>Verlauf der Ladeleistung in Abhängig vom SoC</td>
+								<td>Berechnung von Ladezeiten an DC-Ladestationen</td>
+								<td>Technisches Konzept, das sowohl für Entwickler als auch Benutzer die
+									Ladeeigenschaften beschreibt</td>
+							</tr>
+							<tr>
+								<td><b>Battery Type (LFP, NMC, NCA)</b></td>
+								<td>Chemische Zusammensetzung der Batterie (Lithium-Eisenphosphat, Nickel-Mangan-Cobalt,
+									Nickel-Cobalt-Aluminium)</td>
+								<td>Berechnung von Degradation und Ladegeschwindigkeit</td>
+								<td>Chemische Klassifikation, die technische Eigenschaften für das gesamte Team
+									eindeutig kommunizierbar macht</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+
+				<section>
+					<h3>Repositories (1.5P)</h3>
+					<p class="subchapter">UML, Beschreibung und Begründung des Einsatzes eines Repositories; falls kein
+						Repository vorhanden: ausführliche Begründung, warum es keines geben kann/hier nicht sinnvoll
+						ist – NICHT, warum es nicht implementiert wurde</p>
+				</section>
+
+				<section>
+					<h3>Repository: <br /> CarProfileRepository</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<ul>
+								<li>Persistenz von Fahrzeugprofilen ohne Offenlegung der Speichermechanismen</li>
+								<li>Domain Entities können unabhängig von der Persistenz modelliert werden</li>
+								<li>Unterstützt die "Illusion" einer <span
+										style="font-style: italic;">In-Memory-Sammlung</span></li>
+								<li>Ermöglicht einfachen Austausch der Persistenztechnologie im Falle von Refactoring
+								</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Repository: Code</h3>
+					<div>
+						<pre style="width: 900px; height: 500px; overflow: hidden;"><code class="java"> //CarProfileInterface
+public interface CarProfilePersistencePortInterface {
+    Optional<CarProfile> findById(String id);
+    List<CarProfile> findAll();
+    CarProfile save(CarProfile carProfile);
+    void delete(String id);
+} 
+	
+// Implementation
+public class JsonCarProfileRepository implements CarProfilePersistencePortInterface {
+    private static final String STORAGE_DIR = "data";
+    private static final String FILE_NAME = "car_profiles.json";
+    private final Gson gson;
+    private final Path filePath;
+
+    public JsonCarProfileRepository() {
+        this(STORAGE_DIR, FILE_NAME);
+    }
+    
+    protected JsonCarProfileRepository(String storageDir, String fileName) {
+        this.gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+                .create();
+        this.filePath = Paths.get(storageDir, fileName);
+        ensureStorageDirectoryExists();
+    }
+
+    private void ensureStorageDirectoryExists() {
+        try {
+            Files.createDirectories(filePath.getParent());
+            if (!Files.exists(filePath)) {
+                Files.createFile(filePath);
+                saveProfiles(new ArrayList<>());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to initialize storage", e);
+        }
+    }
+
+    @Override
+    public Optional<CarProfile> findById(String id) {
+        return findAll().stream()
+                .filter(profile -> profile.getId().equals(id))
+                .findFirst();
+    }
+
+    @Override
+    public List<CarProfile> findAll() {
+        try (FileReader reader = new FileReader(filePath.toFile())) {
+            Type listType = new TypeToken<List<CarProfile>>() {}.getType();
+            List<CarProfile> profiles = gson.fromJson(reader, listType);
+            return profiles != null ? profiles : new ArrayList<>();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read car profiles", e);
+        }
+    }
+
+    @Override
+    public CarProfile save(CarProfile carProfile) {
+        List<CarProfile> profiles = findAll();
+        
+        
+        boolean found = false;
+        for (int i = 0; i < profiles.size(); i++) {
+            if (profiles.get(i).getId().equals(carProfile.getId())) {
+                profiles.set(i, carProfile);
+                found = true;
+                break;
+            }
+        }
+        
+        if (!found) {
+            profiles.add(carProfile);
+        }
+        
+        saveProfiles(profiles);
+        return carProfile;
+    }
+
+    @Override
+    public void delete(String id) {
+        List<CarProfile> profiles = findAll();
+        profiles.removeIf(profile -> profile.getId().equals(id));
+        saveProfiles(profiles);
+    }
+
+    private void saveProfiles(List<CarProfile> profiles) {
+        try (FileWriter writer = new FileWriter(filePath.toFile())) {
+            gson.toJson(profiles, writer);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save car profiles", e);
+        }
+    }
+}</code></pre>
+					</div>
+				</section>
+
+				<section>
+					<h3>Repository: UML</h3>
+					<div>
+						<img src="assets/UMLs-imgs/Kapitel_6-Aufgabe_2.png" alt="Repository Pattern UML Diagram"
+							class="uml-image">
+					</div>
+				</section>
+
+				<section>
+					<h3>Repository: <br /> Begründung & Vorteile</h3>
+					<ul>
+						<li>Klare Trennung zwischen Domänenlogik und Persistenzmechanismus</li>
+						<li>Vereinfachung des Domain Model durch Abstraktion der Persistenz</li>
+						<li>Ermöglicht die Anwendung von Clean Architecture Prinzipien</li>
+						<li>Erleichtert das Testen durch Mocking der Repository-Implementierung</li>
+						<li>Entscheidung für Datenspeicherung in JSON-Dateien bleibt flexibel änderbar</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Aggregates (1.5p)</h3>
+					<p class="subchapter">UML, Beschreibung und Begründung des Einsatzes eines Aggregates; falls kein
+						Aggregate vorhanden: ausführliche Begründung, warum es keines geben kann/hier nicht sinnvoll ist
+						– NICHT, warum es nicht implementiert wurde</p>
+				</section>
+
+				<section>
+					<h3>Aggregates: <br /> CarProfile Aggregate Root</h3>
+					<ul>
+						<li>Koordiniert mehrere Value Objects (BatteryProfile, ConsumptionProfile,
+							ChargingCurve)</li>
+						<li>Stellt die Konsistenz zwischen den Value Objects sicher</li>
+						<li>Bildet eine sogenannte "transaktionale Einheit" für Änderungen</li>
+						<li>Einziger Zugriffspunkt für enthaltene Value Objects</li>
+						<li>Hat eine eigene Identität (ID) (-> Aggregate Root)</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Aggregates: Code</h3>
+					<pre style="width: 900px; height: 500px; overflow: hidden;"><code class="java">public class CarProfile {
+	private final String id;
+	private final String name;
+	private final String manufacturer;
+	private final String model;
+	private final int year;
+	private final boolean hasHeatPump;
+	private final double wltpRangeKm;
+	private final double maxDcPowerKw;
+	private final double maxAcPowerKw;
+	private final BatteryProfile batteryProfile;
+	private final ConsumptionProfile consumptionProfile;
+	private final Optional<ChargingCurve> chargingCurve;
+
+	private CarProfile(Builder builder) {
+		this.id = builder.id;
+		this.name = Objects.requireNonNull(builder.name, "Name cannot be null");
+		this.manufacturer = Objects.requireNonNull(builder.manufacturer, "Manufacturer cannot be null");
+		this.model = Objects.requireNonNull(builder.model, "Model cannot be null");
+		this.year = builder.year;
+		this.hasHeatPump = builder.hasHeatPump;
+		this.wltpRangeKm = builder.wltpRangeKm;
+		this.maxDcPowerKw = builder.maxDcPowerKw;
+		this.maxAcPowerKw = builder.maxAcPowerKw;
+		this.batteryProfile = Objects.requireNonNull(builder.batteryProfile, "Battery profile cannot be null");
+		this.consumptionProfile = Objects.requireNonNull(builder.consumptionProfile, "Consumption profile cannot be null");
+		this.chargingCurve = Optional.ofNullable(builder.chargingCurve);
+	}
+
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		CarProfile that = (CarProfile) o;
+		return year == that.year &&
+				hasHeatPump == that.hasHeatPump &&
+				Double.compare(that.wltpRangeKm, wltpRangeKm) == 0 &&
+				Double.compare(that.maxDcPowerKw, maxDcPowerKw) == 0 &&
+				Double.compare(that.maxAcPowerKw, maxAcPowerKw) == 0 &&
+				Objects.equals(id, that.id) &&
+				Objects.equals(name, that.name) &&
+				Objects.equals(manufacturer, that.manufacturer) &&
+				Objects.equals(model, that.model) &&
+				Objects.equals(batteryProfile, that.batteryProfile) &&
+				Objects.equals(consumptionProfile, that.consumptionProfile) &&
+				Objects.equals(chargingCurve, that.chargingCurve);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, name, manufacturer, model, year, hasHeatPump, wltpRangeKm, maxDcPowerKw, maxAcPowerKw, batteryProfile, consumptionProfile, chargingCurve);
+	}
+
+	@Override
+	public String toString() {
+		return "Car Profile: Test EV, Manufacturer: Test Manufacturer, " +
+				"Model: Test Model, Year: 2023, Heat Pump: Yes, " +
+				"WLTP Range: 500.0 km, Max DC Power: 250.0 kW, Max AC Power: 11.0 kW";
+	}
+
+	public static class Builder {
+		private String id;
+		private String name;
+		private String manufacturer;
+		private String model;
+		private int year;
+		private boolean hasHeatPump;
+		private double wltpRangeKm;
+		private double maxDcPowerKw;
+		private double maxAcPowerKw;
+		private BatteryProfile batteryProfile;
+		private ConsumptionProfile consumptionProfile;
+		private ChargingCurve chargingCurve;
+
+		public Builder id(String id) {
+			this.id = id;
+			return this;
+		}
+
+		public Builder name(String name) {
+			this.name = name;
+			return this;
+		}
+
+		public Builder manufacturer(String manufacturer) {
+			this.manufacturer = manufacturer;
+			return this;
+		}
+
+		public Builder model(String model) {
+			this.model = model;
+			return this;
+		}
+
+		public Builder year(int year) {
+			this.year = year;
+			return this;
+		}
+
+		public Builder hasHeatPump(boolean hasHeatPump) {
+			this.hasHeatPump = hasHeatPump;
+			return this;
+		}
+
+		public Builder wltpRangeKm(double wltpRangeKm) {
+			this.wltpRangeKm = wltpRangeKm;
+			return this;
+		}
+
+		public Builder maxDcPowerKw(double maxDcPowerKw) {
+			this.maxDcPowerKw = maxDcPowerKw;
+			return this;
+		}
+
+		public Builder maxAcPowerKw(double maxAcPowerKw) {
+			this.maxAcPowerKw = maxAcPowerKw;
+			return this;
+		}
+
+		public Builder batteryProfile(BatteryProfile batteryProfile) {
+			this.batteryProfile = batteryProfile;
+			return this;
+		}
+
+		public Builder consumptionProfile(ConsumptionProfile consumptionProfile) {
+			this.consumptionProfile = consumptionProfile;
+			return this;
+		}
+
+		public Builder chargingCurve(ChargingCurve chargingCurve) {
+			this.chargingCurve = chargingCurve;
+			return this;
+		}
+
+		public CarProfile build() {
+			if (this.id == null) {
+				this.id = generateUniqueId();
+			}
+			return new CarProfile(this);
+		}
+		
+		private String generateUniqueId() {
+			return java.util.UUID.randomUUID().toString();
+		}
+
+		
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getManufacturer() {
+		return manufacturer;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public boolean hasHeatPump() {
+		return hasHeatPump;
+	}
+
+	public double getWltpRangeKm() {
+		return wltpRangeKm;
+	}
+
+	public double getMaxDcPowerKw() {
+		return maxDcPowerKw;
+	}
+
+	public double getMaxAcPowerKw() {
+		return maxAcPowerKw;
+	}
+
+	public BatteryProfile getBatteryProfile() {
+		return batteryProfile;
+	}
+
+	public ConsumptionProfile getConsumptionProfile() {
+		return consumptionProfile;
+	}
+
+	public Optional<ChargingCurve> getChargingCurve() {
+		return chargingCurve;
+	}
+} 
+
+</code></pre>
+				</section>
+
+				<section>
+					<h3>Aggregate: UML</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<img src="assets/UMLs-imgs/Kapitel_6-Aufgabe_3.png" alt="Aggregate Pattern UML Diagram"
+								class="uml-image">
+						</div>
+				</section>
+
+				<section>
+					<h3>Aggregates: Vorteile & Begründung</h3>
+					<ul>
+						<li>Klare Abgrenzung domänenspezifischer Objektgruppen</li>
+						<li>Komplexitätsreduktion durch zusammenhängende Transaktionseinheiten</li>
+						<li>Verbesserte Performance durch Vermeidung von Dateninkonsistenzen</li>
+						<li>Natürliche Modellierung der Geschäftsrealität (ein Fahrzeug mit seinen Komponenten)
+						</li>
+						<li>Vereinfachte Persistenz, da nur der Aggregate Root direkt persistiert wird</li>
+					</ul>
+				</section>
+
+				
+
+				<section>
+					<h3>Entities (1.5P)</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<h5>CarProfile als Entity</h5>
+							<ul>
+								<li>Besitzt eine eindeutige Identität (UUID)</li>
+								<li>Identität bleibt über den gesamten Lebenszyklus erhalten</li>
+								<li>Kann verändert und weiterentwickelt werden (auch wenn in ULRICA immutable)</li>
+								<li>Wird über die Identität verglichen, nicht über Attributwerte</li>
+								<li>Repräsentiert ein reales Objekt (Elektrofahrzeug) mit eigenem Lebenszyklus</li>
+							</ul>
+						</div>
+						<div>
+							<pre><code class="java">public class CarProfile {
+					private final String id; // Eindeutige Identität
+					// ... weitere Attribute
+					
+					@Override
+					public boolean equals(Object o) {
+						if (this == o) return true;
+						if (o == null || getClass() != o.getClass()) 
+							return false;
+						CarProfile that = (CarProfile) o;
+						return Objects.equals(id, that.id); // Vergleich nur über ID
+					}
+					
+					@Override
+					public int hashCode() {
+						return Objects.hash(id);
+					}
+					
+					// ... weitere Methoden
+				}</code></pre>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Entity: UML und Begründung</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<img src="assets/UMLs-imgs/Kapitel_6-Aufgabe_4.png" alt="Entity Pattern UML Diagram"
+								class="uml-image">
+						</div>
+						<div>
+							<h5>Vorteile des Entity-Musters:</h5>
+							<ul>
+								<li>Eindeutige Identifikation von Objekten unabhängig von ihren Attributen</li>
+								<li>Möglichkeit, Entitäten über ihren Lebenszyklus hinweg zu verfolgen</li>
+								<li>Konsistente Identifikation in verschiedenen Kontexten des Systems</li>
+								<li>Klare Unterscheidung zwischen Identität und Attributen</li>
+								<li>Natürliche Abbildung von realen Objekten mit eigener Identität</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Value Objects (1.5P)</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<h5>BatteryProfile als Value Object</h5>
+							<ul>
+								<li>Keine eigene Identität</li>
+								<li>Immutable (unveränderlich) nach Erstellung</li>
+								<li>Vergleich basiert auf allen Attributwerten</li>
+								<li>Beschreibt eine Messung oder ein Konzept</li>
+								<li>Kann problemlos ersetzt werden</li>
+								<li>Validiert sich selbst bei der Erstellung</li>
+							</ul>
+						</div>
+						<div>
+							<pre><code class="java">public class BatteryProfile {
+					private final BatteryType type;
+					private final double capacityKwh;
+					private final double degradationPercent;
+					private final double maxDcPowerKw;
+					private final double maxAcPowerKw;
+					
+					public BatteryProfile(BatteryType type, double capacityKwh, 
+										  double degradationPercent, 
+										  double maxDcPowerKw, double maxAcPowerKw) {
+						// Validierung bei Konstruktion
+						if (capacityKwh <= 0) {
+							throw new IllegalArgumentException("Capacity must be positive");
+						}
+						if (degradationPercent < 0 || degradationPercent > 100) {
+							throw new IllegalArgumentException(
+								"Degradation must be between 0 and 100%");
+						}
+						// ... weitere Validierungen
+						
+						// Immutable Initialisierung
+						this.type = Objects.requireNonNull(type);
+						this.capacityKwh = capacityKwh;
+						this.degradationPercent = degradationPercent;
+						this.maxDcPowerKw = maxDcPowerKw;
+						this.maxAcPowerKw = maxAcPowerKw;
+					}
+					
+					// Getter, keine Setter (immutable)
+					// ...
+				}</code></pre>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Value Objects: UML und Begründung</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<img src="assets/UMLs-imgs/Kapitel_6-Aufgabe_5.png" alt="Value Objects UML Diagram"
+								class="uml-image">
+						</div>
+						<div>
+							<h5>Vorteile von Value Objects:</h5>
+							<ul>
+								<li>Unveränderlichkeit verhindert unerwartet veränderte Zustände</li>
+								<li>Bessere Vorhersagbarkeit des Programmverhaltens</li>
+								<li>Einfachere Parallelisierung durch Thread-Safety</li>
+								<li>Natürliche Modellierung von Konzepten ohne eigene Identität</li>
+								<li>Performancevorteile durch Vermeidung von Änderungsverfolgung</li>
+								<li>Erleichterte Vergleichs- und Hash-Operationen</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Domain Services (1P)</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<h5>RangeCalculatorService</h5>
+							<ul>
+								<li>Enthält domänenspezifische Operationen, die keiner einzelnen Entity oder Value
+									Object zugeordnet werden können</li>
+								<li>Zustandslos und auf Operationen fokussiert</li>
+								<li>Koordiniert mehrere Domain Objects</li>
+								<li>Implementiert komplexe Algorithmen der Fachdomäne</li>
+								<li>Berechnet Reichweiten basierend auf verschiedenen Faktoren</li>
+							</ul>
+						</div>
+						<div>
+							<pre><code class="java">public class RangeCalculatorService {
+					private final List<RangeCalculationStrategyInterface> strategies;
+					private RangeCalculationStrategyInterface defaultStrategy;
+				
+					public RangeCalculatorService() {
+						// Initialisierung mit Standardstrategien
+					}
+					
+					public RangeResult calculateRange(
+							CarProfile carProfile, 
+							RangeParameters parameters) {
+						Objects.requireNonNull(carProfile);
+						Objects.requireNonNull(parameters);
+						
+						// Berechnung durch aktive Strategie
+						return defaultStrategy.calculateRange(
+							carProfile, parameters);
+					}
+					
+					public void addStrategy(
+							RangeCalculationStrategyInterface strategy) {
+						// Strategie hinzufügen
+					}
+					
+					// Weitere domänenspezifische Operationen
+				}</code></pre>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Zusammenfassung: DDD in ULRICA</h3>
+					<ul>
+						<li><b>Ubiquitous Language:</b> Gemeinsames Vokabular zwischen Entwicklern und Fachexperten
+							(SoC, WLTP, Charging Curve)</li>
+						<li><b>Entities:</b> Objekte mit eigener Identität und Lebenszyklus (CarProfile)</li>
+						<li><b>Value Objects:</b> Immutable Objekte ohne eigene Identität (BatteryProfile,
+							ConsumptionProfile)</li>
+						<li><b>Aggregates:</b> Konsistente Objektgruppen mit klaren Grenzen (CarProfile als Root)</li>
+						<li><b>Repositories:</b> Persistenz-Abstraktion für Domain Objects (CarProfileRepository)</li>
+						<li><b>Domain Services:</b> Operationen, die keiner einzelnen Entity zugeordnet werden können
+							(RangeCalculatorService)</li>
+						<li><b>Bounded Contexts:</b> Trennung in klare Domänenbereiche (Reichweitenberechnung,
+							Ladeberechnung)</li>
+					</ul>
+					<p>DDD hilft bei der sauberen Modellierung der Problemdomäne und fördert die Kommunikation zwischen
+						allen Beteiligten.</p>
+				</section>
+			</section>
 
 			<section>
 				<section>
@@ -1355,20 +2050,26 @@ private double calculateTemperatureEfficiency(double ambientTemperatureCelsius) 
 								<li>Bessere Wartbarkeit durch modularen Code</li>
 								<li>Einfachere Testbarkeit durch isolierte Funktionalität</li>
 								<li>Reduzierte Komplexität in der Hauptmethode</li>
-								<li>Einhaltung des <strong>Single Responsibility Principle (SRP)</strong> durch klare Trennung
+								<li>Einhaltung des <strong>Single Responsibility Principle (SRP)</strong> durch klare
+									Trennung
 									der Verantwortlichkeiten</li>
-								<li>Einhaltung des <strong>Don't Repeat Yourself (DRY)</strong> Prinzips durch Vermeidung von
+								<li>Einhaltung des <strong>Don't Repeat Yourself (DRY)</strong> Prinzips durch
+									Vermeidung von
 									Code-Duplikation</li>
 							</ul>
 						</div>
 						<div style="width: 50%;">
 							<h4>Änderungen</h4>
 							<ul>
-								<li>Extraktion der Parameter-Erfassung in separate Methode <code>collectRangeParameters()</code></li>
-								<li>Einführung einer neuen Klasse <code>RangeParameters</code> zur Kapselung der Parameter</li>
+								<li>Extraktion der Parameter-Erfassung in separate Methode
+									<code>collectRangeParameters()</code>
+								</li>
+								<li>Einführung einer neuen Klasse <code>RangeParameters</code> zur Kapselung der
+									Parameter</li>
 								<li>Vereinfachung der Hauptmethode <code>processRangeCalculation()</code></li>
 								<li>Reduzierung der Parameteranzahl im Use Case Interface</li>
-								<li>Verbesserte Lesbarkeit durch klare Trennung von Parameter-Erfassung und Geschäftslogik</li>
+								<li>Verbesserte Lesbarkeit durch klare Trennung von Parameter-Erfassung und
+									Geschäftslogik</li>
 							</ul>
 						</div>
 					</div>
@@ -1397,10 +2098,11 @@ private double calculateTemperatureEfficiency(double ambientTemperatureCelsius) 
 					<h3>Refactoring 2: Code</h3>
 					<p class="subchapter">Ersetzen der Logik in den ChargingCalculators durch Polymorphie
 						(943b4c7)</p>
-					<div  class="horizontal-spaced-container">
+					<div class="horizontal-spaced-container">
 						<div style="width: 50%;">
 							<h5>Vorher</h5>
-							<pre style="width: 550px; height: 450px; overflow: hidden; position: relative; right: 80px;"><code class="java">public class DcChargingCalculator {
+							<pre
+								style="width: 550px; height: 450px; overflow: hidden; position: relative; right: 80px;"><code class="java">public class DcChargingCalculator {
 					private double calculatePowerReductionPercent(double startingSocPercent, double targetSocPercent) {
 						if (targetSocPercent > 80) {
 							return 60.0;
@@ -1493,7 +2195,10 @@ private double calculateTemperatureEfficiency(double ambientTemperatureCelsius) 
 							<h4>Änderungen</h4>
 							<ul>
 								<li>Einführung des <code>ChargingStrategy</code> Interfaces</li>
-								<li>Implementierung konkreter Strategien: <code>HouseholdSocketStrategy</code>, <code>CampingSocketStrategy</code>, <code>WallboxStrategy</code>, <code>DcChargingStrategy</code></li>
+								<li>Implementierung konkreter Strategien: <code>HouseholdSocketStrategy</code>,
+									<code>CampingSocketStrategy</code>, <code>WallboxStrategy</code>,
+									<code>DcChargingStrategy</code>
+								</li>
 								<li>Ersetzung der Logik durch polymorphe Methodenaufrufe</li>
 								<li>Kapselung der Effizienzberechnung in den jeweiligen Strategieklassen</li>
 								<li>Einführung von Konstruktoren für kontextabhängige Strategien</li>
@@ -1509,12 +2214,14 @@ private double calculateTemperatureEfficiency(double ambientTemperatureCelsius) 
 					<div class="horizontal-spaced-container">
 						<div>
 							<h5>Vorher</h5>
-							<img style="scale: 1.3; position: relative; right: 60px;" src="assets/UMLs-imgs/refactoring2_before.puml.png"
+							<img style="scale: 1.3; position: relative; right: 60px;"
+								src="assets/UMLs-imgs/refactoring2_before.puml.png"
 								alt="Replace Conditional with Polymorphism UML Before" class="uml-image">
 						</div>
 						<div>
 							<h5>Nachher</h5>
-							<img style="scale: 1.3;  position: relative; left: 50px;"  src="assets/UMLs-imgs/refactoring2_after.puml.png"
+							<img style="scale: 1.3;  position: relative; left: 50px;"
+								src="assets/UMLs-imgs/refactoring2_after.puml.png"
 								alt="Replace Conditional with Polymorphism UML After" class="uml-image">
 						</div>
 					</div>
