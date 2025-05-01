@@ -1071,25 +1071,28 @@ jobs:
 						<div>
 							<h6>2. Repositories (1.5P)</h6>
 							<ul>
-								<li>UML-Diagramm</li>
 								<li>Beschreibung des Repositories</li>
-								<li>Begründung des Einsatzes</li>
+								<li>Code</li>
+								<li>UML-Diagramm</li>
+								<li>Begründung & Vorteile des Einsatzes</li>
 							</ul>
 						</div>
 						<div>
 							<h6>3. Aggregates (1.5P)</h6>
 							<ul>
-								<li>UML-Diagramm</li>
 								<li>Beschreibung des Aggregates</li>
-								<li>Begründung des Einsatzes</li>
+								<li>Code</li>
+								<li>UML-Diagramm</li>
+								<li>Begründung & Vorteile des Einsatzes</li>
 							</ul>
 						</div>
 						<div>
-							<h6>4. Entities & Value Objects (3P)</h6>
+							<h6>4. Entities & Value Objects (1.5p + 1.5p)</h6>
 							<ul>
-								<li>UML-Diagramme</li>
 								<li>Beschreibung der Komponenten</li>
-								<li>Begründung des Einsatzes</li>
+								<li>Code</li>
+								<li>UML-Diagramme</li>
+								<li>Begründung & Vorteile des Einsatzes</li>
 							</ul>
 						</div>
 					</div>
@@ -1542,209 +1545,177 @@ public class JsonCarProfileRepository implements CarProfilePersistencePortInterf
 				<section>
 					<h3>Aggregates: Vorteile & Begründung</h3>
 					<ul>
-						<li>Klare Abgrenzung domänenspezifischer Objektgruppen</li>
-						<li>Komplexitätsreduktion durch zusammenhängende Transaktionseinheiten</li>
-						<li>Verbesserte Performance durch Vermeidung von Dateninkonsistenzen</li>
-						<li>Natürliche Modellierung der Geschäftsrealität (ein Fahrzeug mit seinen Komponenten)
-						</li>
-						<li>Vereinfachte Persistenz, da nur der Aggregate Root direkt persistiert wird</li>
+						<li>CarProfile als Aggregate Root koordiniert die Konsistenz seiner Value Objects</li>
+						<li>Stellt sicher, dass BatteryProfile, ConsumptionProfile und ChargingCurve immer konsistent
+							sind</li>
+						<li>Vereinfacht die Persistenz, da nur der Aggregate Root direkt gespeichert werden muss</li>
+						<li>Schützt die Value Objects vor unerlaubten Änderungen von außen</li>
+						<li>Modelliert die natürliche Gruppierung von Fahrzeugdaten und deren Komponenten</li>
 					</ul>
 				</section>
 
-				
 
 				<section>
 					<h3>Entities (1.5P)</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h5>CarProfile als Entity</h5>
-							<ul>
-								<li>Besitzt eine eindeutige Identität (UUID)</li>
-								<li>Identität bleibt über den gesamten Lebenszyklus erhalten</li>
-								<li>Kann verändert und weiterentwickelt werden (auch wenn in ULRICA immutable)</li>
-								<li>Wird über die Identität verglichen, nicht über Attributwerte</li>
-								<li>Repräsentiert ein reales Objekt (Elektrofahrzeug) mit eigenem Lebenszyklus</li>
-							</ul>
-						</div>
-						<div>
-							<pre><code class="java">public class CarProfile {
-					private final String id; // Eindeutige Identität
-					// ... weitere Attribute
-					
-					@Override
-					public boolean equals(Object o) {
-						if (this == o) return true;
-						if (o == null || getClass() != o.getClass()) 
-							return false;
-						CarProfile that = (CarProfile) o;
-						return Objects.equals(id, that.id); // Vergleich nur über ID
-					}
-					
-					@Override
-					public int hashCode() {
-						return Objects.hash(id);
-					}
-					
-					// ... weitere Methoden
-				}</code></pre>
-						</div>
-					</div>
+					<p class="subchapter">UML, Beschreibung und Begründung des Einsatzes einer Entity; falls keine
+						Entity vorhanden: ausführliche Begründung, warum es keine geben kann/hier nicht sinnvoll ist –
+						NICHT, warum es nicht implementiert wurde</p>
+				</section>
+
+
+				<section>
+					<h3>Entities:<br /> CarProfile als Entity</h3>
+					<ul>
+						<li>Besitzt eine eindeutige Identität (UUID)</li>
+						<li>Identität bleibt über den gesamten Lebenszyklus erhalten</li>
+						<li>Kann verändert und weiterentwickelt werden (auch wenn in ULRICA immutable)</li>
+						<li>Wird über die Identität verglichen, nicht über Attributwerte</li>
+						<li>Repräsentiert ein reales Objekt (Elektrofahrzeug) mit eigenem Lebenszyklus</li>
+					</ul>
 				</section>
 
 				<section>
-					<h3>Entity: UML und Begründung</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<img src="assets/UMLs-imgs/Kapitel_6-Aufgabe_4.png" alt="Entity Pattern UML Diagram"
-								class="uml-image">
-						</div>
-						<div>
-							<h5>Vorteile des Entity-Musters:</h5>
-							<ul>
-								<li>Eindeutige Identifikation von Objekten unabhängig von ihren Attributen</li>
-								<li>Möglichkeit, Entitäten über ihren Lebenszyklus hinweg zu verfolgen</li>
-								<li>Konsistente Identifikation in verschiedenen Kontexten des Systems</li>
-								<li>Klare Unterscheidung zwischen Identität und Attributen</li>
-								<li>Natürliche Abbildung von realen Objekten mit eigener Identität</li>
-							</ul>
-						</div>
-					</div>
+					<h3 style="margin-bottom: 0; padding-bottom: 0;">Entity: UML</h3>
+					<img style="scale: 0.9; position: relative; bottom: 50px;"
+						src="assets/UMLs-imgs/Kapitel_6-Aufgabe_4.png" alt="Entity Pattern UML Diagram"
+						class="uml-image">
+				</section>
+
+				<section>
+					<h3>Entity: Begründung & Vorteile</h3>
+					<ul>
+						<li>Eindeutige Identifikation von Objekten unabhängig von ihren Attributen</li>
+						<li>Möglichkeit, Entitäten über ihren Lebenszyklus hinweg zu verfolgen</li>
+						<li>Konsistente Identifikation in verschiedenen Kontexten des Systems</li>
+						<li>Klare Unterscheidung zwischen Identität und Attributen</li>
+						<li>Natürliche Abbildung von realen Objekten mit eigener Identität</li>
+					</ul>
 				</section>
 
 				<section>
 					<h3>Value Objects (1.5P)</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h5>BatteryProfile als Value Object</h5>
-							<ul>
-								<li>Keine eigene Identität</li>
-								<li>Immutable (unveränderlich) nach Erstellung</li>
-								<li>Vergleich basiert auf allen Attributwerten</li>
-								<li>Beschreibt eine Messung oder ein Konzept</li>
-								<li>Kann problemlos ersetzt werden</li>
-								<li>Validiert sich selbst bei der Erstellung</li>
-							</ul>
-						</div>
-						<div>
-							<pre><code class="java">public class BatteryProfile {
-					private final BatteryType type;
-					private final double capacityKwh;
-					private final double degradationPercent;
-					private final double maxDcPowerKw;
-					private final double maxAcPowerKw;
-					
-					public BatteryProfile(BatteryType type, double capacityKwh, 
-										  double degradationPercent, 
-										  double maxDcPowerKw, double maxAcPowerKw) {
-						// Validierung bei Konstruktion
-						if (capacityKwh <= 0) {
-							throw new IllegalArgumentException("Capacity must be positive");
-						}
-						if (degradationPercent < 0 || degradationPercent > 100) {
-							throw new IllegalArgumentException(
-								"Degradation must be between 0 and 100%");
-						}
-						// ... weitere Validierungen
-						
-						// Immutable Initialisierung
-						this.type = Objects.requireNonNull(type);
-						this.capacityKwh = capacityKwh;
-						this.degradationPercent = degradationPercent;
-						this.maxDcPowerKw = maxDcPowerKw;
-						this.maxAcPowerKw = maxAcPowerKw;
-					}
-					
-					// Getter, keine Setter (immutable)
-					// ...
-				}</code></pre>
-						</div>
-					</div>
+					<p class="subchapter">UML, Beschreibung und Begründung des Einsatzes eines Value Objects; falls kein
+						Value Object vorhanden: ausführliche Begründung, warum es keines geben kann/hier nicht sinnvoll
+						ist – NICHT, warum es nicht implementiert wurde</p>
 				</section>
 
 				<section>
-					<h3>Value Objects: UML und Begründung</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<img src="assets/UMLs-imgs/Kapitel_6-Aufgabe_5.png" alt="Value Objects UML Diagram"
-								class="uml-image">
-						</div>
-						<div>
-							<h5>Vorteile von Value Objects:</h5>
-							<ul>
-								<li>Unveränderlichkeit verhindert unerwartet veränderte Zustände</li>
-								<li>Bessere Vorhersagbarkeit des Programmverhaltens</li>
-								<li>Einfachere Parallelisierung durch Thread-Safety</li>
-								<li>Natürliche Modellierung von Konzepten ohne eigene Identität</li>
-								<li>Performancevorteile durch Vermeidung von Änderungsverfolgung</li>
-								<li>Erleichterte Vergleichs- und Hash-Operationen</li>
-							</ul>
-						</div>
-					</div>
-				</section>
-
-				<section>
-					<h3>Domain Services (1P)</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h5>RangeCalculatorService</h5>
-							<ul>
-								<li>Enthält domänenspezifische Operationen, die keiner einzelnen Entity oder Value
-									Object zugeordnet werden können</li>
-								<li>Zustandslos und auf Operationen fokussiert</li>
-								<li>Koordiniert mehrere Domain Objects</li>
-								<li>Implementiert komplexe Algorithmen der Fachdomäne</li>
-								<li>Berechnet Reichweiten basierend auf verschiedenen Faktoren</li>
-							</ul>
-						</div>
-						<div>
-							<pre><code class="java">public class RangeCalculatorService {
-					private final List<RangeCalculationStrategyInterface> strategies;
-					private RangeCalculationStrategyInterface defaultStrategy;
-				
-					public RangeCalculatorService() {
-						// Initialisierung mit Standardstrategien
-					}
-					
-					public RangeResult calculateRange(
-							CarProfile carProfile, 
-							RangeParameters parameters) {
-						Objects.requireNonNull(carProfile);
-						Objects.requireNonNull(parameters);
-						
-						// Berechnung durch aktive Strategie
-						return defaultStrategy.calculateRange(
-							carProfile, parameters);
-					}
-					
-					public void addStrategy(
-							RangeCalculationStrategyInterface strategy) {
-						// Strategie hinzufügen
-					}
-					
-					// Weitere domänenspezifische Operationen
-				}</code></pre>
-						</div>
-					</div>
-				</section>
-
-				<section>
-					<h3>Zusammenfassung: DDD in ULRICA</h3>
+					<h3>Value Objects: BatteryProfile als ValueObject</h3>
 					<ul>
-						<li><b>Ubiquitous Language:</b> Gemeinsames Vokabular zwischen Entwicklern und Fachexperten
-							(SoC, WLTP, Charging Curve)</li>
-						<li><b>Entities:</b> Objekte mit eigener Identität und Lebenszyklus (CarProfile)</li>
-						<li><b>Value Objects:</b> Immutable Objekte ohne eigene Identität (BatteryProfile,
-							ConsumptionProfile)</li>
-						<li><b>Aggregates:</b> Konsistente Objektgruppen mit klaren Grenzen (CarProfile als Root)</li>
-						<li><b>Repositories:</b> Persistenz-Abstraktion für Domain Objects (CarProfileRepository)</li>
-						<li><b>Domain Services:</b> Operationen, die keiner einzelnen Entity zugeordnet werden können
-							(RangeCalculatorService)</li>
-						<li><b>Bounded Contexts:</b> Trennung in klare Domänenbereiche (Reichweitenberechnung,
-							Ladeberechnung)</li>
+						<li>Keine eigene Identität</li>
+						<li>Immutable (unveränderlich) nach Erstellung</li>
+						<li>Vergleich basiert auf allen Attributwerten</li>
+						<li>Beschreibt eine Messung oder ein Konzept</li>
+						<li>Kann problemlos ersetzt werden</li>
+						<li>Validiert sich selbst bei der Erstellung</li>
 					</ul>
-					<p>DDD hilft bei der sauberen Modellierung der Problemdomäne und fördert die Kommunikation zwischen
-						allen Beteiligten.</p>
 				</section>
+
+				<section>
+					<h3>Value Object: Code</h3>
+					<pre><code class="java">public final class BatteryProfile {
+	private final BatteryType type;
+	private final double capacityKwh;
+	private final double degradationPercent;
+	private final double maxDcPowerKw;
+	private final double maxAcPowerKw;
+
+	public BatteryProfile(BatteryType type, double capacityKwh, double degradationPercent, double maxDcPowerKw, double maxAcPowerKw) {
+		if (capacityKwh <= 0) {
+			throw new IllegalArgumentException("Battery capacity must be positive");
+		}
+		if (degradationPercent < 0 || degradationPercent > 100) {
+			throw new IllegalArgumentException("Degradation must be between 0 and 100 percent");
+		}
+		if (maxDcPowerKw <= 0) {
+			throw new IllegalArgumentException("Max DC power must be positive");
+		}
+		if (maxAcPowerKw <= 0) {
+			throw new IllegalArgumentException("Max AC power must be positive");
+		}
+		this.type = Objects.requireNonNull(type, "Battery type cannot be null");
+		this.capacityKwh = capacityKwh;
+		this.degradationPercent = degradationPercent;
+		this.maxDcPowerKw = maxDcPowerKw;
+		this.maxAcPowerKw = maxAcPowerKw;
+	}
+
+	public BatteryType getType() {
+		return type;
+	}
+
+	public double getCapacityKwh() {
+		return capacityKwh;
+	}
+
+	public double getDegradationPercent() {
+		return degradationPercent;
+	}
+
+	public double getRemainingCapacityKwh() {
+		return capacityKwh * (1 - degradationPercent / 100);
+	}
+
+	public double getMaxDcPowerKw() {
+		return maxDcPowerKw;
+	}
+
+	public double getMaxAcPowerKw() {
+		return maxAcPowerKw;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		BatteryProfile that = (BatteryProfile) o;
+		return Double.compare(that.capacityKwh, capacityKwh) == 0 &&
+				Double.compare(that.degradationPercent, degradationPercent) == 0 &&
+				Double.compare(that.maxDcPowerKw, maxDcPowerKw) == 0 &&
+				Double.compare(that.maxAcPowerKw, maxAcPowerKw) == 0 &&
+				type == that.type;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(type, capacityKwh, degradationPercent, maxDcPowerKw, maxAcPowerKw);
+	}
+
+	@Override
+	public String toString() {
+		return String.format(
+			"Type: %s (%s)%n" +
+			"Capacity: %.1f kWh%n" +
+			"Degradation: %.1f%%%n" +
+			"Remaining Capacity: %.1f kWh%n" +
+			"Max DC Power: %.1f kW%n" +
+			"Max AC Power: %.1f kW",
+			type.name(), type.getDescription(),
+			capacityKwh, degradationPercent,
+			getRemainingCapacityKwh(),
+			maxDcPowerKw, maxAcPowerKw
+		);
+	}
+} </code></pre>
+				</section>
+
+				<section>
+					<h3>Value Objects: UML</h3>
+					<img style="scale: 1.1" src="assets/UMLs-imgs/Kapitel_6-Aufgabe_5.png"
+						alt="Value Objects UML Diagram" class="uml-image">
+				</section>
+
+				<section>
+					<h3>Value Objects: Begründung & Vorteile</h3>
+					<ul>
+						<li>Batteryprofile und ConsumptionProfile sind immutable und damit thread-safe</li>
+						<li>Vereinfachte Validierung durch Konstruktor basierte Erstellung</li>
+						<li>Natürliche Modellierung von Messwerten und Konzepten ohne Identität</li>
+						<li>Einfache Vergleichbarkeit durch attribut-basierte equals-Implementierung</li>
+						<li>Können problemlos ausgetauscht werden, da sie keine Identität haben</li>
+					</ul>
+				</section>
+
 			</section>
 
 			<section>
