@@ -1516,7 +1516,7 @@ jobs:
 
 
 
-				
+
 				<section>
 					<h3>Fakes und Mocks (4P)</h3>
 					<p class="subchapter">Analyse und Begründung des Einsatzes von 2 Fake/Mock-Objekten (die Fake/Mocks
@@ -1527,130 +1527,218 @@ jobs:
 
 				<section>
 					<h3>Mock #1: MockProfileSelectionService</h3>
-					<h5>Zweck, Funktionalität & Implementierung</h5>
+					<h5 style="margin-top: 20px; text-align: start;">Zweck, Funktionalität & Implementierung</h5>
 					<ul>
-						<li>Simuliert Profilauswahl ohne echte Persistenz</li>
-						<li>Trackt Aufrufe von Methoden</li>
-						<li>Ermöglicht kontrollierte Testszenarien</li>
-						<li>Vereinfacht Test-Setup</li>
-						<li>Implementiert das ProfileSelectionService Interface</li>
-						<li>Erweitert Interface um Test-spezifische Methoden</li>
 						<li>Wird in Tests für Profilauswahl verwendet</li>
-						<li>Ermöglicht Verifikation von Methodenaufrufen</li>
+						<li>Simuliert die Auswahl eines Fahrzeugprofils ohne echte Persistenz</li>
+						<li>Erlaubt gezielte Testszenarien für Abbruchbedingungen</li>
+						<li>Trackt Aufrufe via Zählermethoden</li>
+						<li>Implementiert das Interface <code>ProfileSelectionService</code></li>
+						<li>Erweitert um test-spezifische Hilfsmethoden</li>
+					</ul>
+					<h5 style="margin-top: 20px; text-align: start;">Kritik vorab:</h5>
+					<ul>
+						<li>Keine Validierung der Profilobjekte</li>
+						<li>Kein Event-System für Änderungen → eingeschränkte Integrationstest-Fähigkeit</li>
 					</ul>
 				</section>
 
 				<section>
 					<h3>Mock #1: Code</h3>
 					<pre><code class="java">public class MockProfileSelectionService implements ProfileSelectionService {
-	
-	private CarProfile selectedProfile;
-	private int selectionCount = 0;
-	private int clearCount = 0;
-	
-	public MockProfileSelectionService() {
-		this.selectedProfile = null;
-	}
-	
-	public MockProfileSelectionService(CarProfile initialProfile) {
-		this.selectedProfile = initialProfile;
-	}
+    
+    private CarProfile selectedProfile;
+    private int selectionCount = 0;
+    private int clearCount = 0;
+    
+    public MockProfileSelectionService() {
+        this.selectedProfile = null;
+    }
+    
+    public MockProfileSelectionService(CarProfile initialProfile) {
+        this.selectedProfile = initialProfile;
+    }
 
-	@Override
-	public CarProfile getSelectedProfile() {
-		return selectedProfile;
-	}
+    @Override
+    public CarProfile getSelectedProfile() {
+        return selectedProfile;
+    }
 
-	@Override
-	public void selectProfile(CarProfile profile) {
-		this.selectedProfile = profile;
-		this.selectionCount++;
-	}
+    @Override
+    public void selectProfile(CarProfile profile) {
+        this.selectedProfile = profile;
+        this.selectionCount++;
+    }
 
-	@Override
-	public void clearSelection() {
-		this.selectedProfile = null;
-		this.clearCount++;
-	}
-	
-	public int getSelectionCount() {
-		return selectionCount;
-	}
-	
-	public int getClearCount() {
-		return clearCount;
-	}
-	
-	public boolean hasSelectedProfile() {
-		return selectedProfile != null;
-	}
+    @Override
+    public void clearSelection() {
+        this.selectedProfile = null;
+        this.clearCount++;
+    }
+    
+    public int getSelectionCount() {
+        return selectionCount;
+    }
+    
+    public int getClearCount() {
+        return clearCount;
+    }
+    
+    public boolean hasSelectedProfile() {
+        return selectedProfile != null;
+    }
 } 
 </code></pre>
 				</section>
 
 
 				<section>
-					<h3>Mock #1: UML-Diagramm</h3>
-					<img src="assets/UMLs-imgs/mock1.png" alt="Mock Profile Selection Service UML" class="uml-image">
+					<h3 style="margin-bottom: 0; padding-bottom: 0;">Mock #1: UML-Diagramm</h3>
+					<img style="scale: 0.7; position: relative; bottom: 30px; margin-top: 0; padding-top: 0;"
+						src="assets/UMLs-imgs/mock1.png" alt="Mock Profile Selection Service UML" class="uml-image">
 				</section>
+
+
 
 				<section>
 					<h3>Mock #2: MockUserInputAdapter</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h5>Zweck & Funktionalität</h5>
-							<ul>
-								<li>Simuliert Benutzereingaben für Tests</li>
-								<li>Unterstützt verschiedene Eingabetypen</li>
-								<li>Ermöglicht vordefinierte Eingabesequenzen</li>
-								<li>Bietet Default-Werte für Fallbacks</li>
-							</ul>
-						</div>
-						<div>
-							<pre><code class="java">public class MockUserInputAdapter implements UserInputPortInterface {
-    private final Queue<String> stringInputs = new ArrayDeque<>();
-    private final Queue<Integer> intInputs = new ArrayDeque<>();
-    private final Queue<Double> doubleInputs = new ArrayDeque<>();
-    private final Queue<Boolean> booleanInputs = new ArrayDeque<>();
-    
-    private String defaultStringInput = "";
-    
-    public void addStringInput(String input) {
-        stringInputs.add(input);
-    }
-    
-    @Override
-    public String readLine() {
-        return stringInputs.isEmpty() ? 
-            defaultStringInput : stringInputs.poll();
-    }
-    
-    @Override
-    public int readInt() {
-        return intInputs.isEmpty() ? 
-            defaultIntInput : intInputs.poll();
-    }
-    
-    public void clearInputs() {
-        stringInputs.clear();
-        intInputs.clear();
-        doubleInputs.clear();
-        booleanInputs.clear();
-    }
-}</code></pre>
-						</div>
-					</div>
+					<h5 style="margin-top: 20px; text-align: start;">Funktionen & Implementierung:</h5>
+					<ul>
+						<li>Unterstützt verschiedene Eingabetypen</li>
+						<li>Ermöglicht vordefinierte Eingabesequenzen</li>
+						<li>Ermöglicht deterministische Testszenarien</li>
+						<li>Ersetzt Benutzereingabe zur UI-Interaktion</li>
+						<li>Bietet Fallback-Werte für leere Eingaben</li>
+						<li>Implementiert <code>UserInputPortInterface</code></li>
+					</ul>
+					<h5 style="margin-top: 20px; text-align: start;">Kritik vorab:</h5>
+					<ul>
+						<li>Komplexität für einfache Tests relativ hoch</li>
+						<li>Fehlendes Verhalten bei Fehleingaben (z.B. Exceptionhandling)</li>
+					</ul>
 				</section>
 
 				<section>
-					<h3>Mock #2: UML-Diagramm</h3>
-					<img src="assets/UMLs-imgs/mock2.png" alt="Mock User Input Adapter UML" class="uml-image">
-					<ul>
-						<li>Implementiert das UserInputPortInterface</li>
-						<li>Verwendet Queues für verschiedene Eingabetypen</li>
-						<li>Bietet Test-spezifische Hilfsmethoden</li>
-						<li>Ermöglicht deterministische Testszenarien</li>
-					</ul>
+					<h3>Mock #2: Code</h3>
+					<pre><code class="java">
+public class MockUserInputAdapter implements UserInputPortInterface {
+	
+	private final Queue<String> stringInputs = new ArrayDeque<>();
+	private final Queue<Integer> intInputs = new ArrayDeque<>();
+	private final Queue<Double> doubleInputs = new ArrayDeque<>();
+	private final Queue<Boolean> booleanInputs = new ArrayDeque<>();
+	
+	private String defaultStringInput = "";
+	private int defaultIntInput = 0;
+	private double defaultDoubleInput = 0.0;
+	private boolean defaultBooleanInput = false;
+	
+	public void addStringInput(String input) {
+		stringInputs.add(input);
+	}
+	
+	public void addStringInputs(String... inputs) {
+		for (String input : inputs) {
+			stringInputs.add(input);
+		}
+	}
+	
+	public void addIntInput(int input) {
+		intInputs.add(input);
+	}
+	
+	public void addIntInputs(int... inputs) {
+		for (int input : inputs) {
+			intInputs.add(input);
+		}
+	}
+	
+	public void addDoubleInput(double input) {
+		doubleInputs.add(input);
+	}
+	
+	public void addDoubleInputs(double... inputs) {
+		for (double input : inputs) {
+			doubleInputs.add(input);
+		}
+	}
+	
+	public void addBooleanInput(boolean input) {
+		booleanInputs.add(input);
+	}
+	
+	public void addBooleanInputs(boolean... inputs) {
+		for (boolean input : inputs) {
+			booleanInputs.add(input);
+		}
+	}
+
+	@Override
+	public String readLine() {
+		return stringInputs.isEmpty() ? defaultStringInput : stringInputs.poll();
+	}
+
+	@Override
+	public int readInt() {
+		return intInputs.isEmpty() ? defaultIntInput : intInputs.poll();
+	}
+
+	@Override
+	public double readDouble() {
+		return doubleInputs.isEmpty() ? defaultDoubleInput : doubleInputs.poll();
+	}
+	
+	@Override
+	public boolean readBoolean(String yesOption, String noOption) {
+		return booleanInputs.isEmpty() ? defaultBooleanInput : booleanInputs.poll();
+	}
+	
+	public void setDefaultStringInput(String defaultInput) {
+		this.defaultStringInput = defaultInput;
+	}
+	
+	public void setDefaultIntInput(int defaultInput) {
+		this.defaultIntInput = defaultInput;
+	}
+	
+	public void setDefaultDoubleInput(double defaultInput) {
+		this.defaultDoubleInput = defaultInput;
+	}
+	
+	public void setDefaultBooleanInput(boolean defaultInput) {
+		this.defaultBooleanInput = defaultInput;
+	}
+	
+	public boolean hasStringInputs() {
+		return !stringInputs.isEmpty();
+	}
+	
+	public boolean hasIntInputs() {
+		return !intInputs.isEmpty();
+	}
+	
+	public boolean hasDoubleInputs() {
+		return !doubleInputs.isEmpty();
+	}
+	
+	public boolean hasBooleanInputs() {
+		return !booleanInputs.isEmpty();
+	}
+	
+	public void clearInputs() {
+		stringInputs.clear();
+		intInputs.clear();
+		doubleInputs.clear();
+		booleanInputs.clear();
+	}
+} 
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Mock #2: UML</h3>
+					<img style="scale: 0.8;" src="assets/UMLs-imgs/mock2.png" alt="Mock User Input Adapter UML"
+						class="uml-image">
 				</section>
 
 				<section>
@@ -1665,24 +1753,24 @@ jobs:
 						</thead>
 						<tbody>
 							<tr>
-								<td>Primärer Zweck</td>
-								<td>Simulation der Profilauswahl und Tracking von Methodenaufrufen</td>
-								<td>Simulation von Benutzereingaben mit vordefinierten Werten</td>
+								<td>Zweck</td>
+								<td>Verhaltensverifikation (Methodenzähler)</td>
+								<td>Simulation von Eingabesequenzen</td>
 							</tr>
 							<tr>
 								<td>Komplexität</td>
-								<td>Einfach, fokussiert auf Zustandsverwaltung</td>
-								<td>Komplex, verwaltet verschiedene Eingabetypen und Queues</td>
+								<td>Niedrig (Status basiert)</td>
+								<td>Hoch (Typ-Queue-Handling)</td>
 							</tr>
 							<tr>
-								<td>Testunterstützung</td>
-								<td>Zähler für Methodenaufrufe, Zustandsvalidierung</td>
-								<td>Vordefinierte Eingabesequenzen, Defaultwerte, Typkonvertierung</td>
+								<td>Architektur-Schicht</td>
+								<td>Application / Domain</td>
+								<td>Infrastructure</td>
 							</tr>
 							<tr>
-								<td>Clean Architecture</td>
-								<td>Domain Layer Mock für Geschäftslogik</td>
-								<td>Infrastructure Layer Mock für UI-Interaktion</td>
+								<td>Kritik</td>
+								<td>Keine Validierung, keine Events</td>
+								<td>Kein Fehlerverhalten, hoher Overhead</td>
 							</tr>
 						</tbody>
 					</table>
