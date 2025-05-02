@@ -1,0 +1,56 @@
+@startuml Mock User Input Adapter
+
+skinparam class {
+    BackgroundColor White
+    ArrowColor #333
+    BorderColor #333
+}
+
+interface UserInputPortInterface {
+    + readLine(): String
+    + readInt(): int
+    + readDouble(): double
+    + readBoolean(yesOption: String, noOption: String): boolean
+}
+
+class MockUserInputAdapter {
+    - stringInputs: Queue<String>
+    - intInputs: Queue<Integer>
+    - doubleInputs: Queue<Double>
+    - booleanInputs: Queue<Boolean>
+    - defaultStringInput: String
+    - defaultIntInput: int
+    - defaultDoubleInput: double
+    - defaultBooleanInput: boolean
+    + addStringInput(input: String): void
+    + addIntInput(input: int): void
+    + addDoubleInput(input: double): void
+    + addBooleanInput(input: boolean): void
+    + readLine(): String
+    + readInt(): int
+    + readDouble(): double
+    + readBoolean(yesOption: String, noOption: String): boolean
+    + clearInputs(): void
+    + hasStringInputs(): boolean
+    + hasIntInputs(): boolean
+    + hasDoubleInputs(): boolean
+    + hasBooleanInputs(): boolean
+}
+
+class RangeCalculationController {
+    - userInputPort: UserInputPortInterface
+    + processRangeCalculation(): boolean
+}
+
+class "Queue<T>" as Queue {
+    + add(element: T): boolean
+    + poll(): T
+    + isEmpty(): boolean
+    + clear(): void
+}
+
+MockUserInputAdapter ..|> UserInputPortInterface
+MockUserInputAdapter --> "Queue" : contains
+RangeCalculationController --> UserInputPortInterface : uses
+
+@enduml 

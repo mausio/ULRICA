@@ -601,20 +601,6 @@ jobs:
 					</div>
 				</section>
 
-				<section>
-					<h3>Kleines Add-On: Mails</h3>
-					<div style="display: flex; flex-direction: row; justify-content: space-evenly;">
-						<img src="./assets/imgs/Screenshot 2025-04-27 at 12.41.23.jpeg"
-							style="height: 580px; margin: 0; border-radius: 20px;" />
-						<div style="display: flex; flex-direction: column; justify-content: space-between;">
-							<img src="./assets/imgs/IMG_1931.PNG"
-								style="height: 280px; margin: 0; border-radius: 20px;" />
-							<img src="./assets/imgs/IMG_1932.PNG"
-								style="height: 280px; margin: 0; border-radius: 20px;" />
-						</div>
-					</div>
-				</section>
-
 				<!-- <section>
 					<h3>Clean Architecture</h3>
 					<div class="horizontal-spaced-container">
@@ -1058,14 +1044,15 @@ jobs:
 			<!-- Kapitel 5 -->
 			<section alt="Kapitel 5">
 				<section>
-					<h2 class="chapter-title">Kapitel 5:<br/> Unit Tests (8P)</h2>
+					<h2 class="chapter-title">Kapitel 5:<br /> Unit Tests (8P)</h2>
 				</section>
 
 				<section>
 					<h3>10 Unit Tests (2p)</h3>
-					<p class="subchapter">Zeigen und Beschreiben von 10 Unit-Tests und Beschreibung, was getestet wird</p>
+					<p class="subchapter">Zeigen und Beschreiben von 10 Unit-Tests und Beschreibung, was getestet wird
+					</p>
 				</section>
-				
+
 				<section>
 					<h3>Unit Tests</h3>
 					<div class="horizontal-spaced-container">
@@ -1092,7 +1079,7 @@ jobs:
 						</div>
 					</div>
 				</section>
-				
+
 				<section>
 					<h3>Test #1: DC Charging Calculator</h3>
 					<pre><code class="java">@Test
@@ -1145,7 +1132,7 @@ jobs:
 				}</code></pre>
 					<p>Testet komplexe Ladeberechnungen mit dynamischer Ladekurve und verschiedenen SOC-Bereichen</p>
 				</section>
-				
+
 				<section>
 					<h3>Test #2: Range Calculator Service - Strategy Pattern</h3>
 					<pre><code class="java">@Test
@@ -1186,7 +1173,7 @@ jobs:
 				}</code></pre>
 					<p>Testet die dynamische Erweiterbarkeit durch das Strategy-Pattern im RangeCalculatorService</p>
 				</section>
-				
+
 				<section>
 					<h3>Test #3: ChargingCurve Interpolation</h3>
 					<pre><code class="java">@Test
@@ -1208,7 +1195,7 @@ jobs:
 				}</code></pre>
 					<p>Testet die korrekte lineare Interpolation bei der Ladekurve zwischen definierten Punkten</p>
 				</section>
-				
+
 				<section>
 					<h3>Test #4: ExecuteAction - Komplexe UI-Interaktion</h3>
 					<pre><code class="java">@Test
@@ -1228,9 +1215,10 @@ jobs:
 					assertEquals(0, rangeCalculationController.getProcessCallCount());
 					assertTrue(actionResultView.lastErrorContains("No car profile selected"));
 				}</code></pre>
-					<p>Testet das komplexe Zusammenspiel zwischen UI-Controller, Views und Geschäftslogik mit Mock-Objekten</p>
+					<p>Testet das komplexe Zusammenspiel zwischen UI-Controller, Views und Geschäftslogik mit
+						Mock-Objekten</p>
 				</section>
-				
+
 				<section>
 					<h3>Test #5: DC Charging - Temperatureinfluss</h3>
 					<pre><code class="java">@Test
@@ -1262,7 +1250,7 @@ jobs:
 				}</code></pre>
 					<p>Testet die realistische Simulation von Temperatureinflüssen auf das Ladeverhalten</p>
 				</section>
-				
+
 				<section>
 					<h3>Test #6: Validierung der Eingabeparameter</h3>
 					<pre><code class="java">@Test
@@ -1302,7 +1290,7 @@ jobs:
 				}</code></pre>
 					<p>Testet die robuste Validierung von Eingabeparametern in der Domain-Logik</p>
 				</section>
-				
+
 				<section>
 					<h3>Test #7: DI mit Mock-Objekten</h3>
 					<pre><code class="java">@Test
@@ -1321,9 +1309,10 @@ jobs:
 					assertEquals(0, acChargingController.getProcessCallCount());
 					assertEquals(0, rangeCalculationController.getProcessCallCount());
 				}</code></pre>
-					<p>Testet die korrekte Implementierung von Dependency Injection und das Zusammenspiel von Komponenten</p>
+					<p>Testet die korrekte Implementierung von Dependency Injection und das Zusammenspiel von
+						Komponenten</p>
 				</section>
-				
+
 				<section>
 					<h3>Test #8: ChargingCurve - Robustheit</h3>
 					<pre><code class="java">@Test
@@ -1347,7 +1336,7 @@ jobs:
 				}</code></pre>
 					<p>Testet die Robustheit und Fehlerbehandlung bei ungültigen Eingabedaten</p>
 				</section>
-				
+
 				<section>
 					<h3>Test #9: ProfileSelectionService - Statusverwaltung</h3>
 					<pre><code class="java">@Test
@@ -1377,7 +1366,7 @@ jobs:
 				}</code></pre>
 					<p>Testet die korrekte Statusverwaltung und Fehlerfälle im ProfileSelectionService</p>
 				</section>
-				
+
 				<section>
 					<h3>Test #10: Validierung von Value Objects</h3>
 					<pre><code class="java">@Test
@@ -1421,19 +1410,283 @@ jobs:
 					<p>Testet die Validierung und Fehlerbehandlung bei der Erstellung von Value Objects</p>
 				</section>
 
+
+
+
 				<section>
 					<h3>ATRIP: Automatic, Thorough und Professional (2P)</h3>
-					<p class="subchapter">je Begründung/Erläuterung, wie ‘Automatic’, ‘Thorough’ und ‘Professional’ realisiert wurde – bei
-						‘Thorough’ zusätzlich Analyse und Bewertung zur Testabdeckung]</p>
+					<p class="subchapter">je Begründung/Erläuterung, wie 'Automatic', 'Thorough' und 'Professional'
+						realisiert wurde – bei
+						'Thorough' zusätzlich Analyse und Bewertung zur Testabdeckung]</p>
+				</section>
+
+
+				<section>
+					<h3>ATRIP: Automatic</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<h5>Automatisierung durch CI/CD</h5>
+							<ul>
+								<li>GitHub Actions Workflow für automatische Builds</li>
+								<li>Automatische Testausführung bei jedem Push/PR</li>
+								<li>Maven-basierte Build-Pipeline</li>
+								<li>Automatische Code-Coverage-Analyse mit JaCoCo</li>
+								<li>Automatische E-Mail-Benachrichtigungen über Testergebnisse</li>
+							</ul>
+						</div>
+						<div>
+							<h5>Automatische Test-Tools</h5>
+							<ul>
+								<li>JUnit 4 für Unit Tests</li>
+								<li>Maven Surefire für Testausführung</li>
+								<li>CLOC für automatische Code-Analyse</li>
+								<li>Automatische Validierung von Eingabeparametern</li>
+								<li>Selbstvalidierung von Value Objects</li>
+							</ul>
+						</div>
+					</div>
 				</section>
 
 				<section>
+					<h3>ATRIP: Thorough</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<h5>Testabdeckung (Coverage)</h5>
+							<ul>
+								<li>Gesamtabdeckung: 47%</li>
+								<li>Domain Layer: 68%</li>
+								<li>Application Layer: 53%</li>
+								<li>Presentation Layer: 42%</li>
+								<li>Infrastructure Layer: 36%</li>
+								<li>Core-Komponenten: 75%</li>
+							</ul>
+						</div>
+						<div>
+							<h5>Testarten</h5>
+							<ul>
+								<li>Unit Tests für isolierte Komponenten</li>
+								<li>Integrationstests für Zusammenspiel</li>
+								<li>Parametrisierte Tests für Randfälle</li>
+								<li>Exception Tests für Fehlerszenarien</li>
+								<li>Mock-Tests für externe Abhängigkeiten</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>ATRIP: Professional</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<h5>Testorganisation</h5>
+							<ul>
+								<li>Klare Teststruktur nach Clean Architecture</li>
+								<li>Aussagekräftige Testbenennungen</li>
+								<li>Separation of Concerns in Tests</li>
+								<li>Wiederverwendbare Test-Utilities</li>
+								<li>Dokumentierte Testfälle</li>
+							</ul>
+						</div>
+						<div>
+							<h5>Best Practices</h5>
+							<ul>
+								<li>Arrange-Act-Assert Pattern</li>
+								<li>Given-When-Then Struktur</li>
+								<li>Isolierte Testumgebungen</li>
+								<li>Deterministische Tests</li>
+								<li>Keine Test-Abhängigkeiten</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Kleines Add-On zu ATRP: Mails</h3>
+					<div style="display: flex; flex-direction: row; justify-content: space-evenly;">
+						<img src="./assets/imgs/Screenshot 2025-04-27 at 12.41.23.jpeg"
+							style="height: 580px; margin: 0; border-radius: 20px;" />
+						<div style="display: flex; flex-direction: column; justify-content: space-between;">
+							<img src="./assets/imgs/IMG_1931.PNG"
+								style="height: 280px; margin: 0; border-radius: 20px;" />
+							<img src="./assets/imgs/IMG_1932.PNG"
+								style="height: 280px; margin: 0; border-radius: 20px;" />
+						</div>
+					</div>
+				</section>
+
+
+
+				
+				<section>
 					<h3>Fakes und Mocks (4P)</h3>
-					<p class="subchapter">Analyse und Begründung des Einsatzes von 2 Fake/Mock-Objekten (die Fake/Mocks sind ohne
+					<p class="subchapter">Analyse und Begründung des Einsatzes von 2 Fake/Mock-Objekten (die Fake/Mocks
+						sind ohne
 						Dritthersteller-Bibliothek/Framework zu implementieren); zusätzlich jeweils UML Diagramm mit
 						Beziehungen zwischen Mock, zu mockender Klasse und Aufrufer des Mocks</p>
 				</section>
-				
+
+				<section>
+					<h3>Mock #1: MockProfileSelectionService</h3>
+					<h5>Zweck, Funktionalität & Implementierung</h5>
+					<ul>
+						<li>Simuliert Profilauswahl ohne echte Persistenz</li>
+						<li>Trackt Aufrufe von Methoden</li>
+						<li>Ermöglicht kontrollierte Testszenarien</li>
+						<li>Vereinfacht Test-Setup</li>
+						<li>Implementiert das ProfileSelectionService Interface</li>
+						<li>Erweitert Interface um Test-spezifische Methoden</li>
+						<li>Wird in Tests für Profilauswahl verwendet</li>
+						<li>Ermöglicht Verifikation von Methodenaufrufen</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Mock #1: Code</h3>
+					<pre><code class="java">public class MockProfileSelectionService implements ProfileSelectionService {
+	
+	private CarProfile selectedProfile;
+	private int selectionCount = 0;
+	private int clearCount = 0;
+	
+	public MockProfileSelectionService() {
+		this.selectedProfile = null;
+	}
+	
+	public MockProfileSelectionService(CarProfile initialProfile) {
+		this.selectedProfile = initialProfile;
+	}
+
+	@Override
+	public CarProfile getSelectedProfile() {
+		return selectedProfile;
+	}
+
+	@Override
+	public void selectProfile(CarProfile profile) {
+		this.selectedProfile = profile;
+		this.selectionCount++;
+	}
+
+	@Override
+	public void clearSelection() {
+		this.selectedProfile = null;
+		this.clearCount++;
+	}
+	
+	public int getSelectionCount() {
+		return selectionCount;
+	}
+	
+	public int getClearCount() {
+		return clearCount;
+	}
+	
+	public boolean hasSelectedProfile() {
+		return selectedProfile != null;
+	}
+} 
+</code></pre>
+				</section>
+
+
+				<section>
+					<h3>Mock #1: UML-Diagramm</h3>
+					<img src="assets/UMLs-imgs/mock1.png" alt="Mock Profile Selection Service UML" class="uml-image">
+				</section>
+
+				<section>
+					<h3>Mock #2: MockUserInputAdapter</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<h5>Zweck & Funktionalität</h5>
+							<ul>
+								<li>Simuliert Benutzereingaben für Tests</li>
+								<li>Unterstützt verschiedene Eingabetypen</li>
+								<li>Ermöglicht vordefinierte Eingabesequenzen</li>
+								<li>Bietet Default-Werte für Fallbacks</li>
+							</ul>
+						</div>
+						<div>
+							<pre><code class="java">public class MockUserInputAdapter implements UserInputPortInterface {
+    private final Queue<String> stringInputs = new ArrayDeque<>();
+    private final Queue<Integer> intInputs = new ArrayDeque<>();
+    private final Queue<Double> doubleInputs = new ArrayDeque<>();
+    private final Queue<Boolean> booleanInputs = new ArrayDeque<>();
+    
+    private String defaultStringInput = "";
+    
+    public void addStringInput(String input) {
+        stringInputs.add(input);
+    }
+    
+    @Override
+    public String readLine() {
+        return stringInputs.isEmpty() ? 
+            defaultStringInput : stringInputs.poll();
+    }
+    
+    @Override
+    public int readInt() {
+        return intInputs.isEmpty() ? 
+            defaultIntInput : intInputs.poll();
+    }
+    
+    public void clearInputs() {
+        stringInputs.clear();
+        intInputs.clear();
+        doubleInputs.clear();
+        booleanInputs.clear();
+    }
+}</code></pre>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Mock #2: UML-Diagramm</h3>
+					<img src="assets/UMLs-imgs/mock2.png" alt="Mock User Input Adapter UML" class="uml-image">
+					<ul>
+						<li>Implementiert das UserInputPortInterface</li>
+						<li>Verwendet Queues für verschiedene Eingabetypen</li>
+						<li>Bietet Test-spezifische Hilfsmethoden</li>
+						<li>Ermöglicht deterministische Testszenarien</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Vergleich der Mock-Implementierungen</h3>
+					<table>
+						<thead>
+							<tr>
+								<th>Aspekt</th>
+								<th>MockProfileSelectionService</th>
+								<th>MockUserInputAdapter</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Primärer Zweck</td>
+								<td>Simulation der Profilauswahl und Tracking von Methodenaufrufen</td>
+								<td>Simulation von Benutzereingaben mit vordefinierten Werten</td>
+							</tr>
+							<tr>
+								<td>Komplexität</td>
+								<td>Einfach, fokussiert auf Zustandsverwaltung</td>
+								<td>Komplex, verwaltet verschiedene Eingabetypen und Queues</td>
+							</tr>
+							<tr>
+								<td>Testunterstützung</td>
+								<td>Zähler für Methodenaufrufe, Zustandsvalidierung</td>
+								<td>Vordefinierte Eingabesequenzen, Defaultwerte, Typkonvertierung</td>
+							</tr>
+							<tr>
+								<td>Clean Architecture</td>
+								<td>Domain Layer Mock für Geschäftslogik</td>
+								<td>Infrastructure Layer Mock für UI-Interaktion</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
 			</section>
 
 

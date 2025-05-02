@@ -1,0 +1,50 @@
+@startuml Mock Profile Selection Service
+
+skinparam class {
+    BackgroundColor White
+    ArrowColor #333
+    BorderColor #333
+}
+
+interface ProfileSelectionService {
+    + getSelectedProfile(): CarProfile
+    + selectProfile(profile: CarProfile): void
+    + clearSelection(): void
+}
+
+class MockProfileSelectionService {
+    - selectedProfile: CarProfile
+    - selectionCount: int
+    - clearCount: int
+    + getSelectedProfile(): CarProfile
+    + selectProfile(profile: CarProfile): void
+    + clearSelection(): void
+    + getSelectionCount(): int
+    + getClearCount(): int
+    + hasSelectedProfile(): boolean
+}
+
+class CarProfile {
+    - id: String
+    - name: String
+    - manufacturer: String
+    - model: String
+    - year: int
+    - hasHeatPump: boolean
+    - wltpRangeKm: double
+    - maxDcPowerKw: double
+    - maxAcPowerKw: double
+}
+
+class ExecuteActionInteractorTest {
+    - executeActionInteractor: ExecuteActionInteractor
+    - mockProfileSelectionService: MockProfileSelectionService
+    + setUp(): void
+    + testExecuteAction_NoProfileSelected(): void
+}
+
+MockProfileSelectionService ..|> ProfileSelectionService
+MockProfileSelectionService --> CarProfile : uses
+ExecuteActionInteractorTest --> MockProfileSelectionService : creates and uses
+
+@enduml 
