@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <meta charset="utf-8">
@@ -1232,11 +1232,492 @@ jobs:
             </section>
         </section>
 
+        <!-- Kapitel 3 -->
+        <section alt="Kapitel 3: NOCH NICHT FERTIG">
+            <section>
+                <h2 class="chapter-title">Kapitel 3: <br/> SOLID (8P)</h2>
+            </section>
 
-        <!-- <section data-include="slides/kapitel-3.html"></section>´ -->
+            <section>
+                <h3>SRP – Single Responsibility Principle (3P)</h3>
+                <p class="subchapter">Jeweils eine Klasse als positives und negatives Beispiel für SRP; jeweils UML und
+                    Beschreibung der Aufgabe bzw. der Aufgaben und möglicher Lösungsweg des Negativ-Beispiels (inkl.
+                    UML)</p>
+            </section>
 
-        <!-- Kapitel 4 -->
-        <section alt="Kapitel 4">
+            <section>
+                <h3>SRP: </h3>
+                <p>Jede Klasse sollte genau eine Verantwortlichkeit haben, d.h. einen einzigen Grund für Änderungen</p>
+                <img src="assets/UMLs-imgs/Kapitel_3-Aufgabe_1.png" alt="SRP UML Diagram" class="uml-image">
+            </section>
+
+            <section>
+                <h3>SRP – Positives Beispiel: RangeCalculatorService</h3>
+                <pre><code class="java">public class RangeCalculatorService {
+    private final List<RangeCalculationStrategyInterface> strategies;
+    private RangeCalculationStrategyInterface defaultStrategy;
+
+    public RangeCalculatorService() {
+        this.strategies = new ArrayList<>();
+
+        // Initialize with standard strategies
+        WltpBasedRangeCalculationStrategy wltpStrategy =
+            new WltpBasedRangeCalculationStrategy();
+        ConsumptionBasedRangeCalculationStrategy consumptionStrategy =
+            new ConsumptionBasedRangeCalculationStrategy();
+
+        this.strategies.add(wltpStrategy);
+        this.strategies.add(consumptionStrategy);
+
+        // Set default strategy
+        this.defaultStrategy = consumptionStrategy;
+    }
+
+    public RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters) {
+        Objects.requireNonNull(carProfile, "Car profile cannot be null");
+        Objects.requireNonNull(parameters, "Range parameters cannot be null");
+
+        return defaultStrategy.calculateRange(carProfile, parameters);
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h3>SRP – Positives Beispiel: Beschreibung</h3>
+                <p>Der RangeCalculatorService hat eine klar definierte Verantwortung:</p>
+                <ul>
+                    <li>Verwaltung der Berechnungsstrategien für Reichweiten</li>
+                    <li>Bereitstellung einer einheitlichen Schnittstelle zur Reichweitenberechnung</li>
+                    <li>Delegation der tatsächlichen Berechnung an die entsprechende Strategie</li>
+                </ul>
+                <p>Die Klasse befasst sich <b>nicht</b> mit:</p>
+                <ul>
+                    <li>Benutzereingaben verarbeiten</li>
+                    <li>Ergebnisse anzeigen</li>
+                    <li>Fahrzeugprofile laden oder speichern</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>SRP – Negatives Beispiel: CarProfileManager</h3>
+                <pre><code class="java">public class CarProfileManager {
+    private final Scanner scanner;
+    private final String storagePath = "profiles.json";
+    private Gson gson = new Gson();
+
+    public CarProfileManager() {
+        this.scanner = new Scanner(System.in);
+    }
+
+    public CarProfile createProfile() {
+        System.out.println("Neues Fahrzeugprofil erstellen:");
+        System.out.print("Name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Hersteller: ");
+        String manufacturer = scanner.nextLine();
+
+        // Weitere Benutzereingaben...
+
+        return new CarProfile.Builder()
+                .name(name)
+                .manufacturer(manufacturer)
+                // Weitere Eigenschaften...
+                .build();
+    }
+
+    public void saveProfile(CarProfile profile) {
+        List<CarProfile> profiles = loadAllProfiles();
+        profiles.add(profile);
+
+        try (FileWriter writer = new FileWriter(storagePath)) {
+            gson.toJson(profiles, writer);
+            System.out.println("Profil gespeichert.");
+        } catch (IOException e) {
+            System.err.println("Fehler beim Speichern: " + e.getMessage());
+        }
+    }
+
+    public List<CarProfile> loadAllProfiles() {
+        // Code zum Laden von Profilen...
+    }
+
+    public double calculateRange(CarProfile profile) {
+        // Komplexe Reichweitenberechnung...
+    }
+
+    public void displayProfile(CarProfile profile) {
+        System.out.println("Profil: " + profile.getName());
+        System.out.println("Hersteller: " + profile.getManufacturer());
+        // Weitere Anzeigen...
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h3>SRP – Negatives Beispiel: Beschreibung</h3>
+                <p>CarProfileManager hat zu viele Verantwortlichkeiten:</p>
+                <ul>
+                    <li><b>UI-Logik:</b> Benutzereingaben über Scanner einlesen und anzeigen</li>
+                    <li><b>Datenpersistenz:</b> Speichern und Laden von Profilen</li>
+                    <li><b>Domänenlogik:</b> Reichweitenberechnung</li>
+                    <li><b>Präsentation:</b> Anzeige von Profildaten</li>
+                </ul>
+                <p>Probleme:</p>
+                <ul>
+                    <li>Mehrere Gründe für Änderungen (UI-Änderung, Geschäftslogik, Speicherformat)</li>
+                    <li>Schwer testbar (z.B. UI-Logik mit Scanner)</li>
+                    <li>Verletzt Clean Architecture (mischt verschiedene Schichten)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>SRP – Refactoring des negativen Beispiels</h3>
+                <p>Aufteilung in spezialisierte Klassen:</p>
+                <div class="horizontal-spaced-container">
+                    <div>
+            <pre><code class="java">// UI/Presentation Layer
+public class CarProfileView {
+    public CarProfileInput promptForNewProfile() {
+        // Benutzereingaben
+    }
+
+    public void displayProfile(CarProfile profile) {
+        // Anzeige
+    }
+}</code></pre>
+                    </div>
+                    <div>
+            <pre><code class="java">// Application Layer
+public class CreateCarProfileUseCase {
+    private final CarProfileRepository repository;
+
+    public CreateCarProfileUseCase(
+            CarProfileRepository repository) {
+        this.repository = repository;
+    }
+
+    public CarProfile createProfile(CarProfileInput input) {
+        // Domain-Objekt erstellen
+        return repository.save(profile);
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h3>SRP – Refactoring des negativen Beispiels (Fortsetzung)</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+            <pre><code class="java">// Infrastructure Layer
+public class JsonCarProfileRepository
+        implements CarProfileRepository {
+    private final String storagePath;
+    private final Gson gson;
+
+    public JsonCarProfileRepository(String path) {
+        this.storagePath = path;
+        this.gson = new Gson();
+    }
+
+    public CarProfile save(CarProfile profile) {
+        // Speichern
+    }
+
+    public List<CarProfile> findAll() {
+        // Laden
+    }
+}</code></pre>
+                    </div>
+                    <div>
+            <pre><code class="java">// Domain Layer
+public class RangeCalculator {
+    public double calculateRange(
+            CarProfile profile,
+            RangeParameters params) {
+        // Berechnung
+    }
+}</code></pre>
+
+                        <pre><code class="java">// Domain/Application Layer
+public interface CarProfileRepository {
+    CarProfile save(CarProfile profile);
+    List<CarProfile> findAll();
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h3>OCP – Open-Closed Principle (3P)</h3>
+                <p>Softwaremodule sollten offen für Erweiterungen sein, aber geschlossen für Änderungen</p>
+                <img src="assets/UMLs-imgs/Kapitel_3-Aufgabe_2.png" alt="OCP UML Diagram" class="uml-image">
+            </section>
+
+            <section>
+                <h3>OCP – Positives Beispiel: RangeCalculationStrategyInterface</h3>
+                <pre><code class="java">// Abstraktion (Interface)
+public interface RangeCalculationStrategyInterface {
+
+    RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters);
+
+    String getName();
+
+    String getDescription();
+}
+
+// Erste Implementierung
+public class WltpBasedRangeCalculationStrategy implements RangeCalculationStrategyInterface {
+
+    @Override
+    public RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters) {
+        // WLTP-basierte Berechnung...
+    }
+
+    @Override
+    public String getName() {
+        return "WLTP-based Range Calculation";
+    }
+}
+
+// Zweite Implementierung
+public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculationStrategyInterface {
+
+    @Override
+    public RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters) {
+        // Verbrauchsbasierte Berechnung...
+    }
+
+    @Override
+    public String getName() {
+        return "Consumption-based Range Calculation";
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h3>OCP – Positives Beispiel: Beschreibung</h3>
+                <p>Die Reichweitenberechnung nutzt das Strategy-Pattern und das OCP:</p>
+                <ul>
+                    <li>Abstraktion über Interface: RangeCalculationStrategyInterface</li>
+                    <li>Neue Strategien können ohne Änderung der Kernlogik hinzugefügt werden</li>
+                    <li>Der RangeCalculatorService bleibt unverändert</li>
+                    <li>Einfache Erweiterung um neue Berechnungsmethoden</li>
+                    <li>Geschlossen gegen Modifikation: Benutzer muss bestehenden Code nicht ändern</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>OCP – Negatives Beispiel: MonolithicChargeCalculator</h3>
+                <pre><code class="java">public class MonolithicChargeCalculator {
+
+    public double calculateChargingTime(CarProfile profile, double startSoc, double targetSoc,
+                                      String chargerType) {
+        double timeHours;
+
+        // Verzweigungslogik basierend auf dem Charger-Typ
+        if (chargerType.equals("DC")) {
+            // DC-Ladeberechnung...
+            if (profile.getBatteryProfile().getType() == BatteryType.LFP) {
+                // Spezielle Berechnung für LFP-Batterien
+                timeHours = calculateDcChargingForLfp(profile, startSoc, targetSoc);
+            } else if (profile.getBatteryProfile().getType() == BatteryType.NMC) {
+                // Spezielle Berechnung für NMC-Batterien
+                timeHours = calculateDcChargingForNmc(profile, startSoc, targetSoc);
+            } else {
+                // Fallback für andere Batterietypen
+                timeHours = calculateDcChargingGeneric(profile, startSoc, targetSoc);
+            }
+        } else if (chargerType.equals("AC")) {
+            // AC-Ladeberechnung...
+            timeHours = calculateAcCharging(profile, startSoc, targetSoc);
+        } else {
+            throw new IllegalArgumentException("Unknown charger type: " + chargerType);
+        }
+
+        return timeHours;
+    }
+
+    private double calculateDcChargingForLfp(/* ... */) { /* ... */ }
+    private double calculateDcChargingForNmc(/* ... */) { /* ... */ }
+    private double calculateDcChargingGeneric(/* ... */) { /* ... */ }
+    private double calculateAcCharging(/* ... */) { /* ... */ }
+}</code></pre>
+            </section>
+
+            <section>
+                <h3>OCP – Negatives Beispiel: Beschreibung</h3>
+                <p>MonolithicChargeCalculator verstößt gegen das OCP:</p>
+                <ul>
+                    <li>Jede neue Ladeart (z.B. Induktionsladen) erfordert Änderungen im bestehenden Code</li>
+                    <li>Neue Batterietypen erfordern neue if-else Verzweigungen</li>
+                    <li>Schwer zu testen durch enge Kopplung der Logik</li>
+                    <li>Hohe Komplexität durch geschachtelte Bedingungen</li>
+                    <li>Keine klare Separation of Concerns</li>
+                    <li>Schwierige Wiederverwendbarkeit einzelner Berechnungsmethoden</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>LSP – Liskov Substitution Principle (2P)</h3>
+                <p>Objekte einer Basisklasse sollten durch Objekte ihrer abgeleiteten Klassen ersetzbar sein, ohne die
+                    Korrektheit des Programms zu beeinträchtigen</p>
+                <img src="assets/UMLs-imgs/Kapitel_3-Aufgabe_3.png" alt="LSP UML Diagram" class="uml-image">
+            </section>
+
+            <section>
+                <h3>LSP – Positives Beispiel: UserOutputPortInterface</h3>
+                <pre><code class="java">// Interface für die Benutzerausgabe
+public interface UserOutputPortInterface {
+    void display(String message);
+    void displayLine(String message);
+    void displayPrompt(String prompt);
+}
+
+// Implementierung für die Konsole
+public class ConsoleUserOutputAdapter implements UserOutputPortInterface {
+    @Override
+    public void display(String message) {
+        System.out.print(message);
+    }
+
+    @Override
+    public void displayLine(String message) {
+        System.out.println(message);
+    }
+
+    @Override
+    public void displayPrompt(String prompt) {
+        System.out.print(prompt + ": ");
+    }
+}
+
+// Implementierung für Tests (Mock)
+public class TestUserOutputAdapter implements UserOutputPortInterface {
+    private final List<String> messages = new ArrayList<>();
+
+    @Override
+    public void display(String message) {
+        messages.add(message);
+    }
+
+    @Override
+    public void displayLine(String message) {
+        messages.add(message + "\n");
+    }
+
+    @Override
+    public void displayPrompt(String prompt) {
+        messages.add(prompt + ": ");
+    }
+
+    public List<String> getMessages() {
+        return messages;
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h3>LSP – Positives Beispiel: Verwendung</h3>
+                <pre><code class="java">// Klasse, die das Interface verwendet
+public class RangeCalculationController {
+    private final UserOutputPortInterface outputPort;
+
+    public RangeCalculationController(UserOutputPortInterface outputPort) {
+        this.outputPort = outputPort;
+    }
+
+    public void displayRangeResult(RangeResult result) {
+        outputPort.displayLine("Berechnete Reichweite: " + result.getEstimatedRangeKm() + " km");
+        outputPort.displayLine("Durchschnittsverbrauch: " +
+                result.getAverageConsumptionKwhPer100Km() + " kWh/100km");
+        outputPort.displayLine("Wettereinfluss: " + result.getWeatherImpact());
+        // Weitere Ausgaben...
+    }
+}
+
+// Beide Implementierungen können problemlos ausgetauscht werden
+UserOutputPortInterface consoleOutput = new ConsoleUserOutputAdapter();
+RangeCalculationController productionController = new RangeCalculationController(consoleOutput);
+
+UserOutputPortInterface testOutput = new TestUserOutputAdapter();
+RangeCalculationController testController = new RangeCalculationController(testOutput);</code></pre>
+            </section>
+
+            <section>
+                <h3>LSP – Negatives Beispiel: RestrictedAcCharger</h3>
+                <pre><code class="java">// Basisklasse mit allgemeiner Laderfunktionalität
+public class Charger {
+    protected double maxPowerKw;
+
+    public Charger(double maxPowerKw) {
+        this.maxPowerKw = maxPowerKw;
+    }
+
+    public double calculateChargingTime(BatteryProfile battery, double socToAdd) {
+        double energyToAddKwh = battery.getRemainingCapacityKwh() * (socToAdd / 100.0);
+        return energyToAddKwh / maxPowerKw;
+    }
+
+    public boolean canCharge(CarProfile car) {
+        return true; // Generischer Lader kann jedes Auto laden
+    }
+}
+
+// Problematische Unterklasse, die Vorbedingungen verstärkt
+public class RestrictedAcCharger extends Charger {
+    public RestrictedAcCharger(double maxPowerKw) {
+        super(maxPowerKw);
+    }
+
+    @Override
+    public boolean canCharge(CarProfile car) {
+        // Verstärkte Vorbedingung: nur Autos mit AC-Anschluss
+        return car.hasAcChargingCapability(); // Verletzt LSP!
+    }
+
+    @Override
+    public double calculateChargingTime(BatteryProfile battery, double socToAdd) {
+        if (battery.getType() != BatteryType.LFP) {
+            throw new UnsupportedOperationException("Only LFP batteries supported"); // Verletzt LSP!
+        }
+        return super.calculateChargingTime(battery, socToAdd);
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h3>LSP – Negatives Beispiel: Probleme</h3>
+                <ul>
+                    <li>RestrictedAcCharger ist nicht substituierbar für Charger</li>
+                    <li>Verstärkt Vorbedingungen durch zusätzliche Einschränkungen</li>
+                    <li>Wirft Ausnahmen für Fälle, die in der Basisklasse funktionieren</li>
+                    <li>Code, der mit Charger arbeitet, kann mit RestrictedAcCharger fehlschlagen</li>
+                    <li>Verletzung der Verhaltensspezifikation der Basisklasse</li>
+                </ul>
+                <pre><code class="java">// Code, der mit der Verletzung des LSP bricht
+Charger genericCharger = new Charger(11.0);
+Charger restrictedCharger = new RestrictedAcCharger(11.0); // Sollte austauschbar sein
+
+CarProfile car = getCarWithoutAcCapability();
+
+// Funktioniert mit Basisklasse
+if (genericCharger.canCharge(car)) {
+    genericCharger.calculateChargingTime(car.getBatteryProfile(), 50.0);
+}
+
+// Bricht mit der abgeleiteten Klasse
+if (restrictedCharger.canCharge(car)) { // Gibt immer false zurück
+    // Dieser Code wird nie erreicht
+    restrictedCharger.calculateChargingTime(car.getBatteryProfile(), 50.0);
+}</code></pre>
+            </section>
+        </section>
+
+        <!--       MUSS NOCH GEMACHT WERDEN: NOCH NICHT FERTIGT !!!! -->
+        <!-- Kapitel 4: NOCH NICHT FERTIGT !!!!  -->
+        <section alt="NOCH NICHT FERTIGT !!!! Kapitel 4">
             <section>
                 <h2 class="chapter-title">Kapitel 4: Weitere Prinzipien
                     (8P)</h2>
