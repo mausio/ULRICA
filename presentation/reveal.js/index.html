@@ -1055,6 +1055,511 @@ jobs:
 			<section data-include="slides/kapitel-4.html"></section>
 			<section data-include="slides/kapitel-5.html"></section> -->
 
+			<!-- Kapitel 5 -->
+			<section alt="Kapitel 5">
+				<section>
+					<h2 class="chapter-title">Kapitel 5: Unit Tests (8P)</h2>
+				</section>
+
+				<section>
+					<h3>10 Unit Tests (2p)</h3>
+					<p class="subchapter">Zeigen und Beschreiben von 10 Unit-Tests und Beschreibung, was getestet wird</p>
+				</section>
+				
+				<section>
+					<h3>Unit Tests</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<h5>Test-Strategie</h5>
+							<ul>
+								<li>Fokus auf Domain-Logik als kritischen Kern</li>
+								<li>106 automatisierte Tests (JUnit)</li>
+								<li>47% Gesamtabdeckung (JaCoCo)</li>
+								<li>Spezielle Tests für Randfälle und Fehlerbedingungen</li>
+								<li>Mocks für externe Abhängigkeiten</li>
+							</ul>
+						</div>
+						<div>
+							<h5>Testarten in ULRICA</h5>
+							<ul>
+								<li>Unit-Tests für isolierte Klassen</li>
+								<li>Integrationstests für Komponenteninteraktion</li>
+								<li>Parametrisierte Tests für Datenvalidierung</li>
+								<li>Exception-Tests für Fehlerszenarien</li>
+								<li>Stresstest für Berechnung mit großen Datenmengen</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+				
+				<section>
+					<h3>Test #1: DC Charging Calculator</h3>
+					<pre><code class="java">@Test
+				public void testCalculateChargingTime_WithChargingCurve() {
+					// Testwerte definieren
+					double startingSoc = 20.0;
+					double targetSoc = 80.0;
+					double maxStationPower = 250.0;
+					double ambientTemperature = 25.0;
+					
+					// Ladekurve erstellen
+					Map<Double, Double> curvePoints = new HashMap<>();
+					curvePoints.put(0.0, 150.0);   // 0% SOC -> 150 kW
+					curvePoints.put(20.0, 180.0);  // 20% SOC -> 180 kW
+					curvePoints.put(50.0, 100.0);  // 50% SOC -> 100 kW
+					curvePoints.put(80.0, 50.0);   // 80% SOC -> 50 kW
+					curvePoints.put(100.0, 10.0);  // 100% SOC -> 10 kW
+					ChargingCurve chargingCurve = new ChargingCurve(curvePoints);
+					
+					// Car mit Ladekurve erstellen
+					CarProfile carWithCurve = new CarProfile.Builder()
+						.id("test-id-curve")
+						.name("Test EV with Curve")
+						.manufacturer("Test Manufacturer")
+						.model("Test Model")
+						.year(2023)
+						.hasHeatPump(true)
+						.wltpRangeKm(500)
+						.maxDcPowerKw(250.0)
+						.maxAcPowerKw(11.0)
+						.batteryProfile(batteryProfile)
+						.consumptionProfile(consumptionProfile)
+						.chargingCurve(chargingCurve)
+						.build();
+					
+					// Service-Methode aufrufen
+					DcChargingResult result = calculator.calculateChargingTime(
+						carWithCurve, 
+						startingSoc, 
+						targetSoc, 
+						maxStationPower, 
+						ambientTemperature
+					);
+					
+					// Validierung der berechneten Werte
+					double expectedEnergyToAdd = batteryProfile.getRemainingCapacityKwh() * 0.6;
+					assertEquals(expectedEnergyToAdd, result.getEnergyToAddKwh(), 0.01);
+					assertTrue(result.getChargingTimeHours() > 0);
+					assertTrue(result.getEffectivePowerKw() > 0);
+				}</code></pre>
+					<p>Testet komplexe Ladeberechnungen mit dynamischer Ladekurve und verschiedenen SOC-Bereichen</p>
+				</section>
+				
+				<section>
+					<h3>Test #2: Range Calculator Service - Strategy Pattern</h3>
+					<pre><code class="java">@Test
+				public void testAddStrategy() {
+					// Ausgangssituation dokumentieren
+					int initialCount = rangeCalculatorService.getAvailableStrategies().size();
+					
+					// Mock-Strategie erstellen 
+					RangeCalculationStrategyInterface mockStrategy = new RangeCalculationStrategyInterface() {
+						@Override
+						public RangeResult calculateRange(CarProfile carProfile, RangeParameters params) {
+							return new RangeResult(
+								300.0, 
+								20.0,  
+								"No weather impact",
+								"No terrain impact",
+								"No environment impact",
+								"Battery in good condition"
+							);
+						}
+						
+						@Override
+						public String getName() {
+							return "MockStrategy";
+						}
+						
+						@Override
+						public String getDescription() {
+							return "A mock strategy for testing";
+						}
+					};
+					
+					// Strategie hinzufügen
+					rangeCalculatorService.addStrategy(mockStrategy);
+					
+					// Validierung: Strategien-Anzahl ist um 1 erhöht
+					assertEquals(initialCount + 1, rangeCalculatorService.getAvailableStrategies().size());
+				}</code></pre>
+					<p>Testet die dynamische Erweiterbarkeit durch das Strategy-Pattern im RangeCalculatorService</p>
+				</section>
+				
+				<section>
+					<h3>Test #3: ChargingCurve Interpolation</h3>
+					<pre><code class="java">@Test
+				public void testGetChargingPowerAt_Interpolation() {
+					// Testdaten mit drei Kurven-Punkten erstellen
+					Map<Double, Double> curvePoints = new HashMap<>();
+					curvePoints.put(0.0, 150.0);    // 0% -> 150 kW
+					curvePoints.put(50.0, 100.0);   // 50% -> 100 kW
+					curvePoints.put(100.0, 10.0);   // 100% -> 10 kW
+					ChargingCurve chargingCurve = new ChargingCurve(curvePoints);
+					
+					// Test der linearen Interpolation zwischen Punkten
+					
+					// Test Punkt zwischen 0% und 50%
+					assertEquals(125.0, chargingCurve.getChargingPowerAt(25.0), 0.001);
+					
+					// Test Punkt zwischen 50% und 100%
+					assertEquals(55.0, chargingCurve.getChargingPowerAt(75.0), 0.001);
+				}</code></pre>
+					<p>Testet die korrekte lineare Interpolation bei der Ladekurve zwischen definierten Punkten</p>
+				</section>
+				
+				<section>
+					<h3>Test #4: ExecuteAction - Komplexe UI-Interaktion</h3>
+					<pre><code class="java">@Test
+				public void testExecuteAction_NoProfileSelected() {
+					// Profil-Auswahl leeren
+					profileSelectionService.clearSelection();
+					
+					// Action ausführen (DC-Ladung starten)
+					boolean result = executeActionInteractor.executeAction(1);
+					
+					// Validieren des erwarteten Verhaltens
+					assertFalse(result);
+					assertEquals(1, actionResultView.getErrorCount());
+					assertEquals(0, actionResultView.getSuccessCount());
+					assertEquals(0, dcChargingController.getProcessCallCount());
+					assertEquals(0, acChargingController.getProcessCallCount());
+					assertEquals(0, rangeCalculationController.getProcessCallCount());
+					assertTrue(actionResultView.lastErrorContains("No car profile selected"));
+				}</code></pre>
+					<p>Testet das komplexe Zusammenspiel zwischen UI-Controller, Views und Geschäftslogik mit Mock-Objekten</p>
+				</section>
+				
+				<section>
+					<h3>Test #5: DC Charging - Temperatureinfluss</h3>
+					<pre><code class="java">@Test
+				public void testCalculateChargingTime_LowTemperature() {
+					// Kalte Umgebungstemperatur als Testbedingung
+					double startingSoc = 20.0;
+					double targetSoc = 60.0;
+					double maxStationPower = 250.0;
+					double ambientTemperature = -10.0; // Sehr kalter Tag
+					
+					// Service-Methode mit Testwerten aufrufen
+					DcChargingResult result = calculator.calculateChargingTime(
+						mockCarProfile, 
+						startingSoc, 
+						targetSoc, 
+						maxStationPower, 
+						ambientTemperature
+					);
+					
+					// Temperatureinfluss auf Batterie validieren
+					double expectedBatteryTemp = ambientTemperature + 5.9;
+					assertEquals(expectedBatteryTemp, result.getEndTemperatureCelsius(), 0.01);
+					
+					// Leistungsreduktion aufgrund der Temperatur validieren
+					assertTrue("Bei kalter Temperatur sollte Ladeleistung reduziert sein", 
+						result.getEffectivePowerKw() < maxStationPower);
+					assertTrue("Bei kalten Temperaturen sollte Ladezeit länger sein", 
+						result.getChargingTimeHours() > 0.5);
+				}</code></pre>
+					<p>Testet die realistische Simulation von Temperatureinflüssen auf das Ladeverhalten</p>
+				</section>
+				
+				<section>
+					<h3>Test #6: Validierung der Eingabeparameter</h3>
+					<pre><code class="java">@Test
+				public void testValidateInputParameters_InvalidTargetSoc() {
+					// Ungültiger SOC-Wert (über 100%)
+					double startingSoc = 20.0;
+					double invalidTargetSoc = 110.0;
+					
+					// Service-Methode aufrufen mit Erwartung auf Exception
+					assertThrows(IllegalArgumentException.class, () -> {
+						calculator.calculateChargingTime(
+							mockCarProfile, 
+							startingSoc, 
+							invalidTargetSoc, 
+							250.0, 
+							25.0
+						);
+					});
+				}
+				
+				@Test
+				public void testValidateInputParameters_TargetLessThanStarting() {
+					// Fehlerhafter Case: Ziel-SOC niedriger als Start-SOC
+					double startingSoc = 80.0;
+					double targetSoc = 70.0; 
+					
+					// Validierung dass die API korrekterweise eine Exception wirft
+					assertThrows(IllegalArgumentException.class, () -> {
+						calculator.calculateChargingTime(
+							mockCarProfile, 
+							startingSoc, 
+							targetSoc, 
+							250.0, 
+							25.0
+						);
+					});
+				}</code></pre>
+					<p>Testet die robuste Validierung von Eingabeparametern in der Domain-Logik</p>
+				</section>
+				
+				<section>
+					<h3>Test #7: DI mit Mock-Objekten</h3>
+					<pre><code class="java">@Test
+				public void testExecuteAction_DcCharging() {
+					// Setup mit Mock-Objekten und Dependency Injection
+					profileSelectionService.selectProfile(testProfile);
+					dcChargingController.setProcessDcChargingResult(true);
+					
+					// Aktion ausführen
+					boolean result = executeActionInteractor.executeAction(1);
+					
+					// Validieren des Verhaltens und der Interaktionen
+					assertTrue(result);
+					assertEquals(0, actionResultView.getErrorCount());
+					assertEquals(1, dcChargingController.getProcessCallCount());
+					assertEquals(0, acChargingController.getProcessCallCount());
+					assertEquals(0, rangeCalculationController.getProcessCallCount());
+				}</code></pre>
+					<p>Testet die korrekte Implementierung von Dependency Injection und das Zusammenspiel von Komponenten</p>
+				</section>
+				
+				<section>
+					<h3>Test #8: ChargingCurve - Robustheit</h3>
+					<pre><code class="java">@Test
+				public void testInvalidConstructorArguments() {
+					// Test mit null-Wert
+					assertThrows(IllegalArgumentException.class, () -> {
+						new ChargingCurve(null);
+					});
+					
+					// Test mit leerer Map
+					assertThrows(IllegalArgumentException.class, () -> {
+						new ChargingCurve(new HashMap<>());
+					});
+					
+					// Test mit fehlenden Schlüsselpunkten
+					Map<Double, Double> incompletePoints = new HashMap<>();
+					incompletePoints.put(50.0, 100.0);
+					assertThrows(IllegalArgumentException.class, () -> {
+						new ChargingCurve(incompletePoints);
+					});
+				}</code></pre>
+					<p>Testet die Robustheit und Fehlerbehandlung bei ungültigen Eingabedaten</p>
+				</section>
+				
+				<section>
+					<h3>Test #9: ProfileSelectionService - Statusverwaltung</h3>
+					<pre><code class="java">@Test
+				public void testProfileSelection() {
+					// Initial kein Profil ausgewählt
+					assertFalse(profileSelectionService.hasSelectedProfile());
+					
+					// Profil auswählen
+					CarProfile testProfile = new CarProfile.Builder()
+						.id("test-id")
+						.name("Test Car")
+						.build();
+					profileSelectionService.selectProfile(testProfile);
+					
+					// Status und ausgewähltes Profil validieren
+					assertTrue(profileSelectionService.hasSelectedProfile());
+					assertEquals(testProfile, profileSelectionService.getSelectedProfile());
+					
+					// Auswahl zurücksetzen
+					profileSelectionService.clearSelection();
+					
+					// Validieren dass kein Profil mehr ausgewählt ist
+					assertFalse(profileSelectionService.hasSelectedProfile());
+					assertThrows(IllegalStateException.class, () -> {
+						profileSelectionService.getSelectedProfile();
+					});
+				}</code></pre>
+					<p>Testet die korrekte Statusverwaltung und Fehlerfälle im ProfileSelectionService</p>
+				</section>
+				
+				<section>
+					<h3>Test #10: Validierung von Value Objects</h3>
+					<pre><code class="java">@Test
+				public void testValueObjectValidation() {
+					// Gültige Werte
+					BatteryProfile validProfile = new BatteryProfile(
+						BatteryType.LFP, 
+						80.0,         // Kapazität in kWh
+						5.0,          // Degradation in Prozent
+						150.0,        // Max DC Ladeleistung
+						11.0          // Max AC Ladeleistung
+					);
+					
+					// Eigenschaften validieren
+					assertEquals(BatteryType.LFP, validProfile.getType());
+					assertEquals(80.0, validProfile.getCapacityKwh(), 0.001);
+					assertEquals(5.0, validProfile.getDegradationPercent(), 0.001);
+					assertEquals(76.0, validProfile.getRemainingCapacityKwh(), 0.001); // 80 - 5%
+					
+					// Ungültige Werte
+					assertThrows(IllegalArgumentException.class, () -> {
+						new BatteryProfile(
+							BatteryType.LFP, 
+							-10.0,      // Negative Kapazität
+							5.0, 
+							150.0, 
+							11.0
+						);
+					});
+					
+					assertThrows(IllegalArgumentException.class, () -> {
+						new BatteryProfile(
+							BatteryType.LFP, 
+							80.0, 
+							110.0,      // Degradation > 100%
+							150.0, 
+							11.0
+						);
+					});
+				}</code></pre>
+					<p>Testet die Validierung und Fehlerbehandlung bei der Erstellung von Value Objects</p>
+				</section>
+				
+				<section>
+					<h3>Mock-Objekte in Tests (3P)</h3>
+					<div class="horizontal-spaced-container">
+						<div>
+							<h5>Warum Mocks in ULRICA?</h5>
+							<ul>
+								<li>Isolierung der Testbedingungen</li>
+								<li>Simulation von schwer erzeugbaren Zuständen</li>
+								<li>Schnellere Testausführung ohne externe Abhängigkeiten</li>
+								<li>Vermeidung von Seiteneffekten</li>
+								<li>Validierung von Interaktionen zwischen Komponenten</li>
+							</ul>
+						</div>
+						<div>
+							<h5>Mock-Implementierungen</h5>
+							<ul>
+								<li>Handgeschriebene Mocks für einfache Fälle</li>
+								<li>Interface-basierte Mocks für Ports und Adapters</li>
+								<li>Simulierte externe Services</li>
+								<li>Mock-Repositories für In-Memory-Testing</li>
+								<li>Test-spezifische OutputPorts für Validierung</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+				
+				<section>
+					<h3>Einsatz von Mock-Objekten</h3>
+					<img src="assets/UMLs-imgs/Kapitel_5-Aufgabe_3.png" alt="Mock Objects UML Diagram" class="uml-image">
+				</section>
+				
+				<section>
+					<h3>2 Test mit Mock-Objekten (3P)</h3>
+					<pre><code class="java">@Test
+				public void testDcChargingControllerWithMocks() {
+					// Mock-Objekte erstellen
+					UserInputPortInterface mockInputPort = new MockUserInputPort();
+					UserOutputPortInterface mockOutputPort = new MockUserOutputPort();
+					CalculateDcChargingUseCaseInterface mockUseCase = new MockDcChargingUseCase();
+					DcChargingOutputPortInterface mockResultPort = new MockDcChargingOutputPort();
+					
+					// Controller mit Mock-Objekten initialisieren
+					DcChargingController controller = new DcChargingController(
+						mockInputPort, mockOutputPort, mockUseCase, mockResultPort);
+					
+					// Controller-Methode ausführen
+					boolean result = controller.processDcCharging();
+					
+					// Überprüfung der Interaktionen mit den Mocks
+					assertTrue(result);
+					MockUserOutputPort outputMock = (MockUserOutputPort) mockOutputPort;
+					assertTrue(outputMock.displayCalled);
+					assertTrue(outputMock.displayedMessages.size() > 0);
+					
+					MockDcChargingUseCase useCaseMock = (MockDcChargingUseCase) mockUseCase;
+					assertTrue(useCaseMock.calculateCalled);
+					assertNotNull(useCaseMock.lastCommand);
+				}
+				
+				// Mock-Implementierungen
+				class MockUserInputPort implements UserInputPortInterface {
+					public boolean readDoubleCalled = false;
+					public double valueToReturn = 50.0;
+					
+					@Override
+					public double readDouble() {
+						readDoubleCalled = true;
+						return valueToReturn;
+					}
+					
+					// Weitere Mock-Methoden...
+				}
+				
+				class MockUserOutputPort implements UserOutputPortInterface {
+					public boolean displayCalled = false;
+					public List<String> displayedMessages = new ArrayList<>();
+					
+					@Override
+					public void display(String message) {
+						displayCalled = true;
+						displayedMessages.add(message);
+					}
+					
+					// Weitere Mock-Methoden...
+				}</code></pre>
+				</section>
+				
+				<section>
+					<h3>Test mit komplexerem Mock-Objekt</h3>
+					<pre><code class="java">@Test
+				public void testExecuteActionInteractorWithMocks() {
+					// Komplexeres Setup mit mehreren zusammenarbeitenden Mocks
+					MockProfileSelectionService mockProfileService = new MockProfileSelectionService();
+					MockActionMenuView mockActionView = new MockActionMenuView();
+					MockDcChargingController mockDcController = new MockDcChargingController();
+					MockAcChargingController mockAcController = new MockAcChargingController();
+					MockRangeCalculationController mockRangeController = new MockRangeCalculationController();
+					
+					// Testprofile vorbereiten
+					CarProfile testProfile = new CarProfile.Builder()
+							.id("test-id")
+							.name("Test Car")
+							.manufacturer("Test Manufacturer")
+							.build();
+					mockProfileService.selectProfile(testProfile);
+					
+					// Interactor mit Mocks initialisieren
+					ExecuteActionInteractor interactor = new ExecuteActionInteractor(
+							mockProfileService,
+							mockActionView,
+							mockDcController,
+							mockAcController,
+							mockRangeController);
+					
+					// Verschiedene Aktionen testen
+					
+					// DC-Ladung (Aktion 1)
+					mockDcController.setReturnValue(true);
+					boolean dcResult = interactor.executeAction(1);
+					assertTrue(dcResult);
+					assertEquals(1, mockDcController.callCount);
+					assertEquals(0, mockAcController.callCount);
+					assertEquals(0, mockRangeController.callCount);
+					
+					// AC-Ladung (Aktion 2)
+					mockAcController.setReturnValue(true);
+					boolean acResult = interactor.executeAction(2);
+					assertTrue(acResult);
+					assertEquals(1, mockDcController.callCount);
+					assertEquals(1, mockAcController.callCount);
+					assertEquals(0, mockRangeController.callCount);
+					
+					// Ungültige Aktion
+					boolean invalidResult = interactor.executeAction(99);
+					assertFalse(invalidResult);
+					assertEquals(1, mockActionView.errorCount);
+				}</code></pre>
+				</section>
+			</section>
+
 
 			<!-- Kapitel 6 -->
 			<section alt="Kapitel 6">

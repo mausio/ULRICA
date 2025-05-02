@@ -272,7 +272,6 @@ Available Actions:
 4. Select driving environment
 5. Select efficiency mode
 6. View detailed range calculation results and impact analysis
-
 ### Charging Calculation Flow
 1. Choose DC or AC charging
 2. For AC, select connector type
