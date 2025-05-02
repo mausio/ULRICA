@@ -2,449 +2,512 @@
 <html lang="en">
 
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-	<title>ULRICA - Programmentwurf Protokoll</title>
+    <title>ULRICA - Programmentwurf Protokoll</title>
 
-	<link rel="stylesheet" href="dist/reset.css">
-	<link rel="stylesheet" href="dist/reveal.css">
-	<link rel="stylesheet" href="dist/theme/white.css">
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/white.css">
 
-	<!-- Theme used for syntax highlighted code -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/lightfair.css">
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/lightfair.css">
 </head>
 <style>
-	code:not(.hljs) {
-		font-size: 1.25rem;
-	}
+    code:not(.hljs) {
+        font-size: 1.25rem;
+    }
 
-	pre {
-		border-radius: 5px;
-	}
+    pre {
+        border-radius: 5px;
+    }
 
-	code {
-		border-radius: 5px;
-		font-size: 0.9rem !important;
-	}
-
-
-	/* Syntax highlighting styles similar to the screenshot */
-	.hljs-keyword {
-		color: blue;
-		/* softer green */
-		font-weight: 500;
-	}
-
-	.hljs-built_in {
-		color: darkblue;
-		font-weight: normal;
-	}
-
-	.hljs-string {
-		color: rgb(0, 167, 206);
-		/* softer yellow/orange */
-		font-weight: normal;
-	}
-
-	.hljs {
-		font-size: 1.25rem;
-		background: transparent;
-		display: inline;
-	}
-
-	h1 {
-		font-size: 4rem;
-	}
-
-	h2 {
-		font-size: 3rem;
-	}
-
-	h3 {
-		font-size: 2.5rem;
-	}
-
-	h4 {
-		font-size: 2.25rem;
-		font-weight: semibold;
-	}
-
-	h5 {
-		font-size: 2rem;
-		font-weight: semibold;
-	}
-
-	h6 {
-		font-size: 1.75rem;
-		font-weight: semibold;
-	}
-
-	p {
-		font-size: 1.75rem;
-	}
-
-	li {
-		font-size: 1.75rem;
-		margin: 5px 0;
-	}
-
-	ul {
-		text-align: start;
-		align-self: start;
-	}
-
-	ol {
-		text-align: start;
-		align-self: start;
-	}
-
-	thead {
-		font-size: 1.4rem;
-	}
-
-	tr {
-		font-size: 1.3rem;
-	}
-
-	th {
-		font-size: 1.4rem;
-	}
+    code {
+        border-radius: 5px;
+        font-size: 0.9rem !important;
+    }
 
 
+    /* Syntax highlighting styles similar to the screenshot */
+    .hljs-keyword {
+        color: blue;
+        /* softer green */
+        font-weight: 500;
+    }
+
+    .hljs-built_in {
+        color: darkblue;
+        font-weight: normal;
+    }
+
+    .hljs-string {
+        color: rgb(0, 167, 206);
+        /* softer yellow/orange */
+        font-weight: normal;
+    }
+
+    .hljs {
+        font-size: 1.25rem;
+        background: transparent;
+        display: inline;
+    }
+
+    h1 {
+        font-size: 4rem;
+    }
+
+    h2 {
+        font-size: 3rem;
+    }
+
+    h3 {
+        font-size: 2.5rem;
+    }
+
+    h4 {
+        font-size: 2.25rem;
+        font-weight: semibold;
+    }
+
+    h5 {
+        font-size: 2rem;
+        font-weight: semibold;
+    }
+
+    h6 {
+        font-size: 1.75rem;
+        font-weight: semibold;
+    }
+
+    p {
+        font-size: 1.75rem;
+    }
+
+    li {
+        font-size: 1.75rem;
+        margin: 5px 0;
+    }
+
+    ul {
+        text-align: start;
+        align-self: start;
+    }
+
+    ol {
+        text-align: start;
+        align-self: start;
+    }
+
+    thead {
+        font-size: 1.4rem;
+    }
+
+    tr {
+        font-size: 1.3rem;
+    }
+
+    th {
+        font-size: 1.4rem;
+    }
 
 
-	.primary-color {
-		color: rgb(0, 167, 206) !important;
-	}
+    .primary-color {
+        color: rgb(0, 167, 206) !important;
+    }
 
 
-	.horizontal-container {
-		display: flex;
-		gap: 2rem;
-		justify-content: center;
-	}
+    .horizontal-container {
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
+    }
 
-	.horizontal-spaced-container {
-		display: flex;
-		gap: 2rem;
-		justify-content: space-evenly;
-	}
+    .horizontal-spaced-container {
+        display: flex;
+        gap: 2rem;
+        justify-content: space-evenly;
+    }
 
-	.gray {
-		color: #808080;
-	}
+    .gray {
+        color: #808080;
+    }
 
-	.slide-number {
-		font-size: 16px !important;
-		color: #333 !important;
-		background-color: rgba(255, 255, 255, 0.7);
-		padding: 3px 8px !important;
-		border-radius: 10px;
-	}
+    .slide-number {
+        font-size: 16px !important;
+        color: #333 !important;
+        background-color: rgba(255, 255, 255, 0.7);
+        padding: 3px 8px !important;
+        border-radius: 10px;
+    }
 
-	.chapter-title {
-		font-size: 3.5rem;
-		margin-bottom: 2rem;
-		color: #333;
-		text-align: center;
-	}
+    .chapter-title {
+        font-size: 3.5rem;
+        margin-bottom: 2rem;
+        color: #333;
+        text-align: center;
+    }
 
-	.uml-image {
-		max-width: 90%;
-		max-height: 70vh;
-		margin: 0 auto;
-	}
+    .uml-image {
+        max-width: 90%;
+        max-height: 70vh;
+        margin: 0 auto;
+    }
 
-	.center {
-		text-align: center;
-	}
+    .center {
+        text-align: center;
+    }
 
-	.acronym-letter {
-		font-weight: 900;
-		font-size: 120%;
-	}
+    .acronym-letter {
+        font-weight: 900;
+        font-size: 120%;
+    }
 
-	.name-explanation {
-		font-size: 2.5rem;
-		text-align: center;
-		margin: 2rem 0;
-	}
+    .name-explanation {
+        font-size: 2.5rem;
+        text-align: center;
+        margin: 2rem 0;
+    }
 
-	.subchapter {
-		color: rgb(179, 177, 195);
-		font-size: 1.8rem;
-		margin-top: 1rem;
-		font-style: italic;
-	}
+    .subchapter {
+        color: rgb(179, 177, 195);
+        font-size: 1.8rem;
+        margin-top: 1rem;
+        font-style: italic;
+    }
 </style>
 
 <body>
-	<div class="reveal">
-		<div class="slides">
+<div class="reveal">
+    <div class="slides">
 
-			<section alt="Anfang/Einleitung">
-				<h3>Programmentwurf - Protokoll</h3>
-				<p class="gray center">zu</p>
-				<img style="margin: 50px 0;" src="./assets/imgs/ulrica-blue.png" alt="ULRICA Logo" class="logo">
-				<div class="horizontal-container gray">
-					<p>Robin Schwenzfeier</p>
-					<p>-</p>
-					<p>4868455</p>
-					<p>-</p>
-					<p>TINF22B5</p>
-				</div>
-			</section>
-			<!-- Kapitel 1-->
-			<section alt="Kapitel 1">
-				<section>
-					<h2 class="chapter-title">Kapitel 1:<br /> Einleitung (4P)</h2>
-				</section>
+        <section alt="Anfang/Einleitung">
+            <h3>Programmentwurf - Protokoll</h3>
+            <p class="gray center">zu</p>
+            <img style="margin: 50px 0;" src="./assets/imgs/ulrica-blue.png"
+                 alt="ULRICA Logo" class="logo">
+            <div class="horizontal-container gray">
+                <p>Robin Schwenzfeier</p>
+                <p>-</p>
+                <p>4868455</p>
+                <p>-</p>
+                <p>TINF22B5</p>
+            </div>
+        </section>
+        <!-- Kapitel 1-->
+        <section alt="Kapitel 1">
+            <section>
+                <h2 class="chapter-title">Kapitel 1:<br/> Einleitung (4P)</h2>
+            </section>
 
-				<section>
-					<h3 class="subchapter">Inhalt des Kapitels</h3>
-					<div class="horizontal-spaced-container"
-						style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-						<div>
-							<h6>1. Übersicht über die Applikation (1P)</h6>
-							<ul>
-								<li>Name und Bedeutung</li>
-								<li>Features und Funktionen</li>
-								<li>Probleme, die sie löst</li>
-							</ul>
-						</div>
-						<div>
-							<h6>2. Starten der Applikation (1P)</h6>
-							<ul>
-								<li>Voraussetzungen</li>
-								<li>Schritte zum Starten</li>
-								<li>Alternative zum Starten</li>
-							</ul>
-						</div>
-						<div>
-							<h6>3. Technischer Überblick (2P)</h6>
-							<ul>
-								<li>Java (JDK 17)</li>
-								<li>Maven</li>
-								<li>JSON & GSON</li>
-								<li>JUnit & JaCoCo</li>
-								<li>Clean Architecture</li>
-							</ul>
-						</div>
-						<div>
-						</div>
-					</div>
-				</section>
+            <section>
+                <h3 class="subchapter">Inhalt des Kapitels</h3>
+                <div class="horizontal-spaced-container"
+                     style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div>
+                        <h6>1. Übersicht über die Applikation (1P)</h6>
+                        <ul>
+                            <li>Name und Bedeutung</li>
+                            <li>Features und Funktionen</li>
+                            <li>Probleme, die sie löst</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h6>2. Starten der Applikation (1P)</h6>
+                        <ul>
+                            <li>Voraussetzungen</li>
+                            <li>Schritte zum Starten</li>
+                            <li>Alternative zum Starten</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h6>3. Technischer Überblick (2P)</h6>
+                        <ul>
+                            <li>Java (JDK 17)</li>
+                            <li>Maven</li>
+                            <li>JSON & GSON</li>
+                            <li>JUnit & JaCoCo</li>
+                            <li>Clean Architecture</li>
+                        </ul>
+                    </div>
+                    <div>
+                    </div>
+                </div>
+            </section>
 
-				<section>
-					<h3>Übersicht über die Applikation (1P)</h3>
-					<p class="subchapter">Was macht die Applikation? Wie funktioniert sie? Welches Problem löst
-						sie/welchen Zweck hat sie?</p>
-				</section>
+            <section>
+                <h3>Übersicht über die Applikation (1P)</h3>
+                <p class="subchapter">Was macht die Applikation? Wie
+                    funktioniert sie? Welches Problem löst
+                    sie/welchen Zweck hat sie?</p>
+            </section>
 
-				<section>
-					<h3><strong>ULRICA</strong>: Name erklärt</h3>
-					<p class="subchapter">Ein Acronym.</p>
-					<p class="name-explanation">
-						<span class="acronym-letter primary-color">U</span>niversa<span
-							class="acronym-letter primary-color">L</span>
-						<span class="acronym-letter primary-color">R</span>ange and dest<span
-							class="acronym-letter primary-color">I</span>nation
-						<span class="acronym-letter primary-color">CA</span>lculator
-					</p>
-				</section>
+            <section>
+                <h3><strong>ULRICA</strong>: Name erklärt</h3>
+                <p class="subchapter">Ein Acronym.</p>
+                <p class="name-explanation">
+                    <span class="acronym-letter primary-color">U</span>niversa<span
+                        class="acronym-letter primary-color">L</span>
+                    <span class="acronym-letter primary-color">R</span>ange and
+                    dest<span
+                        class="acronym-letter primary-color">I</span>nation
+                    <span class="acronym-letter primary-color">CA</span>lculator
+                </p>
+            </section>
 
-				<section>
-					<h3>Features der Applikation</h3>
-					<p class="subchapter">Probleme, die sie löst.</p>
-					<ul>
-						<li><span class="primary-color">1.</span> Erstellt und verwaltet Fahrzeugprofile für
-							Elektrofahrzeuge</li>
-						<li><span class="primary-color">2.</span> Berechnet verbleibende Reichweite von
-							Elektrofahrzeugen</li>
-						<li><span class="primary-color">3. + 4.</span> Berechnet Ladezeiten an DC- und AC-Ladestationen
-						</li>
-						<li><s><span class="primary-color">5.</span> Berechnet und simmuliert eine Route</s></li>
-					</ul>
-				</section>
+            <section>
+                <h3>Features der Applikation</h3>
+                <p class="subchapter">Probleme, die sie löst.</p>
+                <ul>
+                    <li><span class="primary-color">1.</span> Erstellt und
+                        verwaltet Fahrzeugprofile für
+                        Elektrofahrzeuge
+                    </li>
+                    <li><span class="primary-color">2.</span> Berechnet
+                        verbleibende Reichweite von
+                        Elektrofahrzeugen
+                    </li>
+                    <li><span class="primary-color">3. + 4.</span> Berechnet
+                        Ladezeiten an DC- und AC-Ladestationen
+                    </li>
+                    <li><s><span class="primary-color">5.</span> Berechnet und
+                        simmuliert eine Route</s></li>
+                </ul>
+            </section>
 
-				<section>
-					<h3>Features der Applikation</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h5><span class="primary-color">1.</span> Fahrzeugprofil-Management</h5>
-							<ul>
-								<li>Erstellung, Anzeige und Löschung von Fahrzeugprofilen</li>
-								<li>Konfiguration von Batteriedaten (Typ, Kapazität, Degradation, etc.)</li>
-								<li>Definition von Verbrauchsprofilen (bei 50km/h, 100km/h, 130km/h)</li>
-							</ul>
-						</div>
-						<div>
-							<h5><span class="primary-color">2.</span> Reichweitenberechnung</h5>
-							<ul>
-								<li>Strategie-Pattern für verschiedene Berechnungsmethoden</li>
-								<li>WLTP-basierte Berechnung mit "echten" Bedingungen</li>
-								<li>Temperatureinflüsse</li>
-								<li>Geländebedingungen</li>
-								<li>etc.</li>
-							</ul>
-						</div>
-					</div>
-				</section>
+            <section>
+                <h3>Features der Applikation</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+                        <h5><span class="primary-color">1.</span>
+                            Fahrzeugprofil-Management</h5>
+                        <ul>
+                            <li>Erstellung, Anzeige und Löschung von
+                                Fahrzeugprofilen
+                            </li>
+                            <li>Konfiguration von Batteriedaten (Typ, Kapazität,
+                                Degradation, etc.)
+                            </li>
+                            <li>Definition von Verbrauchsprofilen (bei 50km/h,
+                                100km/h, 130km/h)
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5><span class="primary-color">2.</span>
+                            Reichweitenberechnung</h5>
+                        <ul>
+                            <li>Strategie-Pattern für verschiedene
+                                Berechnungsmethoden
+                            </li>
+                            <li>WLTP-basierte Berechnung mit "echten"
+                                Bedingungen
+                            </li>
+                            <li>Temperatureinflüsse</li>
+                            <li>Geländebedingungen</li>
+                            <li>etc.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
 
-				<section>
-					<h3>Features der Applikation</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h5><span class="primary-color">3.</span> DC (Schnelles) Laden</h5>
-							<ul>
-								<li>SoC-basierte Berechnungen</li>
-								<li>Temperatureinflüsse beim Laden</li>
-								<li>Leistungsreduktion basierend auf Batteriezustand</li>
-								<li>Detaillierte Ladezeitschätzungen</li>
-								<li>Berücksichtigung von Batterie-Typ</li>
-							</ul>
-						</div>
-						<div>
-							<h5><span class="primary-color">4.</span> AC (Langsames) Laden</h5>
-							<ul>
-								<li>Verschiedene Anschlusstypen (Haushalt, Camping, Wallbox)</li>
-								<li>Berechnung von Effizienzverlusten</li>
-								<li>Temperatur-Effizenzfaktoren</li>
-								<li>Ladezeitprognosen</li>
-							</ul>
-						</div>
-					</div>
-				</section>
+            <section>
+                <h3>Features der Applikation</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+                        <h5><span class="primary-color">3.</span> DC (Schnelles)
+                            Laden</h5>
+                        <ul>
+                            <li>SoC-basierte Berechnungen</li>
+                            <li>Temperatureinflüsse beim Laden</li>
+                            <li>Leistungsreduktion basierend auf
+                                Batteriezustand
+                            </li>
+                            <li>Detaillierte Ladezeitschätzungen</li>
+                            <li>Berücksichtigung von Batterie-Typ</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5><span class="primary-color">4.</span> AC (Langsames)
+                            Laden</h5>
+                        <ul>
+                            <li>Verschiedene Anschlusstypen (Haushalt, Camping,
+                                Wallbox)
+                            </li>
+                            <li>Berechnung von Effizienzverlusten</li>
+                            <li>Temperatur-Effizenzfaktoren</li>
+                            <li>Ladezeitprognosen</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
 
 
-				<section>
-					<h3>Starten der Applikation (1P)</h3>
-					<p class="subchapter">Wie startet man die Applikation? Was für Voraussetzungen werden benötigt?
-						Schritt-für-Schritt-Anleitung</p>
-				</section>
-				<section>
-					<h3>Voraussetzungen:</h3>
-					<ul>
-						<li>Java 17 oder höher</li>
-						<li>Maven</li>
-						<li>Git</li>
-					</ul>
-				</section>
-				<section>
-					<h3>Schritte zum Starten:</h3>
-					<ol>
-						<li>
-							Repository klonen: <span
-								style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span
-									class="hljs-keyword">git</span> <span class="hljs-built_in">clone</span>
+            <section>
+                <h3>Starten der Applikation (1P)</h3>
+                <p class="subchapter">Wie startet man die Applikation? Was für
+                    Voraussetzungen werden benötigt?
+                    Schritt-für-Schritt-Anleitung</p>
+            </section>
+            <section>
+                <h3>Voraussetzungen:</h3>
+                <ul>
+                    <li>Java 17 oder höher</li>
+                    <li>Maven</li>
+                    <li>Git</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Schritte zum Starten:</h3>
+                <ol>
+                    <li>
+                        Repository klonen: <span
+                            style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span
+                            class="hljs-keyword">git</span> <span
+                            class="hljs-built_in">clone</span>
 								https://github.com/mausio/ULRICA</span>
-						</li>
-						<li style="text-align: start;">In Projektverzeichnis wechseln: <span
-								style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span
-									class="hljs-keyword">cd </span>/path/to/ULRICA</span></li>
-						<li>Projekt kompilieren: <span
-								style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span
-									class="hljs-keyword">mvn</span> <span class="hljs-built_in">clean</span> <span
-									class="hljs-built_in">compile</span></span>
-						</li>
-						<li>ULRICA starten: <span
-								style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span
-									class="hljs-keyword">mvn</span> <span class="hljs-built_in">exec:java</span>
+                    </li>
+                    <li style="text-align: start;">In Projektverzeichnis
+                        wechseln: <span
+                                style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span
+                                class="hljs-keyword">cd </span>/path/to/ULRICA</span>
+                    </li>
+                    <li>Projekt kompilieren: <span
+                            style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span
+                            class="hljs-keyword">mvn</span> <span
+                            class="hljs-built_in">clean</span> <span
+                            class="hljs-built_in">compile</span></span>
+                    </li>
+                    <li>ULRICA starten: <span
+                            style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span
+                            class="hljs-keyword">mvn</span> <span
+                            class="hljs-built_in">exec:java</span>
 								-Dexec.mainClass="org.ulrica.App"</span>
-						</li>
-					</ol>
-				</section>
-				<section>
-					<h3>Alternative zum Starten:</h3>
-					<ol>
-						<li>JAR-Datei erstellen: <span
-								style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span
-									class="hljs-keyword">mvn</span> <span class="hljs-built_in">clean</span> <span
-									class="hljs-built_in">package</span></span>
-							<ul>
-								<li>Dieser Befehl kompiliert den Code und erstellt eine ausführbare JAR-Datei im
-									Verzeichnis <span>target/</span></li>
-								<li>Die JAR-Datei wird als <span
-										style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"
-										class="primary-color">ULRICA-1.0-SNAPSHOT.jar</span> gespeichert</li>
-							</ul>
-						</li>
-						<li>JAR-Datei ausführen: <span
-								style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span
-									class="hljs-keyword">java</span> <span class="hljs-built_in">-jar</span>
+                    </li>
+                </ol>
+            </section>
+            <section>
+                <h3>Alternative zum Starten:</h3>
+                <ol>
+                    <li>JAR-Datei erstellen: <span
+                            style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span
+                            class="hljs-keyword">mvn</span> <span
+                            class="hljs-built_in">clean</span> <span
+                            class="hljs-built_in">package</span></span>
+                        <ul>
+                            <li>Dieser Befehl kompiliert den Code und erstellt
+                                eine ausführbare JAR-Datei im
+                                Verzeichnis <span>target/</span></li>
+                            <li>Die JAR-Datei wird als <span
+                                    style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"
+                                    class="primary-color">ULRICA-1.0-SNAPSHOT.jar</span>
+                                gespeichert
+                            </li>
+                        </ul>
+                    </li>
+                    <li>JAR-Datei ausführen: <span
+                            style="background-color: whitesmoke; padding: 2px; border-radius: 5px;"><span
+                            class="hljs-keyword">java</span> <span
+                            class="hljs-built_in">-jar</span>
 								target/ULRICA-1.0-SNAPSHOT.jar</span>
-							<ul>
-								<li>Stellt sicher, dass Java 17 oder höher installiert ist</li>
-								<li>Die JAR-Datei enthält alle notwendigen Abhängigkeiten</li>
-								<li>Kann auf jedem System mit Java 17+ ausgeführt werden</li>
-							</ul>
-						</li>
-					</ol>
-				</section>
+                        <ul>
+                            <li>Stellt sicher, dass Java 17 oder höher
+                                installiert ist
+                            </li>
+                            <li>Die JAR-Datei enthält alle notwendigen
+                                Abhängigkeiten
+                            </li>
+                            <li>Kann auf jedem System mit Java 17+ ausgeführt
+                                werden
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+            </section>
 
-				<section>
-					<h3>Technischer Überblick (2P)</h3>
-					<p class="subchapter">Nennung und Erläuterung der Technologien (z.B. Java, MySQL, …), jeweils
-						Begründung für den Einsatz der Technologien</p>
-				</section>
-				<section>
-					<h3>Technologien: Überblick</h3>
-					<ul>
-						<li><strong>Java (JDK 17):</strong> Objektorientierte Programmiersprache</li>
-						<li><strong>Maven:</strong> Build-Management-Tool</li>
-						<li><strong>JSON/GSON:</strong> Datenaustauschformat und Java-Bibliothek für Persistenz</li>
-						<li><strong>JUnit 4:</strong> Test-Framework für automatisierten Tests</li>
-						<li><strong>JaCoCo:</strong> Code-Coverage-Tool</li>
-						<li><strong>Github Workflow:</strong>CI/CD Pipeline-Tool mit Maven Build</li>
-					</ul>
-				</section>
+            <section>
+                <h3>Technischer Überblick (2P)</h3>
+                <p class="subchapter">Nennung und Erläuterung der Technologien
+                    (z.B. Java, MySQL, …), jeweils
+                    Begründung für den Einsatz der Technologien</p>
+            </section>
+            <section>
+                <h3>Technologien: Überblick</h3>
+                <ul>
+                    <li><strong>Java (JDK 17):</strong> Objektorientierte
+                        Programmiersprache
+                    </li>
+                    <li><strong>Maven:</strong> Build-Management-Tool</li>
+                    <li><strong>JSON/GSON:</strong> Datenaustauschformat und
+                        Java-Bibliothek für Persistenz
+                    </li>
+                    <li><strong>JUnit 4:</strong> Test-Framework für
+                        automatisierten Tests
+                    </li>
+                    <li><strong>JaCoCo:</strong> Code-Coverage-Tool</li>
+                    <li><strong>Github Workflow:</strong>CI/CD Pipeline-Tool mit
+                        Maven Build
+                    </li>
+                </ul>
+            </section>
 
-				<section>
-					<h3>Java (JDK 17)</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h5>Vorteile:</h5>
-							<ul>
-								<li>Plattformunabhängigkeit durch Java Virtual Machine</li>
-								<li>Starke objektorientierte Programmierung</li>
-								<li>Typ-Sicherheit bei Laufzeit</li>
-								<li>LongTermSupport</li>
-								<li>Umfangreiche Bibliotheken verfügbar -> GSON</li>
-								<li>Ideale Grundlage für Clean Architecture und Implementierung von Prinzipien</li>
-							</ul>
-						</div>
-						<div>
-							<h5>Alternativen:</h5>
-							<ul>
-								<li><strong>Kotlin</strong>:<br>Eleganter, aber weniger etabliert (auch nicht erlaubt)
-								</li>
-								<li><strong>Python</strong>: <br>Einfacher, aber weniger performant und relativ
-									unbekannt für mich</li>
-								<li><strong>JavaScript</strong>:<br>Mir sehr bekannt, aber schwierig
-									Architekturprinzipien zu implementieren (auch nicht erlaubt)</li>
-							</ul>
-						</div>
-					</div>
-				</section>
+            <section>
+                <h3>Java (JDK 17)</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+                        <h5>Vorteile:</h5>
+                        <ul>
+                            <li>Plattformunabhängigkeit durch Java Virtual
+                                Machine
+                            </li>
+                            <li>Starke objektorientierte Programmierung</li>
+                            <li>Typ-Sicherheit bei Laufzeit</li>
+                            <li>LongTermSupport</li>
+                            <li>Umfangreiche Bibliotheken verfügbar -> GSON</li>
+                            <li>Ideale Grundlage für Clean Architecture und
+                                Implementierung von Prinzipien
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>Alternativen:</h5>
+                        <ul>
+                            <li><strong>Kotlin</strong>:<br>Eleganter, aber
+                                weniger etabliert (auch nicht erlaubt)
+                            </li>
+                            <li><strong>Python</strong>: <br>Einfacher, aber
+                                weniger performant und relativ
+                                unbekannt für mich
+                            </li>
+                            <li><strong>JavaScript</strong>:<br>Mir sehr
+                                bekannt, aber schwierig
+                                Architekturprinzipien zu implementieren (auch
+                                nicht erlaubt)
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
 
-				<section>
-					<h3>Maven</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h5>Vorteile</h5>
-							<ul>
-								<li>"Plug&Play" für Nutzer:innen</li>
-								<li>Konsistente Projektstruktur</li>
-								<li>Automatisiertes Abhängigkeitsmanagement</li>
-								<li>Standardisierte Build-Lebenszyklen</li>
-								<li>Integration mit JUnit und JaCoCo</li>
-								<li>Plugin-Ökosystem für erweiterte Funktionen</li>
-							</ul>
-						</div>
-						<div>
-							<h5>Konfiguration in ULRICA</h5>
-							<pre><code class="xml">&lt;dependencies&gt;
+            <section>
+                <h3>Maven</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+                        <h5>Vorteile</h5>
+                        <ul>
+                            <li>"Plug&Play" für Nutzer:innen</li>
+                            <li>Konsistente Projektstruktur</li>
+                            <li>Automatisiertes Abhängigkeitsmanagement</li>
+                            <li>Standardisierte Build-Lebenszyklen</li>
+                            <li>Integration mit JUnit und JaCoCo</li>
+                            <li>Plugin-Ökosystem für erweiterte Funktionen</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>Konfiguration in ULRICA</h5>
+                        <pre><code class="xml">&lt;dependencies&gt;
 	&lt;dependency&gt;
 		&lt;groupId&gt;junit&lt;/groupId&gt;
 		&lt;artifactId&gt;junit&lt;/artifactId&gt;
@@ -457,27 +520,30 @@
 		&lt;version&gt;2.10.1&lt;/version&gt;  
 	&lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
-						</div>
-					</div>
-				</section>
+                    </div>
+                </div>
+            </section>
 
-				<section>
-					<h3>JSON & GSON</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h5>Vorteile</h5>
-							<ul>
-								<li>Leichtgewichtiges Datenformat</li>
-								<li>Für Menschen lesbar und einfach zu bearbeiten</li>
-								<li>Ideal für Konfigurationsdaten, e.g. Fahrzeugprofile</li>
-								<li>Weit verbreitet und unterstützt</li>
-								<li>GSON bietet einfache Java-Integration</li>
-								<li>TypeAdapter für komplexe Datentypen</li>
-							</ul>
-						</div>
-						<div>
-							<h5>Implementierung</h5>
-							<pre style="width: 500px"><code class="java">public class JsonCarProfileRepository 
+            <section>
+                <h3>JSON & GSON</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+                        <h5>Vorteile</h5>
+                        <ul>
+                            <li>Leichtgewichtiges Datenformat</li>
+                            <li>Für Menschen lesbar und einfach zu bearbeiten
+                            </li>
+                            <li>Ideal für Konfigurationsdaten, e.g.
+                                Fahrzeugprofile
+                            </li>
+                            <li>Weit verbreitet und unterstützt</li>
+                            <li>GSON bietet einfache Java-Integration</li>
+                            <li>TypeAdapter für komplexe Datentypen</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>Implementierung</h5>
+                        <pre style="width: 500px"><code class="java">public class JsonCarProfileRepository
 
 implements CarProfilePersistencePortInterface { // Implementierung des Persistenz-Ports für Fahrzeugprofile
 	private final Gson gson; // Gson-Instanz für JSON-Serialisierung/Deserialisierung
@@ -493,77 +559,85 @@ implements CarProfilePersistencePortInterface { // Implementierung des Persisten
 			STORAGE_DIR, FILE_NAME); // Definiert den Speicherort der JSON-Datei
 	}
 	// ...
-}</code></pre>
-						</div>
-					</div>
-				</section>
+}
+                        </code></pre>
+                    </div>
+                </div>
+            </section>
 
-				<section>
-					<h3>Test-Framework: JUnit</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h5>Vorteile</h5>
-							<ul>
-								<li>De-facto Standard für Java-Tests</li>
-								<li>Umfangreiche Assertions-Bibliothek</li>
-								<li>Integration mit Build-Tools und JaCoCo</li>
-								<li>Test-getriebene Entwicklung (TDD) wird unterstützt</li>
-							</ul>
-						</div>
-						<div>
-						</div>
-					</div>
-				</section>
+            <section>
+                <h3>Test-Framework: JUnit</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+                        <h5>Vorteile</h5>
+                        <ul>
+                            <li>De-facto Standard für Java-Tests</li>
+                            <li>Umfangreiche Assertions-Bibliothek</li>
+                            <li>Integration mit Build-Tools und JaCoCo</li>
+                            <li>Test-getriebene Entwicklung (TDD) wird
+                                unterstützt
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                    </div>
+                </div>
+            </section>
 
-				<section>
-					<h3>Code-Coverage: JaCoCo</h3>
-					<p class="subchapter">Fokus auf qualitative Tests u. kritische Komponenten, statt bloßer Maximierung
-					</p>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h5>Vorteile</h5>
-							<ul>
-								<li>Detaillierte Abdeckungsmetriken</li>
-								<li>Integration mit Maven und CI/CD</li>
-								<li>Identifikation von ungetesteten Codebereichen</li>
-								<li>Visualisierung der Testabdeckung</li>
-								<li>Qualitätssicherung während der Entwicklung</li>
-								<li>Motivation zur Erhöhung der Testabdeckung</li>
-							</ul>
-						</div>
-						<div>
-							<h5>Ergebnisse</h5>
-							<ul>
-								<li>Gesamtabdeckung: 47%</li>
-								<li>Domain Layer: 68%</li>
-								<li>Application Layer: 53%</li>
-								<li>Presentation Layer: 42%</li>
-								<li>Infrastructure Layer: 36%</li>
-								<li>Core-Komponenten: 75%</li>
-							</ul>
+            <section>
+                <h3>Code-Coverage: JaCoCo</h3>
+                <p class="subchapter">Fokus auf qualitative Tests u. kritische
+                    Komponenten, statt bloßer Maximierung
+                </p>
+                <div class="horizontal-spaced-container">
+                    <div>
+                        <h5>Vorteile</h5>
+                        <ul>
+                            <li>Detaillierte Abdeckungsmetriken</li>
+                            <li>Integration mit Maven und CI/CD</li>
+                            <li>Identifikation von ungetesteten Codebereichen
+                            </li>
+                            <li>Visualisierung der Testabdeckung</li>
+                            <li>Qualitätssicherung während der Entwicklung</li>
+                            <li>Motivation zur Erhöhung der Testabdeckung</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>Ergebnisse</h5>
+                        <ul>
+                            <li>Gesamtabdeckung: 47%</li>
+                            <li>Domain Layer: 68%</li>
+                            <li>Application Layer: 53%</li>
+                            <li>Presentation Layer: 42%</li>
+                            <li>Infrastructure Layer: 36%</li>
+                            <li>Core-Komponenten: 75%</li>
+                        </ul>
 
-						</div>
-					</div>
-				</section>
+                    </div>
+                </div>
+            </section>
 
-				<section>
-					<h3>Github Workflow</h3>
-					<p class="subchapter">Kontinuierliche Integration und automatische Qualitätssicherung</p>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h5>Vorteile</h5>
-							<ul>
-								<li>Automatisierte Builds bei jedem Commit</li>
-								<li>Kontinuierliche Ausführung der Tests</li>
-								<li>Automatische Code-Coverage-Analyse</li>
-								<li>Codequalitätsmessung mit CLOC</li>
-								<li>E-Mail-Benachrichtigungen über Build-Status</li>
-								<li>Früherkennung von Fehlern und Qualitätsproblemen</li>
-							</ul>
-						</div>
-						<div>
-							<h5>Implementierung</h5>
-							<pre style="width: 400px"><code class="yaml">name: Java CI with Maven
+            <section>
+                <h3>Github Workflow</h3>
+                <p class="subchapter">Kontinuierliche Integration und
+                    automatische Qualitätssicherung</p>
+                <div class="horizontal-spaced-container">
+                    <div>
+                        <h5>Vorteile</h5>
+                        <ul>
+                            <li>Automatisierte Builds bei jedem Commit</li>
+                            <li>Kontinuierliche Ausführung der Tests</li>
+                            <li>Automatische Code-Coverage-Analyse</li>
+                            <li>Codequalitätsmessung mit CLOC</li>
+                            <li>E-Mail-Benachrichtigungen über Build-Status</li>
+                            <li>Früherkennung von Fehlern und
+                                Qualitätsproblemen
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>Implementierung</h5>
+                        <pre style="width: 400px"><code class="yaml">name: Java CI with Maven
 
 on:
   push:
@@ -597,108 +671,119 @@ jobs:
     - name: Send Email with Results
       uses: dawidd6/action-send-mail@v3
       # ...</code></pre>
-						</div>
-					</div>
-				</section>
+                    </div>
+                </div>
+            </section>
 
-				<!-- <section>
-					<h3>Clean Architecture</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h5>Vorteile für ULRICA</h5>
-							<ul>
-								<li>Separation of Concerns</li>
-								<li>Unabhängige Domänenlogik</li>
-								<li>Dependency Inversion Principle</li>
-								<li>Testbarkeit durch lose Kopplung</li>
-								<li>Austauschbarkeit von Infrastruktur</li>
-								<li>Strukturierte Codebasis</li>
-							</ul>
-						</div>
-						<div>
-							<h5>Schichten in ULRICA</h5>
-							<ul>
-								<li><strong>Domain:</strong> 3 Packages, 23 Klassen</li>
-								<li><strong>Application:</strong> 3 Packages, 26 Klassen</li>
-								<li><strong>Infrastructure:</strong> 3 Packages, 7 Klassen</li>
-								<li><strong>Presentation:</strong> 3 Packages, 16 Klassen</li>
-							</ul>
-							<p>Details in Kapitel 2: Softwarearchitektur</p>
-						</div>
-					</div>
-				</section>
+            <!-- <section>
+                <h3>Clean Architecture</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+                        <h5>Vorteile für ULRICA</h5>
+                        <ul>
+                            <li>Separation of Concerns</li>
+                            <li>Unabhängige Domänenlogik</li>
+                            <li>Dependency Inversion Principle</li>
+                            <li>Testbarkeit durch lose Kopplung</li>
+                            <li>Austauschbarkeit von Infrastruktur</li>
+                            <li>Strukturierte Codebasis</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>Schichten in ULRICA</h5>
+                        <ul>
+                            <li><strong>Domain:</strong> 3 Packages, 23 Klassen</li>
+                            <li><strong>Application:</strong> 3 Packages, 26 Klassen</li>
+                            <li><strong>Infrastructure:</strong> 3 Packages, 7 Klassen</li>
+                            <li><strong>Presentation:</strong> 3 Packages, 16 Klassen</li>
+                        </ul>
+                        <p>Details in Kapitel 2: Softwarearchitektur</p>
+                    </div>
+                </div>
+            </section>
 
-				<section>
-					<h3>Architekturübersicht</h3>
-					<img src="./assets/architecture.png" alt="ULRICA Architecture" style="max-height: 500px;">
-					<p>Clean Architecture mit klarer Trennung der Schichten</p>
-				</section> -->
-			</section>
-			<!-- Kapitel 2 -->
-			<section alt="Kapitel 2">
-				<section>
-					<h2 class="chapter-title">Kapitel 2: <br /> Softwarearchitektur (8P)</h2>
-				</section>
+            <section>
+                <h3>Architekturübersicht</h3>
+                <img src="./assets/architecture.png" alt="ULRICA Architecture" style="max-height: 500px;">
+                <p>Clean Architecture mit klarer Trennung der Schichten</p>
+            </section> -->
+        </section>
+        <!-- Kapitel 2 -->
+        <section alt="Kapitel 2">
+            <section>
+                <h2 class="chapter-title">Kapitel 2: <br/> Softwarearchitektur
+                    (8P)</h2>
+            </section>
 
-				<section>
-					<h3 class="subchapter">Inhalt des Kapitels</h3>
-					<div class="horizontal-spaced-container"
-						style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-						<div>
-							<h6>1. Gewählte Architektur (4P)</h6>
-							<ul>
-								<li>Clean Architecture</li>
-								<li>Architekturschichten</li>
-								<li>Analyse und Begründung</li>
-								<li>UML der wichtigsten Klassen</li>
-							</ul>
-						</div>
-						<div>
-							<h6>2. Domain Code (1P)</h6>
-							<ul>
-								<li>Definition von Domain Code</li>
-								<li>Code-Beispiel aus ULRICA</li>
-								<li>Analyse der Domain-Schicht</li>
-							</ul>
-						</div>
-						<div>
-							<h6>3. Analyse der Dependency Rule (3P)</h6>
-							<ul>
-								<li>Positives Beispiel</li>
-								<li>Negatives Beispiel</li>
-								<li>UML der Abhängigkeiten</li>
-								<li>Lösungsansätze</li>
-							</ul>
-						</div>
-						<div>
-						</div>
-					</div>
-				</section>
+            <section>
+                <h3 class="subchapter">Inhalt des Kapitels</h3>
+                <div class="horizontal-spaced-container"
+                     style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div>
+                        <h6>1. Gewählte Architektur (4P)</h6>
+                        <ul>
+                            <li>Clean Architecture</li>
+                            <li>Architekturschichten</li>
+                            <li>Analyse und Begründung</li>
+                            <li>UML der wichtigsten Klassen</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h6>2. Domain Code (1P)</h6>
+                        <ul>
+                            <li>Definition von Domain Code</li>
+                            <li>Code-Beispiel aus ULRICA</li>
+                            <li>Analyse der Domain-Schicht</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h6>3. Analyse der Dependency Rule (3P)</h6>
+                        <ul>
+                            <li>Positives Beispiel</li>
+                            <li>Negatives Beispiel</li>
+                            <li>UML der Abhängigkeiten</li>
+                            <li>Lösungsansätze</li>
+                        </ul>
+                    </div>
+                    <div>
+                    </div>
+                </div>
+            </section>
 
 
-				<section>
-					<h3>Gewählte Architektur (4P)</h3>
-					<p class="subchapter">In der Vorlesung wurden Softwarearchitekturen vorgestellt. Welche Architektur
-						wurde davon umgesetzt? Analyse und Begründung inkl. UML der wichtigsten Klassen, sowie
-						Einordnung dieser Klassen in die gewählte Architektur</p>
-				</section>
+            <section>
+                <h3>Gewählte Architektur (4P)</h3>
+                <p class="subchapter">In der Vorlesung wurden
+                    Softwarearchitekturen vorgestellt. Welche Architektur
+                    wurde davon umgesetzt? Analyse und Begründung inkl. UML der
+                    wichtigsten Klassen, sowie
+                    Einordnung dieser Klassen in die gewählte Architektur</p>
+            </section>
 
-				<section>
-					<h3>Clean Architecture</h3>
-					<div class="horizontal-spaced-container">
-						<ul>
-							<li><b>Application Layer:</b> <br /> Implementiert Use Cases (Interfaces) über Interaktoren
-								und Ports für Kommunikation</li>
-							<li><b>Domain Layer:</b> <br /> Enthält die Entität, Value Objects, Services (z.B.
-								Kalkulation) und Application State</li>
-							<li><b>Infrastructure Layer:</b> <br /> Konkrete Implementierungen von Repositories und
-								Adaptern und Utils
-							</li>
-							<li><b>Presentation Layer:</b> <br /> Steuert die Benutzerinteraktion über Controller und
-								Views und Utils</li>
-						</ul>
-						<pre
-							style="overflow: hidden; height: 580px; width: 700px; position: relative; margin-left: 50px; bottom: 20px; right: 20px;"><code class="">➜  ulrica git:(main) ✗ tree -d
+            <section>
+                <h3>Clean Architecture</h3>
+                <div class="horizontal-spaced-container">
+                    <ul>
+                        <li><b>Application Layer:</b> <br/> Implementiert Use
+                            Cases (Interfaces) über Interaktoren
+                            und Ports für Kommunikation
+                        </li>
+                        <li><b>Domain Layer:</b> <br/> Enthält die Entität,
+                            Value Objects, Services (z.B.
+                            Kalkulation) und Application State
+                        </li>
+                        <li><b>Infrastructure Layer:</b> <br/> Konkrete
+                            Implementierungen von Repositories und
+                            Adaptern und Utils
+                        </li>
+                        <li><b>Presentation Layer:</b> <br/> Steuert die
+                            Benutzerinteraktion über Controller und
+                            Views und Utils
+                        </li>
+                    </ul>
+                    <pre
+                            style="overflow: hidden; height: 580px; width: 700px; position: relative; margin-left: 50px; bottom: 20px; right: 20px;"><code
+                            class="">➜  ulrica git:(main) ✗ tree -d
 			.
 			├── application
 			│   ├── port
@@ -721,123 +806,185 @@ jobs:
 
 			19 directories
 	</code></pre>
-					</div>
-				</section>
+                </div>
+            </section>
 
-				<section>
-					<h3>Clean Architecture: UML</h3>
-					<div style="display: flex; flex-direction: column;" class="horizontal-spaced-container">
-						<div>
-							<ul>
-								<li>Domänenlogik ist unabhängig von externen Frameworks/Bibliotheken</li>
-								<li>Application Layer enthält anwendungsspezifische Regeln</li>
-								<li>Ports definieren Schnittstellen zwischen Schichten</li>
-								<li>Adapters verbinden externe Systeme mit inneren Schichten</li>
-								<li>Abhängigkeiten zeigen immer nach innen</li>
-							</ul>
-						</div>
-						<img style="overflow: scroll; scale: 1.1; justify-self: center; align-self: center;"
-							src="./assets/UMLs-imgs/clean_arch.svg" alt="ULRICA Clean Architecture" class="uml-image">
-					</div>
-				</section>
+            <section>
+                <h3>Clean Architecture: UML</h3>
+                <div style="display: flex; flex-direction: column;"
+                     class="horizontal-spaced-container">
+                    <div>
+                        <ul>
+                            <li>Domänenlogik ist unabhängig von externen
+                                Frameworks/Bibliotheken
+                            </li>
+                            <li>Application Layer enthält anwendungsspezifische
+                                Regeln
+                            </li>
+                            <li>Ports definieren Schnittstellen zwischen
+                                Schichten
+                            </li>
+                            <li>Adapters verbinden externe Systeme mit inneren
+                                Schichten
+                            </li>
+                            <li>Abhängigkeiten zeigen immer nach innen</li>
+                        </ul>
+                    </div>
+                    <img style="overflow: scroll; scale: 1.1; justify-self: center; align-self: center;"
+                         src="./assets/UMLs-imgs/clean_arch.svg"
+                         alt="ULRICA Clean Architecture" class="uml-image">
+                </div>
+            </section>
 
-				<section>
-					<div style="display: flex; flex-direction: column; justify-content: space-around; gap: 0;">
-						<img style="margin: 0; padding: 0;" src="assets/UMLs-imgs/2-1-1.png">
-						<img style="margin: 0; padding: 0;" src="assets/UMLs-imgs/2-1-2.png">
-						<img style="margin: 0; padding: 0;" src="assets/UMLs-imgs/2-1-3.png">
-					</div>
-				</section>
+            <section>
+                <div style="display: flex; flex-direction: column; justify-content: space-around; gap: 0;">
+                    <img style="margin: 0; padding: 0;"
+                         src="assets/UMLs-imgs/2-1-1.png">
+                    <img style="margin: 0; padding: 0;"
+                         src="assets/UMLs-imgs/2-1-2.png">
+                    <img style="margin: 0; padding: 0;"
+                         src="assets/UMLs-imgs/2-1-3.png">
+                </div>
+            </section>
 
-				<section>
-					<h3>
-						Clean Architecture: <br /> Analyse u. Begründung
-					</h3>
-				</section>
+            <section>
+                <h3>
+                    Clean Architecture: <br/> Analyse u. Begründung
+                </h3>
+            </section>
 
-				<section>
-					<h3>Domain Layer</h3>
-					<p class="subchapter">Der Domain Layer ist das <strong>Herzstück der Clean Architecture</strong> und
-						enthält die gesamte Geschäftslogik ohne externe Abhängigkeiten</p>
-					<ul>
-						<li><strong>CarProfile</strong> (Entity): Kernentität, die ein Car mit seinen Eigenschaften
-							repräsentiert</li>
-						<li><strong>BatteryProfile</strong> (Value Object): Immutable Objekt, das die
-							Batterieeigenschaften eines Fahrzeugs beschreibt</li>
-						<li><strong>ConsumptionProfile</strong> (Value Object): Kapselt Verbrauchsdaten und
-							Verbrauchfaktoren des Fahrzeugs ab</li>
-						<li><strong>RangeCalculatorService</strong> (Service): Berechnet die Reichweite basierend auf
-							verschiedenen Strategien</li>
-						<li><strong>RangeCalculationStrategyInterface</strong>: Definiert die Schnittstelle für
-							verschiedene Berechnungsalgorithmen</li>
-					</ul>
-				</section>
+            <section>
+                <h3>Domain Layer</h3>
+                <p class="subchapter">Der Domain Layer ist das <strong>Herzstück
+                    der Clean Architecture</strong> und
+                    enthält die gesamte Geschäftslogik ohne externe
+                    Abhängigkeiten</p>
+                <ul>
+                    <li><strong>CarProfile</strong> (Entity): Kernentität, die
+                        ein Car mit seinen Eigenschaften
+                        repräsentiert
+                    </li>
+                    <li><strong>BatteryProfile</strong> (Value Object):
+                        Immutable Objekt, das die
+                        Batterieeigenschaften eines Fahrzeugs beschreibt
+                    </li>
+                    <li><strong>ConsumptionProfile</strong> (Value Object):
+                        Kapselt Verbrauchsdaten und
+                        Verbrauchfaktoren des Fahrzeugs ab
+                    </li>
+                    <li><strong>RangeCalculatorService</strong> (Service):
+                        Berechnet die Reichweite basierend auf
+                        verschiedenen Strategien
+                    </li>
+                    <li><strong>RangeCalculationStrategyInterface</strong>:
+                        Definiert die Schnittstelle für
+                        verschiedene Berechnungsalgorithmen
+                    </li>
+                </ul>
+            </section>
 
-				<section>
-					<h3>Application Layer</h3>
-					<p class="subchapter">Der Application Layer implementiert <strong>Use Cases</strong> und definiert
-						<strong>Ports</strong>. Die Klassen orchestrieren Domänenobjekte, ohne direkten Zugriff auf die
-						Infrastruktur, was dadurch die <strong>Dependency Rule</strong> einhäl
-					</p>
-					<ul>
-						<li><strong>CalculateRangeUseCaseInterface</strong> (Port): Definiert die Schnittstelle für den
-							Anwendungsfall der Reichweitenberechnung</li>
-						<li><strong>CalculateRangeInteractor</strong> (Use Case): Implementiert die Geschäftslogik für
-							die Reichweitenberechnung</li>
-						<li><strong>CarProfilePersistencePortInterface</strong> (Port): Abstrahiert die Datenpersistenz
-							für Fahrzeugprofile</li>
-						<li><strong>NavigationUseCase</strong> (Use Case): Steuert die Navigationslogik und
-							Routenplanung</li>
-					</ul>
-				</section>
+            <section>
+                <h3>Application Layer</h3>
+                <p class="subchapter">Der Application Layer implementiert
+                    <strong>Use Cases</strong> und definiert
+                    <strong>Ports</strong>. Die Klassen orchestrieren
+                    Domänenobjekte, ohne direkten Zugriff auf die
+                    Infrastruktur, was dadurch die <strong>Dependency
+                        Rule</strong> einhäl
+                </p>
+                <ul>
+                    <li><strong>CalculateRangeUseCaseInterface</strong> (Port):
+                        Definiert die Schnittstelle für den
+                        Anwendungsfall der Reichweitenberechnung
+                    </li>
+                    <li><strong>CalculateRangeInteractor</strong> (Use Case):
+                        Implementiert die Geschäftslogik für
+                        die Reichweitenberechnung
+                    </li>
+                    <li><strong>CarProfilePersistencePortInterface</strong>
+                        (Port): Abstrahiert die Datenpersistenz
+                        für Fahrzeugprofile
+                    </li>
+                    <li><strong>NavigationUseCase</strong> (Use Case): Steuert
+                        die Navigationslogik und
+                        Routenplanung
+                    </li>
+                </ul>
+            </section>
 
-				<section>
-					<h3>Infrastructure Layer</h3>
-					<p class="subchapter">Der Infrastructure Layer implementiert <strong>konkrete Adapter</strong> für
-						externe Systeme. Diese Klassen sind austauschbar ohne Änderungen an inneren Schichten, was
-						wichtig für e.g. <strong>OCP</strong> wichtig ist.</p>
-					<ul>
-						<li><strong>JsonCarProfileRepository</strong>: Implementiert die Persistenz von Fahrzeugprofilen
-							als JSON-Dateien</li>
-						<li><strong>ConsoleUserInputAdapter</strong>: Verarbeitet Benutzereingaben über die Konsole</li>
-						<li><strong>ConsoleUserOutputAdapter</strong>: Zeigt Ausgaben und Ergebnisse in der Konsole an
-						</li>
-						<li><strong>ValidationUtils</strong>: Hilfsmethoden zur Validierung von Eingabedaten</li>
-					</ul>
-				</section>
+            <section>
+                <h3>Infrastructure Layer</h3>
+                <p class="subchapter">Der Infrastructure Layer implementiert
+                    <strong>konkrete Adapter</strong> für
+                    externe Systeme. Diese Klassen sind austauschbar ohne
+                    Änderungen an inneren Schichten, was
+                    wichtig für e.g. <strong>OCP</strong> wichtig ist.</p>
+                <ul>
+                    <li><strong>JsonCarProfileRepository</strong>: Implementiert
+                        die Persistenz von Fahrzeugprofilen
+                        als JSON-Dateien
+                    </li>
+                    <li><strong>ConsoleUserInputAdapter</strong>: Verarbeitet
+                        Benutzereingaben über die Konsole
+                    </li>
+                    <li><strong>ConsoleUserOutputAdapter</strong>: Zeigt
+                        Ausgaben und Ergebnisse in der Konsole an
+                    </li>
+                    <li><strong>ValidationUtils</strong>: Hilfsmethoden zur
+                        Validierung von Eingabedaten
+                    </li>
+                </ul>
+            </section>
 
-				<section>
-					<h3>Presentation Layer</h3>
-					<p class="subchapter">Der Presentation Layer kapselt die Benutzerinteraktion. Diese Klassen
-						kommunizieren nur über definierte Schnittstellen mit inneren Schichten, was eine <strong>klare
-							Trennung von UI und Geschäftslogik</strong> gewährleistet</p>
-					<ul>
-						<li><strong>ApplicationControllerWithActionMenu</strong>: Hauptcontroller, der die verschiedenen
-							Aktionen der Anwendung steuert</li>
-						<li><strong>RangeCalculationController</strong>: Spezialisierter Controller für die
-							Reichweitenberechnung</li>
-						<li><strong>ActionMenuView</strong>: Stellt das Hauptmenü der Anwendung dar</li>
-						<li><strong>CarProfileView</strong>: Visualisiert die Fahrzeugprofile und deren Details</li>
-					</ul>
-				</section>
+            <section>
+                <h3>Presentation Layer</h3>
+                <p class="subchapter">Der Presentation Layer kapselt die
+                    Benutzerinteraktion. Diese Klassen
+                    kommunizieren nur über definierte Schnittstellen mit inneren
+                    Schichten, was eine <strong>klare
+                        Trennung von UI und Geschäftslogik</strong>
+                    gewährleistet</p>
+                <ul>
+                    <li><strong>ApplicationControllerWithActionMenu</strong>:
+                        Hauptcontroller, der die verschiedenen
+                        Aktionen der Anwendung steuert
+                    </li>
+                    <li><strong>RangeCalculationController</strong>:
+                        Spezialisierter Controller für die
+                        Reichweitenberechnung
+                    </li>
+                    <li><strong>ActionMenuView</strong>: Stellt das Hauptmenü
+                        der Anwendung dar
+                    </li>
+                    <li><strong>CarProfileView</strong>: Visualisiert die
+                        Fahrzeugprofile und deren Details
+                    </li>
+                </ul>
+            </section>
 
-				<section>
-					<h3>Domain Code (1P)</h3>
-					<p class="subchapter">Kurze Erläuterung in eigenen Worten, was Domain Code ist – 1 Beispiel im Code
-						zeigen, das bisher noch nicht gezeigt wurde.</p>
-					<ul>
-						<li>Bildet die Fachlogik der Domäne (Geschäftsregeln) ab</li>
-						<li>Modelliert Prozesse, Regeln und Datenstrukturen</li>
-						<li>Unabhängig von externen Systemen (Datenbank, UI, Frameworks,...)</li>
-						<li>Bleibt Stabil bei Änderung (an Technologien)</li>
-						<li>Domäne orientiert (Entity, Valueobject, Aggregate)</li>
-						<li>Bleibt fachlich und ist frei von Presentation- und Persistenzlogik (siehe Domainlayer)</li>
-					</ul>
-				</section>
+            <section>
+                <h3>Domain Code (1P)</h3>
+                <p class="subchapter">Kurze Erläuterung in eigenen Worten, was
+                    Domain Code ist – 1 Beispiel im Code
+                    zeigen, das bisher noch nicht gezeigt wurde.</p>
+                <ul>
+                    <li>Bildet die Fachlogik der Domäne (Geschäftsregeln) ab
+                    </li>
+                    <li>Modelliert Prozesse, Regeln und Datenstrukturen</li>
+                    <li>Unabhängig von externen Systemen (Datenbank, UI,
+                        Frameworks,...)
+                    </li>
+                    <li>Bleibt Stabil bei Änderung (an Technologien)</li>
+                    <li>Domäne orientiert (Entity, Valueobject, Aggregate)</li>
+                    <li>Bleibt fachlich und ist frei von Presentation- und
+                        Persistenzlogik (siehe Domainlayer)
+                    </li>
+                </ul>
+            </section>
 
-				<section>
-					<h3>Beispiel Domain Code: RangeCalculatorService</h3>
-					<pre><code class="java" >public class RangeCalculatorService { // Reichweitenberechnung innerhalb der Domäne
+            <section>
+                <h3>Beispiel Domain Code: RangeCalculatorService</h3>
+                <pre><code class="java">public class RangeCalculatorService { // Reichweitenberechnung innerhalb der Domäne
 	private final List<RangeCalculationStrategyInterface> strategies; // Hält verschiedene fachliche Berechnungsstrategien
 	private RangeCalculationStrategyInterface defaultStrategy; // Definiert, welche Strategie standardmäßig verwendet wird
 
@@ -889,47 +1036,72 @@ jobs:
 		return strategy.calculateRange(carProfile, parameters); // Übergibt die Berechnung an die angegebene Strategie
 	}
 }</code></pre>
-				</section>
+            </section>
 
-				<section>
-					<h3>Analyse des Domain Codes</h3>
-					<ul>
-						<li>Service kapselt reine Fachlogik zur Reichweitenberechnung</li>
-						<li>Strategien sind fachliche Varianten zur Reichweitenermittlung</li>
-						<li>Keine technische Infrastruktur wie DB, API oder UI enthalten</li>
-						<li>Arbeitet nur mit Domain-spezifischen Typen (CarProfile, RangeParameters)</li>
-						<li>Erweiterbarkeit durch neue Strategien innerhalb der Domäne möglich</li>
-						<li>Berechnungen (calculateRange) folgen direkt fachlichen Regeln</li>
-					</ul>
-				</section>
+            <section>
+                <h3>Analyse des Domain Codes</h3>
+                <ul>
+                    <li>Service kapselt reine Fachlogik zur
+                        Reichweitenberechnung
+                    </li>
+                    <li>Strategien sind fachliche Varianten zur
+                        Reichweitenermittlung
+                    </li>
+                    <li>Keine technische Infrastruktur wie DB, API oder UI
+                        enthalten
+                    </li>
+                    <li>Arbeitet nur mit Domain-spezifischen Typen (CarProfile,
+                        RangeParameters)
+                    </li>
+                    <li>Erweiterbarkeit durch neue Strategien innerhalb der
+                        Domäne möglich
+                    </li>
+                    <li>Berechnungen (calculateRange) folgen direkt fachlichen
+                        Regeln
+                    </li>
+                </ul>
+            </section>
 
-				<section>
-					<h3>Analyse der Dependency Rule (3P)</h3>
-					<p class="subchapter">In der Vorlesung wurde im Rahmen der 'Clean Architecture' die s.g. Dependency
-						Rule vorgestellt. Je 1 Klasse zeigen, die die Dependency Rule einhält und 1 Klasse, die die
-						Dependency Rule verletzt; jeweils UML (mind. die betreffende Klasse inkl. der Klassen, die von
-						ihr abhängen bzw. von der sie abhängt) und Analyse der Abhängigkeiten in beide Richtungen (d.h.,
-						von wem hängt die Klasse ab und wer hängt von der Klasse ab) in Bezug auf die Dependency Rule
-					</p>
-				</section>
+            <section>
+                <h3>Analyse der Dependency Rule (3P)</h3>
+                <p class="subchapter">In der Vorlesung wurde im Rahmen der
+                    'Clean Architecture' die s.g. Dependency
+                    Rule vorgestellt. Je 1 Klasse zeigen, die die Dependency
+                    Rule einhält und 1 Klasse, die die
+                    Dependency Rule verletzt; jeweils UML (mind. die betreffende
+                    Klasse inkl. der Klassen, die von
+                    ihr abhängen bzw. von der sie abhängt) und Analyse der
+                    Abhängigkeiten in beide Richtungen (d.h.,
+                    von wem hängt die Klasse ab und wer hängt von der Klasse ab)
+                    in Bezug auf die Dependency Rule
+                </p>
+            </section>
 
 
+            <section>
+                <h3>Analyse der Dependency Rule </h3>
+                <ul>
+                    <li>Die Abhängigkeiten zeigen nur zum Zentrum der
+                        Architektur (größtenteils)
+                    </li>
+                    <li>Innere Schichten (Domain) dürfen nichts über äußere
+                        Schichten wissen
+                    </li>
+                    <li>Äußere Schichten (Infrastruktur) dürfen von inneren
+                        abhängen
+                    </li>
+                    <li>Die Abstraktionen (Interfaces) gehören zur inneren
+                        Schicht
+                    </li>
+                    <li>Die Implementierungen gehören zur äußeren Schicht</li>
+                </ul>
+                <img src="assets/UMLs-imgs/Kapitel_2-Aufgabe_3.png"
+                     alt="Dependency Rule UML" class="uml-image">
+            </section>
 
-				<section>
-					<h3>Analyse der Dependency Rule </h3>
-					<ul>
-						<li>Die Abhängigkeiten zeigen nur zum Zentrum der Architektur (größtenteils)</li>
-						<li>Innere Schichten (Domain) dürfen nichts über äußere Schichten wissen</li>
-						<li>Äußere Schichten (Infrastruktur) dürfen von inneren abhängen</li>
-						<li>Die Abstraktionen (Interfaces) gehören zur inneren Schicht</li>
-						<li>Die Implementierungen gehören zur äußeren Schicht</li>
-					</ul>
-					<img src="assets/UMLs-imgs/Kapitel_2-Aufgabe_3.png" alt="Dependency Rule UML" class="uml-image">
-				</section>
-
-				<section>
-					<h3>Positives Beispiel: CalculateRangeInteractor</h3>
-					<pre><code class="java">public class CalculateRangeInteractor implements CalculateRangeUseCaseInterface {
+            <section>
+                <h3>Positives Beispiel: CalculateRangeInteractor</h3>
+                <pre><code class="java">public class CalculateRangeInteractor implements CalculateRangeUseCaseInterface {
 					
 					private final RangeCalculatorService rangeCalculatorService;
 					private final RangeCalculationOutputPortInterface outputPort;
@@ -953,29 +1125,40 @@ jobs:
 						outputPort.displayRangeResult(result);
 					}
 				}</code></pre>
-				</section>
+            </section>
 
-				<section>
-					<h3>UML: Positives Beispiel</h3>
-					<img src="assets/UMLs-imgs/Kapitel_2-Aufgabe_3-Dependency_Rule_Positiv.png"
-						alt="Positive Dependency Rule Example UML" class="uml-image">
-				</section>
+            <section>
+                <h3>UML: Positives Beispiel</h3>
+                <img src="assets/UMLs-imgs/Kapitel_2-Aufgabe_3-Dependency_Rule_Positiv.png"
+                     alt="Positive Dependency Rule Example UML"
+                     class="uml-image">
+            </section>
 
-				<section>
-					<h3>Analyse des positiven Beispiels</h3>
-					<ul>
-						<li>Implementiert ein Interface aus der Application-Schicht</li>
-						<li>Abhängigkeiten werden über Konstruktor-Injection bereitgestellt</li>
-						<li>Abhängigkeiten sind alle Interfaces oder Domain-Services</li>
-						<li>Keine Abhängigkeit zu konkreten Implementierungen der äußeren Schichten</li>
-						<li>Ausgabe erfolgt über ein Port-Interface (RangeCalculationOutputPortInterface)</li>
-						<li>Strikte Validierung mit Objects.requireNonNull()</li>
-					</ul>
-				</section>
+            <section>
+                <h3>Analyse des positiven Beispiels</h3>
+                <ul>
+                    <li>Implementiert ein Interface aus der
+                        Application-Schicht
+                    </li>
+                    <li>Abhängigkeiten werden über Konstruktor-Injection
+                        bereitgestellt
+                    </li>
+                    <li>Abhängigkeiten sind alle Interfaces oder
+                        Domain-Services
+                    </li>
+                    <li>Keine Abhängigkeit zu konkreten Implementierungen der
+                        äußeren Schichten
+                    </li>
+                    <li>Ausgabe erfolgt über ein Port-Interface
+                        (RangeCalculationOutputPortInterface)
+                    </li>
+                    <li>Strikte Validierung mit Objects.requireNonNull()</li>
+                </ul>
+            </section>
 
-				<section>
-					<h3>Negatives Beispiel: JsonCarProfileRepository</h3>
-					<pre><code class="java">public class JsonCarProfileRepository implements CarProfilePersistencePortInterface {
+            <section>
+                <h3>Negatives Beispiel: JsonCarProfileRepository</h3>
+                <pre><code class="java">public class JsonCarProfileRepository implements CarProfilePersistencePortInterface {
 					private static final String STORAGE_DIR = "data";
 					private static final String FILE_NAME = "car_profiles.json";
 					private final Gson gson;
@@ -1001,88 +1184,385 @@ jobs:
 						}
 					}
 				}</code></pre>
-				</section>
+            </section>
 
-				<section>
-					<h3>UML: Negatives Beispiel</h3>
-					<img src="assets/UMLs-imgs/Kapitel_2-Aufgabe_3-Dependency_Rule_Negative.png"
-						alt="Negative Dependency Rule Example UML" class="uml-image">
-				</section>
+            <section>
+                <h3>UML: Negatives Beispiel</h3>
+                <img src="assets/UMLs-imgs/Kapitel_2-Aufgabe_3-Dependency_Rule_Negative.png"
+                     alt="Negative Dependency Rule Example UML"
+                     class="uml-image">
+            </section>
 
-				<section>
-					<h3>Analyse des negativen Beispiels</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<p>Verstöße gegen die Dependency Rule:</p>
-							<ul>
-								<li>Direkte Abhängigkeit zu externen Bibliotheken (Gson)</li>
-								<li>Direkter Zugriff auf das Dateisystem (java.io, java.nio)</li>
-								<li>Hartcodierte Pfade (STORAGE_DIR, FILE_NAME)</li>
-								<li>Ausnahmebehandlung mit generischen Exceptions</li>
-								<li>Direkte Implementierung der Dateioperationen</li>
-							</ul>
-						</div>
-						<div>
-							<p>Verbesserungsvorschlag:</p>
-							<ul>
-								<li>Einführung eines FileStoragePortInterface</li>
-								<li>Auslagerung der JSON-Serialisierung</li>
-								<li>Konfigurierbare Pfade (z.B. über Umgebungsvariablen)</li>
-								<li>Fachliche Exceptions wie ProfileNotFoundException</li>
-								<li>Strikte Trennung von Persistenz und Domänenmodell</li>
-							</ul>
-						</div>
-					</div>
-				</section>
-			</section>
+            <section>
+                <h3>Analyse des negativen Beispiels</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+                        <p>Verstöße gegen die Dependency Rule:</p>
+                        <ul>
+                            <li>Direkte Abhängigkeit zu externen Bibliotheken
+                                (Gson)
+                            </li>
+                            <li>Direkter Zugriff auf das Dateisystem (java.io,
+                                java.nio)
+                            </li>
+                            <li>Hartcodierte Pfade (STORAGE_DIR, FILE_NAME)</li>
+                            <li>Ausnahmebehandlung mit generischen Exceptions
+                            </li>
+                            <li>Direkte Implementierung der Dateioperationen
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p>Verbesserungsvorschlag:</p>
+                        <ul>
+                            <li>Einführung eines FileStoragePortInterface</li>
+                            <li>Auslagerung der JSON-Serialisierung</li>
+                            <li>Konfigurierbare Pfade (z.B. über
+                                Umgebungsvariablen)
+                            </li>
+                            <li>Fachliche Exceptions wie
+                                ProfileNotFoundException
+                            </li>
+                            <li>Strikte Trennung von Persistenz und
+                                Domänenmodell
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </section>
 
 
-			<!-- <section data-include="slides/kapitel-3.html"></section>
-			<section data-include="slides/kapitel-4.html"></section>
-			<section data-include="slides/kapitel-5.html"></section> -->
+        <!-- <section data-include="slides/kapitel-3.html"></section>´ -->
 
-			<!-- Kapitel 5 -->
-			<section alt="Kapitel 5">
-				<section>
-					<h2 class="chapter-title">Kapitel 5:<br /> Unit Tests (8P)</h2>
-				</section>
+        <!-- Kapitel 4 -->
+        <section alt="Kapitel 4">
+            <section>
+                <h2 class="chapter-title">Kapitel 4: Weitere Prinzipien
+                    (8P)</h2>
+            </section>
 
-				<section>
-					<h3>10 Unit Tests (2p)</h3>
-					<p class="subchapter">Zeigen und Beschreiben von 10 Unit-Tests und Beschreibung, was getestet wird
-					</p>
-				</section>
+            <section>
+                <h3>Analyse GRASP: Geringe Kopplung (3P)</h3>
+                <p>AcChargingController - Beispiel für geringe Kopplung</p>
+                <img src="assets/UMLs-imgs/Kapitel_4-Aufgabe_1.png"
+                     alt="Geringe Kopplung UML Diagram"
+                     class="uml-image"/>
+            </section>
 
-				<section>
-					<h3>Unit Tests</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h5>Test-Strategie</h5>
-							<ul>
-								<li>Fokus auf Domain-Logik als kritischen Kern</li>
-								<li>Ignorieren von UI Elementen wie SOUTs</li>
-								<li>ca. 100 automatisierte Tests (JUnit)</li>
-								<li>47% Gesamtabdeckung (laut JaCoCo)</li>
-								<li>Spezielle Tests für Randfälle und Fehlerbedingungen</li>
-								<li>Mocks für externe Abhängigkeiten</li>
-							</ul>
-						</div>
-						<div>
-							<h5>Testarten in ULRICA</h5>
-							<ul>
-								<li>Unit-Tests für isolierte Klassen</li>
-								<li>Integrationstests für Komponenteninteraktion</li>
-								<li>Parametrisierte Tests für Datenvalidierung</li>
-								<li>Exception-Tests für Fehlerszenarien</li>
-								<li>Stresstest für Berechnung mit großen Datenmengen</li>
-							</ul>
-						</div>
-					</div>
-				</section>
+            <section>
+                <h3>Geringe Kopplung: Beziehung zu anderen Klassen</h3>
+                <h5>Geringe Kopplung durch:</h5>
+                <ul>
+                    <li>Ausschließliche Abhängigkeit von Interfaces
+                        statt konkreten Implementierungen
+                    </li>
+                    <li>Dependency Injection über Konstruktor</li>
+                    <li>Klare Trennung von Ein-/Ausgabe und
+                        Business-Logik
+                    </li>
+                    <li>Keine hardcodierten Abhängigkeiten</li>
+                    <li>Keine Stateful-Objekte oder Singletons</li>
+                </ul>
+            </section>
 
-				<section>
-					<h3>Test #1: DC Charging Calculator</h3>
-					<pre><code class="java">@Test
+            <section>
+                <h3>Vorteile der geringen Kopplung</h3>
+                <ul>
+                    <li><b>Testbarkeit:</b> Einfaches Mocking der Abhängigkeiten
+                        für Unit-Tests
+                    </li>
+                    <li><b>Wartbarkeit:</b> Änderungen an Implementierungen der
+                        Ports haben keinen Einfluss auf den
+                        Controller
+                    </li>
+                    <li><b>Flexibilität:</b> Verschiedene Implementierungen
+                        können ohne Änderung am Controller
+                        ausgetauscht werden
+                    </li>
+                    <li><b>Wiederverwendbarkeit:</b> Der Controller kann mit
+                        unterschiedlichen Implementierungen
+                        genutzt werden
+                    </li>
+                    <li><b>Parallel Development:</b> Teams können gleichzeitig
+                        an Controller und Implementierungen
+                        arbeiten
+                    </li>
+                    <li><b>Verständlichkeit:</b> Klare Verantwortlichkeiten und
+                        Abhängigkeiten
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>Analyse GRASP: Polymorphismus (3P)</h3>
+                <p>RangeCalculationStrategyInterface - Anwendung des
+                    Polymorphismus</p>
+                <img src="assets/UMLs-imgs/Kapitel_4-Aufgabe_2.png"
+                     alt="Polymorphismus UML Diagram"
+                     class="uml-image"/>
+            </section>
+
+            <section>
+                <h3>Polymorphismus: UML und Anwendung</h3>
+                <h5>Anwendung im RangeCalculatorService:</h5>
+                <pre><code class="java">public class RangeCalculatorService {
+					private final List<RangeCalculationStrategyInterface> strategies;
+					private RangeCalculationStrategyInterface defaultStrategy;
+					
+					// Constructor with initialization...
+					
+					public RangeResult calculateRange(
+							CarProfile carProfile, 
+							RangeParameters parameters) {
+						return defaultStrategy.calculateRange(
+							carProfile, parameters);
+					}
+				}</code></pre>
+            </section>
+
+            <section>
+                <h3>Vorteile des Polymorphismus</h3>
+                <ul>
+                    <li><b>Erweiterbarkeit:</b> Neue Berechnungsstrategien
+                        können ohne Änderung des bestehenden
+                        Codes hinzugefügt
+                        werden
+                    </li>
+                    <li><b>Wiederverwendbarkeit:</b> Strategien können in
+                        verschiedenen Kontexten genutzt werden
+                    </li>
+                    <li><b>Kapselung:</b> Implementierungsdetails der Strategien
+                        sind hinter dem Interface verborgen
+                    </li>
+                    <li><b>Wartbarkeit:</b> Änderungen an einer Strategie
+                        beeinflussen andere Teile des Systems
+                        nicht
+                    </li>
+                    <li><b>Testbarkeit:</b> Strategien können isoliert getestet
+                        werden
+                    </li>
+                    <li><b>Komposition:</b> Verschiedene Strategien können zur
+                        Laufzeit ausgewählt und kombiniert
+                        werden
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>DRY – Don't Repeat Yourself (2P)</h3>
+                <p>Commit <code>89f9ea2</code>: Refactoring von <code>CarProfileController</code>
+                    zur Reduktion
+                    duplizierter Logik
+                </p>
+                <div class="horizontal-spaced-container">
+                    <div>
+                        <h5>Problem:</h5>
+                        <ul>
+                            <li>Business-Logik war mit UI-Logik vermischt</li>
+                            <li>Duplizierter Code für ähnliche Operationen</li>
+                            <li>Schwer zu erkennendes Muster im Code</li>
+                            <li>Hohe Fehleranfälligkeit bei Änderungen</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>Lösung:</h5>
+                        <ul>
+                            <li>Auslagerung der Business-Logik in einen
+                                Service
+                            </li>
+                            <li>Zusammenfassung ähnlicher Methoden</li>
+                            <li>Einführung von Hilfsmethoden für gemeinsame
+                                Funktionalität
+                            </li>
+                            <li>Trennung von UI und Geschäftslogik</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h3>DRY – Vorher: Überfüllter Controller</h3>
+                <pre><code class="java">public class CarProfileController {
+				  private static Scanner scanner;
+				  private final LoadingScreenAnimation loadingScreenAnimation;
+				  private Thread loadingAnimationThread;
+				  private Thread loadingJsonThread;
+				  private CarProfileModel carProfile;
+				  private ConsumptionProfileModel consumptionProfile;
+				  
+				  public CarProfileController() throws LoadingException {
+					JsonCarProfilesLoader carProfileJsonLoader = SetupService.getCarProfileJsonLoader();
+					carProfile = SetupService.getCarProfile();
+					consumptionProfile = SetupService.getConsumptionProfile();
+					loadingScreenAnimation = SetupService.getLoadingScreenAnimation();
+					loadingAnimationThread = new Thread(loadingScreenAnimation);
+					loadingJsonThread = new Thread(carProfileJsonLoader);
+					scanner = SetupService.getScanner();
+					
+					System.out.println("Hey! To begin with, let's see if you have any car profiles saved.");
+					SleepUtil.waitForFSeconds(1.0);
+					
+					startLoadingThreads();
+					
+					SleepUtil.waitForFSeconds(3.0);
+					
+					stopLoadingThreads();
+					
+					CarProfileModel[] carProfiles = carProfileJsonLoader.getCarProfiles();
+					
+					if (carProfiles == null || carProfiles.length <= 1) {
+					  System.out.println("→ No car profiles could be found;\n  Continuing with creating a new car profile.");
+					  SleepUtil.waitForFSeconds(2.0);
+					  createCarProfileDialog();
+					} else {
+					  // Weitere Logik...
+					}
+				  }
+				  
+				  // Weitere Methoden...
+				}</code></pre>
+            </section>
+
+            <section>
+                <h3>DRY – Nachher: Getrennter Controller und Service</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+                        <h5>Controller: UI-Logik</h5>
+                        <pre><code class="java">public class CarProfileController {
+				  
+				  public static void startDialog() {
+					System.out.println(
+						"Hey! To begin with, let's see if you have any car profiles saved.");
+				  }
+				  
+				  public static Double getConsumptionDialog(Scanner scanner) {
+					System.out.print("consumption: (in kWh) ");
+					String input = scanner.nextLine();
+					if (!input.isEmpty()) {
+					  return Double.valueOf(input);
+					}
+					return null;
+				  }
+				  
+				  // Weitere UI-Methoden...
+				}</code></pre>
+                    </div>
+                    <div>
+                        <h5>Service: Business-Logik</h5>
+                        <pre><code class="java">public class CarProfileService {
+				  
+				  private JsonCarProfilesLoader carProfileJsonLoader;
+				  private CarProfileModel carProfile;
+				  
+				  public CarProfileService() throws LoadingException {
+					this.carProfileJsonLoader = 
+					  SetupService.getCarProfileJsonLoader();
+					
+					// UI-Interaktion über Controller
+					CarProfileController.startDialog();
+					
+					// Laden der Profile
+					loadProfiles();
+					
+					// Weitere Business-Logik...
+				  }
+				  
+				  private void loadProfiles() {
+					// Gemeinsame Ladelogik, nicht mehr dupliziert
+					CarProfileModel[] profiles = 
+						carProfileJsonLoader.getCarProfiles();
+					
+					if (profiles == null || profiles.length <= 1) {
+					  createNewProfile();
+					} else {
+					  selectExistingProfile(profiles);
+					}
+				  }
+				  
+				  // Weitere Business-Methoden...
+				}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h3>DRY – Vorteile der Refaktorierung</h3>
+                <ul>
+                    <li><b>Bessere Wartbarkeit:</b> Änderungen an UI oder
+                        Business-Logik können unabhängig
+                        durchgeführt werden
+                    </li>
+                    <li><b>Geringere Redundanz:</b> Gemeinsam genutzter Code ist
+                        an einer zentralen Stelle definiert
+                    </li>
+                    <li><b>Bessere Testbarkeit:</b> Service kann unabhängig von
+                        UI getestet werden
+                    </li>
+                    <li><b>Single Responsibility Principle:</b> Klassen haben
+                        nur eine Verantwortlichkeit
+                    </li>
+                    <li><b>Clean Architecture:</b> Klare Trennung der Schichten
+                        zwischen Presentation und
+                        Application
+                    </li>
+                    <li><b>Übersichtlichkeit:</b> Kürzere Klassen mit klaren
+                        Zuständigkeiten
+                    </li>
+                </ul>
+            </section>
+
+
+        </section>
+
+        <!-- Kapitel 5 -->
+        <section alt="Kapitel 5">
+            <section>
+                <h2 class="chapter-title">Kapitel 5:<br/> Unit Tests (8P)</h2>
+            </section>
+
+            <section>
+                <h3>10 Unit Tests (2p)</h3>
+                <p class="subchapter">Zeigen und Beschreiben von 10 Unit-Tests
+                    und Beschreibung, was getestet wird
+                </p>
+            </section>
+
+            <section>
+                <h3>Unit Tests</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+                        <h5>Test-Strategie</h5>
+                        <ul>
+                            <li>Fokus auf Domain-Logik als kritischen Kern</li>
+                            <li>Ignorieren von UI Elementen wie SOUTs</li>
+                            <li>ca. 100 automatisierte Tests (JUnit)</li>
+                            <li>47% Gesamtabdeckung (laut JaCoCo)</li>
+                            <li>Spezielle Tests für Randfälle und
+                                Fehlerbedingungen
+                            </li>
+                            <li>Mocks für externe Abhängigkeiten</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>Testarten in ULRICA</h5>
+                        <ul>
+                            <li>Unit-Tests für isolierte Klassen</li>
+                            <li>Integrationstests für Komponenteninteraktion
+                            </li>
+                            <li>Parametrisierte Tests für Datenvalidierung</li>
+                            <li>Exception-Tests für Fehlerszenarien</li>
+                            <li>Stresstest für Berechnung mit großen
+                                Datenmengen
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h3>Test #1: DC Charging Calculator</h3>
+                <pre><code class="java">@Test
 				public void testCalculateChargingTime_WithChargingCurve() {
 					// Testwerte definieren
 					double startingSoc = 20.0;
@@ -1130,12 +1610,13 @@ jobs:
 					assertTrue(result.getChargingTimeHours() > 0);
 					assertTrue(result.getEffectivePowerKw() > 0);
 				}</code></pre>
-					<p>Testet komplexe Ladeberechnungen mit dynamischer Ladekurve und verschiedenen SOC-Bereichen</p>
-				</section>
+                <p>Testet komplexe Ladeberechnungen mit dynamischer Ladekurve
+                    und verschiedenen SOC-Bereichen</p>
+            </section>
 
-				<section>
-					<h3>Test #2: Range Calculator Service - Strategy Pattern</h3>
-					<pre><code class="java">@Test
+            <section>
+                <h3>Test #2: Range Calculator Service - Strategy Pattern</h3>
+                <pre><code class="java">@Test
 				public void testAddStrategy() {
 					// Ausgangssituation dokumentieren
 					int initialCount = rangeCalculatorService.getAvailableStrategies().size();
@@ -1171,12 +1652,13 @@ jobs:
 					// Validierung: Strategien-Anzahl ist um 1 erhöht
 					assertEquals(initialCount + 1, rangeCalculatorService.getAvailableStrategies().size());
 				}</code></pre>
-					<p>Testet die dynamische Erweiterbarkeit durch das Strategy-Pattern im RangeCalculatorService</p>
-				</section>
+                <p>Testet die dynamische Erweiterbarkeit durch das
+                    Strategy-Pattern im RangeCalculatorService</p>
+            </section>
 
-				<section>
-					<h3>Test #3: ChargingCurve Interpolation</h3>
-					<pre><code class="java">@Test
+            <section>
+                <h3>Test #3: ChargingCurve Interpolation</h3>
+                <pre><code class="java">@Test
 				public void testGetChargingPowerAt_Interpolation() {
 					// Testdaten mit drei Kurven-Punkten erstellen
 					Map<Double, Double> curvePoints = new HashMap<>();
@@ -1193,12 +1675,13 @@ jobs:
 					// Test Punkt zwischen 50% und 100%
 					assertEquals(55.0, chargingCurve.getChargingPowerAt(75.0), 0.001);
 				}</code></pre>
-					<p>Testet die korrekte lineare Interpolation bei der Ladekurve zwischen definierten Punkten</p>
-				</section>
+                <p>Testet die korrekte lineare Interpolation bei der Ladekurve
+                    zwischen definierten Punkten</p>
+            </section>
 
-				<section>
-					<h3>Test #4: ExecuteAction - Komplexe UI-Interaktion</h3>
-					<pre><code class="java">@Test
+            <section>
+                <h3>Test #4: ExecuteAction - Komplexe UI-Interaktion</h3>
+                <pre><code class="java">@Test
 				public void testExecuteAction_NoProfileSelected() {
 					// Profil-Auswahl leeren
 					profileSelectionService.clearSelection();
@@ -1215,13 +1698,14 @@ jobs:
 					assertEquals(0, rangeCalculationController.getProcessCallCount());
 					assertTrue(actionResultView.lastErrorContains("No car profile selected"));
 				}</code></pre>
-					<p>Testet das komplexe Zusammenspiel zwischen UI-Controller, Views und Geschäftslogik mit
-						Mock-Objekten</p>
-				</section>
+                <p>Testet das komplexe Zusammenspiel zwischen UI-Controller,
+                    Views und Geschäftslogik mit
+                    Mock-Objekten</p>
+            </section>
 
-				<section>
-					<h3>Test #5: DC Charging - Temperatureinfluss</h3>
-					<pre><code class="java">@Test
+            <section>
+                <h3>Test #5: DC Charging - Temperatureinfluss</h3>
+                <pre><code class="java">@Test
 				public void testCalculateChargingTime_LowTemperature() {
 					// Kalte Umgebungstemperatur als Testbedingung
 					double startingSoc = 20.0;
@@ -1248,12 +1732,13 @@ jobs:
 					assertTrue("Bei kalten Temperaturen sollte Ladezeit länger sein", 
 						result.getChargingTimeHours() > 0.5);
 				}</code></pre>
-					<p>Testet die realistische Simulation von Temperatureinflüssen auf das Ladeverhalten</p>
-				</section>
+                <p>Testet die realistische Simulation von Temperatureinflüssen
+                    auf das Ladeverhalten</p>
+            </section>
 
-				<section>
-					<h3>Test #6: Validierung der Eingabeparameter</h3>
-					<pre><code class="java">@Test
+            <section>
+                <h3>Test #6: Validierung der Eingabeparameter</h3>
+                <pre><code class="java">@Test
 				public void testValidateInputParameters_InvalidTargetSoc() {
 					// Ungültiger SOC-Wert (über 100%)
 					double startingSoc = 20.0;
@@ -1288,12 +1773,13 @@ jobs:
 						);
 					});
 				}</code></pre>
-					<p>Testet die robuste Validierung von Eingabeparametern in der Domain-Logik</p>
-				</section>
+                <p>Testet die robuste Validierung von Eingabeparametern in der
+                    Domain-Logik</p>
+            </section>
 
-				<section>
-					<h3>Test #7: DI mit Mock-Objekten</h3>
-					<pre><code class="java">@Test
+            <section>
+                <h3>Test #7: DI mit Mock-Objekten</h3>
+                <pre><code class="java">@Test
 				public void testExecuteAction_DcCharging() {
 					// Setup mit Mock-Objekten und Dependency Injection
 					profileSelectionService.selectProfile(testProfile);
@@ -1309,13 +1795,14 @@ jobs:
 					assertEquals(0, acChargingController.getProcessCallCount());
 					assertEquals(0, rangeCalculationController.getProcessCallCount());
 				}</code></pre>
-					<p>Testet die korrekte Implementierung von Dependency Injection und das Zusammenspiel von
-						Komponenten</p>
-				</section>
+                <p>Testet die korrekte Implementierung von Dependency Injection
+                    und das Zusammenspiel von
+                    Komponenten</p>
+            </section>
 
-				<section>
-					<h3>Test #8: ChargingCurve - Robustheit</h3>
-					<pre><code class="java">@Test
+            <section>
+                <h3>Test #8: ChargingCurve - Robustheit</h3>
+                <pre><code class="java">@Test
 				public void testInvalidConstructorArguments() {
 					// Test mit null-Wert
 					assertThrows(IllegalArgumentException.class, () -> {
@@ -1334,12 +1821,13 @@ jobs:
 						new ChargingCurve(incompletePoints);
 					});
 				}</code></pre>
-					<p>Testet die Robustheit und Fehlerbehandlung bei ungültigen Eingabedaten</p>
-				</section>
+                <p>Testet die Robustheit und Fehlerbehandlung bei ungültigen
+                    Eingabedaten</p>
+            </section>
 
-				<section>
-					<h3>Test #9: ProfileSelectionService - Statusverwaltung</h3>
-					<pre><code class="java">@Test
+            <section>
+                <h3>Test #9: ProfileSelectionService - Statusverwaltung</h3>
+                <pre><code class="java">@Test
 				public void testProfileSelection() {
 					// Initial kein Profil ausgewählt
 					assertFalse(profileSelectionService.hasSelectedProfile());
@@ -1364,12 +1852,13 @@ jobs:
 						profileSelectionService.getSelectedProfile();
 					});
 				}</code></pre>
-					<p>Testet die korrekte Statusverwaltung und Fehlerfälle im ProfileSelectionService</p>
-				</section>
+                <p>Testet die korrekte Statusverwaltung und Fehlerfälle im
+                    ProfileSelectionService</p>
+            </section>
 
-				<section>
-					<h3>Test #10: Validierung von Value Objects</h3>
-					<pre><code class="java">@Test
+            <section>
+                <h3>Test #10: Validierung von Value Objects</h3>
+                <pre><code class="java">@Test
 				public void testValueObjectValidation() {
 					// Gültige Werte
 					BatteryProfile validProfile = new BatteryProfile(
@@ -1407,145 +1896,162 @@ jobs:
 						);
 					});
 				}</code></pre>
-					<p>Testet die Validierung und Fehlerbehandlung bei der Erstellung von Value Objects</p>
-				</section>
+                <p>Testet die Validierung und Fehlerbehandlung bei der
+                    Erstellung von Value Objects</p>
+            </section>
 
 
+            <section>
+                <h3>ATRIP: Automatic, Thorough und Professional (2P)</h3>
+                <p class="subchapter">je Begründung/Erläuterung, wie
+                    'Automatic', 'Thorough' und 'Professional'
+                    realisiert wurde – bei
+                    'Thorough' zusätzlich Analyse und Bewertung zur
+                    Testabdeckung]</p>
+            </section>
 
 
-				<section>
-					<h3>ATRIP: Automatic, Thorough und Professional (2P)</h3>
-					<p class="subchapter">je Begründung/Erläuterung, wie 'Automatic', 'Thorough' und 'Professional'
-						realisiert wurde – bei
-						'Thorough' zusätzlich Analyse und Bewertung zur Testabdeckung]</p>
-				</section>
+            <section>
+                <h3>ATRIP: Automatic</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+                        <h5>Automatisierung durch CI/CD</h5>
+                        <ul>
+                            <li>GitHub Actions Workflow für automatische
+                                Builds
+                            </li>
+                            <li>Automatische Testausführung bei jedem Push/PR
+                            </li>
+                            <li>Maven-basierte Build-Pipeline</li>
+                            <li>Automatische Code-Coverage-Analyse mit JaCoCo
+                            </li>
+                            <li>Automatische E-Mail-Benachrichtigungen über
+                                Testergebnisse
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>Automatische Test-Tools</h5>
+                        <ul>
+                            <li>JUnit 4 für Unit Tests</li>
+                            <li>Maven Surefire für Testausführung</li>
+                            <li>CLOC für automatische Code-Analyse</li>
+                            <li>Automatische Validierung von Eingabeparametern
+                            </li>
+                            <li>Selbstvalidierung von Value Objects</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h3>ATRIP: Thorough</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+                        <h5>Testabdeckung (Coverage)</h5>
+                        <ul>
+                            <li>Gesamtabdeckung: 47%</li>
+                            <li>Domain Layer: 68%</li>
+                            <li>Application Layer: 53%</li>
+                            <li>Presentation Layer: 42%</li>
+                            <li>Infrastructure Layer: 36%</li>
+                            <li>Core-Komponenten: 75%</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>Testarten</h5>
+                        <ul>
+                            <li>Unit Tests für isolierte Komponenten</li>
+                            <li>Integrationstests für Zusammenspiel</li>
+                            <li>Parametrisierte Tests für Randfälle</li>
+                            <li>Exception Tests für Fehlerszenarien</li>
+                            <li>Mock-Tests für externe Abhängigkeiten</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h3>ATRIP: Professional</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+                        <h5>Testorganisation</h5>
+                        <ul>
+                            <li>Klare Teststruktur nach Clean Architecture</li>
+                            <li>Aussagekräftige Testbenennungen</li>
+                            <li>Separation of Concerns in Tests</li>
+                            <li>Wiederverwendbare Test-Utilities</li>
+                            <li>Dokumentierte Testfälle</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>Best Practices</h5>
+                        <ul>
+                            <li>Arrange-Act-Assert Pattern</li>
+                            <li>Given-When-Then Struktur</li>
+                            <li>Isolierte Testumgebungen</li>
+                            <li>Deterministische Tests</li>
+                            <li>Keine Test-Abhängigkeiten</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h3>Kleines Add-On zu ATRP: Mails</h3>
+                <div style="display: flex; flex-direction: row; justify-content: space-evenly;">
+                    <img src="./assets/imgs/Screenshot 2025-04-27 at 12.41.23.jpeg"
+                         style="height: 580px; margin: 0; border-radius: 20px;"/>
+                    <div style="display: flex; flex-direction: column; justify-content: space-between;">
+                        <img src="./assets/imgs/IMG_1931.PNG"
+                             style="height: 280px; margin: 0; border-radius: 20px;"/>
+                        <img src="./assets/imgs/IMG_1932.PNG"
+                             style="height: 280px; margin: 0; border-radius: 20px;"/>
+                    </div>
+                </div>
+            </section>
 
 
-				<section>
-					<h3>ATRIP: Automatic</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h5>Automatisierung durch CI/CD</h5>
-							<ul>
-								<li>GitHub Actions Workflow für automatische Builds</li>
-								<li>Automatische Testausführung bei jedem Push/PR</li>
-								<li>Maven-basierte Build-Pipeline</li>
-								<li>Automatische Code-Coverage-Analyse mit JaCoCo</li>
-								<li>Automatische E-Mail-Benachrichtigungen über Testergebnisse</li>
-							</ul>
-						</div>
-						<div>
-							<h5>Automatische Test-Tools</h5>
-							<ul>
-								<li>JUnit 4 für Unit Tests</li>
-								<li>Maven Surefire für Testausführung</li>
-								<li>CLOC für automatische Code-Analyse</li>
-								<li>Automatische Validierung von Eingabeparametern</li>
-								<li>Selbstvalidierung von Value Objects</li>
-							</ul>
-						</div>
-					</div>
-				</section>
+            <section>
+                <h3>Fakes und Mocks (4P)</h3>
+                <p class="subchapter">Analyse und Begründung des Einsatzes von 2
+                    Fake/Mock-Objekten (die Fake/Mocks
+                    sind ohne
+                    Dritthersteller-Bibliothek/Framework zu implementieren);
+                    zusätzlich jeweils UML Diagramm mit
+                    Beziehungen zwischen Mock, zu mockender Klasse und Aufrufer
+                    des Mocks</p>
+            </section>
 
-				<section>
-					<h3>ATRIP: Thorough</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h5>Testabdeckung (Coverage)</h5>
-							<ul>
-								<li>Gesamtabdeckung: 47%</li>
-								<li>Domain Layer: 68%</li>
-								<li>Application Layer: 53%</li>
-								<li>Presentation Layer: 42%</li>
-								<li>Infrastructure Layer: 36%</li>
-								<li>Core-Komponenten: 75%</li>
-							</ul>
-						</div>
-						<div>
-							<h5>Testarten</h5>
-							<ul>
-								<li>Unit Tests für isolierte Komponenten</li>
-								<li>Integrationstests für Zusammenspiel</li>
-								<li>Parametrisierte Tests für Randfälle</li>
-								<li>Exception Tests für Fehlerszenarien</li>
-								<li>Mock-Tests für externe Abhängigkeiten</li>
-							</ul>
-						</div>
-					</div>
-				</section>
+            <section>
+                <h3>Mock #1: MockProfileSelectionService</h3>
+                <h5 style="margin-top: 20px; text-align: start;">Zweck,
+                    Funktionalität & Implementierung</h5>
+                <ul>
+                    <li>Wird in Tests für Profilauswahl verwendet</li>
+                    <li>Simuliert die Auswahl eines Fahrzeugprofils ohne echte
+                        Persistenz
+                    </li>
+                    <li>Erlaubt gezielte Testszenarien für Abbruchbedingungen
+                    </li>
+                    <li>Trackt Aufrufe via Zählermethoden</li>
+                    <li>Implementiert das Interface <code>ProfileSelectionService</code>
+                    </li>
+                    <li>Erweitert um test-spezifische Hilfsmethoden</li>
+                </ul>
+                <h5 style="margin-top: 20px; text-align: start;">Kritik
+                    vorab:</h5>
+                <ul>
+                    <li>Keine Validierung der Profilobjekte</li>
+                    <li>Kein Event-System für Änderungen → eingeschränkte
+                        Integrationstest-Fähigkeit
+                    </li>
+                </ul>
+            </section>
 
-				<section>
-					<h3>ATRIP: Professional</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h5>Testorganisation</h5>
-							<ul>
-								<li>Klare Teststruktur nach Clean Architecture</li>
-								<li>Aussagekräftige Testbenennungen</li>
-								<li>Separation of Concerns in Tests</li>
-								<li>Wiederverwendbare Test-Utilities</li>
-								<li>Dokumentierte Testfälle</li>
-							</ul>
-						</div>
-						<div>
-							<h5>Best Practices</h5>
-							<ul>
-								<li>Arrange-Act-Assert Pattern</li>
-								<li>Given-When-Then Struktur</li>
-								<li>Isolierte Testumgebungen</li>
-								<li>Deterministische Tests</li>
-								<li>Keine Test-Abhängigkeiten</li>
-							</ul>
-						</div>
-					</div>
-				</section>
-
-				<section>
-					<h3>Kleines Add-On zu ATRP: Mails</h3>
-					<div style="display: flex; flex-direction: row; justify-content: space-evenly;">
-						<img src="./assets/imgs/Screenshot 2025-04-27 at 12.41.23.jpeg"
-							style="height: 580px; margin: 0; border-radius: 20px;" />
-						<div style="display: flex; flex-direction: column; justify-content: space-between;">
-							<img src="./assets/imgs/IMG_1931.PNG"
-								style="height: 280px; margin: 0; border-radius: 20px;" />
-							<img src="./assets/imgs/IMG_1932.PNG"
-								style="height: 280px; margin: 0; border-radius: 20px;" />
-						</div>
-					</div>
-				</section>
-
-
-
-
-				<section>
-					<h3>Fakes und Mocks (4P)</h3>
-					<p class="subchapter">Analyse und Begründung des Einsatzes von 2 Fake/Mock-Objekten (die Fake/Mocks
-						sind ohne
-						Dritthersteller-Bibliothek/Framework zu implementieren); zusätzlich jeweils UML Diagramm mit
-						Beziehungen zwischen Mock, zu mockender Klasse und Aufrufer des Mocks</p>
-				</section>
-
-				<section>
-					<h3>Mock #1: MockProfileSelectionService</h3>
-					<h5 style="margin-top: 20px; text-align: start;">Zweck, Funktionalität & Implementierung</h5>
-					<ul>
-						<li>Wird in Tests für Profilauswahl verwendet</li>
-						<li>Simuliert die Auswahl eines Fahrzeugprofils ohne echte Persistenz</li>
-						<li>Erlaubt gezielte Testszenarien für Abbruchbedingungen</li>
-						<li>Trackt Aufrufe via Zählermethoden</li>
-						<li>Implementiert das Interface <code>ProfileSelectionService</code></li>
-						<li>Erweitert um test-spezifische Hilfsmethoden</li>
-					</ul>
-					<h5 style="margin-top: 20px; text-align: start;">Kritik vorab:</h5>
-					<ul>
-						<li>Keine Validierung der Profilobjekte</li>
-						<li>Kein Event-System für Änderungen → eingeschränkte Integrationstest-Fähigkeit</li>
-					</ul>
-				</section>
-
-				<section>
-					<h3>Mock #1: Code</h3>
-					<pre><code class="java">public class MockProfileSelectionService implements ProfileSelectionService {
+            <section>
+                <h3>Mock #1: Code</h3>
+                <pre><code class="java">public class MockProfileSelectionService implements ProfileSelectionService {
     
     private CarProfile selectedProfile;
     private int selectionCount = 0;
@@ -1589,38 +2095,43 @@ jobs:
     }
 } 
 </code></pre>
-				</section>
+            </section>
 
 
-				<section>
-					<h3 style="margin-bottom: 0; padding-bottom: 0;">Mock #1: UML-Diagramm</h3>
-					<img style="scale: 0.7; position: relative; bottom: 30px; margin-top: 0; padding-top: 0;"
-						src="assets/UMLs-imgs/mock1.png" alt="Mock Profile Selection Service UML" class="uml-image">
-				</section>
+            <section>
+                <h3 style="margin-bottom: 0; padding-bottom: 0;">Mock #1:
+                    UML-Diagramm</h3>
+                <img style="scale: 0.7; position: relative; bottom: 30px; margin-top: 0; padding-top: 0;"
+                     src="assets/UMLs-imgs/mock1.png"
+                     alt="Mock Profile Selection Service UML" class="uml-image">
+            </section>
 
 
+            <section>
+                <h3>Mock #2: MockUserInputAdapter</h3>
+                <h5 style="margin-top: 20px; text-align: start;">Funktionen &
+                    Implementierung:</h5>
+                <ul>
+                    <li>Unterstützt verschiedene Eingabetypen</li>
+                    <li>Ermöglicht vordefinierte Eingabesequenzen</li>
+                    <li>Ermöglicht deterministische Testszenarien</li>
+                    <li>Ersetzt Benutzereingabe zur UI-Interaktion</li>
+                    <li>Bietet Fallback-Werte für leere Eingaben</li>
+                    <li>Implementiert <code>UserInputPortInterface</code></li>
+                </ul>
+                <h5 style="margin-top: 20px; text-align: start;">Kritik
+                    vorab:</h5>
+                <ul>
+                    <li>Komplexität für einfache Tests relativ hoch</li>
+                    <li>Fehlendes Verhalten bei Fehleingaben (z.B.
+                        Exceptionhandling)
+                    </li>
+                </ul>
+            </section>
 
-				<section>
-					<h3>Mock #2: MockUserInputAdapter</h3>
-					<h5 style="margin-top: 20px; text-align: start;">Funktionen & Implementierung:</h5>
-					<ul>
-						<li>Unterstützt verschiedene Eingabetypen</li>
-						<li>Ermöglicht vordefinierte Eingabesequenzen</li>
-						<li>Ermöglicht deterministische Testszenarien</li>
-						<li>Ersetzt Benutzereingabe zur UI-Interaktion</li>
-						<li>Bietet Fallback-Werte für leere Eingaben</li>
-						<li>Implementiert <code>UserInputPortInterface</code></li>
-					</ul>
-					<h5 style="margin-top: 20px; text-align: start;">Kritik vorab:</h5>
-					<ul>
-						<li>Komplexität für einfache Tests relativ hoch</li>
-						<li>Fehlendes Verhalten bei Fehleingaben (z.B. Exceptionhandling)</li>
-					</ul>
-				</section>
-
-				<section>
-					<h3>Mock #2: Code</h3>
-					<pre><code class="java">
+            <section>
+                <h3>Mock #2: Code</h3>
+                <pre><code class="java">
 public class MockUserInputAdapter implements UserInputPortInterface {
 	
 	private final Queue<String> stringInputs = new ArrayDeque<>();
@@ -1733,196 +2244,223 @@ public class MockUserInputAdapter implements UserInputPortInterface {
 	}
 } 
 					</code></pre>
-				</section>
+            </section>
 
-				<section>
-					<h3>Mock #2: UML</h3>
-					<img style="scale: 0.8;" src="assets/UMLs-imgs/mock2.png" alt="Mock User Input Adapter UML"
-						class="uml-image">
-				</section>
+            <section>
+                <h3>Mock #2: UML</h3>
+                <img style="scale: 0.8;" src="assets/UMLs-imgs/mock2.png"
+                     alt="Mock User Input Adapter UML"
+                     class="uml-image">
+            </section>
 
-				<section>
-					<h3>Vergleich der Mock-Implementierungen</h3>
-					<table>
-						<thead>
-							<tr>
-								<th>Aspekt</th>
-								<th>MockProfileSelectionService</th>
-								<th>MockUserInputAdapter</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>Zweck</td>
-								<td>Verhaltensverifikation (Methodenzähler)</td>
-								<td>Simulation von Eingabesequenzen</td>
-							</tr>
-							<tr>
-								<td>Komplexität</td>
-								<td>Niedrig (Status basiert)</td>
-								<td>Hoch (Typ-Queue-Handling)</td>
-							</tr>
-							<tr>
-								<td>Architektur-Schicht</td>
-								<td>Application / Domain</td>
-								<td>Infrastructure</td>
-							</tr>
-							<tr>
-								<td>Kritik</td>
-								<td>Keine Validierung, keine Events</td>
-								<td>Kein Fehlerverhalten, hoher Overhead</td>
-							</tr>
-						</tbody>
-					</table>
-				</section>
-			</section>
-
-
-			<!-- Kapitel 6 -->
-			<section alt="Kapitel 6">
-				<section>
-					<h2 class="chapter-title">Kapitel 6: <br /> Domain Driven Design (DDD) (8P)</h2>
-				</section>
-
-				<section>
-					<h3 style="margin-bottom: 20px;" class="subchapter">Inhalt des Kapitels</h3>
-					<div class="horizontal-spaced-container"
-						style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-						<div>
-							<h6>1. Ubiquitous Language (2P)</h6>
-							<ul>
-								<li>4 Beispiele für die Ubiquitous Language</li>
-								<li>Bezeichnung und Bedeutung</li>
-								<li>Begründung der Zugehörigkeit</li>
-							</ul>
-						</div>
-						<div>
-							<h6>2. Repositories (1.5P)</h6>
-							<ul>
-								<li>Beschreibung des Repositories</li>
-								<li>Code</li>
-								<li>UML-Diagramm</li>
-								<li>Begründung & Vorteile des Einsatzes</li>
-							</ul>
-						</div>
-						<div>
-							<h6>3. Aggregates (1.5P)</h6>
-							<ul>
-								<li>Beschreibung des Aggregates</li>
-								<li>Code</li>
-								<li>UML-Diagramm</li>
-								<li>Begründung & Vorteile des Einsatzes</li>
-							</ul>
-						</div>
-						<div>
-							<h6>4. Entities & Value Objects (1.5p + 1.5p)</h6>
-							<ul>
-								<li>Beschreibung der Komponenten</li>
-								<li>Code</li>
-								<li>UML-Diagramme</li>
-								<li>Begründung & Vorteile des Einsatzes</li>
-							</ul>
-						</div>
-					</div>
-				</section>
+            <section>
+                <h3>Vergleich der Mock-Implementierungen</h3>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Aspekt</th>
+                        <th>MockProfileSelectionService</th>
+                        <th>MockUserInputAdapter</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Zweck</td>
+                        <td>Verhaltensverifikation (Methodenzähler)</td>
+                        <td>Simulation von Eingabesequenzen</td>
+                    </tr>
+                    <tr>
+                        <td>Komplexität</td>
+                        <td>Niedrig (Status basiert)</td>
+                        <td>Hoch (Typ-Queue-Handling)</td>
+                    </tr>
+                    <tr>
+                        <td>Architektur-Schicht</td>
+                        <td>Application / Domain</td>
+                        <td>Infrastructure</td>
+                    </tr>
+                    <tr>
+                        <td>Kritik</td>
+                        <td>Keine Validierung, keine Events</td>
+                        <td>Kein Fehlerverhalten, hoher Overhead</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+        </section>
 
 
-				<section>
-					<h3>Ubiquitous Language (2p)</h3>
-					<p class="subchapter">Vier Beispiele für die Ubiquitous Language; jeweils Bezeichnung, Bedeutung und
-						kurze Begründung, warum es zur Ubiquitous Language gehört</p>
-				</section>
+        <!-- Kapitel 6 -->
+        <section alt="Kapitel 6">
+            <section>
+                <h2 class="chapter-title">Kapitel 6: <br/> Domain Driven Design
+                    (DDD) (8P)</h2>
+            </section>
 
-				<section>
-					<h3>Ubiquitous Language</h3>
-					<table>
-						<thead>
-							<tr>
-								<th>Begriff</th>
-								<th>Bedeutung</th>
-								<th>Verwendung</th>
-								<th>Ubiquitous Language</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td><b>SoC (State of Charge)</b></td>
-								<td>Prozentualer Ladezustand der Batterie (0-100%)</td>
-								<td>Parameter für Reichweitenberechnung und Ladezeit</td>
-								<td>Fachbegriff aus dem E-Mobility-Bereich, der die gemeinsame Sprache zwischen
-									Technikern und Anwendern bildet</td>
-							</tr>
-							<tr>
-								<td><b>WLTP-Range</b></td>
-								<td>Standardisierte Reichweite nach <span
-										style="font-style: italic; background-color: whitesmoke; border-radius: 5px; padding: 1px 2px;">Worldwide
-										Harmonized Light Vehicles Test Procedure</span></td>
-								<td>Basis für realistische Reichweitenberechnung</td>
-								<td>Regulatorischer Begriff, der eine einheitliche Verständnisgrundlage für
-									Fahrzeugleistung bietet</td>
-							</tr>
-						</tbody>
-					</table>
-				</section>
+            <section>
+                <h3 style="margin-bottom: 20px;" class="subchapter">Inhalt des
+                    Kapitels</h3>
+                <div class="horizontal-spaced-container"
+                     style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div>
+                        <h6>1. Ubiquitous Language (2P)</h6>
+                        <ul>
+                            <li>4 Beispiele für die Ubiquitous Language</li>
+                            <li>Bezeichnung und Bedeutung</li>
+                            <li>Begründung der Zugehörigkeit</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h6>2. Repositories (1.5P)</h6>
+                        <ul>
+                            <li>Beschreibung des Repositories</li>
+                            <li>Code</li>
+                            <li>UML-Diagramm</li>
+                            <li>Begründung & Vorteile des Einsatzes</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h6>3. Aggregates (1.5P)</h6>
+                        <ul>
+                            <li>Beschreibung des Aggregates</li>
+                            <li>Code</li>
+                            <li>UML-Diagramm</li>
+                            <li>Begründung & Vorteile des Einsatzes</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h6>4. Entities & Value Objects (1.5p + 1.5p)</h6>
+                        <ul>
+                            <li>Beschreibung der Komponenten</li>
+                            <li>Code</li>
+                            <li>UML-Diagramme</li>
+                            <li>Begründung & Vorteile des Einsatzes</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
 
-				<section>
-					<h3>Ubiquitous Language (Fortsetzung)</h3>
-					<table>
-						<thead>
-							<tr>
-								<th>Begriff</th>
-								<th>Bedeutung</th>
-								<th>Verwendung</th>
-								<th>Ubiquitous Language</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td><b>Charging Curve</b></td>
-								<td>Verlauf der Ladeleistung in Abhängig vom SoC</td>
-								<td>Berechnung von Ladezeiten an DC-Ladestationen</td>
-								<td>Technisches Konzept, das sowohl für Entwickler als auch Benutzer die
-									Ladeeigenschaften beschreibt</td>
-							</tr>
-							<tr>
-								<td><b>Battery Type (LFP, NMC, NCA)</b></td>
-								<td>Chemische Zusammensetzung der Batterie (Lithium-Eisenphosphat, Nickel-Mangan-Cobalt,
-									Nickel-Cobalt-Aluminium)</td>
-								<td>Berechnung von Degradation und Ladegeschwindigkeit</td>
-								<td>Chemische Klassifikation, die technische Eigenschaften für das gesamte Team
-									eindeutig kommunizierbar macht</td>
-							</tr>
-						</tbody>
-					</table>
-				</section>
 
-				<section>
-					<h3>Repositories (1.5P)</h3>
-					<p class="subchapter">UML, Beschreibung und Begründung des Einsatzes eines Repositories; falls kein
-						Repository vorhanden: ausführliche Begründung, warum es keines geben kann/hier nicht sinnvoll
-						ist – NICHT, warum es nicht implementiert wurde</p>
-				</section>
+            <section>
+                <h3>Ubiquitous Language (2p)</h3>
+                <p class="subchapter">Vier Beispiele für die Ubiquitous
+                    Language; jeweils Bezeichnung, Bedeutung und
+                    kurze Begründung, warum es zur Ubiquitous Language
+                    gehört</p>
+            </section>
 
-				<section>
-					<h3>Repository: <br /> CarProfileRepository</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<ul>
-								<li>Persistenz von Fahrzeugprofilen ohne Offenlegung der Speichermechanismen</li>
-								<li>Domain Entities können unabhängig von der Persistenz modelliert werden</li>
-								<li>Unterstützt die "Illusion" einer <span
-										style="font-style: italic;">In-Memory-Sammlung</span></li>
-								<li>Ermöglicht einfachen Austausch der Persistenztechnologie im Falle von Refactoring
-								</li>
-							</ul>
-						</div>
-					</div>
-				</section>
+            <section>
+                <h3>Ubiquitous Language</h3>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Begriff</th>
+                        <th>Bedeutung</th>
+                        <th>Verwendung</th>
+                        <th>Ubiquitous Language</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><b>SoC (State of Charge)</b></td>
+                        <td>Prozentualer Ladezustand der Batterie (0-100%)</td>
+                        <td>Parameter für Reichweitenberechnung und Ladezeit
+                        </td>
+                        <td>Fachbegriff aus dem E-Mobility-Bereich, der die
+                            gemeinsame Sprache zwischen
+                            Technikern und Anwendern bildet
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>WLTP-Range</b></td>
+                        <td>Standardisierte Reichweite nach <span
+                                style="font-style: italic; background-color: whitesmoke; border-radius: 5px; padding: 1px 2px;">Worldwide
+										Harmonized Light Vehicles Test Procedure</span>
+                        </td>
+                        <td>Basis für realistische Reichweitenberechnung</td>
+                        <td>Regulatorischer Begriff, der eine einheitliche
+                            Verständnisgrundlage für
+                            Fahrzeugleistung bietet
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
 
-				<section>
-					<h3>Repository: Code</h3>
-					<div>
-						<pre style="width: 900px; height: 500px; overflow: hidden;"><code class="java"> //CarProfileInterface
+            <section>
+                <h3>Ubiquitous Language (Fortsetzung)</h3>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Begriff</th>
+                        <th>Bedeutung</th>
+                        <th>Verwendung</th>
+                        <th>Ubiquitous Language</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><b>Charging Curve</b></td>
+                        <td>Verlauf der Ladeleistung in Abhängig vom SoC</td>
+                        <td>Berechnung von Ladezeiten an DC-Ladestationen</td>
+                        <td>Technisches Konzept, das sowohl für Entwickler als
+                            auch Benutzer die
+                            Ladeeigenschaften beschreibt
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Battery Type (LFP, NMC, NCA)</b></td>
+                        <td>Chemische Zusammensetzung der Batterie
+                            (Lithium-Eisenphosphat, Nickel-Mangan-Cobalt,
+                            Nickel-Cobalt-Aluminium)
+                        </td>
+                        <td>Berechnung von Degradation und Ladegeschwindigkeit
+                        </td>
+                        <td>Chemische Klassifikation, die technische
+                            Eigenschaften für das gesamte Team
+                            eindeutig kommunizierbar macht
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h3>Repositories (1.5P)</h3>
+                <p class="subchapter">UML, Beschreibung und Begründung des
+                    Einsatzes eines Repositories; falls kein
+                    Repository vorhanden: ausführliche Begründung, warum es
+                    keines geben kann/hier nicht sinnvoll
+                    ist – NICHT, warum es nicht implementiert wurde</p>
+            </section>
+
+            <section>
+                <h3>Repository: <br/> CarProfileRepository</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+                        <ul>
+                            <li>Persistenz von Fahrzeugprofilen ohne Offenlegung
+                                der Speichermechanismen
+                            </li>
+                            <li>Domain Entities können unabhängig von der
+                                Persistenz modelliert werden
+                            </li>
+                            <li>Unterstützt die "Illusion" einer <span
+                                    style="font-style: italic;">In-Memory-Sammlung</span>
+                            </li>
+                            <li>Ermöglicht einfachen Austausch der
+                                Persistenztechnologie im Falle von Refactoring
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h3>Repository: Code</h3>
+                <div>
+						<pre style="width: 900px; height: 500px; overflow: hidden;"><code
+                                class="java"> //CarProfileInterface
 public interface CarProfilePersistencePortInterface {
     Optional<CarProfile> findById(String id);
     List<CarProfile> findAll();
@@ -2017,50 +2555,70 @@ public class JsonCarProfileRepository implements CarProfilePersistencePortInterf
         }
     }
 }</code></pre>
-					</div>
-				</section>
+                </div>
+            </section>
 
-				<section>
-					<h3>Repository: UML</h3>
-					<div>
-						<img src="assets/UMLs-imgs/Kapitel_6-Aufgabe_2.png" alt="Repository Pattern UML Diagram"
-							class="uml-image">
-					</div>
-				</section>
+            <section>
+                <h3>Repository: UML</h3>
+                <div>
+                    <img src="assets/UMLs-imgs/Kapitel_6-Aufgabe_2.png"
+                         alt="Repository Pattern UML Diagram"
+                         class="uml-image">
+                </div>
+            </section>
 
-				<section>
-					<h3>Repository: <br /> Begründung & Vorteile</h3>
-					<ul>
-						<li>Klare Trennung zwischen Domänenlogik und Persistenzmechanismus</li>
-						<li>Vereinfachung des Domain Model durch Abstraktion der Persistenz</li>
-						<li>Ermöglicht die Anwendung von Clean Architecture Prinzipien</li>
-						<li>Erleichtert das Testen durch Mocking der Repository-Implementierung</li>
-						<li>Entscheidung für Datenspeicherung in JSON-Dateien bleibt flexibel änderbar</li>
-					</ul>
-				</section>
+            <section>
+                <h3>Repository: <br/> Begründung & Vorteile</h3>
+                <ul>
+                    <li>Klare Trennung zwischen Domänenlogik und
+                        Persistenzmechanismus
+                    </li>
+                    <li>Vereinfachung des Domain Model durch Abstraktion der
+                        Persistenz
+                    </li>
+                    <li>Ermöglicht die Anwendung von Clean Architecture
+                        Prinzipien
+                    </li>
+                    <li>Erleichtert das Testen durch Mocking der
+                        Repository-Implementierung
+                    </li>
+                    <li>Entscheidung für Datenspeicherung in JSON-Dateien bleibt
+                        flexibel änderbar
+                    </li>
+                </ul>
+            </section>
 
-				<section>
-					<h3>Aggregates (1.5p)</h3>
-					<p class="subchapter">UML, Beschreibung und Begründung des Einsatzes eines Aggregates; falls kein
-						Aggregate vorhanden: ausführliche Begründung, warum es keines geben kann/hier nicht sinnvoll ist
-						– NICHT, warum es nicht implementiert wurde</p>
-				</section>
+            <section>
+                <h3>Aggregates (1.5p)</h3>
+                <p class="subchapter">UML, Beschreibung und Begründung des
+                    Einsatzes eines Aggregates; falls kein
+                    Aggregate vorhanden: ausführliche Begründung, warum es
+                    keines geben kann/hier nicht sinnvoll ist
+                    – NICHT, warum es nicht implementiert wurde</p>
+            </section>
 
-				<section>
-					<h3>Aggregates: <br /> CarProfile Aggregate Root</h3>
-					<ul>
-						<li>Koordiniert mehrere Value Objects (BatteryProfile, ConsumptionProfile,
-							ChargingCurve)</li>
-						<li>Stellt die Konsistenz zwischen den Value Objects sicher</li>
-						<li>Bildet eine sogenannte "transaktionale Einheit" für Änderungen</li>
-						<li>Einziger Zugriffspunkt für enthaltene Value Objects</li>
-						<li>Hat eine eigene Identität (ID) (-> Aggregate Root)</li>
-					</ul>
-				</section>
+            <section>
+                <h3>Aggregates: <br/> CarProfile Aggregate Root</h3>
+                <ul>
+                    <li>Koordiniert mehrere Value Objects (BatteryProfile,
+                        ConsumptionProfile,
+                        ChargingCurve)
+                    </li>
+                    <li>Stellt die Konsistenz zwischen den Value Objects
+                        sicher
+                    </li>
+                    <li>Bildet eine sogenannte "transaktionale Einheit" für
+                        Änderungen
+                    </li>
+                    <li>Einziger Zugriffspunkt für enthaltene Value Objects</li>
+                    <li>Hat eine eigene Identität (ID) (-> Aggregate Root)</li>
+                </ul>
+            </section>
 
-				<section>
-					<h3>Aggregates: Code</h3>
-					<pre style="width: 900px; height: 500px; overflow: hidden;"><code class="java">public class CarProfile {
+            <section>
+                <h3>Aggregates: Code</h3>
+                <pre style="width: 900px; height: 500px; overflow: hidden;"><code
+                        class="java">public class CarProfile {
 	private final String id;
 	private final String name;
 	private final String manufacturer;
@@ -2259,89 +2817,123 @@ public class JsonCarProfileRepository implements CarProfilePersistencePortInterf
 } 
 
 </code></pre>
-				</section>
+            </section>
 
-				<section>
-					<h3>Aggregate: UML</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<img src="assets/UMLs-imgs/Kapitel_6-Aufgabe_3.png" alt="Aggregate Pattern UML Diagram"
-								class="uml-image">
-						</div>
-				</section>
+            <section>
+                <h3>Aggregate: UML</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+                        <img src="assets/UMLs-imgs/Kapitel_6-Aufgabe_3.png"
+                             alt="Aggregate Pattern UML Diagram"
+                             class="uml-image">
+                    </div>
+            </section>
 
-				<section>
-					<h3>Aggregates: Vorteile & Begründung</h3>
-					<ul>
-						<li>CarProfile als Aggregate Root koordiniert die Konsistenz seiner Value Objects</li>
-						<li>Stellt sicher, dass BatteryProfile, ConsumptionProfile und ChargingCurve immer konsistent
-							sind</li>
-						<li>Vereinfacht die Persistenz, da nur der Aggregate Root direkt gespeichert werden muss</li>
-						<li>Schützt die Value Objects vor unerlaubten Änderungen von außen</li>
-						<li>Modelliert die natürliche Gruppierung von Fahrzeugdaten und deren Komponenten</li>
-					</ul>
-				</section>
+            <section>
+                <h3>Aggregates: Vorteile & Begründung</h3>
+                <ul>
+                    <li>CarProfile als Aggregate Root koordiniert die Konsistenz
+                        seiner Value Objects
+                    </li>
+                    <li>Stellt sicher, dass BatteryProfile, ConsumptionProfile
+                        und ChargingCurve immer konsistent
+                        sind
+                    </li>
+                    <li>Vereinfacht die Persistenz, da nur der Aggregate Root
+                        direkt gespeichert werden muss
+                    </li>
+                    <li>Schützt die Value Objects vor unerlaubten Änderungen von
+                        außen
+                    </li>
+                    <li>Modelliert die natürliche Gruppierung von Fahrzeugdaten
+                        und deren Komponenten
+                    </li>
+                </ul>
+            </section>
 
 
-				<section>
-					<h3>Entities (1.5P)</h3>
-					<p class="subchapter">UML, Beschreibung und Begründung des Einsatzes einer Entity; falls keine
-						Entity vorhanden: ausführliche Begründung, warum es keine geben kann/hier nicht sinnvoll ist –
-						NICHT, warum es nicht implementiert wurde</p>
-				</section>
+            <section>
+                <h3>Entities (1.5P)</h3>
+                <p class="subchapter">UML, Beschreibung und Begründung des
+                    Einsatzes einer Entity; falls keine
+                    Entity vorhanden: ausführliche Begründung, warum es keine
+                    geben kann/hier nicht sinnvoll ist –
+                    NICHT, warum es nicht implementiert wurde</p>
+            </section>
 
 
-				<section>
-					<h3>Entities:<br /> CarProfile als Entity</h3>
-					<ul>
-						<li>Besitzt eine eindeutige Identität (UUID)</li>
-						<li>Identität bleibt über den gesamten Lebenszyklus erhalten</li>
-						<li>Kann verändert und weiterentwickelt werden (auch wenn in ULRICA immutable)</li>
-						<li>Wird über die Identität verglichen, nicht über Attributwerte</li>
-						<li>Repräsentiert ein reales Objekt (Elektrofahrzeug) mit eigenem Lebenszyklus</li>
-					</ul>
-				</section>
+            <section>
+                <h3>Entities:<br/> CarProfile als Entity</h3>
+                <ul>
+                    <li>Besitzt eine eindeutige Identität (UUID)</li>
+                    <li>Identität bleibt über den gesamten Lebenszyklus
+                        erhalten
+                    </li>
+                    <li>Kann verändert und weiterentwickelt werden (auch wenn in
+                        ULRICA immutable)
+                    </li>
+                    <li>Wird über die Identität verglichen, nicht über
+                        Attributwerte
+                    </li>
+                    <li>Repräsentiert ein reales Objekt (Elektrofahrzeug) mit
+                        eigenem Lebenszyklus
+                    </li>
+                </ul>
+            </section>
 
-				<section>
-					<h3 style="margin-bottom: 0; padding-bottom: 0;">Entity: UML</h3>
-					<img style="scale: 0.9; position: relative; bottom: 50px;"
-						src="assets/UMLs-imgs/Kapitel_6-Aufgabe_4.png" alt="Entity Pattern UML Diagram"
-						class="uml-image">
-				</section>
+            <section>
+                <h3 style="margin-bottom: 0; padding-bottom: 0;">Entity:
+                    UML</h3>
+                <img style="scale: 0.9; position: relative; bottom: 50px;"
+                     src="assets/UMLs-imgs/Kapitel_6-Aufgabe_4.png"
+                     alt="Entity Pattern UML Diagram"
+                     class="uml-image">
+            </section>
 
-				<section>
-					<h3>Entity: Begründung & Vorteile</h3>
-					<ul>
-						<li>Eindeutige Identifikation von Objekten unabhängig von ihren Attributen</li>
-						<li>Möglichkeit, Entitäten über ihren Lebenszyklus hinweg zu verfolgen</li>
-						<li>Konsistente Identifikation in verschiedenen Kontexten des Systems</li>
-						<li>Klare Unterscheidung zwischen Identität und Attributen</li>
-						<li>Natürliche Abbildung von realen Objekten mit eigener Identität</li>
-					</ul>
-				</section>
+            <section>
+                <h3>Entity: Begründung & Vorteile</h3>
+                <ul>
+                    <li>Eindeutige Identifikation von Objekten unabhängig von
+                        ihren Attributen
+                    </li>
+                    <li>Möglichkeit, Entitäten über ihren Lebenszyklus hinweg zu
+                        verfolgen
+                    </li>
+                    <li>Konsistente Identifikation in verschiedenen Kontexten
+                        des Systems
+                    </li>
+                    <li>Klare Unterscheidung zwischen Identität und Attributen
+                    </li>
+                    <li>Natürliche Abbildung von realen Objekten mit eigener
+                        Identität
+                    </li>
+                </ul>
+            </section>
 
-				<section>
-					<h3>Value Objects (1.5P)</h3>
-					<p class="subchapter">UML, Beschreibung und Begründung des Einsatzes eines Value Objects; falls kein
-						Value Object vorhanden: ausführliche Begründung, warum es keines geben kann/hier nicht sinnvoll
-						ist – NICHT, warum es nicht implementiert wurde</p>
-				</section>
+            <section>
+                <h3>Value Objects (1.5P)</h3>
+                <p class="subchapter">UML, Beschreibung und Begründung des
+                    Einsatzes eines Value Objects; falls kein
+                    Value Object vorhanden: ausführliche Begründung, warum es
+                    keines geben kann/hier nicht sinnvoll
+                    ist – NICHT, warum es nicht implementiert wurde</p>
+            </section>
 
-				<section>
-					<h3>Value Objects: BatteryProfile als ValueObject</h3>
-					<ul>
-						<li>Keine eigene Identität</li>
-						<li>Immutable (unveränderlich) nach Erstellung</li>
-						<li>Vergleich basiert auf allen Attributwerten</li>
-						<li>Beschreibt eine Messung oder ein Konzept</li>
-						<li>Kann problemlos ersetzt werden</li>
-						<li>Validiert sich selbst bei der Erstellung</li>
-					</ul>
-				</section>
+            <section>
+                <h3>Value Objects: BatteryProfile als ValueObject</h3>
+                <ul>
+                    <li>Keine eigene Identität</li>
+                    <li>Immutable (unveränderlich) nach Erstellung</li>
+                    <li>Vergleich basiert auf allen Attributwerten</li>
+                    <li>Beschreibt eine Messung oder ein Konzept</li>
+                    <li>Kann problemlos ersetzt werden</li>
+                    <li>Validiert sich selbst bei der Erstellung</li>
+                </ul>
+            </section>
 
-				<section>
-					<h3>Value Object: Code</h3>
-					<pre><code class="java">public final class BatteryProfile {
+            <section>
+                <h3>Value Object: Code</h3>
+                <pre><code class="java">public final class BatteryProfile {
 	private final BatteryType type;
 	private final double capacityKwh;
 	private final double degradationPercent;
@@ -2425,66 +3017,81 @@ public class JsonCarProfileRepository implements CarProfilePersistencePortInterf
 		);
 	}
 } </code></pre>
-				</section>
+            </section>
 
-				<section>
-					<h3>Value Objects: UML</h3>
-					<img style="scale: 1.1" src="assets/UMLs-imgs/Kapitel_6-Aufgabe_5.png"
-						alt="Value Objects UML Diagram" class="uml-image">
-				</section>
+            <section>
+                <h3>Value Objects: UML</h3>
+                <img style="scale: 1.1"
+                     src="assets/UMLs-imgs/Kapitel_6-Aufgabe_5.png"
+                     alt="Value Objects UML Diagram" class="uml-image">
+            </section>
 
-				<section>
-					<h3>Value Objects: Begründung & Vorteile</h3>
-					<ul>
-						<li>Batteryprofile und ConsumptionProfile sind immutable und damit thread-safe</li>
-						<li>Vereinfachte Validierung durch Konstruktor basierte Erstellung</li>
-						<li>Natürliche Modellierung von Messwerten und Konzepten ohne Identität</li>
-						<li>Einfache Vergleichbarkeit durch attribut-basierte equals-Implementierung</li>
-						<li>Können problemlos ausgetauscht werden, da sie keine Identität haben</li>
-					</ul>
-				</section>
+            <section>
+                <h3>Value Objects: Begründung & Vorteile</h3>
+                <ul>
+                    <li>Batteryprofile und ConsumptionProfile sind immutable und
+                        damit thread-safe
+                    </li>
+                    <li>Vereinfachte Validierung durch Konstruktor basierte
+                        Erstellung
+                    </li>
+                    <li>Natürliche Modellierung von Messwerten und Konzepten
+                        ohne Identität
+                    </li>
+                    <li>Einfache Vergleichbarkeit durch attribut-basierte
+                        equals-Implementierung
+                    </li>
+                    <li>Können problemlos ausgetauscht werden, da sie keine
+                        Identität haben
+                    </li>
+                </ul>
+            </section>
 
-			</section>
+        </section>
 
-			<!-- Kapitel 7 -->
-			<section alt="Kapitel 7">
-				<section>
-					<h2 class="chapter-title">Kapitel 7:<br />Refactoring (8P)</h2>
-				</section>
+        <!-- Kapitel 7 -->
+        <section alt="Kapitel 7">
+            <section>
+                <h2 class="chapter-title">Kapitel 7:<br/>Refactoring (8P)</h2>
+            </section>
 
-				<section>
-					<h3 class="subchapter">Inhalt des Kapitels</h3>
-					<div class="horizontal-spaced-container"
-						style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 50px;">
-						<div>
-							<h4>1. Code Smells (2P)</h4>
-							<ul>
-								<li>Lange Methode in "RangeCalculationController"</li>
-								<li>Duplizierter Code in "Charging Calculators"</li>
-							</ul>
-						</div>
-						<div>
-							<h4>2. Refactorings (6P)</h4>
-							<ul>
-								<li>"Extract Method"</li>
-								<li>Ersetzen von Conditionals mit Polymorphism</li>
-							</ul>
-						</div>
-					</div>
-				</section>
+            <section>
+                <h3 class="subchapter">Inhalt des Kapitels</h3>
+                <div class="horizontal-spaced-container"
+                     style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 50px;">
+                    <div>
+                        <h4>1. Code Smells (2P)</h4>
+                        <ul>
+                            <li>Lange Methode in "RangeCalculationController"
+                            </li>
+                            <li>Duplizierter Code in "Charging Calculators"</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>2. Refactorings (6P)</h4>
+                        <ul>
+                            <li>"Extract Method"</li>
+                            <li>Ersetzen von Conditionals mit Polymorphism</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
 
-				<section>
-					<h3>Code Smells (2p)</h3>
-					<p class="subchapter">Jeweils 1 Code-Beispiel zu 2 unterschiedlichen Code Smells (die benannt werden
-						müssen) aus der
-						Vorlesung; jeweils Code-Beispiel und einen möglichen Lösungsweg bzw. den genommen Lösungsweg
-						beschreiben (inkl.
-						(Pseudo-)Code)</p>
-				</section>
+            <section>
+                <h3>Code Smells (2p)</h3>
+                <p class="subchapter">Jeweils 1 Code-Beispiel zu 2
+                    unterschiedlichen Code Smells (die benannt werden
+                    müssen) aus der
+                    Vorlesung; jeweils Code-Beispiel und einen möglichen
+                    Lösungsweg bzw. den genommen Lösungsweg
+                    beschreiben (inkl.
+                    (Pseudo-)Code)</p>
+            </section>
 
-				<section>
-					<h4>Code Smell 1: Lange Methode</h4>
-					<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">/* public class RangeCalculationController {
+            <section>
+                <h4>Code Smell 1: Lange Methode</h4>
+                <pre style="width: 1000px; height: 500px; overflow: hidden;"><code
+                        class="java">/* public class RangeCalculationController {
 			private final CalculateRangeUseCaseInterface calculateRangeUseCase;
 			private final UserInputPortInterface userInputPort;
 			private final RangeCalculationOutputPortInterface outputPort;
@@ -2523,22 +3130,26 @@ public class JsonCarProfileRepository implements CarProfilePersistencePortInterf
 				}
 	}
 /*...</code></pre>
-				</section>
+            </section>
 
-				<section>
-					<h3>Code Smell 1: Analyse</h3>
-					<ul>
-						<li>Die Methode ist zu lang und komplex -> Unübersichtlich</li>
-						<li>Viele verschiedene Verantwortlichkeiten in einer Methode</li>
-						<li>Schlechte Lesbarkeit und Wartbarkeit</li>
-						<li>Schwer zu testen</li>
-						<li>Verletzt das Single Responsibility Principle</li>
-					</ul>
-				</section>
+            <section>
+                <h3>Code Smell 1: Analyse</h3>
+                <ul>
+                    <li>Die Methode ist zu lang und komplex -> Unübersichtlich
+                    </li>
+                    <li>Viele verschiedene Verantwortlichkeiten in einer
+                        Methode
+                    </li>
+                    <li>Schlechte Lesbarkeit und Wartbarkeit</li>
+                    <li>Schwer zu testen</li>
+                    <li>Verletzt das Single Responsibility Principle</li>
+                </ul>
+            </section>
 
-				<section>
-					<h3>Code Smell 1: Lösungsvorschlag</h3>
-					<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">public boolean processRangeCalculation() {
+            <section>
+                <h3>Code Smell 1: Lösungsvorschlag</h3>
+                <pre style="width: 1000px; height: 500px; overflow: hidden;"><code
+                        class="java">public boolean processRangeCalculation() {
 	try {
 		outputPort.showRangeCalculationHeader(); // Ausgabe eines Headers vor der Berechnung
 
@@ -2565,14 +3176,15 @@ private RangeParameters collectRangeParameters() {
 	);
 }
 </code></pre>
-				</section>
+            </section>
 
 
-				<section>
-					<h3>Code Smell 2: Duplicate Code</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">// DcChargingCalculator
+            <section>
+                <h3>Code Smell 2: Duplicate Code</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code
+                                    class="java">// DcChargingCalculator
 private double calculateTemperatureEfficiencyFactor(double batteryTemperatureCelsius) {
 	if (batteryTemperatureCelsius < MIN_BATTERY_TEMPERATURE || 
 		batteryTemperatureCelsius > MAX_BATTERY_TEMPERATURE) {
@@ -2613,25 +3225,29 @@ private double calculateTemperatureEfficiency(double ambientTemperatureCelsius) 
 			(MAX_BATTERY_TEMPERATURE - OPTIMAL_TEMPERATURE_MAX);
 	}
 }</code></pre>
-						</div>
-					</div>
-				</section>
+                    </div>
+                </div>
+            </section>
 
-				<section>
-					<h3>Code Smell 2: Analyse</h3>
-					<ul>
-						<li>Fast identischer Code in beiden Klassen (DC & AC Charging Calculators)</li>
-						<li>Nur minimale Unterschiede in den Konstanten (0.5 vs 0.7)</li>
-						<li>Verletzt das DRY-Prinzip (Don't Repeat Yourself)</li>
-						<li>Schwer zu warten bei Änderungen</li>
-						<li>Fehleranfällig bei Updates</li>
-					</ul>
-				</section>
+            <section>
+                <h3>Code Smell 2: Analyse</h3>
+                <ul>
+                    <li>Fast identischer Code in beiden Klassen (DC & AC
+                        Charging Calculators)
+                    </li>
+                    <li>Nur minimale Unterschiede in den Konstanten (0.5 vs
+                        0.7)
+                    </li>
+                    <li>Verletzt das DRY-Prinzip (Don't Repeat Yourself)</li>
+                    <li>Schwer zu warten bei Änderungen</li>
+                    <li>Fehleranfällig bei Updates</li>
+                </ul>
+            </section>
 
-				<section>
-					<h3>Code Smell 2: Lösungsvorschlag</h3>
-					<p class="subchapter">Logik kombinieren durch Berechnung</p>
-					<pre><code class="java">public class TemperatureEfficiencyCalculator {
+            <section>
+                <h3>Code Smell 2: Lösungsvorschlag</h3>
+                <p class="subchapter">Logik kombinieren durch Berechnung</p>
+                <pre><code class="java">public class TemperatureEfficiencyCalculator {
 	private final double minEfficiency;
 	private final double maxEfficiency;
 	
@@ -2662,26 +3278,31 @@ private double calculateTemperatureEfficiency(double ambientTemperatureCelsius) 
 		}
 	}
 }</code></pre>
-				</section>
+            </section>
 
 
-				<section>
-					<h3>Refactorings (2p)</h3>
-					<p class="subchapter">2 unterschiedliche Refactorings aus der Vorlesung jeweils benennen, anwenden,
-						begründen, sowie UML vorher/nachher liefern; jeweils auf die Commits verweisen – die
-						Refactorings dürfen sich nicht mit den Beispielen der Code Smells überschneiden</p>
-				</section>
+            <section>
+                <h3>Refactorings (2p)</h3>
+                <p class="subchapter">2 unterschiedliche Refactorings aus der
+                    Vorlesung jeweils benennen, anwenden,
+                    begründen, sowie UML vorher/nachher liefern; jeweils auf die
+                    Commits verweisen – die
+                    Refactorings dürfen sich nicht mit den Beispielen der Code
+                    Smells überschneiden</p>
+            </section>
 
 
-				<section>
-					<h3>Refactoring 1: Code</h3>
-					<p class="subchapter">Extrahieren der Parameter-Erfassung in eine separate Methode (commit a5638e0)
-					</p>
-					<div class="horizontal-spaced-container" style="gap: 20px;">
-						<div style="width: 50%;">
-							<h5>Vorher</h5>
-							<pre
-								style="width: 550px; height: 450px; overflow: hidden; position: relative; right: 80px;"><code class="java">public boolean processRangeCalculation() {
+            <section>
+                <h3>Refactoring 1: Code</h3>
+                <p class="subchapter">Extrahieren der Parameter-Erfassung in
+                    eine separate Methode (commit a5638e0)
+                </p>
+                <div class="horizontal-spaced-container" style="gap: 20px;">
+                    <div style="width: 50%;">
+                        <h5>Vorher</h5>
+                        <pre
+                                style="width: 550px; height: 450px; overflow: hidden; position: relative; right: 80px;"><code
+                                class="java">public boolean processRangeCalculation() {
 					try {
 						outputPort.showRangeCalculationHeader();
 						
@@ -2705,10 +3326,11 @@ private double calculateTemperatureEfficiency(double ambientTemperatureCelsius) 
 						return false;
 					}
 				}</code></pre>
-						</div>
-						<div style="width: 50%;">
-							<h5>Nachher</h5>
-							<pre style="width: 550px; height: 450px; overflow: hidden;"><code class="java">public boolean processRangeCalculation() {
+                    </div>
+                    <div style="width: 50%;">
+                        <h5>Nachher</h5>
+                        <pre style="width: 550px; height: 450px; overflow: hidden;"><code
+                                class="java">public boolean processRangeCalculation() {
 					try {
 						outputPort.showRangeCalculationHeader();
 						RangeParameters parameters = collectRangeParameters();
@@ -2736,73 +3358,91 @@ private double calculateTemperatureEfficiency(double ambientTemperatureCelsius) 
 						stateOfCharge
 					);
 				}</code></pre>
-						</div>
-					</div>
-				</section>
+                    </div>
+                </div>
+            </section>
 
 
-				<section>
-					<h3>Refactoring 1: Erklärung</h3>
-					<div class="horizontal-spaced-container">
-						<div style="width: 50%;">
-							<h4>Vorteile</h4>
-							<ul>
-								<li>Bessere Wartbarkeit durch modularen Code</li>
-								<li>Einfachere Testbarkeit durch isolierte Funktionalität</li>
-								<li>Reduzierte Komplexität in der Hauptmethode</li>
-								<li>Einhaltung des <strong>Single Responsibility Principle (SRP)</strong> durch klare
-									Trennung
-									der Verantwortlichkeiten</li>
-								<li>Einhaltung des <strong>Don't Repeat Yourself (DRY)</strong> Prinzips durch
-									Vermeidung von
-									Code-Duplikation</li>
-							</ul>
-						</div>
-						<div style="width: 50%;">
-							<h4>Änderungen</h4>
-							<ul>
-								<li>Extraktion der Parameter-Erfassung in separate Methode
-									<code>collectRangeParameters()</code>
-								</li>
-								<li>Einführung einer neuen Klasse <code>RangeParameters</code> zur Kapselung der
-									Parameter</li>
-								<li>Vereinfachung der Hauptmethode <code>processRangeCalculation()</code></li>
-								<li>Reduzierung der Parameteranzahl im Use Case Interface</li>
-								<li>Verbesserte Lesbarkeit durch klare Trennung von Parameter-Erfassung und
-									Geschäftslogik</li>
-							</ul>
-						</div>
-					</div>
-				</section>
+            <section>
+                <h3>Refactoring 1: Erklärung</h3>
+                <div class="horizontal-spaced-container">
+                    <div style="width: 50%;">
+                        <h4>Vorteile</h4>
+                        <ul>
+                            <li>Bessere Wartbarkeit durch modularen Code</li>
+                            <li>Einfachere Testbarkeit durch isolierte
+                                Funktionalität
+                            </li>
+                            <li>Reduzierte Komplexität in der Hauptmethode</li>
+                            <li>Einhaltung des <strong>Single Responsibility
+                                Principle (SRP)</strong> durch klare
+                                Trennung
+                                der Verantwortlichkeiten
+                            </li>
+                            <li>Einhaltung des <strong>Don't Repeat Yourself
+                                (DRY)</strong> Prinzips durch
+                                Vermeidung von
+                                Code-Duplikation
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="width: 50%;">
+                        <h4>Änderungen</h4>
+                        <ul>
+                            <li>Extraktion der Parameter-Erfassung in separate
+                                Methode
+                                <code>collectRangeParameters()</code>
+                            </li>
+                            <li>Einführung einer neuen Klasse <code>RangeParameters</code>
+                                zur Kapselung der
+                                Parameter
+                            </li>
+                            <li>Vereinfachung der Hauptmethode <code>processRangeCalculation()</code>
+                            </li>
+                            <li>Reduzierung der Parameteranzahl im Use Case
+                                Interface
+                            </li>
+                            <li>Verbesserte Lesbarkeit durch klare Trennung von
+                                Parameter-Erfassung und
+                                Geschäftslogik
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
 
-				<section>
-					<h3>Refactoring 1: UML-Diagramme</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h5>Vorher</h5>
-							<img style="scale: 1.35; position:  relative; right: 55px;"
-								src="assets/UMLs-imgs/refactoring1_before.puml.png" alt="Extract Method UML Before"
-								class="uml-image">
-						</div>
-						<div>
-							<h5>Nachher</h5>
-							<img style="scale: 1.35; position:  relative; left: 50px;"
-								src="assets/UMLs-imgs/refactoring1_after.puml.png" alt="Extract Method UML After"
-								class="uml-image">
-						</div>
-					</div>
-				</section>
+            <section>
+                <h3>Refactoring 1: UML-Diagramme</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+                        <h5>Vorher</h5>
+                        <img style="scale: 1.35; position:  relative; right: 55px;"
+                             src="assets/UMLs-imgs/refactoring1_before.puml.png"
+                             alt="Extract Method UML Before"
+                             class="uml-image">
+                    </div>
+                    <div>
+                        <h5>Nachher</h5>
+                        <img style="scale: 1.35; position:  relative; left: 50px;"
+                             src="assets/UMLs-imgs/refactoring1_after.puml.png"
+                             alt="Extract Method UML After"
+                             class="uml-image">
+                    </div>
+                </div>
+            </section>
 
 
-				<section>
-					<h3>Refactoring 2: Code</h3>
-					<p class="subchapter">Ersetzen der Logik in den ChargingCalculators durch Polymorphie
-						(943b4c7)</p>
-					<div class="horizontal-spaced-container">
-						<div style="width: 50%;">
-							<h5>Vorher</h5>
-							<pre
-								style="width: 550px; height: 450px; overflow: hidden; position: relative; right: 80px;"><code class="java">public class DcChargingCalculator {
+            <section>
+                <h3>Refactoring 2: Code</h3>
+                <p class="subchapter">Ersetzen der Logik in den
+                    ChargingCalculators durch Polymorphie
+                    (943b4c7)</p>
+                <div class="horizontal-spaced-container">
+                    <div style="width: 50%;">
+                        <h5>Vorher</h5>
+                        <pre
+                                style="width: 550px; height: 450px; overflow: hidden; position: relative; right: 80px;"><code
+                                class="java">public class DcChargingCalculator {
 					private double calculatePowerReductionPercent(double startingSocPercent, double targetSocPercent) {
 						if (targetSocPercent > 80) {
 							return 60.0;
@@ -2828,10 +3468,11 @@ private double calculateTemperatureEfficiency(double ambientTemperatureCelsius) 
 						}
 					}
 				}</code></pre>
-						</div>
-						<div style="width: 50%;">
-							<h5>Nachher</h5>
-							<pre style="width: 550px; height: 450px; overflow: hidden;"><code class="java">public interface ChargingStrategy {
+                    </div>
+                    <div style="width: 50%;">
+                        <h5>Nachher</h5>
+                        <pre style="width: 550px; height: 450px; overflow: hidden;"><code
+                                class="java">public interface ChargingStrategy {
 					double calculateEfficiency();
 				}
 				
@@ -2874,116 +3515,156 @@ private double calculateTemperatureEfficiency(double ambientTemperatureCelsius) 
 						}
 					}
 				}</code></pre>
-						</div>
-					</div>
-				</section>
+                    </div>
+                </div>
+            </section>
 
-				<section>
-					<h3>Refactoring 2: Erklärung</h3>
-					<div class="horizontal-spaced-container">
-						<div style="width: 50%;">
-							<h4>Vorteile</h4>
-							<ul>
-								<li>Bessere Wartbarkeit durch klare Trennung der Verantwortlichkeiten</li>
-								<li>Einfache Erweiterbarkeit durch neue Strategien</li>
-								<li>Bessere Testbarkeit durch isolierte Komponenten</li>
-								<li>Einhaltung des <strong>Open/Closed Principle</strong></li>
-								<li>Reduzierte Komplexität in den Charging Calculators</li>
-							</ul>
-						</div>
-						<div style="width: 50%;">
-							<h4>Änderungen</h4>
-							<ul>
-								<li>Einführung des <code>ChargingStrategy</code> Interfaces</li>
-								<li>Implementierung konkreter Strategien: <code>HouseholdSocketStrategy</code>,
-									<code>CampingSocketStrategy</code>, <code>WallboxStrategy</code>,
-									<code>DcChargingStrategy</code>
-								</li>
-								<li>Ersetzung der Logik durch polymorphe Methodenaufrufe</li>
-								<li>Kapselung der Effizienzberechnung in den jeweiligen Strategieklassen</li>
-								<li>Einführung von Konstruktoren für kontextabhängige Strategien</li>
-							</ul>
-						</div>
-					</div>
-				</section>
-
-
-
-				<section>
-					<h3>Refactoring 2: UML-Diagramme</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h5>Vorher</h5>
-							<img style="scale: 1.3; position: relative; right: 60px;"
-								src="assets/UMLs-imgs/refactoring2_before.puml.png"
-								alt="Replace Conditional with Polymorphism UML Before" class="uml-image">
-						</div>
-						<div>
-							<h5>Nachher</h5>
-							<img style="scale: 1.3;  position: relative; left: 50px;"
-								src="assets/UMLs-imgs/refactoring2_after.puml.png"
-								alt="Replace Conditional with Polymorphism UML After" class="uml-image">
-						</div>
-					</div>
-				</section>
-
-			</section>
-
-			<!-- Kapitel 8 -->
-			<section alt="Kapitel 8">
-				<section>
-					<h2 class="chapter-title">Kapitel 8: <br /> Entwurfsmuster (8P)</h2>
-					<p class="subchapter">Zwei unterschiedliche Entwurfsmuster aus der Vorlesung (oder nach Absprache
-						auch andere) jeweils benennen, sinnvoll einsetzen, begründen und UML-Diagramm</p>
-				</section>
-
-				<section>
-					<h3>Entwurfsmuster 1: <br /> Strategy Pattern (4P)</h3>
-					<div class="horizontal-spaced-container">
-						<div style="width: 50%;">
-							<h4>Überblick</h4>
-							<ul>
-								<li><b>Kategorie/Art:</b> Behavioral Pattern</li>
-								<li><b>Zweck:</b> Definiert eine Familie von Algorithmen, kapselt sie ab und macht sie
-									austauschbar (Laufzeit u. Compilezeit)</li>
-								<li><b>Verwendung:</b> Implementierung verschiedener Berechnungsstrategien für die
-									Reichweite von Elektrofahrzeugen</li>
-							</ul>
-						</div>
-						<div style="width: 50%;">
-							<h4>Vorteile</h4>
-							<ul>
-								<li>Kapselung von unterschiedlichen Algorithmen in getrennten Klassen</li>
-								<li>Laufzeitentscheidung über zu verwendende Strategie</li>
-								<li>Leichte Erweiterbarkeit um neue Strategien (Auch gut für OCP)</li>
-								<li>Einhaltung des <strong>Open/Closed Principles</strong></li>
-								<li>Vermeidung von bedingten Verzweigungen durch Polymorphie</li>
-							</ul>
-						</div>
-					</div>
-				</section>
+            <section>
+                <h3>Refactoring 2: Erklärung</h3>
+                <div class="horizontal-spaced-container">
+                    <div style="width: 50%;">
+                        <h4>Vorteile</h4>
+                        <ul>
+                            <li>Bessere Wartbarkeit durch klare Trennung der
+                                Verantwortlichkeiten
+                            </li>
+                            <li>Einfache Erweiterbarkeit durch neue Strategien
+                            </li>
+                            <li>Bessere Testbarkeit durch isolierte
+                                Komponenten
+                            </li>
+                            <li>Einhaltung des <strong>Open/Closed
+                                Principle</strong></li>
+                            <li>Reduzierte Komplexität in den Charging
+                                Calculators
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="width: 50%;">
+                        <h4>Änderungen</h4>
+                        <ul>
+                            <li>Einführung des <code>ChargingStrategy</code>
+                                Interfaces
+                            </li>
+                            <li>Implementierung konkreter Strategien: <code>HouseholdSocketStrategy</code>,
+                                <code>CampingSocketStrategy</code>, <code>WallboxStrategy</code>,
+                                <code>DcChargingStrategy</code>
+                            </li>
+                            <li>Ersetzung der Logik durch polymorphe
+                                Methodenaufrufe
+                            </li>
+                            <li>Kapselung der Effizienzberechnung in den
+                                jeweiligen Strategieklassen
+                            </li>
+                            <li>Einführung von Konstruktoren für
+                                kontextabhängige Strategien
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
 
 
-				<section>
-					<h3 style="padding: 0; margin-top: 0;">Entwurfsmuster 1: <br /> Strategy Pattern (Forsetzung)</h3>
-					<div style="width: 100%;">
-						<h4 style="margin-top: 50px; padding: 0; margin-bottom: 0;">Nachteile</h4>
-						<ul>
-							<li>Erhöhte Komplexität durch viele kleine Klassen</li>
-							<li>Client/Klasse muss die verschiedenen Strategien kennen</li>
-							<li>Möglicher Overhead durch zusätzliche Erstellung von Objekten</li>
-							<li>Strategie-Auswahl kann komplex werden</li>
-							<li>Schwieriger zu debuggen durch verteilte Logik</li>
-						</ul>
-					</div>
-				</section>
+            <section>
+                <h3>Refactoring 2: UML-Diagramme</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+                        <h5>Vorher</h5>
+                        <img style="scale: 1.3; position: relative; right: 60px;"
+                             src="assets/UMLs-imgs/refactoring2_before.puml.png"
+                             alt="Replace Conditional with Polymorphism UML Before"
+                             class="uml-image">
+                    </div>
+                    <div>
+                        <h5>Nachher</h5>
+                        <img style="scale: 1.3;  position: relative; left: 50px;"
+                             src="assets/UMLs-imgs/refactoring2_after.puml.png"
+                             alt="Replace Conditional with Polymorphism UML After"
+                             class="uml-image">
+                    </div>
+                </div>
+            </section>
+
+        </section>
+
+        <!-- Kapitel 8 -->
+        <section alt="Kapitel 8">
+            <section>
+                <h2 class="chapter-title">Kapitel 8: <br/> Entwurfsmuster (8P)
+                </h2>
+                <p class="subchapter">Zwei unterschiedliche Entwurfsmuster aus
+                    der Vorlesung (oder nach Absprache
+                    auch andere) jeweils benennen, sinnvoll einsetzen, begründen
+                    und UML-Diagramm</p>
+            </section>
+
+            <section>
+                <h3>Entwurfsmuster 1: <br/> Strategy Pattern (4P)</h3>
+                <div class="horizontal-spaced-container">
+                    <div style="width: 50%;">
+                        <h4>Überblick</h4>
+                        <ul>
+                            <li><b>Kategorie/Art:</b> Behavioral Pattern</li>
+                            <li><b>Zweck:</b> Definiert eine Familie von
+                                Algorithmen, kapselt sie ab und macht sie
+                                austauschbar (Laufzeit u. Compilezeit)
+                            </li>
+                            <li><b>Verwendung:</b> Implementierung verschiedener
+                                Berechnungsstrategien für die
+                                Reichweite von Elektrofahrzeugen
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="width: 50%;">
+                        <h4>Vorteile</h4>
+                        <ul>
+                            <li>Kapselung von unterschiedlichen Algorithmen in
+                                getrennten Klassen
+                            </li>
+                            <li>Laufzeitentscheidung über zu verwendende
+                                Strategie
+                            </li>
+                            <li>Leichte Erweiterbarkeit um neue Strategien (Auch
+                                gut für OCP)
+                            </li>
+                            <li>Einhaltung des <strong>Open/Closed
+                                Principles</strong></li>
+                            <li>Vermeidung von bedingten Verzweigungen durch
+                                Polymorphie
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
 
 
-				<section>
-					<h3>Strategy Pattern: Interface</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">// Das Strategy Interface
+            <section>
+                <h3 style="padding: 0; margin-top: 0;">Entwurfsmuster 1: <br/>
+                    Strategy Pattern (Forsetzung)</h3>
+                <div style="width: 100%;">
+                    <h4 style="margin-top: 50px; padding: 0; margin-bottom: 0;">
+                        Nachteile</h4>
+                    <ul>
+                        <li>Erhöhte Komplexität durch viele kleine Klassen</li>
+                        <li>Client/Klasse muss die verschiedenen Strategien
+                            kennen
+                        </li>
+                        <li>Möglicher Overhead durch zusätzliche Erstellung von
+                            Objekten
+                        </li>
+                        <li>Strategie-Auswahl kann komplex werden</li>
+                        <li>Schwieriger zu debuggen durch verteilte Logik</li>
+                    </ul>
+                </div>
+            </section>
+
+
+            <section>
+                <h3>Strategy Pattern: Interface</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code
+                                    class="java">// Das Strategy Interface
 public interface RangeCalculationStrategyInterface {
 	RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters);
 	
@@ -2993,15 +3674,16 @@ public interface RangeCalculationStrategyInterface {
 }
 
 </code></pre>
-						</div>
-					</div>
-				</section>
+                    </div>
+                </div>
+            </section>
 
-				<section>
-					<h3>Strategy Pattern: Erste Implementierung</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">// Erste Strategie-Implementierung
+            <section>
+                <h3>Strategy Pattern: Erste Implementierung</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code
+                                    class="java">// Erste Strategie-Implementierung
 public class WltpBasedRangeCalculationStrategy implements RangeCalculationStrategyInterface {
 
 	@Override
@@ -3176,15 +3858,16 @@ public class WltpBasedRangeCalculationStrategy implements RangeCalculationStrate
 	}
 } 
 </code></pre>
-						</div>
-					</div>
-				</section>
+                    </div>
+                </div>
+            </section>
 
-				<section>
-					<h3>Strategy Pattern: Zweite Implementierung</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">// Zweite Strategie-Implementierung
+            <section>
+                <h3>Strategy Pattern: Zweite Implementierung</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code
+                                    class="java">// Zweite Strategie-Implementierung
 
 public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculationStrategyInterface {
 
@@ -3356,15 +4039,16 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
 } 
 
 			</code></pre>
-						</div>
-					</div>
-				</section>
+                    </div>
+                </div>
+            </section>
 
-				<section>
-					<h3>Strategy Pattern: Verwendung im Client</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">// Client-Klasse, die die Strategien verwendet
+            <section>
+                <h3>Strategy Pattern: Verwendung im Client</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code
+                                    class="java">// Client-Klasse, die die Strategien verwendet
 public class RangeCalculatorService {
     private final List<RangeCalculationStrategyInterface> strategies;
     private RangeCalculationStrategyInterface defaultStrategy;
@@ -3418,99 +4102,123 @@ public class RangeCalculatorService {
     }
 } 
 </code></pre>
-						</div>
-					</div>
-				</section>
+                    </div>
+                </div>
+            </section>
 
-				<section>
-					<h4>Strategie Pattern: Vergleich</h4>
-					<table style="margin: 0 auto; margin-top: 30px; padding: 0;">
-						<thead>
-							<tr>
-								<th>Aspekt</th>
-								<th>ConsumptionBasedRangeCalculationStrategy</th>
-								<th>WltpBasedRangeCalculationStrategy</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>Basis für Berechnung</td>
-								<td>Verbrauchsprofile des Fahrzeugs bei verschiedenen Geschwindigkeiten (50, 100, 130
-									km/h)</td>
-								<td>WLTP-Reichweite des Fahrzeugs als Fixwert</td>
-							</tr>
-							<tr>
-								<td>Kalkulation Grundverbrauch</td>
-								<td>Basierend auf dem aktuellen Fahrumfeld (DrivingEnvironment) wird ein Verbrauchswert
-									(kWh/100km) gewählt</td>
-								<td>Es wird ein durchschnittlicher Verbrauch aus der WLTP-Reichweite und
-									Batteriekapazität berechnet</td>
-							</tr>
-							<tr>
-								<td>Berücksichtigte Faktoren</td>
-								<td>Effizienzmodus, Geländeart, Wetterbedingungen, Temperatur, Batterieladestand</td>
-								<td>Effizienzmodus, Geländeart, Wetterbedingungen, Temperatur, Batterieladestand,
-									zusätzlich ein Fahrumgebungsfaktor (EnvironmentFactor)</td>
-							</tr>
-						</tbody>
-					</table>
-				</section>
+            <section>
+                <h4>Strategie Pattern: Vergleich</h4>
+                <table style="margin: 0 auto; margin-top: 30px; padding: 0;">
+                    <thead>
+                    <tr>
+                        <th>Aspekt</th>
+                        <th>ConsumptionBasedRangeCalculationStrategy</th>
+                        <th>WltpBasedRangeCalculationStrategy</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Basis für Berechnung</td>
+                        <td>Verbrauchsprofile des Fahrzeugs bei verschiedenen
+                            Geschwindigkeiten (50, 100, 130
+                            km/h)
+                        </td>
+                        <td>WLTP-Reichweite des Fahrzeugs als Fixwert</td>
+                    </tr>
+                    <tr>
+                        <td>Kalkulation Grundverbrauch</td>
+                        <td>Basierend auf dem aktuellen Fahrumfeld
+                            (DrivingEnvironment) wird ein Verbrauchswert
+                            (kWh/100km) gewählt
+                        </td>
+                        <td>Es wird ein durchschnittlicher Verbrauch aus der
+                            WLTP-Reichweite und
+                            Batteriekapazität berechnet
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Berücksichtigte Faktoren</td>
+                        <td>Effizienzmodus, Geländeart, Wetterbedingungen,
+                            Temperatur, Batterieladestand
+                        </td>
+                        <td>Effizienzmodus, Geländeart, Wetterbedingungen,
+                            Temperatur, Batterieladestand,
+                            zusätzlich ein Fahrumgebungsfaktor
+                            (EnvironmentFactor)
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
 
-				<section>
-					<h3>Strategy Pattern: UML-Diagramm</h3>
-					<img style="scale: 1.25; margin: 0; padding: 0; margin-top: 50px;"
-						src="assets/UMLs-imgs/Kapitel_8-Aufgabe_1.png" alt="Strategy Pattern UML Diagram"
-						class="uml-image">
-				</section>
+            <section>
+                <h3>Strategy Pattern: UML-Diagramm</h3>
+                <img style="scale: 1.25; margin: 0; padding: 0; margin-top: 50px;"
+                     src="assets/UMLs-imgs/Kapitel_8-Aufgabe_1.png"
+                     alt="Strategy Pattern UML Diagram"
+                     class="uml-image">
+            </section>
 
 
+            <section>
+                <h3>Entwurfsmuster 2: Adapter Pattern (4P)</h3>
+                <div class="horizontal-spaced-container">
+                    <div style="width: 50%;">
+                        <h4>Überblick</h4>
+                        <ul>
+                            <li><b>Art/Kategorie:</b> Strukturmuster (Structural
+                                Pattern)
+                            </li>
+                            <li><b>Zweck:</b> Konvertiert die Schnittstelle
+                                einer Klasse in eine andere, die vom
+                                Client erwartet wird
+                            </li>
+                            <li><b>Verwendung:</b> Integration von
+                                I/O-Operationen in die Clean Architecture
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="width: 50%;">
+                        <h4>Vorteile</h4>
+                        <ul>
+                            <li>Flexibilität durch lose Kopplung</li>
+                            <li>Einfach zu erweitern</li>
+                            <li>Trennt Geschäftslogik von externen Ressourcen u.
+                                Komponenten
+                            </li>
+                            <li>Ermöglicht Zusammenarbeit nicht-kompatibler
+                                Schnittstellen
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
 
+            <section>
+                <h3 style="padding: 0; margin-top: 0;">Entwurfsmuster 2: <br/>
+                    Adapter Pattern (Fortsetzung)</h3>
+                <div style="width: 100%;">
+                    <h4 style="margin-top: 50px; padding: 0; margin-bottom: 0;">
+                        Nachteile</h4>
+                    <ul>
+                        <li>Zusätzliche Komplexität durch zusätzliche
+                            Abstraktionsebene
+                        </li>
+                        <li>Möglicher Overhead durch zusätzliche
+                            Methodenaufrufe
+                        </li>
+                        <li>Erhöhte Anzahl von Klassen und Interfaces</li>
+                        <li>Externe können abrupt aufrufen</li>
+                    </ul>
+                </div>
+            </section>
 
-
-
-
-				<section>
-					<h3>Entwurfsmuster 2: Adapter Pattern (4P)</h3>
-					<div class="horizontal-spaced-container">
-						<div style="width: 50%;">
-							<h4>Überblick</h4>
-							<ul>
-								<li><b>Art/Kategorie:</b> Strukturmuster (Structural Pattern)</li>
-								<li><b>Zweck:</b> Konvertiert die Schnittstelle einer Klasse in eine andere, die vom
-									Client erwartet wird</li>
-								<li><b>Verwendung:</b> Integration von I/O-Operationen in die Clean Architecture</li>
-							</ul>
-						</div>
-						<div style="width: 50%;">
-							<h4>Vorteile</h4>
-							<ul>
-								<li>Flexibilität durch lose Kopplung</li>
-								<li>Einfach zu erweitern</li>
-								<li>Trennt Geschäftslogik von externen Ressourcen u. Komponenten</li>
-								<li>Ermöglicht Zusammenarbeit nicht-kompatibler Schnittstellen</li>
-							</ul>
-						</div>
-					</div>
-				</section>
-
-				<section>
-					<h3 style="padding: 0; margin-top: 0;">Entwurfsmuster 2: <br /> Adapter Pattern (Fortsetzung)</h3>
-					<div style="width: 100%;">
-						<h4 style="margin-top: 50px; padding: 0; margin-bottom: 0;">Nachteile</h4>
-						<ul>
-							<li>Zusätzliche Komplexität durch zusätzliche Abstraktionsebene</li>
-							<li>Möglicher Overhead durch zusätzliche Methodenaufrufe</li>
-							<li>Erhöhte Anzahl von Klassen und Interfaces</li>
-							<li>Externe können abrupt aufrufen</li>
-						</ul>
-					</div>
-				</section>
-
-				<section>
-					<h3>Adapter Pattern: Port-Interfaces</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">// Port Interface für Benutzereingaben
+            <section>
+                <h3>Adapter Pattern: Port-Interfaces</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code
+                                    class="java">// Port Interface für Benutzereingaben
 public interface UserInputPortInterface {
     String readLine();
     int readInt();
@@ -3533,15 +4241,16 @@ public interface UserOutputPortInterface {
     void clearScreen();
     void displayProgressBar(int current, int total);
 }</code></pre>
-						</div>
-					</div>
-				</section>
+                    </div>
+                </div>
+            </section>
 
-				<section>
-					<h3>Adapter Pattern: ConsoleUserInputAdapter</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">
+            <section>
+                <h3>Adapter Pattern: ConsoleUserInputAdapter</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code
+                                    class="java">
 public class ConsoleUserInputAdapter implements UserInputPortInterface {
     private final Scanner scanner;
     
@@ -3633,15 +4342,16 @@ public class ConsoleUserInputAdapter implements UserInputPortInterface {
         }
     }
 }</code></pre>
-						</div>
-					</div>
-				</section>
+                    </div>
+                </div>
+            </section>
 
-				<section>
-					<h3>Adapter Pattern: ConsoleUserOutputAdapter</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">
+            <section>
+                <h3>Adapter Pattern: ConsoleUserOutputAdapter</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code
+                                    class="java">
 public class ConsoleUserOutputAdapter implements UserOutputPortInterface {
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_RED = "\u001B[31m";
@@ -3737,15 +4447,16 @@ public class ConsoleUserOutputAdapter implements UserOutputPortInterface {
         }
     }
 }</code></pre>
-						</div>
-					</div>
-				</section>
+                    </div>
+                </div>
+            </section>
 
-				<section>
-					<h3>Adapter Pattern: Verwendung im Controller</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code class="java">
+            <section>
+                <h3>Adapter Pattern: Verwendung im Controller</h3>
+                <div class="horizontal-spaced-container">
+                    <div>
+							<pre style="width: 1000px; height: 500px; overflow: hidden;"><code
+                                    class="java">
 public class RangeCalculationController {
     private final UserInputPortInterface userInputPort;
     private final UserOutputPortInterface userOutputPort;
@@ -3822,86 +4533,87 @@ public class RangeCalculationController {
         }
     }
 }</code></pre>
-						</div>
-					</div>
-				</section>
+                    </div>
+                </div>
+            </section>
 
-				<section>
-					<h3>Adapter Pattern: UML-Diagramm</h3>
-					<img style="scale: 1.3" src="assets/UMLs-imgs/Kapitel_8-Aufgabe_2.png"
-						alt="Adapter Pattern UML Diagram" class="uml-image">
-				</section>
-			</section>
+            <section>
+                <h3>Adapter Pattern: UML-Diagramm</h3>
+                <img style="scale: 1.3"
+                     src="assets/UMLs-imgs/Kapitel_8-Aufgabe_2.png"
+                     alt="Adapter Pattern UML Diagram" class="uml-image">
+            </section>
+        </section>
 
 
-		</div>
-	</div>
+    </div>
+</div>
 
-	<script src="dist/reveal.js"></script>
-	<script src="plugin/notes/notes.js"></script>
-	<script src="plugin/markdown/markdown.js"></script>
-	<script src="plugin/highlight/highlight.js"></script>
-	<script>
-		// Debug logging
-		console.log('RevealHighlight plugin:', typeof RevealHighlight);
-		console.log('hljs global:', typeof window.hljs);
+<script src="dist/reveal.js"></script>
+<script src="plugin/notes/notes.js"></script>
+<script src="plugin/markdown/markdown.js"></script>
+<script src="plugin/highlight/highlight.js"></script>
+<script>
+    // Debug logging
+    console.log('RevealHighlight plugin:', typeof RevealHighlight);
+    console.log('hljs global:', typeof window.hljs);
 
-		// More info about initialization & config:
-		// - https://revealjs.com/initialization/
-		// - https://revealjs.com/config/
-		Reveal.initialize({
-			hash: true,
-			slideNumber: true,
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+        hash: true,
+        slideNumber: true,
 
-			// Explicit highlight config
-			highlight: {
-				highlightOnLoad: true,
-				escapeHTML: false
-			},
+        // Explicit highlight config
+        highlight: {
+            highlightOnLoad: true,
+            escapeHTML: false
+        },
 
-			// Learn about plugins: https://revealjs.com/plugins/
-			plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
-		});
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+    });
 
-		// Load all slide content, then initialize highlight.js
-		const loadSlidesPromises = [];
-		document.querySelectorAll('[data-include]').forEach((section) => {
-			const url = section.getAttribute('data-include');
-			const promise = fetch(url)
-				.then(response => response.text())
-				.then(html => {
-					section.html = ""
-					section.innerHTML = html;
-				});
-			loadSlidesPromises.push(promise);
-		});
+    // Load all slide content, then initialize highlight.js
+    const loadSlidesPromises = [];
+    document.querySelectorAll('[data-include]').forEach((section) => {
+        const url = section.getAttribute('data-include');
+        const promise = fetch(url)
+            .then(response => response.text())
+            .then(html => {
+                section.html = ""
+                section.innerHTML = html;
+            });
+        loadSlidesPromises.push(promise);
+    });
 
-		// After all slides are loaded, re-initialize highlight.js
-		Promise.all(loadSlidesPromises).then(() => {
-			// Force Reveal to update
-			Reveal.sync();
+    // After all slides are loaded, re-initialize highlight.js
+    Promise.all(loadSlidesPromises).then(() => {
+        // Force Reveal to update
+        Reveal.sync();
 
-			// Try multiple ways to initialize highlighting
+        // Try multiple ways to initialize highlighting
 
-			// 1. Through Reveal plugin
-			const highlight = Reveal.getPlugin('highlight');
-			if (highlight) {
-				document.querySelectorAll('code').forEach(block => {
-					highlight.highlightBlock(block);
-				});
-			}
+        // 1. Through Reveal plugin
+        const highlight = Reveal.getPlugin('highlight');
+        if (highlight) {
+            document.querySelectorAll('code').forEach(block => {
+                highlight.highlightBlock(block);
+            });
+        }
 
-			// 2. Direct hljs initialization if available
-			if (window.hljs) {
-				window.hljs.configure({
-					languages: ['bash', 'javascript', 'html', 'xml', 'css']
-				});
-				document.querySelectorAll('code.bash, code.hljs.bash').forEach(block => {
-					window.hljs.highlightElement(block);
-				});
-			}
-		});
-	</script>
+        // 2. Direct hljs initialization if available
+        if (window.hljs) {
+            window.hljs.configure({
+                languages: ['bash', 'javascript', 'html', 'xml', 'css']
+            });
+            document.querySelectorAll('code.bash, code.hljs.bash').forEach(block => {
+                window.hljs.highlightElement(block);
+            });
+        }
+    });
+</script>
 </body>
 
 </html>
