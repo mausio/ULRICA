@@ -1058,7 +1058,7 @@ jobs:
 			<!-- Kapitel 5 -->
 			<section alt="Kapitel 5">
 				<section>
-					<h2 class="chapter-title">Kapitel 5: Unit Tests (8P)</h2>
+					<h2 class="chapter-title">Kapitel 5:<br/> Unit Tests (8P)</h2>
 				</section>
 
 				<section>
@@ -1073,8 +1073,9 @@ jobs:
 							<h5>Test-Strategie</h5>
 							<ul>
 								<li>Fokus auf Domain-Logik als kritischen Kern</li>
-								<li>106 automatisierte Tests (JUnit)</li>
-								<li>47% Gesamtabdeckung (JaCoCo)</li>
+								<li>Ignorieren von UI Elementen wie SOUTs</li>
+								<li>ca. 100 automatisierte Tests (JUnit)</li>
+								<li>47% Gesamtabdeckung (laut JaCoCo)</li>
 								<li>Spezielle Tests für Randfälle und Fehlerbedingungen</li>
 								<li>Mocks für externe Abhängigkeiten</li>
 							</ul>
@@ -1419,145 +1420,20 @@ jobs:
 				}</code></pre>
 					<p>Testet die Validierung und Fehlerbehandlung bei der Erstellung von Value Objects</p>
 				</section>
-				
+
 				<section>
-					<h3>Mock-Objekte in Tests (3P)</h3>
-					<div class="horizontal-spaced-container">
-						<div>
-							<h5>Warum Mocks in ULRICA?</h5>
-							<ul>
-								<li>Isolierung der Testbedingungen</li>
-								<li>Simulation von schwer erzeugbaren Zuständen</li>
-								<li>Schnellere Testausführung ohne externe Abhängigkeiten</li>
-								<li>Vermeidung von Seiteneffekten</li>
-								<li>Validierung von Interaktionen zwischen Komponenten</li>
-							</ul>
-						</div>
-						<div>
-							<h5>Mock-Implementierungen</h5>
-							<ul>
-								<li>Handgeschriebene Mocks für einfache Fälle</li>
-								<li>Interface-basierte Mocks für Ports und Adapters</li>
-								<li>Simulierte externe Services</li>
-								<li>Mock-Repositories für In-Memory-Testing</li>
-								<li>Test-spezifische OutputPorts für Validierung</li>
-							</ul>
-						</div>
-					</div>
+					<h3>ATRIP: Automatic, Thorough und Professional (2P)</h3>
+					<p class="subchapter">je Begründung/Erläuterung, wie ‘Automatic’, ‘Thorough’ und ‘Professional’ realisiert wurde – bei
+						‘Thorough’ zusätzlich Analyse und Bewertung zur Testabdeckung]</p>
+				</section>
+
+				<section>
+					<h3>Fakes und Mocks (4P)</h3>
+					<p class="subchapter">Analyse und Begründung des Einsatzes von 2 Fake/Mock-Objekten (die Fake/Mocks sind ohne
+						Dritthersteller-Bibliothek/Framework zu implementieren); zusätzlich jeweils UML Diagramm mit
+						Beziehungen zwischen Mock, zu mockender Klasse und Aufrufer des Mocks</p>
 				</section>
 				
-				<section>
-					<h3>Einsatz von Mock-Objekten</h3>
-					<img src="assets/UMLs-imgs/Kapitel_5-Aufgabe_3.png" alt="Mock Objects UML Diagram" class="uml-image">
-				</section>
-				
-				<section>
-					<h3>2 Test mit Mock-Objekten (3P)</h3>
-					<pre><code class="java">@Test
-				public void testDcChargingControllerWithMocks() {
-					// Mock-Objekte erstellen
-					UserInputPortInterface mockInputPort = new MockUserInputPort();
-					UserOutputPortInterface mockOutputPort = new MockUserOutputPort();
-					CalculateDcChargingUseCaseInterface mockUseCase = new MockDcChargingUseCase();
-					DcChargingOutputPortInterface mockResultPort = new MockDcChargingOutputPort();
-					
-					// Controller mit Mock-Objekten initialisieren
-					DcChargingController controller = new DcChargingController(
-						mockInputPort, mockOutputPort, mockUseCase, mockResultPort);
-					
-					// Controller-Methode ausführen
-					boolean result = controller.processDcCharging();
-					
-					// Überprüfung der Interaktionen mit den Mocks
-					assertTrue(result);
-					MockUserOutputPort outputMock = (MockUserOutputPort) mockOutputPort;
-					assertTrue(outputMock.displayCalled);
-					assertTrue(outputMock.displayedMessages.size() > 0);
-					
-					MockDcChargingUseCase useCaseMock = (MockDcChargingUseCase) mockUseCase;
-					assertTrue(useCaseMock.calculateCalled);
-					assertNotNull(useCaseMock.lastCommand);
-				}
-				
-				// Mock-Implementierungen
-				class MockUserInputPort implements UserInputPortInterface {
-					public boolean readDoubleCalled = false;
-					public double valueToReturn = 50.0;
-					
-					@Override
-					public double readDouble() {
-						readDoubleCalled = true;
-						return valueToReturn;
-					}
-					
-					// Weitere Mock-Methoden...
-				}
-				
-				class MockUserOutputPort implements UserOutputPortInterface {
-					public boolean displayCalled = false;
-					public List<String> displayedMessages = new ArrayList<>();
-					
-					@Override
-					public void display(String message) {
-						displayCalled = true;
-						displayedMessages.add(message);
-					}
-					
-					// Weitere Mock-Methoden...
-				}</code></pre>
-				</section>
-				
-				<section>
-					<h3>Test mit komplexerem Mock-Objekt</h3>
-					<pre><code class="java">@Test
-				public void testExecuteActionInteractorWithMocks() {
-					// Komplexeres Setup mit mehreren zusammenarbeitenden Mocks
-					MockProfileSelectionService mockProfileService = new MockProfileSelectionService();
-					MockActionMenuView mockActionView = new MockActionMenuView();
-					MockDcChargingController mockDcController = new MockDcChargingController();
-					MockAcChargingController mockAcController = new MockAcChargingController();
-					MockRangeCalculationController mockRangeController = new MockRangeCalculationController();
-					
-					// Testprofile vorbereiten
-					CarProfile testProfile = new CarProfile.Builder()
-							.id("test-id")
-							.name("Test Car")
-							.manufacturer("Test Manufacturer")
-							.build();
-					mockProfileService.selectProfile(testProfile);
-					
-					// Interactor mit Mocks initialisieren
-					ExecuteActionInteractor interactor = new ExecuteActionInteractor(
-							mockProfileService,
-							mockActionView,
-							mockDcController,
-							mockAcController,
-							mockRangeController);
-					
-					// Verschiedene Aktionen testen
-					
-					// DC-Ladung (Aktion 1)
-					mockDcController.setReturnValue(true);
-					boolean dcResult = interactor.executeAction(1);
-					assertTrue(dcResult);
-					assertEquals(1, mockDcController.callCount);
-					assertEquals(0, mockAcController.callCount);
-					assertEquals(0, mockRangeController.callCount);
-					
-					// AC-Ladung (Aktion 2)
-					mockAcController.setReturnValue(true);
-					boolean acResult = interactor.executeAction(2);
-					assertTrue(acResult);
-					assertEquals(1, mockDcController.callCount);
-					assertEquals(1, mockAcController.callCount);
-					assertEquals(0, mockRangeController.callCount);
-					
-					// Ungültige Aktion
-					boolean invalidResult = interactor.executeAction(99);
-					assertFalse(invalidResult);
-					assertEquals(1, mockActionView.errorCount);
-				}</code></pre>
-				</section>
 			</section>
 
 
