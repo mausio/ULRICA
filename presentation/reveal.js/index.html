@@ -1236,19 +1236,45 @@ jobs:
 
             <section>
                 <h3>SRP – Single Responsibility Principle (3P)</h3>
-                <p class="subchapter">Jeweils eine Klasse als positives und negatives Beispiel für SRP; jeweils UML und
-                    Beschreibung der Aufgabe bzw. der Aufgaben und möglicher Lösungsweg des Negativ-Beispiels (inkl.
-                    UML)</p>
-            </section>
-
-            <section>
-                <h3>SRP: </h3>
-                <p>Jede Klasse sollte genau eine Verantwortlichkeit haben, d.h. einen einzigen Grund für Änderungen</p>
-                <img src="assets/UMLs-imgs/Kapitel_3-Aufgabe_1.png" alt="SRP UML Diagram" class="uml-image">
+                <ul>
+                    <li><p class="subchapter">Jeweils eine Klasse als positives und negatives Beispiel für SRP; <br/>
+                        jeweils UML und Beschreibung der Aufgabe bzw. der Aufgaben und <br/> möglicher Lösungsweg des
+                        Negativ-Beispiels (inkl.
+                        UML).</p></li>
+                    <li>
+                        <p class="hljs-string" style="font-style: italic">Def.: <br/>Jede Klasse sollte genau eine
+                            Verantwortlichkeit
+                            haben, <br/>
+                            d.h.
+                            einen einzigen
+                            Grund
+                            für
+                            Änderungen.</p>
+                    </li>
+                </ul>
             </section>
 
             <section>
                 <h3>Positives Beispiel: RangeCalculatorService</h3>
+                <div class="horizontal-spaced-container">
+                    <ul style="width: 50%">
+                        <h6>Verantwortung der Klasse:</h6>
+                        <li>Verwaltung von Reichweiten-Berechnungsstrategien</li>
+                        <li>Bereitstellung einer einheitlichen Schnittstelle zur Reichweitenberechnung</li>
+                        <li>Delegation der Berechnung an die jeweils konfigurierte Strategie</li>
+                    </ul>
+                    <ul style="width: 50%">
+                        <h6>Was die Klasse ausdrücklich <strong>nicht</strong> macht:</h6>
+                        <li>Interaktion mit dem Benutzer (Eingaben verarbeiten)</li>
+                        <li>Ausgabe oder Darstellung der Ergebnisse</li>
+                        <li>Laden oder Speichern von Fahrzeugdaten</li>
+                    </ul>
+                </div>
+                <p>Die Klasse erfüllt somit das SRP: Änderungen wären ausschließlich aufgrund interner Strategie-Logik oder Berechnung notwendig – nicht wegen externer Anliegen.</p>
+            </section>
+
+            <section>
+                <h3>Positives Beispiel: Code</h3>
                 <pre><code class="java">public class RangeCalculatorService {
     private final List<RangeCalculationStrategyInterface> strategies;
     private RangeCalculationStrategyInterface defaultStrategy;
@@ -1256,17 +1282,34 @@ jobs:
     public RangeCalculatorService() {
         this.strategies = new ArrayList<>();
 
-        // Initialize with standard strategies
-        WltpBasedRangeCalculationStrategy wltpStrategy =
-            new WltpBasedRangeCalculationStrategy();
-        ConsumptionBasedRangeCalculationStrategy consumptionStrategy =
-            new ConsumptionBasedRangeCalculationStrategy();
+        WltpBasedRangeCalculationStrategy wltpStrategy = new WltpBasedRangeCalculationStrategy();
+        ConsumptionBasedRangeCalculationStrategy consumptionStrategy = new ConsumptionBasedRangeCalculationStrategy();
 
         this.strategies.add(wltpStrategy);
         this.strategies.add(consumptionStrategy);
 
-        // Set default strategy
         this.defaultStrategy = consumptionStrategy;
+    }
+
+    public void addStrategy(RangeCalculationStrategyInterface strategy) {
+        Objects.requireNonNull(strategy, "Strategy cannot be null");
+        strategies.add(strategy);
+    }
+
+    public void setDefaultStrategy(RangeCalculationStrategyInterface strategy) {
+        Objects.requireNonNull(strategy, "Strategy cannot be null");
+        if (!strategies.contains(strategy)) {
+            strategies.add(strategy);
+        }
+        this.defaultStrategy = strategy;
+    }
+
+    public List<RangeCalculationStrategyInterface> getAvailableStrategies() {
+        return new ArrayList<>(strategies);
+    }
+
+    public RangeCalculationStrategyInterface getDefaultStrategy() {
+        return defaultStrategy;
     }
 
     public RangeResult calculateRange(CarProfile carProfile, RangeParameters parameters) {
@@ -1275,27 +1318,41 @@ jobs:
 
         return defaultStrategy.calculateRange(carProfile, parameters);
     }
-}</code></pre>
+
+    public RangeResult calculateRangeWithStrategy(CarProfile carProfile, RangeParameters parameters, RangeCalculationStrategyInterface strategy) {
+        Objects.requireNonNull(carProfile, "Car profile cannot be null");
+        Objects.requireNonNull(parameters, "Range parameters cannot be null");
+        Objects.requireNonNull(strategy, "Strategy cannot be null");
+
+        return strategy.calculateRange(carProfile, parameters);
+    }
+} </code></pre>
             </section>
 
+
+
+
+
             <section>
-                <h3>SRP – Positives Beispiel: Beschreibung</h3>
-                <p>Der RangeCalculatorService hat eine klar definierte Verantwortung:</p>
+                <h3>Negatives Beispiel: CarProfileManager</h3>
+                <p>CarProfileManager hat zu viele Verantwortlichkeiten:</p>
                 <ul>
-                    <li>Verwaltung der Berechnungsstrategien für Reichweiten</li>
-                    <li>Bereitstellung einer einheitlichen Schnittstelle zur Reichweitenberechnung</li>
-                    <li>Delegation der tatsächlichen Berechnung an die entsprechende Strategie</li>
+                    <li><b>UI-Logik:</b> Benutzereingaben über Scanner einlesen und anzeigen</li>
+                    <li><b>Datenpersistenz:</b> Speichern und Laden von Profilen</li>
+                    <li><b>Domänenlogik:</b> Reichweitenberechnung</li>
+                    <li><b>Präsentation:</b> Anzeige von Profildaten</li>
                 </ul>
-                <p>Die Klasse befasst sich <b>nicht</b> mit:</p>
+                <p>Probleme:</p>
                 <ul>
-                    <li>Benutzereingaben verarbeiten</li>
-                    <li>Ergebnisse anzeigen</li>
-                    <li>Fahrzeugprofile laden oder speichern</li>
+                    <li>Mehrere Gründe für Änderungen (UI-Änderung, Geschäftslogik, Speicherformat)</li>
+                    <li>Schwer testbar (z.B. UI-Logik mit Scanner)</li>
+                    <li>Verletzt Clean Architecture (mischt verschiedene Schichten)</li>
                 </ul>
             </section>
 
+
             <section>
-                <h3>SRP – Negatives Beispiel: CarProfileManager</h3>
+                <h3>Negatives Beispiel: Code</h3>
                 <pre><code class="java">public class CarProfileManager {
     private final Scanner scanner;
     private final String storagePath = "profiles.json";
@@ -1350,22 +1407,6 @@ jobs:
 }</code></pre>
             </section>
 
-            <section>
-                <h3>SRP – Negatives Beispiel: Beschreibung</h3>
-                <p>CarProfileManager hat zu viele Verantwortlichkeiten:</p>
-                <ul>
-                    <li><b>UI-Logik:</b> Benutzereingaben über Scanner einlesen und anzeigen</li>
-                    <li><b>Datenpersistenz:</b> Speichern und Laden von Profilen</li>
-                    <li><b>Domänenlogik:</b> Reichweitenberechnung</li>
-                    <li><b>Präsentation:</b> Anzeige von Profildaten</li>
-                </ul>
-                <p>Probleme:</p>
-                <ul>
-                    <li>Mehrere Gründe für Änderungen (UI-Änderung, Geschäftslogik, Speicherformat)</li>
-                    <li>Schwer testbar (z.B. UI-Logik mit Scanner)</li>
-                    <li>Verletzt Clean Architecture (mischt verschiedene Schichten)</li>
-                </ul>
-            </section>
 
             <section>
                 <h3>SRP – Refactoring des negativen Beispiels</h3>
