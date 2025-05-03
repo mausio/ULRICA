@@ -1,0 +1,184 @@
+<section>
+  <h3>Negatives Beispiel: ApplicationControllerWithActionMenu</h3>
+  <p>ApplicationControllerWithActionMenu hat zu viele Verantwortlichkeiten:</p>
+  <ul>
+      <li><b>Navigation:</b> Verwaltet Zustandsübergänge zwischen allen Bildschirmen</li>
+      <li><b>UI-Logik:</b> Verarbeitet Benutzereingaben aus mehreren Menüs</li>
+      <li><b>Profilmanagement:</b> Erstellen, Editieren und Löschen von Fahrzeugprofilen</li>
+      <li><b>View-Management:</b> Interaktion mit zahlreichen Views</li>
+      <li><b>Validierung:</b> Eingabevalidierung und Datensammlung</li>
+  </ul>
+  <p>Probleme:</p>
+  <ul>
+      <li>Mehrere Gründe für Änderungen (UI-Änderung, Navigationslogik, Profilmanagement)</li>
+      <li>Schwer testbar (zu viele Abhängigkeiten und komplexe Interaktionen)</li>
+      <li>Verletzt Clean Architecture durch zu enge Kopplung von Verantwortlichkeiten</li>
+      <li>Hohe Komplexität durch zahlreiche Methoden und switch-case Logik</li>
+  </ul>
+</section>
+
+
+<section>
+  <h3>Negatives Beispiel: Code</h3>
+  <pre><code class="java">public class ApplicationControllerWithActionMenu {
+  private final CarProfilePersistencePortInterface repository;
+  private final NavigationUseCaseInterface navigationUseCase;
+  private final ProfileSelectionService profileSelectionService;
+  private final UserInputService userInputService;
+  private final ActionAvailabilityService actionAvailabilityService;
+  private final ShowWelcomeUseCaseInterface showWelcomeUseCase;
+  private final ShowCarProfileMenuUseCaseInterface showCarProfileMenuUseCase;
+  private final CreateCarProfileUseCaseInterface createCarProfileUseCase;
+  private final WelcomeView welcomeView;
+  private final MainMenuView mainMenuView;
+  private final CarProfileView carProfileView;
+  private final UserInputPortInterface userInputPort;
+  private final UserOutputPortInterface userOutputPort;
+  private final ActionMenuController actionMenuController;
+  
+  // Konstruktor mit 15 Parametern!
+  public ApplicationControllerWithActionMenu(
+      UserInputPortInterface userInputPort,
+      UserOutputPortInterface userOutputPort,
+      CarProfilePersistencePortInterface repository,
+      NavigationUseCaseInterface navigationUseCase,
+      ProfileSelectionService profileSelectionService,
+      // ... und weitere 10 Parameter
+  ) {
+    // Initialisierung...
+  }
+  
+  public void processCurrentState() {
+    ApplicationState currentState = navigationUseCase.getCurrentState();
+    
+    switch (currentState) {
+      case WELCOME: handleWelcome(); break;
+      case MAIN_MENU: handleMainMenu(); break;
+      case CAR_PROFILE_MENU: handleCarProfileMenu(); break;
+      case CREATE_CAR_PROFILE: handleCreateCarProfile(); break;
+      case EDIT_CAR_PROFILE: handleEditCarProfile(); break;
+      case DELETE_CAR_PROFILE: handleDeleteCarProfile(); break;
+      case ACTION_MENU: handleActionMenu(); break;
+      default: break;
+    }
+  }
+  
+  private void handleCreateCarProfile() {
+    carProfileView.showCreateProfileHeader();
+    
+    String name = userInputService.getValidatedTextInput(
+        "Enter profile name: ", "name");
+    String manufacturer = userInputService.getValidatedTextInput(
+        "Enter manufacturer: ", "manufacturer");
+    // ... 10+ weitere Eingabeabfragen 
+    
+    CreateCarProfileCommand command = new CreateCarProfileCommand(
+        name, manufacturer, model, year, hasHeatPump,
+        wltpRangeKm, maxDcPowerKw, maxAcPowerKw,
+        batteryType.name(), batteryCapacityKwh, 
+        batteryDegradationPercent, consumptionAt50Kmh,
+        consumptionAt100Kmh, consumptionAt130Kmh);
+    
+    CarProfile carProfile = createCarProfileUseCase.createCarProfile(command);
+    carProfileView.showProfileCreated(carProfile);
+    userInputPort.readLine();
+    
+    navigationUseCase.navigateToCarProfileMenu();
+  }
+  
+  // Viele weitere Handler-Methoden...
+}</code></pre>
+</section>
+
+
+<section>
+  <h3>SRP – Refactoring des negativen Beispiels</h3>
+  <p>Aufteilung in spezialisierte Controller:</p>
+  <div class="horizontal-spaced-container">
+      <div>
+<pre><code class="java">// Spezialisiert auf Navigation
+public class NavigationController {
+  private final NavigationUseCaseInterface navigationUseCase;
+  private final ActionAvailabilityService actionService;
+  
+  public void processMainMenu(int choice) {
+    switch (choice) {
+      case 1: 
+        navigationUseCase.navigateToCarProfileMenu();
+        break;
+      case 2:
+        if (actionService.areActionsAvailable()) {
+          navigationUseCase.navigateToActionMenu();
+        }
+        break;
+      // ...
+    }
+  }
+}</code></pre>
+      </div>
+      <div>
+<pre><code class="java">// Spezialisiert auf Profilmanagement
+public class CarProfileController {
+  private final CreateCarProfileUseCaseInterface createUseCase;
+  private final CarProfileView carProfileView;
+  
+  public CarProfile createCarProfile(CreateCarProfileCommand cmd) {
+    CarProfile profile = createUseCase.createCarProfile(cmd);
+    carProfileView.showProfileCreated(profile);
+    return profile;
+  }
+  
+  public void showProfiles(List<CarProfile> profiles) {
+    carProfileView.showAllCarProfiles(profiles);
+  }
+}</code></pre>
+      </div>
+  </div>
+</section>
+
+<section>
+  <h3>SRP – Refactoring des negativen Beispiels (Fortsetzung)</h3>
+  <div class="horizontal-spaced-container">
+      <div>
+<pre><code class="java">// Spezialisiert auf Eingabesammlung
+public class ProfileDataCollector {
+  private final UserInputService inputService;
+  
+  public CreateCarProfileCommand collectProfileData() {
+    String name = inputService.getValidatedTextInput(
+        "Enter name: ", "name");
+    String manufacturer = inputService.getValidatedTextInput(
+        "Enter manufacturer: ", "manufacturer");
+    // Weitere Eingabeabfragen...
+    
+    return new CreateCarProfileCommand(
+        name, manufacturer, model, year, 
+        hasHeatPump, wltpRange, dcPower,
+        acPower, batteryType.name(), capacity,
+        degradation, consumption50, 
+        consumption100, consumption130);
+  }
+}</code></pre>
+      </div>
+      <div>
+<pre><code class="java">// Koordinator-Klasse mit weniger Verantwortung
+public class ApplicationCoordinator {
+  private final NavigationController navController;
+  private final CarProfileController profileController;
+  private final ProfileDataCollector dataCollector;
+  
+  public void processCurrentState(ApplicationState state) {
+    switch (state) {
+      case CREATE_CAR_PROFILE:
+        CreateCarProfileCommand data = 
+            dataCollector.collectProfileData();
+        profileController.createCarProfile(data);
+        navController.navigateToCarProfileMenu();
+        break;
+      // Weitere vereinfachte Zustandsverarbeitung
+    }
+  }
+}</code></pre>
+      </div>
+  </div>
+</section>

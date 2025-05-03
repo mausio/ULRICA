@@ -1,0 +1,63 @@
+@startuml SRP_Negative_Example
+
+' Negative Example - ApplicationControllerWithActionMenu violates SRP
+package "SRP_Negative_Example" {
+  class ApplicationControllerWithActionMenu {
+    -repository: CarProfilePersistencePortInterface
+    -navigationUseCase: NavigationUseCaseInterface
+    -profileSelectionService: ProfileSelectionService
+    -userInputService: UserInputService
+    -actionAvailabilityService: ActionAvailabilityService
+    -showWelcomeUseCase: ShowWelcomeUseCaseInterface
+    -showCarProfileMenuUseCase: ShowCarProfileMenuUseCaseInterface
+    -createCarProfileUseCase: CreateCarProfileUseCaseInterface
+    -welcomeView: WelcomeView
+    -mainMenuView: MainMenuView
+    -carProfileView: CarProfileView
+    -userInputPort: UserInputPortInterface
+    -userOutputPort: UserOutputPortInterface
+    -actionMenuController: ActionMenuController
+    +processCurrentState(): void
+    -handleWelcome(): void
+    -handleMainMenu(): void
+    -handleCarProfileMenu(): void
+    -handleActionMenu(): void
+    -handleCreateCarProfile(): void
+    -handleEditCarProfile(): void
+    -handleDeleteCarProfile(): void
+    -viewAllCarProfiles(): void
+    -selectCarProfile(profiles: List<CarProfile>): void
+  }
+  
+  interface NavigationUseCaseInterface
+  interface CarProfilePersistencePortInterface
+  class ProfileSelectionService
+  class UserInputService
+  class ActionAvailabilityService
+  class CarProfileView
+  class MainMenuView
+  class WelcomeView
+  class UserInputPortInterface
+  class UserOutputPortInterface
+  class ShowWelcomeUseCaseInterface
+  class ShowCarProfileMenuUseCaseInterface
+  class CreateCarProfileUseCaseInterface
+  class ActionMenuController
+  
+  ApplicationControllerWithActionMenu --> NavigationUseCaseInterface
+  ApplicationControllerWithActionMenu --> CarProfilePersistencePortInterface
+  ApplicationControllerWithActionMenu --> ProfileSelectionService
+  ApplicationControllerWithActionMenu --> UserInputService
+  ApplicationControllerWithActionMenu --> ActionAvailabilityService
+  ApplicationControllerWithActionMenu --> CarProfileView
+  ApplicationControllerWithActionMenu --> MainMenuView
+  ApplicationControllerWithActionMenu --> WelcomeView
+  ApplicationControllerWithActionMenu --> UserInputPortInterface
+  ApplicationControllerWithActionMenu --> UserOutputPortInterface
+  ApplicationControllerWithActionMenu --> ShowWelcomeUseCaseInterface
+  ApplicationControllerWithActionMenu --> ShowCarProfileMenuUseCaseInterface
+  ApplicationControllerWithActionMenu --> CreateCarProfileUseCaseInterface
+  ApplicationControllerWithActionMenu --> ActionMenuController
+}
+
+@enduml

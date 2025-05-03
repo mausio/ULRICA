@@ -1,0 +1,116 @@
+@startuml SRP_Refactored_Solution
+
+' Refactored Solution that follows SRP
+package "SRP_Refactored_Solution" {
+  ' Navigation Controller
+  class NavigationController {
+    -navigationUseCase: NavigationUseCaseInterface
+    -actionAvailabilityService: ActionAvailabilityService
+    +processMainMenu(choice: int): void
+    +processCarProfileMenu(choice: int): void
+    +navigateToMainMenu(): void
+    +navigateToCarProfileMenu(): void
+    +navigateToActionMenu(): void
+  }
+  
+  ' Car Profile Controller
+  class CarProfileController {
+    -createCarProfileUseCase: CreateCarProfileUseCaseInterface
+    -repository: CarProfilePersistencePortInterface
+    -carProfileView: CarProfileView
+    +createCarProfile(command: CreateCarProfileCommand): CarProfile
+    +deleteCarProfile(id: String): void
+    +showProfiles(profiles: List<CarProfile>): void
+    +selectProfile(profile: CarProfile): void
+  }
+  
+  ' Data Collector
+  class ProfileDataCollector {
+    -userInputService: UserInputService
+    +collectProfileData(): CreateCarProfileCommand
+    -getBatteryTypeInput(): BatteryType
+    -getConsumptionInput(): ConsumptionData 
+  }
+  
+  ' Coordinator
+  class ApplicationCoordinator {
+    -navigationController: NavigationController
+    -carProfileController: CarProfileController
+    -profileDataCollector: ProfileDataCollector
+    +processCurrentState(state: ApplicationState): void
+  }
+  
+  ' Interfaces and supporting classes for the refactored solution
+  interface NavigationUseCaseInterface {
+    +navigateToCarProfileMenu(): void
+    +navigateToMainMenu(): void
+    +getCurrentState(): ApplicationState
+  }
+  
+  interface CarProfilePersistencePortInterface {
+    +findAll(): List<CarProfile>
+    +save(profile: CarProfile): CarProfile
+    +delete(id: String): void
+  }
+  
+  class CarProfileView {
+    +showCreateProfileHeader(): void
+    +showProfileCreated(profile: CarProfile): void
+    +showAllCarProfiles(profiles: List<CarProfile>): void
+  }
+  
+  class UserInputService {
+    +getValidatedTextInput(prompt: String, field: String): String
+    +getValidatedDoubleInput(prompt: String, field: String): double
+    +getBooleanInput(prompt: String): boolean
+  }
+  
+  class ActionAvailabilityService {
+    +areActionsAvailable(): boolean
+  }
+  
+  class CreateCarProfileUseCaseInterface {
+    +createCarProfile(command: CreateCarProfileCommand): CarProfile
+  }
+  
+  class CreateCarProfileCommand {
+    -name: String
+    -manufacturer: String
+    -model: String
+    // Other profile properties
+  }
+  
+  class CarProfile {
+    -id: String
+    -name: String
+    -manufacturer: String
+    // Other profile properties
+  }
+  
+  class ApplicationState {
+    WELCOME
+    MAIN_MENU
+    CAR_PROFILE_MENU
+    CREATE_CAR_PROFILE
+    EDIT_CAR_PROFILE
+    DELETE_CAR_PROFILE
+    ACTION_MENU
+    EXIT
+  }
+  
+  ApplicationCoordinator --> NavigationController
+  ApplicationCoordinator --> CarProfileController
+  ApplicationCoordinator --> ProfileDataCollector
+  
+  NavigationController --> NavigationUseCaseInterface
+  NavigationController --> ActionAvailabilityService
+  
+  CarProfileController --> CarProfilePersistencePortInterface
+  CarProfileController --> CarProfileView
+  CarProfileController --> CreateCarProfileUseCaseInterface
+  
+  ProfileDataCollector --> UserInputService
+  ProfileDataCollector --> CreateCarProfileCommand
+}
+
+@enduml

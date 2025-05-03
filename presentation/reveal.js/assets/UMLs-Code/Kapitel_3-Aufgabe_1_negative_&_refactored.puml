@@ -1,0 +1,104 @@
+@startuml SRP_Negative_and_Refactored
+
+' Negative Example - ApplicationControllerWithActionMenu violates SRP
+package "SRP_Negative_Example" {
+  class ApplicationControllerWithActionMenu {
+    -repository: CarProfilePersistencePortInterface
+    -navigationUseCase: NavigationUseCaseInterface
+    -profileSelectionService: ProfileSelectionService
+    -userInputService: UserInputService
+    -actionAvailabilityService: ActionAvailabilityService
+    -showWelcomeUseCase: ShowWelcomeUseCaseInterface
+    -showCarProfileMenuUseCase: ShowCarProfileMenuUseCaseInterface
+    -createCarProfileUseCase: CreateCarProfileUseCaseInterface
+    -welcomeView: WelcomeView
+    -mainMenuView: MainMenuView
+    -carProfileView: CarProfileView
+    -userInputPort: UserInputPortInterface
+    -userOutputPort: UserOutputPortInterface
+    -actionMenuController: ActionMenuController
+    +processCurrentState(): void
+    -handleWelcome(): void
+    -handleMainMenu(): void
+    -handleCarProfileMenu(): void
+    -handleActionMenu(): void
+    -handleCreateCarProfile(): void
+    -handleEditCarProfile(): void
+    -handleDeleteCarProfile(): void
+    -viewAllCarProfiles(): void
+    -selectCarProfile(profiles: List<CarProfile>): void
+  }
+  
+  class NavigationUseCaseInterface
+  class CarProfilePersistencePortInterface
+  class ProfileSelectionService
+  class UserInputService
+  class ActionAvailabilityService
+  class CarProfileView
+  class MainMenuView
+  class WelcomeView
+  
+  ApplicationControllerWithActionMenu --> NavigationUseCaseInterface
+  ApplicationControllerWithActionMenu --> CarProfilePersistencePortInterface
+  ApplicationControllerWithActionMenu --> ProfileSelectionService
+  ApplicationControllerWithActionMenu --> UserInputService
+  ApplicationControllerWithActionMenu --> ActionAvailabilityService
+  ApplicationControllerWithActionMenu --> CarProfileView
+  ApplicationControllerWithActionMenu --> MainMenuView
+  ApplicationControllerWithActionMenu --> WelcomeView
+}
+
+' Refactored Solution that follows SRP
+package "SRP_Refactored_Solution" {
+  ' Navigation Controller
+  class NavigationController {
+    -navigationUseCase: NavigationUseCaseInterface
+    -actionAvailabilityService: ActionAvailabilityService
+    +processMainMenu(choice: int): void
+    +processCarProfileMenu(choice: int): void
+    +navigateToMainMenu(): void
+    +navigateToCarProfileMenu(): void
+    +navigateToActionMenu(): void
+  }
+  
+  ' Car Profile Controller
+  class CarProfileController {
+    -createCarProfileUseCase: CreateCarProfileUseCaseInterface
+    -repository: CarProfilePersistencePortInterface
+    -carProfileView: CarProfileView
+    +createCarProfile(command: CreateCarProfileCommand): CarProfile
+    +deleteCarProfile(id: String): void
+    +showProfiles(profiles: List<CarProfile>): void
+    +selectProfile(profile: CarProfile): void
+  }
+  
+  ' Data Collector
+  class ProfileDataCollector {
+    -userInputService: UserInputService
+    +collectProfileData(): CreateCarProfileCommand
+    -getBatteryTypeInput(): BatteryType
+    -getConsumptionInput(): ConsumptionData 
+  }
+  
+  ' Coordinator
+  class ApplicationCoordinator {
+    -navigationController: NavigationController
+    -carProfileController: CarProfileController
+    -profileDataCollector: ProfileDataCollector
+    +processCurrentState(state: ApplicationState): void
+  }
+  
+  ApplicationCoordinator --> NavigationController
+  ApplicationCoordinator --> CarProfileController
+  ApplicationCoordinator --> ProfileDataCollector
+  
+  NavigationController --> NavigationUseCaseInterface
+  NavigationController --> ActionAvailabilityService
+  
+  CarProfileController --> CarProfilePersistencePortInterface
+  CarProfileController --> CarProfileView
+  
+  ProfileDataCollector --> UserInputService
+}
+
+@enduml
