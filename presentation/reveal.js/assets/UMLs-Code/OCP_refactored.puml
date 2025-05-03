@@ -1,0 +1,94 @@
+@startuml OCP_refactored
+
+interface Connector {
+  + getPowerKw() : double
+  + getName() : String
+  + getEfficiencyLoss() : double
+}
+
+class HouseholdSocketConnector {
+  + getPowerKw() : double
+  + getName() : String
+  + getEfficiencyLoss() : double
+}
+
+class CampingSocketConnector {
+  + getPowerKw() : double
+  + getName() : String
+  + getEfficiencyLoss() : double
+}
+
+class WallboxConnector {
+  + getPowerKw() : double
+  + getName() : String
+  + getEfficiencyLoss() : double
+}
+
+class ThreePhaseWallboxConnector {
+  + getPowerKw() : double
+  + getName() : String
+  + getEfficiencyLoss() : double
+}
+
+class ConnectorRegistry {
+  - {static} connectors : Map<String, Connector>
+  + {static} registerConnector(id : String, connector : Connector) : void
+  + {static} getConnector(id : String) : Connector
+  + {static} getAllConnectors() : Collection<Connector>
+}
+
+class AcChargingCalculator {
+  + calculateChargingTime(carProfile : CarProfile, connector : Connector, startingSocPercent : double, targetSocPercent : double, ambientTemperatureCelsius : double) : AcChargingResult
+  - calculateTemperatureEfficiency(ambientTemperatureCelsius : double) : double
+  - validateInputParameters(startingSocPercent : double, targetSocPercent : double, ambientTemperatureCelsius : double) : void
+}
+
+class AcChargingResult {
+  - chargingTimeHours : double
+  - energyRequiredKwh : double
+  - effectiveChargingPowerKw : double
+  - efficiencyLossPercent : double
+  - temperatureEfficiencyPercent : double
+  - connectorName : String
+  + getChargingTimeHours() : double
+  + getEnergyRequiredKwh() : double
+  + getEffectiveChargingPowerKw() : double
+  + getEfficiencyLossPercent() : double
+  + getTemperatureEfficiencyPercent() : double
+  + getConnectorName() : String
+}
+
+class CarProfile {
+  + getBatteryProfile() : BatteryProfile
+  + getMaxAcPowerKw() : double
+}
+
+class BatteryProfile {
+  + getRemainingCapacityKwh() : double
+  + getMaxAcPowerKw() : double
+}
+
+HouseholdSocketConnector ..|> Connector
+CampingSocketConnector ..|> Connector
+WallboxConnector ..|> Connector
+ThreePhaseWallboxConnector ..|> Connector
+
+ConnectorRegistry --> Connector : manages >
+AcChargingCalculator --> Connector : uses >
+AcChargingCalculator --> AcChargingResult : creates >
+AcChargingCalculator --> CarProfile : uses >
+AcChargingCalculator --> BatteryProfile : uses >
+
+note bottom of AcChargingCalculator
+  <b>OCP Compliant:</b>
+  Class now depends on the Connector interface.
+  New connector types can be added without 
+  modifying AcChargingCalculator.
+end note
+
+note bottom of ConnectorRegistry
+  Registry allows adding new connector types
+  at runtime without modifying existing code
+end note
+
+@enduml

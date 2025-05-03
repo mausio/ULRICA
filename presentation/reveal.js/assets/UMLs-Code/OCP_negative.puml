@@ -1,0 +1,56 @@
+@startuml OCP_negative
+
+class AcChargingCalculator {
+  + {static} HOUSEHOLD_SOCKET : int = 1
+  + {static} CAMPING_SOCKET : int = 2
+  + {static} WALLBOX : int = 3
+  + {static} HOUSEHOLD_SOCKET_POWER_KW : double = 2.3
+  + {static} CAMPING_SOCKET_POWER_KW : double = 3.7
+  + {static} WALLBOX_POWER_KW : double = 11.0
+  + getConnectorPower(connectorType : int) : double
+  + getConnectorName(connectorType : int) : String
+  + calculateChargingTime(carProfile : CarProfile, connectorType : int, startingSocPercent : double, targetSocPercent : double, ambientTemperatureCelsius : double) : AcChargingResult
+  - calculateEfficiencyLoss(connectorType : int) : double
+  - calculateTemperatureEfficiency(ambientTemperatureCelsius : double) : double
+  - validateInputParameters(connectorType : int, startingSocPercent : double, targetSocPercent : double, ambientTemperatureCelsius : double) : void
+}
+
+class AcChargingResult {
+  - chargingTimeHours : double
+  - energyRequiredKwh : double
+  - effectiveChargingPowerKw : double
+  - efficiencyLossPercent : double
+  - temperatureEfficiencyPercent : double
+  - connectorType : int
+  + getChargingTimeHours() : double
+  + getEnergyRequiredKwh() : double
+  + getEffectiveChargingPowerKw() : double
+  + getEfficiencyLossPercent() : double
+  + getTemperatureEfficiencyPercent() : double
+  + getConnectorType() : int
+}
+
+class CarProfile {
+  + getBatteryProfile() : BatteryProfile
+  + getMaxAcPowerKw() : double
+}
+
+class BatteryProfile {
+  + getRemainingCapacityKwh() : double
+  + getMaxAcPowerKw() : double
+}
+
+AcChargingCalculator --> AcChargingResult : creates >
+AcChargingCalculator --> CarProfile : uses >
+AcChargingCalculator --> BatteryProfile : uses >
+AcChargingCalculator +-- AcChargingResult : inner class
+
+note bottom of AcChargingCalculator
+  <b>OCP Violation:</b>
+  Class contains hard-coded connector types
+  with switch statements in multiple methods.
+  Adding new connector types requires modification
+  of existing code rather than extension.
+end note
+
+@enduml
