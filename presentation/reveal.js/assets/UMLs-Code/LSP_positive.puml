@@ -1,0 +1,54 @@
+@startuml DIP_Examples
+
+
+
+  package "Application Layer" {
+    interface CarProfilePersistencePortInterface {
+      +findById(id: String): Optional<CarProfile>
+      +findAll(): List<CarProfile>
+      +save(carProfile: CarProfile): CarProfile
+      +delete(id: String): void
+    }
+    
+    class CreateCarProfileInteractor {
+      -persistencePort: CarProfilePersistencePortInterface
+      +createCarProfile(command: CreateCarProfileCommand): CarProfile
+    }
+  }
+  
+  package "Domain Layer" {
+    class CarProfile {
+      -id: String
+      -name: String
+      -manufacturer: String
+      -model: String
+      -year: int
+      -batteryProfile: BatteryProfile
+      -consumptionProfile: ConsumptionProfile
+    }
+  }
+  
+  package "Infrastructure Layer" {
+    class JsonCarProfileRepository {
+      -STORAGE_DIR: String
+      -FILE_NAME: String
+      -gson: Gson
+      -filePath: Path
+      +findById(id: String): Optional<CarProfile>
+      +findAll(): List<CarProfile>
+      +save(carProfile: CarProfile): CarProfile
+      +delete(id: String): void
+    }
+  }
+  
+  ' Dependencies
+  CreateCarProfileInteractor --> CarProfilePersistencePortInterface : depends on abstraction
+  JsonCarProfileRepository ..|> CarProfilePersistencePortInterface : implements
+  CarProfilePersistencePortInterface --> CarProfile : uses
+  
+  note "DIP is satisfied:\nHigh-level module (CreateCarProfileInteractor)\ndepends on abstraction (CarProfilePersistencePortInterface)\nnot on concrete implementation" as N1
+  CreateCarProfileInteractor .. N1
+
+
+
+@enduml 

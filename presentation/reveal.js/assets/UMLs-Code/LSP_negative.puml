@@ -1,0 +1,69 @@
+@startuml LSP_refactored
+
+package "Presentation Layer" {
+
+  ' Gemeinsame Abstraktion für alle Ladekontroller
+  abstract class ChargingController {
+    + ChargingController(userInputPort: UserInputPortInterface, userOutputPort: UserOutputPortInterface)
+    + {abstract} processChargingCalculation(): boolean
+  }
+
+  ' Konkreter Controller für AC-Laden
+  class AcChargingController {
+    + AcChargingController(userInputPort, userOutputPort, useCase, outputPort)
+    + processChargingCalculation(): boolean
+  }
+
+  ' Konkreter Controller für DC-Laden
+  class DcChargingController {
+    + DcChargingController(userInputPort, userOutputPort, useCase, outputPort)
+    + processChargingCalculation(): boolean
+  }
+
+  ' Interaktor, der polymorph auf ChargingController arbeitet
+  class ExecuteActionInteractor {
+    - controllers: Map<int, ChargingController>
+    + executeAction(actionChoice: int): boolean
+  }
+
+  ' Gemeinsamer Mock für Tests
+  class MockChargingController {
+    - processResult: boolean
+    - callCount: int
+    + processChargingCalculation(): boolean
+    + setProcessResult(result: boolean): void
+    + getCallCount(): int
+    + resetCallCount(): void
+  }
+
+  ' Interfaces für Benutzerinteraktion
+  interface UserInputPortInterface {
+    + readInt(): int
+    + readDouble(): double
+    + readLine(): String
+    + readBoolean(yesOption: String, noOption: String): boolean
+  }
+
+  interface UserOutputPortInterface {
+    + display(message: String): void
+    + displayLine(message: String): void
+    + displayPrompt(prompt: String): void
+  }
+
+  ' Beziehungen
+  AcChargingController ..|> ChargingController
+  DcChargingController ..|> ChargingController
+  MockChargingController ..|> ChargingController
+  ChargingController --> UserInputPortInterface
+  ChargingController --> UserOutputPortInterface
+  ExecuteActionInteractor --> ChargingController : uses >
+
+  ' Anmerkungen
+  note "LSP erfüllt:\nAlle Controller sind austauschbar durch gemeinsame Abstraktion." as LSP
+  ChargingController .. LSP
+
+  note "Wiederverwendbarer Mock für Tests\nkeine Redundanz wie im negativen Beispiel" as MOCK
+  MockChargingController .. MOCK
+}
+
+@enduml

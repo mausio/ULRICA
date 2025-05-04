@@ -25,7 +25,7 @@
 
     code {
         border-radius: 5px;
-        font-size: 0.9rem !important;
+        font-size: 1rem !important;
     }
 
 
@@ -76,16 +76,16 @@
     }
 
     h6 {
-        font-size: 1.75rem;
+        font-size: 1.6rem;
         font-weight: semibold;
     }
 
     p {
-        font-size: 1.75rem;
+        font-size: 1.6rem;
     }
 
     li {
-        font-size: 1.75rem;
+        font-size: 1.6rem;
         margin: 5px 0;
     }
 
@@ -1215,7 +1215,7 @@ jobs:
                 </section>
             </section>
             <!-- Kapitel 3 -->
-            <section alt="Kapitel 3: NOCH NICHT FERTIG">
+            <section alt="Kapitel 3">
                 <section>
                     <h2 class="chapter-title">Kapitel 3: <br /> SOLID (8P)</h2>
                 </section>
@@ -1856,15 +1856,19 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
                     <div class="horizontal-spaced-container">
                         <ul style="width: 40%;">
                             <h6>Verantwortlichkeiten:</h6>
-                            <li><b>Typdefinition:</b> <br/> Verwaltet statische Konstanten für Steckertypen</li>
-                            <li><b>Leistungsberechnung:</b> <br/> Bestimmt Ladeleistung abhängig vom Steckertyp</li>
-                            <li><b>Bezeichnerlogik:</b> <br/> Liefert Namen abhängig vom Steckertyp</li>
-                            <li><b>Effizienzberechnung:</b> <br/> Berechnet Effizienzverluste abhängig vom Steckertyp</li>
+                            <li><b>Typdefinition:</b> <br /> Verwaltet statische Konstanten für Steckertypen</li>
+                            <li><b>Leistungsberechnung:</b> <br /> Bestimmt Ladeleistung abhängig vom Steckertyp</li>
+                            <li><b>Bezeichnerlogik:</b> <br /> Liefert Namen abhängig vom Steckertyp</li>
+                            <li><b>Effizienzberechnung:</b> <br /> Berechnet Effizienzverluste abhängig vom Steckertyp
+                            </li>
                         </ul>
-                        <ul  style="width: 60%;">
+                        <ul style="width: 60%;">
                             <h6>Probleme:</h6>
-                            <li>Mehrere <span style="background-color: whitesmoke; border-radius: 5px;">switch</span>-Anweisungen für dieselbe Entscheidungslogik</li>
-                            <li>Verstoß gegen das Open/Closed Principle: Änderungen erfordern Modifikationen an bestehenden Methoden</li>
+                            <li>Mehrere <span
+                                    style="background-color: whitesmoke; border-radius: 5px;">switch</span>-Anweisungen
+                                für dieselbe Entscheidungslogik</li>
+                            <li>Verstoß gegen das Open/Closed Principle: Änderungen erfordern Modifikationen an
+                                bestehenden Methoden</li>
                             <li>Neue Steckertypen erzwingen Änderungen an mehreren Stellen im Code</li>
                             <li>Hohe Fehleranfälligkeit und schlechtere Testbarkeit</li>
                             <li>Verletzung von DRY (Don't Repeat Yourself)</li>
@@ -1876,7 +1880,7 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
                     <h3>Negatives Beispiel: UML</h3>
                     <img src="assets/UMLs-imgs/OCP_Negative.png" alt="Negative OCP Example UML" class="uml-image">
                 </section>
-                
+
 
                 <section>
                     <h3>OCP – Negatives Beispiel: Code</h3>
@@ -2091,180 +2095,99 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
 
 
 
-                
-
-
 
 
 
 
 
                 <section>
-                    <h3>LSP – Liskov Substitution Principle (2P)</h3>
-                    <p>Objekte einer Basisklasse sollten durch Objekte ihrer abgeleiteten Klassen ersetzbar sein, ohne
-                        die
-                        Korrektheit des Programms zu beeinträchtigen</p>
-                    <img src="assets/UMLs-imgs/Kapitel_3-Aufgabe_3.png" alt="LSP UML Diagram" class="uml-image">
+                    <h3>LSP - Liskov Substitution Principle (2p)</h3>
+                    <ul>
+                        <li>
+                            <p class="subchapter">Jeweils eine Klasse als positives und negatives Beispiel für OCP;
+                                jeweils
+                                UML und Analyse mit Begründung, warum das OCP erfüllt/nicht erfüllt wurde – falls
+                                erfüllt:
+                                warum hier sinnvoll/welches Problem gab es? Falls nicht erfüllt: wie könnte man es lösen
+                                (inkl. UML)?</p>
+                        </li>
+                        <li>
+                            <p class="hljs-string">Eine abgeleitete Klasse soll an jeder beliebigen Stelle ihre
+                                Basisklasse ersetzen
+                                können, ohne, dass es zu unerwünschten Nebeneffekten kommt.</p>
+                        </li>
+                    </ul>
                 </section>
 
+
+
+
                 <section>
-                    <h3>LSP – Positives Beispiel: UserOutputPortInterface</h3>
-                    <pre><code class="java">// Interface für die Benutzerausgabe
-public interface UserOutputPortInterface {
-    void display(String message);
-    void displayLine(String message);
-    void displayPrompt(String prompt);
-}
-
-// Implementierung für die Konsole
-public class ConsoleUserOutputAdapter implements UserOutputPortInterface {
-    @Override
-    public void display(String message) {
-        System.out.print(message);
-    }
-
-    @Override
-    public void displayLine(String message) {
-        System.out.println(message);
-    }
-
-    @Override
-    public void displayPrompt(String prompt) {
-        System.out.print(prompt + ": ");
-    }
-}
-
-// Implementierung für Tests (Mock)
-public class TestUserOutputAdapter implements UserOutputPortInterface {
-    private final List<String> messages = new ArrayList<>();
-
-    @Override
-    public void display(String message) {
-        messages.add(message);
-    }
-
-    @Override
-    public void displayLine(String message) {
-        messages.add(message + "\n");
-    }
-
-    @Override
-    public void displayPrompt(String prompt) {
-        messages.add(prompt + ": ");
-    }
-
-    public List<String> getMessages() {
-        return messages;
-    }
-}</code></pre>
+                    <h3>Positives Beispiel: </h3>
+                    <div class="horizontal-spaced-container">
+                        <ul style="width: 50%;">
+                            <h6>Hält LSP ein:</h6>
+                            <li>Die Klasse <code>CreateCarProfileInteractor</code> verwendet ausschließlich das
+                                Interface <code>CarProfilePersistencePortInterface</code></li>
+                            <li><code>JsonCarProfileRepository</code> implementiert alle Methoden des Interfaces
+                                vollständig</li>
+                            <li>Das Verhalten bei Methodenaufrufen entspricht exakt dem was durch das Interface
+                                definiert wird</li>
+                            <li>Die konkrete Implementierung kann jederzeit durch eine andere ersetzt werden, ohne dass
+                                das Verhalten des Systems sich ändert.</li>
+                        </ul>
+                        <ul style="width: 50%;">
+                            <h6>Vorteile dadurch:</h6>
+                            <li>Ermöglicht sauberes und sicheres Austauschen z.B. der Persistenzlogik</li>
+                            <li>Erhöhte Wartbarkeit, da Änderungen in der Infrastruktur keine (Seiten-)Effekte auf die
+                                Anwendungsschicht haben</li>
+                            <li>Fördert Erweiterbarkeit und Offenheit für neue Anforderungen (Open/Closed-Prinzip).</li>
+                            <li>Entkopplung von Infrastruktur und Geschäftslogik führt zu robusterer Architektur.</li>
+                        </ul>
+                    </div>
                 </section>
 
+
                 <section>
-                    <h3>LSP – Positives Beispiel: Verwendung</h3>
-                    <pre><code class="java">// Klasse, die das Interface verwendet
-public class RangeCalculationController {
-    private final UserOutputPortInterface outputPort;
-
-    public RangeCalculationController(UserOutputPortInterface outputPort) {
-        this.outputPort = outputPort;
-    }
-
-    public void displayRangeResult(RangeResult result) {
-        outputPort.displayLine("Berechnete Reichweite: " + result.getEstimatedRangeKm() + " km");
-        outputPort.displayLine("Durchschnittsverbrauch: " +
-                result.getAverageConsumptionKwhPer100Km() + " kWh/100km");
-        outputPort.displayLine("Wettereinfluss: " + result.getWeatherImpact());
-        // Weitere Ausgaben...
-    }
-}
-
-// Beide Implementierungen können problemlos ausgetauscht werden
-UserOutputPortInterface consoleOutput = new ConsoleUserOutputAdapter();
-RangeCalculationController productionController = new RangeCalculationController(consoleOutput);
-
-UserOutputPortInterface testOutput = new TestUserOutputAdapter();
-RangeCalculationController testController = new RangeCalculationController(testOutput);</code></pre>
+                    <h3>Positives Beispiel: UML</h3>
+                    <img src="assets/UMLs-imgs/LSP_Positive.png" alt="LSP UML Diagram" class="uml-image">
                 </section>
 
+
+
                 <section>
-                    <h3>LSP – Negatives Beispiel: RestrictedAcCharger</h3>
-                    <pre><code class="java">// Basisklasse mit allgemeiner Laderfunktionalität
-public class Charger {
-    protected double maxPowerKw;
-
-    public Charger(double maxPowerKw) {
-        this.maxPowerKw = maxPowerKw;
-    }
-
-    public double calculateChargingTime(BatteryProfile battery, double socToAdd) {
-        double energyToAddKwh = battery.getRemainingCapacityKwh() * (socToAdd / 100.0);
-        return energyToAddKwh / maxPowerKw;
-    }
-
-    public boolean canCharge(CarProfile car) {
-        return true; // Generischer Lader kann jedes Auto laden
-    }
-}
-
-// Problematische Unterklasse, die Vorbedingungen verstärkt
-public class RestrictedAcCharger extends Charger {
-    public RestrictedAcCharger(double maxPowerKw) {
-        super(maxPowerKw);
-    }
-
-    @Override
-    public boolean canCharge(CarProfile car) {
-        // Verstärkte Vorbedingung: nur Autos mit AC-Anschluss
-        return car.hasAcChargingCapability(); // Verletzt LSP!
-    }
-
-    @Override
-    public double calculateChargingTime(BatteryProfile battery, double socToAdd) {
-        if (battery.getType() != BatteryType.LFP) {
-            throw new UnsupportedOperationException("Only LFP batteries supported"); // Verletzt LSP!
-        }
-        return super.calculateChargingTime(battery, socToAdd);
-    }
-}</code></pre>
+                    <h3>LSP – Negatives Beispiel: Controller Hierarchie</h3>
                 </section>
 
                 <section>
                     <h3>LSP – Negatives Beispiel: Probleme</h3>
                     <ul>
-                        <li>RestrictedAcCharger ist nicht substituierbar für Charger</li>
-                        <li>Verstärkt Vorbedingungen durch zusätzliche Einschränkungen</li>
-                        <li>Wirft Ausnahmen für Fälle, die in der Basisklasse funktionieren</li>
-                        <li>Code, der mit Charger arbeitet, kann mit RestrictedAcCharger fehlschlagen</li>
-                        <li>Verletzung der Verhaltensspezifikation der Basisklasse</li>
+                        <li><strong>Keine gemeinsame Basisklasse:</strong> AC- und DC-Controller sind strukturell identisch, aber nicht gemeinsam abstrahiert.</li>
+                        <li><strong>Redundanz im Code:</strong> Gleichartige Konstruktoren und Methoden wie <code>Process...Calculation()</code>, aber doppelt implementiert.</li>
+                        <li><strong>Verletzung der Austauschbarkeit:</strong> Der <code>ExecuteActionInteractor</code> kann nicht einheitlich mit Controllern arbeiten.</li>
+                        <li><strong>Kein Polymorphismus:</strong> Zwingt den Client zur Behandlung jeder Controller-Klasse separat (z. B. mit <code>if</code>-Verzweigungen).</li>
+                        <li><strong>Mocks dupliziert:</strong> Separate Mock-Klassen mit nahezu identischem Code.</li>
                     </ul>
-                    <pre><code class="java">// Code, der mit der Verletzung des LSP bricht
-Charger genericCharger = new Charger(11.0);
-Charger restrictedCharger = new RestrictedAcCharger(11.0); // Sollte austauschbar sein
-
-CarProfile car = getCarWithoutAcCapability();
-
-// Funktioniert mit Basisklasse
-if (genericCharger.canCharge(car)) {
-    genericCharger.calculateChargingTime(car.getBatteryProfile(), 50.0);
-}
-
-// Bricht mit der abgeleiteten Klasse
-if (restrictedCharger.canCharge(car)) { // Gibt immer false zurück
-    // Dieser Code wird nie erreicht
-    restrictedCharger.calculateChargingTime(car.getBatteryProfile(), 50.0);
-}</code></pre>
+                    <p class="hljs-string">Diese Struktur verletzt das Liskov-Substitutionsprinzip, da die Controller
+                        nicht polymorph verwendet werden können, obwohl sie die gleiche grundlegende Funktionalität
+                        anbieten</p>
                 </section>
 
+                <section>
+                    <h3>Negatives Beispiel: UML</h3>
+                    <img src="assets/UMLs-imgs/LSP_negative.png" alt="Negative LSP Example UML" class="uml-image">
+                </section>
 
-
-
-
-
-
-
-
-
-
+                <section>
+                    <h3>Negatives Beispiel: Lösung & UML</h3>
+                    <ul>
+                        <li><strong>Einführung einer gemeinsamen Basisklasse <code>ChargingController</code></strong> mit Methode <code>processChargingCalculation()</code></li>
+                        <li><strong>Polymorphismus durch Vererbung:</strong> AC- und DC-Controller erben von dieser Abstraktion und können austauschbar verwendet werden</li>
+                        <li><strong>Zentrale Nutzung im Client:</strong> Der <code>ExecuteActionInteractor</code> referenziert nur die Abstraktion, nicht konkrete Typen</li>
+                        <li><strong>MockController vereinheitlicht:</strong> Ein <code>MockChargingController</code> ersetzt mehrere spezialisierte Mocks.</li>
+                    </ul>
+                    <img style="scale: 1.05" src="assets/UMLs-imgs/LSP_refactored.png" alt="LSP Refactored UML Diagram" class="uml-image">
+                </section>
 
 
 

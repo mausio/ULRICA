@@ -1,0 +1,79 @@
+@startuml LSP_refactored
+
+package "Presentation Layer" {
+  abstract class ChargingController {
+    # userInputPort: UserInputPortInterface
+    # userOutputPort: UserOutputPortInterface
+    
+    + ChargingController(userInputPort, userOutputPort)
+    + {abstract} processChargingCalculation(): boolean
+    # getStateOfCharge(prompt: String): double
+    # getAmbientTemperature(): double
+    # handleException(e: Exception, outputPort: ErrorOutputPort): boolean
+  }
+  
+  class AcChargingController extends ChargingController {
+    - calculateAcChargingUseCase: CalculateAcChargingUseCaseInterface
+    - acChargingOutputPort: AcChargingOutputPortInterface
+    
+    + AcChargingController(userInputPort, userOutputPort, useCase, outputPort)
+    + processChargingCalculation(): boolean
+    + getConnectorType(): int
+  }
+  
+  class DcChargingController extends ChargingController {
+    - calculateDcChargingUseCase: CalculateDcChargingUseCaseInterface
+    - dcChargingOutputPort: DcChargingOutputPortInterface
+    
+    + DcChargingController(userInputPort, userOutputPort, useCase, outputPort)
+    + processChargingCalculation(): boolean
+    + getMaxStationPower(): double
+  }
+  
+  class ExecuteActionInteractor {
+    - navigationUseCase: NavigationUseCaseInterface
+    - actionResultOutputPort: ActionResultOutputPortInterface
+    - profileSelectionService: ProfileSelectionService
+    - controllers: Map<Integer, ChargingController>
+    
+    + executeAction(actionChoice: int): boolean
+  }
+  
+  interface UserInputPortInterface {
+    + readInt(): int
+    + readDouble(): double
+    + readLine(): String
+    + readBoolean(yesOption: String, noOption: String): boolean
+  }
+  
+  interface UserOutputPortInterface {
+    + display(message: String): void
+    + displayLine(message: String): void
+    + displayPrompt(prompt: String): void
+  }
+  
+
+  AcChargingController ..|> ChargingController
+  DcChargingController ..|> ChargingController
+  ChargingController -right-> UserInputPortInterface
+  ChargingController -right-> UserOutputPortInterface
+  ExecuteActionInteractor -down-> ChargingController : uses >
+  
+  class MockChargingController extends ChargingController {
+    - processChargingResult: boolean
+    - processCallCount: int
+    
+    + processChargingCalculation(): boolean
+    + setProcessChargingResult(result: boolean): void
+    + getProcessCallCount(): int
+    + resetCallCount(): void
+  }
+  
+  note "LSP Compliance:\nClient code can handle any ChargingController\nthrough a common interface." as N1
+  ChargingController .. N1
+  
+  note "Common mock implementation\nfor all controller types" as N2
+  MockChargingController .. N2
+}
+
+@enduml

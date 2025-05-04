@@ -1,155 +1,20 @@
 <section>
-  <h3>LSP – Liskov Substitution Principle (2P)</h3>
-  <p>Objekte einer Basisklasse sollten durch Objekte ihrer abgeleiteten Klassen ersetzbar sein, ohne
-      die
-      Korrektheit des Programms zu beeinträchtigen</p>
-  <img src="assets/UMLs-imgs/Kapitel_3-Aufgabe_3.png" alt="LSP UML Diagram" class="uml-image">
-</section>
-
-<section>
-  <h3>LSP – Positives Beispiel: UserOutputPortInterface</h3>
-  <pre><code class="java">// Interface für die Benutzerausgabe
-public interface UserOutputPortInterface {
-void display(String message);
-void displayLine(String message);
-void displayPrompt(String prompt);
-}
-
-// Implementierung für die Konsole
-public class ConsoleUserOutputAdapter implements UserOutputPortInterface {
-@Override
-public void display(String message) {
-System.out.print(message);
-}
-
-@Override
-public void displayLine(String message) {
-System.out.println(message);
-}
-
-@Override
-public void displayPrompt(String prompt) {
-System.out.print(prompt + ": ");
-}
-}
-
-// Implementierung für Tests (Mock)
-public class TestUserOutputAdapter implements UserOutputPortInterface {
-private final List<String> messages = new ArrayList<>();
-
-@Override
-public void display(String message) {
-messages.add(message);
-}
-
-@Override
-public void displayLine(String message) {
-messages.add(message + "\n");
-}
-
-@Override
-public void displayPrompt(String prompt) {
-messages.add(prompt + ": ");
-}
-
-public List<String> getMessages() {
-return messages;
-}
-}</code></pre>
-</section>
-
-<section>
-  <h3>LSP – Positives Beispiel: Verwendung</h3>
-  <pre><code class="java">// Klasse, die das Interface verwendet
-public class RangeCalculationController {
-private final UserOutputPortInterface outputPort;
-
-public RangeCalculationController(UserOutputPortInterface outputPort) {
-this.outputPort = outputPort;
-}
-
-public void displayRangeResult(RangeResult result) {
-outputPort.displayLine("Berechnete Reichweite: " + result.getEstimatedRangeKm() + " km");
-outputPort.displayLine("Durchschnittsverbrauch: " +
-result.getAverageConsumptionKwhPer100Km() + " kWh/100km");
-outputPort.displayLine("Wettereinfluss: " + result.getWeatherImpact());
-// Weitere Ausgaben...
-}
-}
-
-// Beide Implementierungen können problemlos ausgetauscht werden
-UserOutputPortInterface consoleOutput = new ConsoleUserOutputAdapter();
-RangeCalculationController productionController = new RangeCalculationController(consoleOutput);
-
-UserOutputPortInterface testOutput = new TestUserOutputAdapter();
-RangeCalculationController testController = new RangeCalculationController(testOutput);</code></pre>
-</section>
-
-<section>
-  <h3>LSP – Negatives Beispiel: RestrictedAcCharger</h3>
-  <pre><code class="java">// Basisklasse mit allgemeiner Laderfunktionalität
-public class Charger {
-protected double maxPowerKw;
-
-public Charger(double maxPowerKw) {
-this.maxPowerKw = maxPowerKw;
-}
-
-public double calculateChargingTime(BatteryProfile battery, double socToAdd) {
-double energyToAddKwh = battery.getRemainingCapacityKwh() * (socToAdd / 100.0);
-return energyToAddKwh / maxPowerKw;
-}
-
-public boolean canCharge(CarProfile car) {
-return true; // Generischer Lader kann jedes Auto laden
-}
-}
-
-// Problematische Unterklasse, die Vorbedingungen verstärkt
-public class RestrictedAcCharger extends Charger {
-public RestrictedAcCharger(double maxPowerKw) {
-super(maxPowerKw);
-}
-
-@Override
-public boolean canCharge(CarProfile car) {
-// Verstärkte Vorbedingung: nur Autos mit AC-Anschluss
-return car.hasAcChargingCapability(); // Verletzt LSP!
-}
-
-@Override
-public double calculateChargingTime(BatteryProfile battery, double socToAdd) {
-if (battery.getType() != BatteryType.LFP) {
-throw new UnsupportedOperationException("Only LFP batteries supported"); // Verletzt LSP!
-}
-return super.calculateChargingTime(battery, socToAdd);
-}
-}</code></pre>
+  <h3>LSP – Negatives Beispiel: Controller Hierarchie</h3>
 </section>
 
 <section>
   <h3>LSP – Negatives Beispiel: Probleme</h3>
   <ul>
-      <li>RestrictedAcCharger ist nicht substituierbar für Charger</li>
-      <li>Verstärkt Vorbedingungen durch zusätzliche Einschränkungen</li>
-      <li>Wirft Ausnahmen für Fälle, die in der Basisklasse funktionieren</li>
-      <li>Code, der mit Charger arbeitet, kann mit RestrictedAcCharger fehlschlagen</li>
-      <li>Verletzung der Verhaltensspezifikation der Basisklasse</li>
+      <li>AcChargingController und DcChargingController haben identische Struktur aber keine gemeinsame Basisklasse</li>
+      <li>Beide haben gleiche Konstruktor-Parameter und gleiche Methodenstruktur</li>
+      <li>Duplizierte Implementierungslogik (Exception-Handling, Eingabesammlung)</li>
+      <li>MockControllers müssen jeweils separat implementiert werden</li>
+      <li>ExecuteActionInteractor muss jede Controllerklasse separat behandeln</li>
   </ul>
-  <pre><code class="java">// Code, der mit der Verletzung des LSP bricht
-Charger genericCharger = new Charger(11.0);
-Charger restrictedCharger = new RestrictedAcCharger(11.0); // Sollte austauschbar sein
+<p>Diese Struktur verletzt das Liskov-Substitutionsprinzip, da die Controller nicht polymorph verwendet werden können, obwohl sie die gleiche grundlegende Funktionalität anbieten.</p>
+</section>
 
-CarProfile car = getCarWithoutAcCapability();
-
-// Funktioniert mit Basisklasse
-if (genericCharger.canCharge(car)) {
-genericCharger.calculateChargingTime(car.getBatteryProfile(), 50.0);
-}
-
-// Bricht mit der abgeleiteten Klasse
-if (restrictedCharger.canCharge(car)) { // Gibt immer false zurück
-// Dieser Code wird nie erreicht
-restrictedCharger.calculateChargingTime(car.getBatteryProfile(), 50.0);
-}</code></pre>
+<section>
+  <h3>LSP – Lösungsvorschlag: Abstraktion einführen</h3>
+  <p>Einführung einer gemeinsamen Abstraktionsebene ermöglicht Substitution und polymorphes Verhalten</p>
 </section>
