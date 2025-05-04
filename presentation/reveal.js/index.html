@@ -2209,29 +2209,49 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
 
                 <section>
                     <h3>Analyse GRASP: Geringe Kopplung (3P)</h3>
-                    <p>AcChargingController - Beispiel für geringe Kopplung</p>
-                    <img src="assets/UMLs-imgs/Kapitel_4-Aufgabe_1.png" alt="Geringe Kopplung UML Diagram"
-                        class="uml-image" />
+                    <p class="subchapter">Eine bis jetzt noch nicht behandelte Klasse als positives Beispiel geringer Kopplung; UML mit zusammenspielenden Klassen, Aufgabenbeschreibung der Klasse und Begründung, warum hier eine geringe Kopplung vorliegt; es müssen auch die Aufrufer/Nutzer der Klasse berücksichtigt werden</p>
                 </section>
 
                 <section>
-                    <h3>Geringe Kopplung: Beziehung zu anderen Klassen</h3>
-                    <h5>Geringe Kopplung durch:</h5>
+                    <h3>Geringe Kopplung: <br/> AcChargingController</h3>
+                    <p style="text-align: justify;">
+                        Der <code>AcChargingController</code> koordiniert den Ablauf der AC-Ladeberechnung:
+                        Benutzereingaben werden gelesen, die Ladeparameter werden über ein Anwendungs & Use-Case Interface berechnet
+                        und die Ergebnisse werden anschließend ausgegeben
+                    </p>
+                    <p style="text-align: justify;">
+                        Die gesamte Kommunikation erfolgt ausschließlich über abstrahierte Schnittstellen
+                        (Ports), wodurch der Controller unabhängig von konkreten Implementierungen bleibt.
+                    </p>
+                </section>
+
+
+                <section>
+                    <h3>Geringe Kopplung: <br/> UML & Erklärung</h3>
                     <ul>
-                        <li>Ausschließliche Abhängigkeit von Interfaces
-                            statt konkreten Implementierungen
-                        </li>
-                        <li>Dependency Injection über Konstruktor</li>
-                        <li>Klare Trennung von Ein-/Ausgabe und
-                            Business-Logik
-                        </li>
+                        <li>Verwendet nur Interfaces (Ports) statt konkreter Klassen</li>
+                        <li>Konstruktor-Injections aller Abhängigkeiten (DIP)</li>
+                        <li>Strikte Trennung von Steuerung, Ein-/Ausgabe und Fachlogik</li>
                         <li>Keine hardcodierten Abhängigkeiten</li>
-                        <li>Keine Stateful-Objekte oder Singletons</li>
+                        <li>Alle Abhängigkeiten sind austauschbar und leicht testbar</li>
                     </ul>
+                    <img style="scale: 1.1" src="assets/UMLs-imgs/Kapitel_4-Aufgabe_1.png" alt="Geringe Kopplung UML Diagram"
+                    class="uml-image" />
                 </section>
 
                 <section>
-                    <h3>Vorteile der geringen Kopplung</h3>
+                    <h3>Geringe Kopplung: Aufrufer/Nutzer der Klasse</h3>
+                    <p style="text-align: justify;">
+                        Der <code>AcChargingController</code> wird durch eine externe Instanz, z. B. durch eine Main-Klasse oder ein Framework-Initializer, instanziiert und diese übergibt die nötigen Ports per Konstruktor (Dependency Injection) und ruft die Methode
+                        <code>processChargingCalculation()</code> auf.
+                    </p>
+                    <p style="text-align: justify;">
+                        Somit bleibt der Controller vollständig entkoppelt vom Lebenszyklus und der konkreten Implementierung seiner Abhängigkeiten.
+                    </p>
+                </section>
+
+                <section>
+                    <h3>Geringe Kopplung: <br/> Vorteile der geringen Kopplung</h3>
                     <ul>
                         <li><b>Testbarkeit:</b> Einfaches Mocking der Abhängigkeiten
                             für Unit-Tests
@@ -2248,15 +2268,13 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
                             unterschiedlichen Implementierungen
                             genutzt werden
                         </li>
-                        <li><b>Parallel Development:</b> Teams können gleichzeitig
-                            an Controller und Implementierungen
-                            arbeiten
-                        </li>
                         <li><b>Verständlichkeit:</b> Klare Verantwortlichkeiten und
                             Abhängigkeiten
                         </li>
                     </ul>
                 </section>
+
+                
 
                 <section>
                     <h3>Analyse GRASP: Polymorphismus (3P)</h3>
