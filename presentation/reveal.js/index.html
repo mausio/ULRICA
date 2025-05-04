@@ -2165,7 +2165,8 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
                         <li><strong>Keine gemeinsame Basisklasse:</strong> AC- und DC-Controller sind strukturell
                             identisch, aber nicht gemeinsam abstrahiert.</li>
                         <li><strong>Redundanz im Code:</strong> Gleichartige Konstruktoren und Methoden wie
-                            <code>Process...Calculation()</code>, aber doppelt implementiert.</li>
+                            <code>Process...Calculation()</code>, aber doppelt implementiert.
+                        </li>
                         <li><strong>Verletzung der Austauschbarkeit:</strong> Der <code>ExecuteActionInteractor</code>
                             kann nicht einheitlich mit Controllern arbeiten.</li>
                         <li><strong>Kein Polymorphismus:</strong> Zwingt den Client zur Behandlung jeder
@@ -2208,7 +2209,6 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
 
 
             </section>
-            <!--       MUSS NOCH GEMACHT WERDEN: NOCH NICHT FERTIGT !!!! -->
             <!-- Kapitel 4: NOCH NICHT FERTIGT !!!!  -->
             <section alt="NOCH NICHT FERTIGT !!!! Kapitel 4">
                 <section>
@@ -2292,11 +2292,12 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
 
 
 
-                
+
                 <section>
                     <h3>Analyse GRASP: Polymorphismus (3P)</h3>
                     <p class="subchapter">
-                        Eine Klasse als positives Beispiel entweder von Polymorphismus oder von Pure Fabrication; UML Diagramm und Begründung, warum es hier zum Einsatz kommt
+                        Eine Klasse als positives Beispiel entweder von Polymorphismus oder von Pure Fabrication; UML
+                        Diagramm und Begründung, warum es hier zum Einsatz kommt
                     </p>
 
                 </section>
@@ -2304,24 +2305,33 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
                 <section>
                     <h3 style="margin-bottom: 0; padding-bottom: 0;">RangeCalculationStrategy</h3>
                     <ul style="padding-top: 0; margin-top: 0;">
-                        <li><b>Polymorphismus:</b> Verantwortung für das Verhalten wird an ein abstraktes Interface delegiert so dass konkrete Klassen polymorph interagieren können</li>
-                        <li><b>Prinzip der Offenheit:</b> System ist offen für neue Strategien, aber geschlossen für Änderungen (OCP).</li>
-                        <li><b>Geringe Kopplung:</b> Der aufrufende Code ist nicht abhängig von konkreten Implementierungen, sondern lediglich vom Interface.</li>
+                        <li><b>Polymorphismus:</b> Verantwortung für das Verhalten wird an ein abstraktes Interface
+                            delegiert so dass konkrete Klassen polymorph interagieren können</li>
+                        <li><b>Prinzip der Offenheit:</b> System ist offen für neue Strategien, aber geschlossen für
+                            Änderungen (OCP).</li>
+                        <li><b>Geringe Kopplung:</b> Der aufrufende Code ist nicht abhängig von konkreten
+                            Implementierungen, sondern lediglich vom Interface.</li>
                         <li><b>Starke Kohäsion:</b> Jede Strategie kapselt exakt eine konkrete Berechnungslogik.</li>
                     </ul>
-                    <img style="scale:1.05" src="assets/UMLs-imgs/Kapitel_4-Aufgabe_2.png" alt="Polymorphismus UML Diagram"
-                        class="uml-image" />
+                    <img style="scale:1.05" src="assets/UMLs-imgs/Kapitel_4-Aufgabe_2.png"
+                        alt="Polymorphismus UML Diagram" class="uml-image" />
                 </section>
 
                 <section>
                     <h3>Vorteile des Polymorphismus im Anwendungskontext</h3>
                     <ul>
-                        <li><b>Erweiterbarkeit:</b> Neue Strategien können einfach hinzugefügt werden, ohne bestehende Klassen zu verändern.</li>
-                        <li><b>Wiederverwendbarkeit:</b> Strategien sind unabhängig voneinander einsetzbar und modular.</li>
-                        <li><b>Kapselung:</b> Die Implementierungsdetails der einzelnen Strategien sind vollständig vom aufrufenden Code abgeschirmt.</li>
-                        <li><b>Wartbarkeit:</b> Änderungen an einer Strategie beeinflussen keine anderen Klassen, da jede Strategie isoliert ist.</li>
-                        <li><b>Testbarkeit:</b> Einzelne Strategien können unabhängig getestet werden, was die Qualitätssicherung vereinfacht.</li>
-                        <li><b>Komposition:</b> Die konkrete Strategie kann zur Laufzeit ausgetauscht oder kombiniert werden – ohne Anpassung des Client-Codes.</li>
+                        <li><b>Erweiterbarkeit:</b> Neue Strategien können einfach hinzugefügt werden, ohne bestehende
+                            Klassen zu verändern.</li>
+                        <li><b>Wiederverwendbarkeit:</b> Strategien sind unabhängig voneinander einsetzbar und modular.
+                        </li>
+                        <li><b>Kapselung:</b> Die Implementierungsdetails der einzelnen Strategien sind vollständig vom
+                            aufrufenden Code abgeschirmt.</li>
+                        <li><b>Wartbarkeit:</b> Änderungen an einer Strategie beeinflussen keine anderen Klassen, da
+                            jede Strategie isoliert ist.</li>
+                        <li><b>Testbarkeit:</b> Einzelne Strategien können unabhängig getestet werden, was die
+                            Qualitätssicherung vereinfacht.</li>
+                        <li><b>Komposition:</b> Die konkrete Strategie kann zur Laufzeit ausgetauscht oder kombiniert
+                            werden – ohne Anpassung des Client-Codes.</li>
                     </ul>
                 </section>
 
@@ -2331,38 +2341,45 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
                 <!-- TODO: FEHLT NOCH!!! -->
                 <section>
                     <h3>DRY – Don't Repeat Yourself (2P)</h3>
-                    <p>Commit <code>89f9ea2</code>: Refactoring von <code>CarProfileController</code>
-                        zur Reduktion
-                        duplizierter Logik
+                    <p class="subchapter">Ein Commit angeben, bei dem duplizierter Code/duplizierte Logik aufgelöst wurde; Code-Beispiele (vorher/nachher) einfügen; begründen und Auswirkung beschreiben – ggf. UML zum Verständnis ergänzen</p>
+                </section>
+
+
+                <section>
+                    <h3>DRY: CarProfileController</h3>
+                    <p>Commit <span style="background-color: whitesmoke; border-radius: 5px; padding: 1px 4px;" class="hljs-string">89f9ea2</span>: <br/> Refactoring von <span style="background-color: whitesmoke; border-radius: 5px; padding: 1px 4px;" class="hljs-string">CarProfileController</span>
+                        zur Reduktion der
+                        duplizierten Logik
                     </p>
                     <div class="horizontal-spaced-container">
-                        <div>
-                            <h5>Problem:</h5>
-                            <ul>
-                                <li>Business-Logik war mit UI-Logik vermischt</li>
-                                <li>Duplizierter Code für ähnliche Operationen</li>
-                                <li>Schwer zu erkennendes Muster im Code</li>
-                                <li>Hohe Fehleranfälligkeit bei Änderungen</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h5>Lösung:</h5>
-                            <ul>
-                                <li>Auslagerung der Business-Logik in einen
-                                    Service
-                                </li>
-                                <li>Zusammenfassung ähnlicher Methoden</li>
-                                <li>Einführung von Hilfsmethoden für gemeinsame
-                                    Funktionalität
-                                </li>
-                                <li>Trennung von UI und Geschäftslogik</li>
-                            </ul>
-                        </div>
+                        <ul style="width: 50%;">
+                            <h6>Problem:</h6>
+                            <li>Business-Logik war mit UI-Logik vermischt</li>
+                            <li>Duplizierter Code für ähnliche Operationen</li>
+                            <li>Schwer zu erkennendes Muster im Code</li>
+                            <li>Hohe Fehleranfälligkeit bei Änderungen</li>
+                            <li>Clean Architecture war nicht erfüllt</li>
+                        </ul>
+                        <ul style="width: 50%;">
+                            <h6>Lösung:</h6>
+                            <li>Auslagerung der Business-Logik in einen
+                                Service
+                            </li>
+                            <li>Zusammenfassung ähnlicher Methoden</li>
+                            <li>Einführung von Hilfsmethoden für gemeinsame
+                                Funktionalität
+                            </li>
+                            <li>Trennung von UI und Geschäftslogik</li>
+                            <li>Folgen von GRASP & SOLID</li>
+                        
+                        </ul>
                     </div>
                 </section>
 
+
+
                 <section>
-                    <h3>DRY – Vorher: Überfüllter Controller</h3>
+                    <h3>DRY – Vorher: Code</h3>
                     <pre><code class="java">public class CarProfileController {
 				  private static Scanner scanner;
 				  private final LoadingScreenAnimation loadingScreenAnimation;
@@ -2405,69 +2422,73 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
                 </section>
 
                 <section>
-                    <h3>DRY – Nachher: Getrennter Controller und Service</h3>
+                    <h3>DRY – Nachher: Code</h3>
                     <div class="horizontal-spaced-container">
                         <div>
                             <h5>Controller: UI-Logik</h5>
                             <pre><code class="java">public class CarProfileController {
-				  
-				  public static void startDialog() {
-					System.out.println(
-						"Hey! To begin with, let's see if you have any car profiles saved.");
-				  }
-				  
-				  public static Double getConsumptionDialog(Scanner scanner) {
-					System.out.print("consumption: (in kWh) ");
-					String input = scanner.nextLine();
-					if (!input.isEmpty()) {
-					  return Double.valueOf(input);
-					}
-					return null;
-				  }
-				  
-				  // Weitere UI-Methoden...
-				}</code></pre>
-                        </div>
-                        <div>
-                            <h5>Service: Business-Logik</h5>
-                            <pre><code class="java">public class CarProfileService {
-				  
-				  private JsonCarProfilesLoader carProfileJsonLoader;
-				  private CarProfileModel carProfile;
-				  
-				  public CarProfileService() throws LoadingException {
-					this.carProfileJsonLoader = 
-					  SetupService.getCarProfileJsonLoader();
-					
-					// UI-Interaktion über Controller
-					CarProfileController.startDialog();
-					
-					// Laden der Profile
-					loadProfiles();
-					
-					// Weitere Business-Logik...
-				  }
-				  
-				  private void loadProfiles() {
-					// Gemeinsame Ladelogik, nicht mehr dupliziert
-					CarProfileModel[] profiles = 
-						carProfileJsonLoader.getCarProfiles();
-					
-					if (profiles == null || profiles.length <= 1) {
-					  createNewProfile();
-					} else {
-					  selectExistingProfile(profiles);
-					}
-				  }
-				  
-				  // Weitere Business-Methoden...
-				}</code></pre>
+    public static void startDialog() {
+        System.out.println(
+            "Hey! To begin with, let's see if you have any car profiles saved.");
+        }
+        
+        public static Double getConsumptionDialog(Scanner scanner) {
+        System.out.print("consumption: (in kWh) ");
+        String input = scanner.nextLine();
+        if (!input.isEmpty()) {
+            return Double.valueOf(input);
+        }
+        return null;
+        }
+        
+        // Weitere UI-Methoden...
+    }
+    
+    
+
+
+    public class CarProfileService {
+        
+        private JsonCarProfilesLoader carProfileJsonLoader;
+        private CarProfileModel carProfile;
+        
+        public CarProfileService() throws LoadingException {
+        this.carProfileJsonLoader = 
+            SetupService.getCarProfileJsonLoader();
+        
+        // UI-Interaktion über Controller
+        CarProfileController.startDialog();
+        
+        // Laden der Profile
+        loadProfiles();
+        
+        // Weitere Business-Logik...
+        }
+        
+        private void loadProfiles() {
+        // Gemeinsame Ladelogik, nicht mehr dupliziert
+        CarProfileModel[] profiles = 
+            carProfileJsonLoader.getCarProfiles();
+        
+        if (profiles == null || profiles.length <= 1) {
+            createNewProfile();
+        } else {
+            selectExistingProfile(profiles);
+        }
+        }
+        
+        // Weitere Business-Methoden...
+    }
+// ...
+
+}
+</code></pre>
                         </div>
                     </div>
                 </section>
 
                 <section>
-                    <h3>DRY – Vorteile der Refaktorierung</h3>
+                    <h3>DRY: Vorteile des Refactorings</h3>
                     <ul>
                         <li><b>Bessere Wartbarkeit:</b> Änderungen an UI oder
                             Business-Logik können unabhängig
@@ -2491,6 +2512,12 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
                         </li>
                     </ul>
                 </section>
+
+
+
+
+
+
 
 
             </section>
