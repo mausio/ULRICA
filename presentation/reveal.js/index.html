@@ -2162,10 +2162,14 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
                 <section>
                     <h3>LSP – Negatives Beispiel: Probleme</h3>
                     <ul>
-                        <li><strong>Keine gemeinsame Basisklasse:</strong> AC- und DC-Controller sind strukturell identisch, aber nicht gemeinsam abstrahiert.</li>
-                        <li><strong>Redundanz im Code:</strong> Gleichartige Konstruktoren und Methoden wie <code>Process...Calculation()</code>, aber doppelt implementiert.</li>
-                        <li><strong>Verletzung der Austauschbarkeit:</strong> Der <code>ExecuteActionInteractor</code> kann nicht einheitlich mit Controllern arbeiten.</li>
-                        <li><strong>Kein Polymorphismus:</strong> Zwingt den Client zur Behandlung jeder Controller-Klasse separat (z. B. mit <code>if</code>-Verzweigungen).</li>
+                        <li><strong>Keine gemeinsame Basisklasse:</strong> AC- und DC-Controller sind strukturell
+                            identisch, aber nicht gemeinsam abstrahiert.</li>
+                        <li><strong>Redundanz im Code:</strong> Gleichartige Konstruktoren und Methoden wie
+                            <code>Process...Calculation()</code>, aber doppelt implementiert.</li>
+                        <li><strong>Verletzung der Austauschbarkeit:</strong> Der <code>ExecuteActionInteractor</code>
+                            kann nicht einheitlich mit Controllern arbeiten.</li>
+                        <li><strong>Kein Polymorphismus:</strong> Zwingt den Client zur Behandlung jeder
+                            Controller-Klasse separat (z. B. mit <code>if</code>-Verzweigungen).</li>
                         <li><strong>Mocks dupliziert:</strong> Separate Mock-Klassen mit nahezu identischem Code.</li>
                     </ul>
                     <p class="hljs-string">Diese Struktur verletzt das Liskov-Substitutionsprinzip, da die Controller
@@ -2181,12 +2185,17 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
                 <section>
                     <h3>Negatives Beispiel: Lösung & UML</h3>
                     <ul>
-                        <li><strong>Einführung einer gemeinsamen Basisklasse <code>ChargingController</code></strong> mit Methode <code>processChargingCalculation()</code></li>
-                        <li><strong>Polymorphismus durch Vererbung:</strong> AC- und DC-Controller erben von dieser Abstraktion und können austauschbar verwendet werden</li>
-                        <li><strong>Zentrale Nutzung im Client:</strong> Der <code>ExecuteActionInteractor</code> referenziert nur die Abstraktion, nicht konkrete Typen</li>
-                        <li><strong>MockController vereinheitlicht:</strong> Ein <code>MockChargingController</code> ersetzt mehrere spezialisierte Mocks.</li>
+                        <li><strong>Einführung einer gemeinsamen Basisklasse <code>ChargingController</code></strong>
+                            mit Methode <code>processChargingCalculation()</code></li>
+                        <li><strong>Polymorphismus durch Vererbung:</strong> AC- und DC-Controller erben von dieser
+                            Abstraktion und können austauschbar verwendet werden</li>
+                        <li><strong>Zentrale Nutzung im Client:</strong> Der <code>ExecuteActionInteractor</code>
+                            referenziert nur die Abstraktion, nicht konkrete Typen</li>
+                        <li><strong>MockController vereinheitlicht:</strong> Ein <code>MockChargingController</code>
+                            ersetzt mehrere spezialisierte Mocks.</li>
                     </ul>
-                    <img style="scale: 1.05" src="assets/UMLs-imgs/LSP_refactored.png" alt="LSP Refactored UML Diagram" class="uml-image">
+                    <img style="scale: 1.05" src="assets/UMLs-imgs/LSP_refactored.png" alt="LSP Refactored UML Diagram"
+                        class="uml-image">
                 </section>
 
 
@@ -2209,14 +2218,18 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
 
                 <section>
                     <h3>Analyse GRASP: Geringe Kopplung (3P)</h3>
-                    <p class="subchapter">Eine bis jetzt noch nicht behandelte Klasse als positives Beispiel geringer Kopplung; UML mit zusammenspielenden Klassen, Aufgabenbeschreibung der Klasse und Begründung, warum hier eine geringe Kopplung vorliegt; es müssen auch die Aufrufer/Nutzer der Klasse berücksichtigt werden</p>
+                    <p class="subchapter">Eine bis jetzt noch nicht behandelte Klasse als positives Beispiel geringer
+                        Kopplung; UML mit zusammenspielenden Klassen, Aufgabenbeschreibung der Klasse und Begründung,
+                        warum hier eine geringe Kopplung vorliegt; es müssen auch die Aufrufer/Nutzer der Klasse
+                        berücksichtigt werden</p>
                 </section>
 
                 <section>
-                    <h3>Geringe Kopplung: <br/> AcChargingController</h3>
+                    <h3>Geringe Kopplung: <br /> AcChargingController</h3>
                     <p style="text-align: justify;">
                         Der <code>AcChargingController</code> koordiniert den Ablauf der AC-Ladeberechnung:
-                        Benutzereingaben werden gelesen, die Ladeparameter werden über ein Anwendungs & Use-Case Interface berechnet
+                        Benutzereingaben werden gelesen, die Ladeparameter werden über ein Anwendungs & Use-Case
+                        Interface berechnet
                         und die Ergebnisse werden anschließend ausgegeben
                     </p>
                     <p style="text-align: justify;">
@@ -2227,7 +2240,7 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
 
 
                 <section>
-                    <h3>Geringe Kopplung: <br/> UML & Erklärung</h3>
+                    <h3>Geringe Kopplung: <br /> UML & Erklärung</h3>
                     <ul>
                         <li>Verwendet nur Interfaces (Ports) statt konkreter Klassen</li>
                         <li>Konstruktor-Injections aller Abhängigkeiten (DIP)</li>
@@ -2235,23 +2248,26 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
                         <li>Keine hardcodierten Abhängigkeiten</li>
                         <li>Alle Abhängigkeiten sind austauschbar und leicht testbar</li>
                     </ul>
-                    <img style="scale: 1.1" src="assets/UMLs-imgs/Kapitel_4-Aufgabe_1.png" alt="Geringe Kopplung UML Diagram"
-                    class="uml-image" />
+                    <img style="scale: 1.1" src="assets/UMLs-imgs/Kapitel_4-Aufgabe_1.png"
+                        alt="Geringe Kopplung UML Diagram" class="uml-image" />
                 </section>
 
                 <section>
                     <h3>Geringe Kopplung: Aufrufer/Nutzer der Klasse</h3>
                     <p style="text-align: justify;">
-                        Der <code>AcChargingController</code> wird durch eine externe Instanz, z. B. durch eine Main-Klasse oder ein Framework-Initializer, instanziiert und diese übergibt die nötigen Ports per Konstruktor (Dependency Injection) und ruft die Methode
+                        Der <code>AcChargingController</code> wird durch eine externe Instanz, z. B. durch eine
+                        Main-Klasse oder ein Framework-Initializer, instanziiert und diese übergibt die nötigen Ports
+                        per Konstruktor (Dependency Injection) und ruft die Methode
                         <code>processChargingCalculation()</code> auf.
                     </p>
                     <p style="text-align: justify;">
-                        Somit bleibt der Controller vollständig entkoppelt vom Lebenszyklus und der konkreten Implementierung seiner Abhängigkeiten.
+                        Somit bleibt der Controller vollständig entkoppelt vom Lebenszyklus und der konkreten
+                        Implementierung seiner Abhängigkeiten.
                     </p>
                 </section>
 
                 <section>
-                    <h3>Geringe Kopplung: <br/> Vorteile der geringen Kopplung</h3>
+                    <h3>Geringe Kopplung: <br /> Vorteile der geringen Kopplung</h3>
                     <ul>
                         <li><b>Testbarkeit:</b> Einfaches Mocking der Abhängigkeiten
                             für Unit-Tests
@@ -2274,62 +2290,45 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
                     </ul>
                 </section>
 
-                
 
+
+                
                 <section>
                     <h3>Analyse GRASP: Polymorphismus (3P)</h3>
-                    <p>RangeCalculationStrategyInterface - Anwendung des
-                        Polymorphismus</p>
-                    <img src="assets/UMLs-imgs/Kapitel_4-Aufgabe_2.png" alt="Polymorphismus UML Diagram"
+                    <p class="subchapter">
+                        Eine Klasse als positives Beispiel entweder von Polymorphismus oder von Pure Fabrication; UML Diagramm und Begründung, warum es hier zum Einsatz kommt
+                    </p>
+
+                </section>
+
+                <section>
+                    <h3 style="margin-bottom: 0; padding-bottom: 0;">RangeCalculationStrategy</h3>
+                    <ul style="padding-top: 0; margin-top: 0;">
+                        <li><b>Polymorphismus:</b> Verantwortung für das Verhalten wird an ein abstraktes Interface delegiert so dass konkrete Klassen polymorph interagieren können</li>
+                        <li><b>Prinzip der Offenheit:</b> System ist offen für neue Strategien, aber geschlossen für Änderungen (OCP).</li>
+                        <li><b>Geringe Kopplung:</b> Der aufrufende Code ist nicht abhängig von konkreten Implementierungen, sondern lediglich vom Interface.</li>
+                        <li><b>Starke Kohäsion:</b> Jede Strategie kapselt exakt eine konkrete Berechnungslogik.</li>
+                    </ul>
+                    <img style="scale:1.05" src="assets/UMLs-imgs/Kapitel_4-Aufgabe_2.png" alt="Polymorphismus UML Diagram"
                         class="uml-image" />
                 </section>
 
                 <section>
-                    <h3>Polymorphismus: UML und Anwendung</h3>
-                    <h5>Anwendung im RangeCalculatorService:</h5>
-                    <pre><code class="java">public class RangeCalculatorService {
-					private final List<RangeCalculationStrategyInterface> strategies;
-					private RangeCalculationStrategyInterface defaultStrategy;
-					
-					// Constructor with initialization...
-					
-					public RangeResult calculateRange(
-							CarProfile carProfile, 
-							RangeParameters parameters) {
-						return defaultStrategy.calculateRange(
-							carProfile, parameters);
-					}
-				}</code></pre>
-                </section>
-
-                <section>
-                    <h3>Vorteile des Polymorphismus</h3>
+                    <h3>Vorteile des Polymorphismus im Anwendungskontext</h3>
                     <ul>
-                        <li><b>Erweiterbarkeit:</b> Neue Berechnungsstrategien
-                            können ohne Änderung des bestehenden
-                            Codes hinzugefügt
-                            werden
-                        </li>
-                        <li><b>Wiederverwendbarkeit:</b> Strategien können in
-                            verschiedenen Kontexten genutzt werden
-                        </li>
-                        <li><b>Kapselung:</b> Implementierungsdetails der Strategien
-                            sind hinter dem Interface verborgen
-                        </li>
-                        <li><b>Wartbarkeit:</b> Änderungen an einer Strategie
-                            beeinflussen andere Teile des Systems
-                            nicht
-                        </li>
-                        <li><b>Testbarkeit:</b> Strategien können isoliert getestet
-                            werden
-                        </li>
-                        <li><b>Komposition:</b> Verschiedene Strategien können zur
-                            Laufzeit ausgewählt und kombiniert
-                            werden
-                        </li>
+                        <li><b>Erweiterbarkeit:</b> Neue Strategien können einfach hinzugefügt werden, ohne bestehende Klassen zu verändern.</li>
+                        <li><b>Wiederverwendbarkeit:</b> Strategien sind unabhängig voneinander einsetzbar und modular.</li>
+                        <li><b>Kapselung:</b> Die Implementierungsdetails der einzelnen Strategien sind vollständig vom aufrufenden Code abgeschirmt.</li>
+                        <li><b>Wartbarkeit:</b> Änderungen an einer Strategie beeinflussen keine anderen Klassen, da jede Strategie isoliert ist.</li>
+                        <li><b>Testbarkeit:</b> Einzelne Strategien können unabhängig getestet werden, was die Qualitätssicherung vereinfacht.</li>
+                        <li><b>Komposition:</b> Die konkrete Strategie kann zur Laufzeit ausgetauscht oder kombiniert werden – ohne Anpassung des Client-Codes.</li>
                     </ul>
                 </section>
 
+
+
+
+                <!-- TODO: FEHLT NOCH!!! -->
                 <section>
                     <h3>DRY – Don't Repeat Yourself (2P)</h3>
                     <p>Commit <code>89f9ea2</code>: Refactoring von <code>CarProfileController</code>
