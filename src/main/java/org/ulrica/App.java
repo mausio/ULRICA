@@ -1,7 +1,6 @@
 package org.ulrica;
 
 import java.util.Scanner;
-
 import org.ulrica.application.port.in.CalculateAcChargingUseCaseInterface;
 import org.ulrica.application.port.in.CalculateDcChargingUseCaseInterface;
 import org.ulrica.application.port.in.CalculateRangeUseCaseInterface;
