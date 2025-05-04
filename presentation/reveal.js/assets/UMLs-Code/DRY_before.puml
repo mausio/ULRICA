@@ -1,0 +1,60 @@
+@startuml DRY_Before
+
+class CarProfileController {
+  -static Scanner scanner
+  -final LoadingScreenAnimation loadingScreenAnimation
+  -Thread loadingAnimationThread
+  -Thread loadingJsonThread
+  -CarProfileModel carProfile
+  -ConsumptionProfileModel consumptionProfile
+  
+  +CarProfileController() throws LoadingException
+  -void startLoadingThreads()
+  -void stopLoadingThreads()
+  -void createCarProfileDialog()
+  -void handleExistingProfiles(CarProfileModel[] profiles)
+  -void updateCarProfile()
+  -void saveCarProfile()
+}
+
+class SetupService {
+  +static JsonCarProfilesLoader getCarProfileJsonLoader()
+  +static CarProfileModel getCarProfile()
+  +static ConsumptionProfileModel getConsumptionProfile()
+  +static LoadingScreenAnimation getLoadingScreenAnimation()
+  +static Scanner getScanner()
+}
+
+class CarProfileModel {
+}
+
+class ConsumptionProfileModel {
+}
+
+class JsonCarProfilesLoader {
+  +CarProfileModel[] getCarProfiles()
+}
+
+class LoadingScreenAnimation {
+}
+
+class SleepUtil {
+  +static void waitForFSeconds(double seconds)
+}
+
+CarProfileController --> SetupService 
+CarProfileController --> SleepUtil 
+CarProfileController o--> CarProfileModel 
+CarProfileController o--> ConsumptionProfileModel 
+CarProfileController o--> LoadingScreenAnimation
+CarProfileController ..> JsonCarProfilesLoader 
+
+note bottom of CarProfileController
+  Mixed responsibilities:
+  - UI logic
+  - Loading logic
+  - Profile management
+  - Business logic
+  - Multithreading
+end note
+@enduml 

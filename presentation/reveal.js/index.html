@@ -2354,9 +2354,9 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
                     <div class="horizontal-spaced-container">
                         <ul style="width: 50%;">
                             <h6>Problem:</h6>
-                            <li>Business-Logik war mit UI-Logik vermischt</li>
                             <li>Duplizierter Code für ähnliche Operationen</li>
                             <li>Schwer zu erkennendes Muster im Code</li>
+                            <li>Business-Logik war mit UI-Logik vermischt</li>
                             <li>Hohe Fehleranfälligkeit bei Änderungen</li>
                             <li>Clean Architecture war nicht erfüllt</li>
                         </ul>
@@ -2376,7 +2376,10 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
                     </div>
                 </section>
 
-
+                <section>
+                    <h3>DRY: Altes UML</h3>
+                    <img style="scale: 1.1" src="assets/UMLs-imgs/DRY_before.png" alt="DRY Before" />
+                </section>
 
                 <section>
                     <h3>DRY – Vorher: Code</h3>
@@ -2413,7 +2416,7 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
 					  SleepUtil.waitForFSeconds(2.0);
 					  createCarProfileDialog();
 					} else {
-					  // Weitere Logik...
+                        howCarProfileSelection();
 					}
 				  }
 				  
@@ -2422,10 +2425,14 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
                 </section>
 
                 <section>
+                    <h3>DRY: Neues UML</h3>
+                    <img style="scale: 1" src="assets/UMLs-imgs/DRY_after.png" alt="DRY After" />
+                </section>
+
+                <section>
                     <h3>DRY – Nachher: Code</h3>
                     <div class="horizontal-spaced-container">
                         <div>
-                            <h5>Controller: UI-Logik</h5>
                             <pre><code class="java">public class CarProfileController {
     public static void startDialog() {
         System.out.println(
@@ -2462,7 +2469,7 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
         // Laden der Profile
         loadProfiles();
         
-        // Weitere Business-Logik...
+        // Weitere Logik...
         }
         
         private void loadProfiles() {
@@ -2477,7 +2484,7 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
         }
         }
         
-        // Weitere Business-Methoden...
+        // Weitere Methoden...
     }
 // ...
 
@@ -2491,8 +2498,11 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
                     <h3>DRY: Vorteile des Refactorings</h3>
                     <ul>
                         <li><b>Bessere Wartbarkeit:</b> Änderungen an UI oder
-                            Business-Logik können unabhängig
+                            Logik können unabhängig
                             durchgeführt werden
+                        </li>
+                        <li><b>Übersichtlichkeit:</b> Kürzere Klassen mit klaren
+                            Zuständigkeiten
                         </li>
                         <li><b>Geringere Redundanz:</b> Gemeinsam genutzter Code ist
                             an einer zentralen Stelle definiert
@@ -2506,9 +2516,6 @@ public class ConsumptionBasedRangeCalculationStrategy implements RangeCalculatio
                         <li><b>Clean Architecture:</b> Klare Trennung der Schichten
                             zwischen Presentation und
                             Application
-                        </li>
-                        <li><b>Übersichtlichkeit:</b> Kürzere Klassen mit klaren
-                            Zuständigkeiten
                         </li>
                     </ul>
                 </section>

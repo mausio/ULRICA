@@ -1,0 +1,54 @@
+@startuml DRY_After
+
+
+class CarProfileController {
+  +static void startDialog()
+  +static Double getConsumptionDialog(Scanner scanner)
+  +static void showProfileSelectionDialog()
+  +static Double getBatteryCapacityDialog(Scanner scanner)
+}
+
+class CarProfileService {
+  -JsonCarProfilesLoader carProfileJsonLoader
+  -CarProfileModel carProfile
+  
+  +CarProfileService() throws LoadingException
+  -void loadProfiles()
+  -void createNewProfile()
+  -void selectExistingProfile(CarProfileModel[] profiles)
+  -void updateProfile()
+  -void saveProfile()
+}
+
+class SetupService {
+  +static JsonCarProfilesLoader getCarProfileJsonLoader()
+}
+
+class CarProfileModel {
+}
+
+class JsonCarProfilesLoader {
+  +CarProfileModel[] getCarProfiles()
+}
+
+CarProfileService --> SetupService 
+CarProfileService --> CarProfileController 
+CarProfileService o--> CarProfileModel 
+CarProfileService ..> JsonCarProfilesLoader
+
+note right of CarProfileController
+  Pure UI responsibility:
+  - Dialog presentation
+  - User input collection
+  - Input formatting
+end note
+
+note right of CarProfileService
+  Business logic responsibility:
+  - Profile loading
+  - Profile management
+  - Business rules
+  - Persistence handling
+end note
+
+@enduml
